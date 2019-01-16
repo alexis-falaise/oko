@@ -10,9 +10,10 @@ export class Item {
     depth: number;
     weight: number;
     cabinOnly: boolean;
-    id: Id;
+    id?: Id;
 
-    constructor(object: Partial<Item>) {
-        Object.assign(this, object);
+    constructor(item: Partial<Item>) {
+        Object.assign(this, item);
+        this.id = new Id(item.id);
     }
 }

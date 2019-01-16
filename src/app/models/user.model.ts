@@ -6,13 +6,17 @@ export class User {
     lastname: string;
     email: string;
     password: string;
-    avatar: string;
-    description: Description;
-    trips: number;
-    rating: number;
-    id: Id;
+    avatar?: string;
+    description?: Description;
+    trips?: number;
+    rating?: number;
+    id?: Id;
 
     constructor(user: Partial<User>) {
         Object.assign(this, user);
+        this.description = new Description(user.description);
+        if (!user.trips) {
+            this.trips = 0;
+        }
     }
 }

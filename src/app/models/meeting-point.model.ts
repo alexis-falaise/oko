@@ -5,7 +5,7 @@ export class MeetingPoint {
     zip: string;
     city: string;
     country: string;
-    id: Id;
+    id?: Id;
 
     constructor(point: Partial<MeetingPoint>) {
         Object.assign(this, point);

@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from '@core/core.module';
 import { AuthModule } from './auth/auth.module';
+import { SharedModule } from '@shared/shared.module';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from '@core/auth.service';
@@ -20,6 +22,7 @@ import { AuthService } from '@core/auth.service';
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    SharedModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

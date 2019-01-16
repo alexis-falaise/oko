@@ -1,12 +1,14 @@
-.navbar-brand {
-    display: inline-block;
-    width: auto;
-    font-size: 36px;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    text-align: center;
-    background: -webkit-linear-gradient(45deg,#B61173, #E0335E, #EF6B30, #FF8100, #FF9800);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.navbar {
+    &-brand {
+        display: inline-block;
+        width: auto;
+        font-size: 36px;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        background: -webkit-linear-gradient(45deg,#B61173, #E0335E, #EF6B30, #FF8100, #FF9800);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }

@@ -1,0 +1,29 @@
+<div class="post">
+  <div class="post-info row">
+    <div class="post-info__user-avatar col-3">
+        <app-avatar [image]="post.user.avatar"></app-avatar>
+    </div>
+    <div class="post-info__user-info col-5">
+        <div class="post-info__user-info__firstname">
+            {{ post.user.firstname }}
+        </div>
+        <div class="post-info__user-info__trips">
+            {{ post.user.trips || 0 }} trips
+        </div>
+    </div>
+    <div class="post-info__date col-4">
+        {{ post.date.format('DD MMM') }}
+    </div>
+  </div>
+  <div class="post-trip row">
+    <div class="post-trip__from col-5 justify-content-center">
+        {{ post.from.airport.code }}
+    </div>
+    <div class="post-trip__link col-2">
+        <mat-icon>chevron_right</mat-icon>
+    </div>
+    <div class="post-trip__to col-5 justify-content-center">
+        {{ post.to.airport.code }}
+    </div>
+  </div>
+</div>

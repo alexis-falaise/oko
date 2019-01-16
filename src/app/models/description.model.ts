@@ -7,7 +7,7 @@ export class Description {
     originCountry: string;
     visitedCountries: Array<string>;
     livedCountries: Array<string>;
-    id: Id;
+    id?: Id;
 
     constructor(description: Partial<Description>) {
         Object.assign(this, description);

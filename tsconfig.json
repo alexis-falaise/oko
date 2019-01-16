@@ -7,6 +7,7 @@
       "@assets/*": ["assets/*"],
       "@core/*": ["app/core/*"],
       "@models/*": ["app/models/*"],
+      "@shared/*": ["app/shared/*"],
     },
     "sourceMap": true,
     "declaration": false,

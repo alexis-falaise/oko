@@ -1,0 +1,72 @@
+.post {
+    height: 150px;
+    background-color: rgb(235, 235, 235);
+    border-radius: 5px;
+    width: 80%;
+    margin: 15px 10%;
+    padding: 5px;
+
+    &:hover {
+        background-color: rgb(225, 225, 225);
+        box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+        cursor: pointer;
+    }
+
+    &-info {
+        height: 40%;
+        width: 100%;
+        padding-top: 10px;
+        margin-left: 0px;
+
+        &__user-avatar {
+            height: 50px;
+            width: 50px;
+            border-right: thin solid rgb(215, 215, 215);
+        }
+
+        &__user-info {
+            color: rgb(75, 75, 75);
+
+            &__firstname {
+                height: 50%;
+                margin-bottom: 0;
+                font-size: 24px;
+            }   
+
+            &__trips {
+                height: 50%;
+            }
+        }
+
+        &__date {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: rgb(100, 100, 100);
+            font-size: 24px;
+        }
+    }
+
+    &-trip {
+        height: 60%;
+        width: 100%;
+        margin-left: 0px;
+
+        &__from,
+        &__to {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            font-size: 36px;
+            color: rgb(75, 75, 75);
+        }
+
+        &__link {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 72px;
+        }
+    }
+}
