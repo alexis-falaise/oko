@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private logged = new BehaviorSubject(false);
+  private logged = new BehaviorSubject(true);
 
   constructor(private router: Router) { }
 

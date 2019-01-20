@@ -7,9 +7,14 @@ export class Trip extends Post {
     from: Location;
     to: Location;
     date: Moment;
+
+    /* Transportation constraints */
+    weight: number;
+    height: number;
+    width: number;
+    depth: number;
     airportDrop: boolean;
     cabinOnly: boolean;
-    id?: Id;
 
     constructor(trip: Partial<Trip>) {
         super(trip);

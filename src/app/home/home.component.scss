@@ -1,0 +1,129 @@
+$homeHeroSize: 36px;
+$transitionDuration: 0.25s;
+$transitionStyle: ease-out;
+
+.home {
+
+    &-hero {
+        transition: $transitionDuration $transitionStyle all;
+        -webkit-transition: $transitionDuration $transitionStyle all;
+        -moz-transition: $transitionDuration $transitionStyle all;
+        -o-transition: $transitionDuration $transitionStyle all;
+        
+        height: 30vh;
+        padding-top: 50px;
+        background-size: 100% auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        box-shadow: 0px -2px 15px rgba(0, 0, 0, .5) inset;
+        font-size: $homeHeroSize;
+        font-weight: 200;
+
+        &.expanded {
+            transition: $transitionDuration $transitionStyle all;
+            -webkit-transition: $transitionDuration $transitionStyle all;
+            -moz-transition: $transitionDuration $transitionStyle all;
+            -o-transition: $transitionDuration $transitionStyle all;
+            background-size: auto 100%;
+            height: 60vh;
+        }
+
+        &.fullscreen {
+            transition: $transitionDuration $transitionStyle all;
+            -webkit-transition: $transitionDuration $transitionStyle all;
+            -moz-transition: $transitionDuration $transitionStyle all;
+            -o-transition: $transitionDuration $transitionStyle all;
+            background-size: auto 100%;
+            height: 100vh;
+        }
+
+        &__input {
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        &__summary {
+            transition: $transitionDuration $transitionStyle all;
+            -webkit-transition: $transitionDuration $transitionStyle all;
+            -moz-transition: $transitionDuration $transitionStyle all;
+            -o-transition: $transitionDuration $transitionStyle all;
+            padding-left: 5%;
+
+            &-location:hover,
+            &-item:hover {
+                transition: $transitionDuration $transitionStyle all;
+                -webkit-transition: $transitionDuration $transitionStyle all;
+                -moz-transition: $transitionDuration $transitionStyle all;
+                -o-transition: $transitionDuration $transitionStyle all;
+                color: #B61173;
+                cursor: pointer;
+            }
+
+            &-location{
+                display: block;
+                font-size: 48px;
+                font-weight: 100;
+            }
+            &-item {
+                font-size: 24px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    @media screen and (min-width: 760px) {
+        &-hero,
+        &-hero.expanded {
+            background-size: 100% auto;
+        }
+
+        &-hero {
+            background-position-y: 50%;
+        }
+    }
+
+    &-list {
+        height: 40vh;
+        overflow: scroll;
+
+        &.expanded {
+            height: 70vh;
+        }
+
+        &.empty {
+            height: 0;
+        }
+
+        &__departures {
+            position: fixed;
+            z-index: 0;
+            padding-top: 5px;
+            font-size: 18px;
+            height: 25px;
+            width: 100%;
+            text-align: center;
+            color: rgba(0, 0, 0, .4);
+        }
+
+        &__list {
+            box-shadow: 0px -20px 50px rgb(255, 255, 255);
+            background-color: rgba(255, 255, 255, .95);
+            position: relative;
+            z-index: 1;
+            top: 35px;
+        }
+    }
+}
+
+.input-hero {
+    display: inline-block;
+    height: $homeHeroSize;
+    width: 500px;
+}
+
+.mat-form-field-infix {
+    width: 100% !important;
+}

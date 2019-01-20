@@ -1,10 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light">
+  <button class="navbar-toggler" type="button" aria-label="Previous" [hidden]="previousAvailable">
+    <span class="navbar-previous">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </span>
+  </button>
   <a class="navbar-brand mx-auto" href="#">ọkọ</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu-collapse"
+          aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse right" id="navbarTogglerDemo03">
+  <div class="collapse navbar-collapse right" id="menu-collapse">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>

@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signin', component: SigninComponent },
+  { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
 import * as moment from 'moment';
 
 import { Post } from '@models/post/post.model';
@@ -11,46 +11,24 @@ import { Location } from '@models/location.model';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnChanges {
   @Input() post: Post | Request | Trip;
+  isTrip = false;
+  isRequest = false;
 
   constructor() { }
 
   ngOnInit() {
-    this.post = new Trip({
-      user: {
-        firstname: 'Alex',
-        lastname: 'Andre',
-        email: 'alex@andre.com',
-        password: 'alexandre',
-      },
-      submitDate: moment(),
-      from: {
-        label: 'Paris',
-        airport: {
-          label: 'Paris CDG',
-          name: 'Aéroport Paris Charles de Gaulle',
-          code: 'CDG',
-        },
-        timezone: 1,
-      },
-      to: {
-        label: 'Santa Cruz',
-        airport: {
-          label: 'Santa Cruz Viru Viru',
-          name: 'Viru Viru',
-          code: 'VIR',
-        },
-        timezone: -4,
-      },
-      date: moment().set({year: 2019, month: 0, day: 20}),
-      airportDrop: true,
-      cabinOnly: true,
-    });
 
     console.log(this.post);
+  }
 
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.post) {
+      this.post = changes.post.currentValue;
+      this.isTrip = this.post instanceof Trip;
+      this.isRequest = this.post instanceof Request;
+    }
   }
 
 }

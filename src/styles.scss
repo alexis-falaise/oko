@@ -3,9 +3,21 @@
 
 $hoverDuration: 0.35s;
 
+@keyframes enter {
+    0% { margin-left: 100% }
+    100% { margin-left: 0% }
+}
+
 html, body {
     width: 100vw;
     height: 100vh;
+
+    $duration: 0.25s;
+
+    animation: $duration enter;
+    -webkit-animation: $duration enter;
+    -moz-animation: $duration enter;
+    -o-animation: $duration enter;
 }
 
 .main {
@@ -28,5 +40,16 @@ html, body {
         -moz-transition: all $hoverDuration;
         -o-transition: all $hoverDuration;
         box-shadow: 0 0 10px #EF6B30;
+    }
+}
+
+.btn-hero {
+    background-color: rgba(255, 255, 255, .2) !important;
+    border: thin solid rgba(255, 255, 255, .3) !important;
+    color:white !important;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, .3) !important;
+        border: thin solid rgba(255, 255, 255, .4) !important;
     }
 }

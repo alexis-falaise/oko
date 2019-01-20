@@ -1,0 +1,21 @@
+@keyframes enter {
+    0% {
+        box-shadow: 5px 0px 15px rgba(0, 0, 0, .5);
+        margin-left: 100ù
+    }
+    100% {
+        margin-left: 0%;
+    }
+}
+
+$animationDuration: 0.25s;
+
+.request {
+    padding-top: 80px;
+
+    animation: $animationDuration enter;
+    -webkit-animation: $animationDuration enter;
+    -moz-animation: $animationDuration enter;
+    -o-animation: $animationDuration enter;
+    
+}

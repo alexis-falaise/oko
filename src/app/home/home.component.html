@@ -1,17 +1,30 @@
 <div class="home">
-    <div class="home-hero">
-        <button class="btn btn-hero">Je voyage</button>
-        <button class="btn btn-hero">J'ai des envies</button>
-        <div class="home-hero__search input-group">
-            <input type="text" class="form-control">
-            <div class="input-group-append">
-                <span class="input-group-text">
-                    <mat-icon>search</mat-icon>
-                </span>
-            </div>
+    <div class="home-hero" [style.background-image]="'url('+backgroundImage+')'"
+                           [class.expanded]="expanded"
+                           [class.fullscreen]="empty"
+                           (mouseleave)="leave()" (keyup.enter)="validate()">
+        <div class="home-hero__input" *ngIf="expanded">
+            <p>
+                Je cherche
+                <mat-form-field class="input-hero__item" floatLabel="never">
+                    <input matInput type="text" name="item" placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
+                </mat-form-field>
+                à
+                <mat-form-field class="input-hero__location" floatLabel="never">
+                    <input matInput type="text" name="location" placeholder="{{swingingLocation}}" (keyup)="filterPosts($event)" [(ngModel)]="filter.location">
+                </mat-form-field>
+            </p>
+            <button class="btn btn-hero" (click)="validate() && post()" *ngIf="empty">Demander un service</button>
+        </div>
+        <div class="home-hero__summary" *ngIf="!expanded">
+            <span class="home-hero__summary-location" (click)="enter()">{{ filter.location }}</span>
+            <span class="home-hero__summary-item" (click)="enter()">{{ filter.item }}</span>
         </div>
     </div>
-    <div class="home-list">
-
+    <div class="home-list" [class.expanded]="!expanded" [class.empty]="empty" (scroll)="onScroll($event)">
+        <div class="home-list__departures" *ngIf="!empty">Départs disponibles</div>
+        <div class="home-list__list">
+            <app-post-list (listRefresh)="listStatus($event)"></app-post-list>
+        </div>
     </div>
 </div>

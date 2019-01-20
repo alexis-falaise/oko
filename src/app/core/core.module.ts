@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material';
 
 import { NavComponent } from '@core/nav/nav.component';
 
@@ -7,6 +8,7 @@ import { NavComponent } from '@core/nav/nav.component';
   declarations: [NavComponent],
   imports: [
     CommonModule,
+    MatIconModule,
   ],
   exports: [
     NavComponent,
