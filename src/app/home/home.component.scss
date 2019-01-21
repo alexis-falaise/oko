@@ -58,7 +58,7 @@ $transitionStyle: ease-out;
                 -webkit-transition: $transitionDuration $transitionStyle all;
                 -moz-transition: $transitionDuration $transitionStyle all;
                 -o-transition: $transitionDuration $transitionStyle all;
-                color: #B61173;
+                color: #5FE8C9;
                 cursor: pointer;
             }
 
@@ -70,6 +70,11 @@ $transitionStyle: ease-out;
             &-item {
                 font-size: 24px;
                 font-weight: 500;
+            }
+
+            &-empty {
+                font-size: 48px;
+                font-weight: 100;
             }
         }
     }
@@ -122,6 +127,12 @@ $transitionStyle: ease-out;
     display: inline-block;
     height: $homeHeroSize;
     width: 500px;
+}
+
+.mat-form-field {
+    font-family: 'Rubik', 'Roboto', sans-serif !important;
+    max-height: $homeHeroSize;
+    min-width: 250px;
 }
 
 .mat-form-field-infix {

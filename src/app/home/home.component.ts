@@ -70,9 +70,8 @@ export class HomeComponent implements OnInit {
   }
 
   onScroll(event) {
-    if (this.filter.location) {
-      this.expanded = false;
-    }
+    console.log(event);
+    this.expanded = false;
     this.post();
   }
 

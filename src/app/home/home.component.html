@@ -2,7 +2,7 @@
     <div class="home-hero" [style.background-image]="'url('+backgroundImage+')'"
                            [class.expanded]="expanded"
                            [class.fullscreen]="empty"
-                           (mouseleave)="leave()" (keyup.enter)="validate()">
+                           (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
         <div class="home-hero__input" *ngIf="expanded">
             <p>
                 Je cherche
@@ -17,6 +17,7 @@
             <button class="btn btn-hero" (click)="validate() && post()" *ngIf="empty">Demander un service</button>
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">
+            <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Départs</span>
             <span class="home-hero__summary-location" (click)="enter()">{{ filter.location }}</span>
             <span class="home-hero__summary-item" (click)="enter()">{{ filter.item }}</span>
         </div>
