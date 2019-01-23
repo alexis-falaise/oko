@@ -4,16 +4,16 @@
                            [class.fullscreen]="empty"
                            (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
         <div class="home-hero__input" *ngIf="expanded">
-            <p>
-                Je cherche
-                <mat-form-field class="input-hero__item" floatLabel="never">
-                    <input matInput type="text" name="item" placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
-                </mat-form-field>
-                à
-                <mat-form-field class="input-hero__location" floatLabel="never">
-                    <input matInput type="text" name="location" placeholder="{{swingingLocation}}" (keyup)="filterPosts($event)" [(ngModel)]="filter.location">
-                </mat-form-field>
-            </p>
+            Je cherche
+            <mat-form-field class="input-hero__item" floatLabel="never">
+                <input matInput type="text" name="item" placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
+            </mat-form-field>
+            à
+            <mat-form-field class="input-hero__location" floatLabel="never">
+                <input matInput type="text" name="location" placeholder="{{swingingLocation}}" (keyup)="filterPosts($event)" [(ngModel)]="filter.location">
+            </mat-form-field>
+        </div>
+        <div class="home-hero__action">
             <button class="btn btn-hero" (click)="validate() && post()" *ngIf="empty">Demander un service</button>
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">

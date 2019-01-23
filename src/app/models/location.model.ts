@@ -1,14 +1,14 @@
 import { Airport } from '@models/airport.model';
-import { Id } from '@models/id.model';
-
 export class Location {
     label: string;
-    airport: Airport;
-    timezone: number;
-    id?: Id;
+    airport?: Airport;
+    timezone?: number;
+    id?: number;
 
     constructor(location: Partial<Location>) {
         Object.assign(this, location);
-        this.airport = new Airport(location.airport);
+        if (location.airport) {
+            this.airport = new Airport(location.airport);
+        }
     }
 }

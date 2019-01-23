@@ -1,0 +1,79 @@
+$animationDuration: 0.15s;
+
+@keyframes openHero {
+    0% { height: 0vh; margin-top: 25vh; border-top-left-radius: 50%; border-top-right-radius: 50% }
+    75% { border-top-left-radius: 25%; border-top-right-radius: 25%; }
+    100% { height: 25vh; margin-top: 0; border-radius: 0 }
+}
+
+.trip-detail {
+    height: 100vh;
+
+    &__hero {
+        animation: $animationDuration openHero;
+        -webkit-animation: $animationDuration openHero;
+        -moz-animation: $animationDuration openHero;
+        -o-animation: $animationDuration openHero;
+
+        background: linear-gradient(45deg,#00aac1, #7CB342);
+        // background-image: url('/assets/hero-trip-detail.jpg');
+        width: 100vw;
+        height: 25vh;
+        padding-top: 80px;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        color: white;
+
+        &__from,
+        &__to,
+        &__link {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        &__link {
+            $heroIconSize: 64px;
+            .mat-icon {
+                height: $heroIconSize;
+                width: $heroIconSize;
+            }
+            .material-icons {                
+                font-size: $heroIconSize;
+            }
+        }
+
+        &__airport-code,
+        &__airport-label {
+            display: block;
+        }
+
+        &__airport-code {
+            font-size: 36px;
+        }
+
+        &__airport-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, .7);
+        }
+    }
+
+    &__info {
+        width: 100vw;
+        height: 15vh;
+        border-bottom: thin solid rgb(215, 215, 215);
+
+        &__user {
+            &-avatar {
+                display: inline-flex;
+                height: 75px;
+                width: 75px;
+            }
+            &-detail {
+                display: inline-flex;
+                height: 100%;
+            }
+        }
+    }
+}

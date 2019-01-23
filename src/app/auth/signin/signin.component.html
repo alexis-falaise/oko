@@ -1,3 +1,87 @@
-<p>
-  signin works!
-</p>
+<div class="signin">
+  <div class="logo-brand-wrapper justify-content-center">
+    <h1 class="logo-brand">ọkọ</h1>
+  </div>
+  <div class="signin-content container">
+    <h1 class="signin-title">Créez votre compte</h1>
+    <div class="signin-form justify-content-center">
+      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+          <div class="form-row">
+              <div class="form-group col-12 col-sm-6">
+                <input type="text" placeholder="Prénom" class="form-control"
+                        [class.is-invalid]="signinForm.controls.firstname.errors?.required
+                        && signinForm.controls.firstname.touched"
+                        formControlName="firstname" required>
+                <div class="invalid-feedback"
+                     [class.d-block]="signinForm.controls.firstname.errors?.required
+                     && signinForm.controls.firstname.touched">
+                     Indiquez votre prénom
+                </div>
+              </div>
+              <div class="form-group col-12 col-sm-6">
+                <input type="text" placeholder="Nom" class="form-control"
+                [class.is-invalid]="signinForm.controls.lastname.errors?.required
+                && signinForm.controls.lastname.touched"
+                formControlName="lastname" required>
+                <div class="invalid-feedback"
+                     [class.d-block]="signinForm.controls.lastname.errors?.required
+                     && signinForm.controls.lastname.touched">
+                  Indiquez votre nom
+                </div>
+              </div>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Email" class="form-control" formControlName="email"
+              [class.is-invalid]="(signinForm.controls.email.errors?.required
+                                  || signinForm.controls.email.errors?.email)
+                                  && signinForm.controls.email.touched"
+              required>
+            <div class="invalid-feedback"
+                  [class.d-block]="signinForm.controls.email.errors?.required
+                  && signinForm.controls.email.touched">
+              Indiquez votre email
+            </div>
+            <div class="invalid-feedback"
+                  [class.d-block]="signinForm.controls.email.errors?.email
+                  && !signinForm.controls.email.errors?.required
+                  && signinForm.controls.email.touched">
+              L'email indiqué n'est pas valide
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="Créez un mot de passe" class="form-control"
+              [class.is-invalid]="signinForm.controls.password.errors?.required
+                                  || signinForm.controls.password.errors?.minLength"
+              formControlName="password" required>
+            <small class="form-text text-muted" *ngIf="!signinForm.controls.password.touched">
+              Votre mot de passe doit être composé de 8 caractères minimum
+            </small>
+            <div class="invalid-feedback"
+                  [class.d-block]="signinForm.controls.password.errors?.required
+                  && signinForm.controls.password.touched">
+              Veuillez entrer un mot de passe
+            </div>
+            <div class="invalid-feedback"
+                  [class.d-block]="signinForm.controls.password.errors?.minLength">
+              Votre mot de passe doit être composé de 8 caractères minimum
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="Confirmez votre mot de passe" class="form-control"
+                    formControlName="passwordConfirm" required>
+            <div class="invalid-feedback"
+            [class.d-block]="signinForm.controls.passwordConfirm?.required
+            && signinForm.controls.passwordConfirm.touched">
+              Veuillez confirmer votre mot de passe
+            </div>
+            <div class="invalid-feedback"
+            [class.d-block]="signinForm.errors?.passwordMismatch">
+              Les mots de passes ne correspondent pas
+            </div>
+          </div>
+          <button class="btn btn-primary btn-signin" [class.btn-danger]="signinError" type="submit">Inscription</button>
+      </form>
+    </div>
+  </div>
+  <mat-progress-bar mode="indeterminate" class="signin-load" *ngIf="loading"></mat-progress-bar>
+</div>

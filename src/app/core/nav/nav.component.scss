@@ -1,6 +1,10 @@
+$transitionDuration: 0.15s;
+$transitionStyle: ease-in-out;
+$animationDuration: 0.15s;
+$menu-color: rgba(255, 255, 255, .2);
+$expanded-menu-color: rgba(255, 255, 255, .95);
+
 .navbar {
-    $transitionDuration: 0.25s;
-    $transitionStyle: ease-in-out;
 
     transition: $transitionDuration $transitionStyle all;
     -webkit-transition: $transitionDuration $transitionStyle all;
@@ -9,17 +13,23 @@
     position: fixed;
     top:0;
     z-index: 20;
+    height: 80px;
     width: 100%;
     border-bottom: rgba(255, 255, 255, .5);
-    background-color: rgba(255, 255, 255, .2);
+    background-color: $menu-color;
 
-    &:hover {
+    &:hover,
+    &.expanded {
         transition: $transitionDuration $transitionStyle all;
         -webkit-transition: $transitionDuration $transitionStyle all;
         -moz-transition: $transitionDuration $transitionStyle all;
         -o-transition: $transitionDuration $transitionStyle all;
         border-bottom: rgb(255, 255, 255);
-        background-color: rgba(255, 255, 255, .8);
+        background-color: rgba(255, 255, 255, .6);
+    }
+
+    &.expanded {
+        background-color: $expanded-menu-color;
     }
 
     &-brand {
@@ -29,7 +39,7 @@
         font-family: 'Quicksand', sans-serif;
         font-weight: 700;
         text-align: center;
-        background: -webkit-linear-gradient(45deg,#B61173, #E0335E, #EF6B30, #FF8100, #FF9800);
+        background: -webkit-linear-gradient(45deg,#69F5FF, #5FE8C9, #75FFB6, #5FE877, #98FF85);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -40,6 +50,78 @@
 
         &-icon {
             color: white;
+        }
+    }
+
+    &-previous-wrapper {
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        -o-transition: all 0.5s;
+
+        opacity: .2;
+
+        &.available {
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+
+            opacity: 1;
+        }
+    }
+}
+
+@keyframes fullscreenItemsEnter {
+    0% { opacity: 0; margin-top: -10%; }
+    100% { opacity: 1; margin-top: 0%; }
+}
+
+@keyframes fullscreenEnter {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+.navbar__fullscreen {
+    animation: fullscreenEnter $animationDuration;
+    -webkit-animation: fullscreenEnter $animationDuration;
+    -moz-animation: fullscreenEnter $animationDuration;
+    -o-animation: fullscreenEnter $animationDuration;
+
+    position: fixed;
+    top: 80px;
+    z-index: 20;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: $expanded-menu-color;
+
+    a {
+        color: rgb(80, 80, 80);
+        text-decoration: none;
+    }
+
+    &-item {
+        animation: fullscreenItemsEnter $animationDuration;
+        -webkit-animation: fullscreenItemsEnter $animationDuration;
+        -moz-animation: fullscreenItemsEnter $animationDuration;
+        -o-animation: fullscreenItemsEnter $animationDuration;
+        transition: all $transitionDuration;
+        width: 110%;
+        margin-left: -5%;
+        text-align: center;
+        font-size: 36px;
+        font-weight: 100;
+
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .1);
+        }
+
+        &.active {
+            background-color: rgba(0, 0, 0, .2);
         }
     }
 }

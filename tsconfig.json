@@ -8,6 +8,7 @@
       "@core/*": ["app/core/*"],
       "@models/*": ["app/models/*"],
       "@shared/*": ["app/shared/*"],
+      "@env/*": ["environments/*"],
     },
     "sourceMap": true,
     "declaration": false,

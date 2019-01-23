@@ -1,5 +1,3 @@
-import { Id } from '@models/id.model';
-
 export class Description {
     occupation: string;
     interests: Array<string>;
@@ -7,7 +5,7 @@ export class Description {
     originCountry: string;
     visitedCountries: Array<string>;
     livedCountries: Array<string>;
-    id?: Id;
+    id?: number;
 
     constructor(description: Partial<Description>) {
         Object.assign(this, description);

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressBarModule
 } from '@angular/material';
 
 import { LoginComponent } from './login/login.component';
@@ -13,8 +14,11 @@ import { SigninComponent } from './signin/signin.component';
   declarations: [LoginComponent, SigninComponent],
   imports: [
     CommonModule,
+    FormsModule,
     MatButtonModule,
     MatInputModule,
+    MatProgressBarModule,
+    ReactiveFormsModule,
   ]
 })
 export class AuthModule { }

@@ -15,20 +15,30 @@ export class PostComponent implements OnInit, OnChanges {
   @Input() post: Post | Request | Trip;
   isTrip = false;
   isRequest = false;
+  postPath = ['/post'];
+  avatarLocation = 'assets/avatar';
 
   constructor() { }
 
   ngOnInit() {
-
-    console.log(this.post);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.post) {
-      this.post = changes.post.currentValue;
-      this.isTrip = this.post instanceof Trip;
-      this.isRequest = this.post instanceof Request;
+      this.buildPostProperties(changes.post.currentValue);
+      this.buildAvatarUrl(changes.post.currentValue.user.avatar);
     }
+  }
+
+  buildPostProperties(post) {
+    this.post = post;
+    this.isTrip = post instanceof Trip;
+    this.isRequest = post instanceof Request;
+    this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
+  }
+
+  buildAvatarUrl(avatar: string): string {
+    return `${this.avatarLocation}/${avatar}`;
   }
 
 }

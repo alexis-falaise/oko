@@ -1,0 +1,16 @@
+{
+  "short_name": "ọkọ",
+  "name": "Oko",
+  "icons": [
+    {
+      "src": "/oko/assets/oko-icon-phone.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/oko/",
+  "background_color": "#69F5FF",
+  "display": "standalone",
+  "scope": "/oko/",
+  "theme_color": "#69F5FF"
+}

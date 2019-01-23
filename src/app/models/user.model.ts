@@ -1,6 +1,4 @@
 import { Description } from '@models/description.model';
-import { Id } from '@models/id.model';
-
 export class User {
     firstname: string;
     lastname: string;
@@ -10,11 +8,13 @@ export class User {
     description?: Description;
     trips?: number;
     rating?: number;
-    id?: Id;
+    id?: number;
 
     constructor(user: Partial<User>) {
         Object.assign(this, user);
-        this.description = new Description(user.description);
+        if (user.description) {
+            this.description = new Description(user.description);
+        }
         if (!user.trips) {
             this.trips = 0;
         }

@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.onLoginState()
-    .subscribe(state => this.logged = state);
+    this.authService.getLoginStatus()
+    .subscribe((status: any) => {
+      this.logged = status.status;
+    });
   }
 }

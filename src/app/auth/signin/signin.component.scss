@@ -1,0 +1,34 @@
+@import "../../../styles/variables.scss";
+
+.signin {
+    width: 100%;
+
+    &-content {
+        width: 100%;
+        padding: 15px;
+        border-top: thin solid rgb(215, 215, 215);
+    }
+
+    &-form {
+        padding: 0 25px;
+    }
+
+    &-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin-bottom: 50px;
+        color: map-get($okoColors, blue);
+    }
+
+    &-load {
+        position: fixed;
+        height: 10px;
+        bottom: 0;
+    }
+}
+
+.btn-signin {
+    position: relative;
+    right: 0;
+}

@@ -1,4 +1,3 @@
-import { Id } from '@models/id.model';
 import { Location } from '@models/location.model';
 import { Post } from '@models/post/post.model';
 import { Moment } from 'moment';

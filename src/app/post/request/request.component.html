@@ -3,4 +3,7 @@
       <h1 class="request-title">Demander un service</h1>
   </div>
   
+  <div class="request-form-wrapper" *ngIf="request">
+    {{ request.location.label }}
+  </div>
 </div>

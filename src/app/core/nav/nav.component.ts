@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import * as $ from 'jquery';
+
+import { MenuItem } from '@models/app/menu-item.model';
 
 @Component({
   selector: 'app-nav',
@@ -8,7 +11,20 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 })
 export class NavComponent implements OnInit {
 
+  menuDisplay = false;
   previousAvailable = false;
+  menuItems: Array<MenuItem> = [
+    { label: 'Accueil', path: '/home' },
+    { label: 'Déposez une annonce', path: '/post/request' },
+    { label: 'Mes trajets', path: '/trips' },
+    { label: 'Messages', path: '/messages' },
+    { label: 'Rentabiliser un trajet', path: '/post/trip' },
+    { label: 'Aide', path: '/help' },
+    { label: 'Mon compte', path: '/account' },
+    { label: 'Déconnexion', path: '/logout' },
+  ];
+
+  secondaryMenuItems: Array<MenuItem> = [];
 
   constructor(
     private router: Router,
@@ -19,9 +35,13 @@ export class NavComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // check if child route
-        console.log(this.route.parent);
+        console.log('Nav check', event);
       }
     });
+  }
+
+  toggleMenu() {
+    this.menuDisplay = !this.menuDisplay;
   }
 
 

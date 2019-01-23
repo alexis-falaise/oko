@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import {
   MatIconModule,
   MatInputModule,
+  MatProgressBarModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -32,6 +33,7 @@ import { FormsModule } from '@angular/forms';
     SharedModule,
     MatInputModule,
     MatIconModule,
+    MatProgressBarModule,
   ],
   providers: [AuthService, PostService],
   bootstrap: [AppComponent]

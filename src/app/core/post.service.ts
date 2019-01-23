@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import { Filter } from '@models/app/filter.model';
 import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
+import { Request } from '@models/post/request.model';
+import { Id } from '@models/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class PostService {
       lastname: 'Andre',
       email: 'alex@andre.com',
       password: 'alexandre',
+      avatar: 'user-alex.png',
     },
     submitDate: moment(),
     from: {
@@ -40,6 +43,7 @@ export class PostService {
     date: moment().set({year: 2019, month: 0, day: 20}),
     airportDrop: true,
     cabinOnly: true,
+    id: 1,
   }),
   new Trip({
     user: {
@@ -70,6 +74,7 @@ export class PostService {
     date: moment().set({year: 2019, month: 1, day: 3}),
     airportDrop: true,
     cabinOnly: false,
+    id: 2,
   }),
   new Trip({
     user: {
@@ -100,9 +105,11 @@ export class PostService {
     date: moment().set({year: 2019, month: 1, day: 3}),
     airportDrop: true,
     cabinOnly: true,
+    id: 3,
   })
   ];
   posts = new BehaviorSubject<Array<Post>>(null);
+  postDraft: Post = null;
 
   constructor() {
     this.posts.next(this.postData);
@@ -113,7 +120,7 @@ export class PostService {
   }
 
   filterPosts(filter: Filter) {
-    const posts = this.posts.getValue();
+    const posts = this.postData;
     const filterLocation = filter.location ? filter.location.toUpperCase() : null;
     const filterItem = filter.item ? filter.item.toUpperCase() : null;
 
@@ -135,6 +142,25 @@ export class PostService {
 
   resetPosts() {
     this.posts.next(this.postData);
+  }
+
+  draftPost(filter: Filter) {
+    this.postDraft = new Request({
+      items: [{label : filter.item}],
+      location: {label: filter.location}}
+    );
+  }
+
+  getCurrentDraft(): Post {
+    return this.postDraft;
+  }
+
+  getPostById(id: number): Post {
+    const post = this.postData.find(searchedPost => {
+      return searchedPost.id === id;
+    });
+    console.log('Get post by Id', post);
+    return post;
   }
 
 }

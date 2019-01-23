@@ -1,19 +1,20 @@
 import { User } from '@models/user.model';
-import { Id } from '@models/id.model';
 import { Moment } from 'moment';
 
 export class Post {
-    user: User;
-    submitDate: Moment;
-    expirationDate: Moment;
+    user?: User;
+    submitDate?: Moment;
+    expirationDate?: Moment;
 
     /* Meta information */
     clicks?: number;
     views?: number;
-    id?: Id;
+    id?: number;
 
     constructor(post: Partial<Post>) {
         Object.assign(this, post);
-        this.user = new User(post.user);
+        if (post.user) {
+            this.user = new User(post.user);
+        }
     }
 }

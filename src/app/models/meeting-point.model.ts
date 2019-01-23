@@ -1,11 +1,9 @@
-import { Id } from '@models/id.model';
-
 export class MeetingPoint {
     adress: string;
     zip: string;
     city: string;
     country: string;
-    id?: Id;
+    id?: number;
 
     constructor(point: Partial<MeetingPoint>) {
         Object.assign(this, point);

@@ -1,5 +1,5 @@
 $homeHeroSize: 36px;
-$transitionDuration: 0.25s;
+$transitionDuration: 0.2s;
 $transitionStyle: ease-out;
 
 .home {
@@ -12,7 +12,8 @@ $transitionStyle: ease-out;
         
         height: 30vh;
         padding-top: 50px;
-        background-size: 100% auto;
+        background-size: 125% auto;
+        background-position: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -27,7 +28,8 @@ $transitionStyle: ease-out;
             -webkit-transition: $transitionDuration $transitionStyle all;
             -moz-transition: $transitionDuration $transitionStyle all;
             -o-transition: $transitionDuration $transitionStyle all;
-            background-size: auto 100%;
+            background-size: auto 125%;
+            background-position: center;
             height: 60vh;
         }
 
@@ -36,7 +38,8 @@ $transitionStyle: ease-out;
             -webkit-transition: $transitionDuration $transitionStyle all;
             -moz-transition: $transitionDuration $transitionStyle all;
             -o-transition: $transitionDuration $transitionStyle all;
-            background-size: auto 100%;
+            background-size: auto 150%;
+            background-position: center;
             height: 100vh;
         }
 
@@ -73,16 +76,35 @@ $transitionStyle: ease-out;
             }
 
             &-empty {
+                margin-left: -5%;
                 font-size: 48px;
                 font-weight: 100;
             }
         }
+
+        &__action {
+            display: flex;
+            margin-top: 50px;
+            flex-direction: row;
+            justify-content: center;
+        }
     }
 
     @media screen and (min-width: 760px) {
+
+        &-hero,
+        &-hero.expanded,
+        &-hero.fullscreen {
+            background-position: center;
+        }
+
         &-hero,
         &-hero.expanded {
-            background-size: 100% auto;
+            background-size: 125% auto;
+        }
+
+        &-hero.fullscreen {
+            background-size: auto 150%;
         }
 
         &-hero {
@@ -125,14 +147,25 @@ $transitionStyle: ease-out;
 
 .input-hero {
     display: inline-block;
-    height: $homeHeroSize;
     width: 500px;
 }
 
 .mat-form-field {
     font-family: 'Rubik', 'Roboto', sans-serif !important;
+    margin-top: -20px;
+    margin-bottom: 5px;
     max-height: $homeHeroSize;
     min-width: 250px;
+}
+
+.mat-form-field-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+.mat-form-field-underline {
+    position: initial;
+    margin-top: 10px;
 }
 
 .mat-form-field-infix {

@@ -1,15 +1,15 @@
-import { Id } from '@models/id.model';
 import { Post } from '@models/post/post.model';
 import { Item } from '@models/item.model';
 import { MeetingPoint } from '@models/meeting-point.model';
+import { Location } from '@models/location.model';
 
 export class Request extends Post {
     items: Array<Item>;
+    location: Location;
     meetingPoint?: MeetingPoint;
     airportPickup?: boolean;
     cabinOnly?: boolean;
     urgent?: boolean;
-    id?: Id;
 
     constructor(request: Partial<Request> = {}) {
         super(request);

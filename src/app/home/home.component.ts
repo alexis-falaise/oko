@@ -34,10 +34,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     timer(0, 1500).subscribe(() => this.swingDisplay());
-  }
-
-  login() {
-    this.authService.login();
+    this.postService.resetPosts();
   }
 
   enter() {
@@ -60,17 +57,15 @@ export class HomeComponent implements OnInit {
   }
 
   filterPosts(userAction) {
-    console.log(userAction);
     if (this.filter.location && this.filter.location.length > 2) {
       this.postService.filterPosts(this.filter);
     }
-    if (this.filter.location === '') {
+    if (this.filter.location === '' || userAction.key === 'backspace') {
       this.postService.resetPosts();
     }
   }
 
   onScroll(event) {
-    console.log(event);
     this.expanded = false;
     this.post();
   }
@@ -81,6 +76,7 @@ export class HomeComponent implements OnInit {
 
   post() {
     if (this.empty && !this.expanded || this.validated) {
+      this.postService.draftPost(this.filter);
       this.router.navigate(['/post/request']);
     }
   }

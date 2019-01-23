@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 import { PostComponent } from './post/post.component';
 import { AvatarComponent } from './avatar/avatar.component';
 
@@ -11,7 +13,8 @@ import { PostListComponent } from './post-list/post-list.component';
   imports: [
     CommonModule,
     MatIconModule,
+    RouterModule,
   ],
-  exports: [PostComponent, PostListComponent],
+  exports: [AvatarComponent, PostComponent, PostListComponent],
 })
 export class SharedModule { }

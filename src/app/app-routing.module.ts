@@ -5,7 +5,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { SigninComponent } from './auth/signin/signin.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
