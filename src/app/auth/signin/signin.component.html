@@ -1,31 +1,31 @@
-<div class="signin">
+<div class="signin container-fluid">
   <div class="logo-brand-wrapper justify-content-center">
     <h1 class="logo-brand">ọkọ</h1>
   </div>
   <div class="signin-content container">
     <h1 class="signin-title">Créez votre compte</h1>
-    <div class="signin-form justify-content-center">
+    <div class="signin-form">
       <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
           <div class="form-row">
               <div class="form-group col-12 col-sm-6">
                 <input type="text" placeholder="Prénom" class="form-control"
                         [class.is-invalid]="signinForm.controls.firstname.errors?.required
-                        && signinForm.controls.firstname.touched"
+                        && (signinForm.controls.firstname.touched || validated)"
                         formControlName="firstname" required>
                 <div class="invalid-feedback"
                      [class.d-block]="signinForm.controls.firstname.errors?.required
-                     && signinForm.controls.firstname.touched">
+                     && (signinForm.controls.firstname.touched || validated)">
                      Indiquez votre prénom
                 </div>
               </div>
               <div class="form-group col-12 col-sm-6">
                 <input type="text" placeholder="Nom" class="form-control"
                 [class.is-invalid]="signinForm.controls.lastname.errors?.required
-                && signinForm.controls.lastname.touched"
+                && (signinForm.controls.lastname.touched || validated)"
                 formControlName="lastname" required>
                 <div class="invalid-feedback"
                      [class.d-block]="signinForm.controls.lastname.errors?.required
-                     && signinForm.controls.lastname.touched">
+                     && (signinForm.controls.lastname.touched || validated)">
                   Indiquez votre nom
                 </div>
               </div>
@@ -34,35 +34,37 @@
             <input type="email" placeholder="Email" class="form-control" formControlName="email"
               [class.is-invalid]="(signinForm.controls.email.errors?.required
                                   || signinForm.controls.email.errors?.email)
-                                  && signinForm.controls.email.touched"
+                                  && (signinForm.controls.email.touched || validated)"
               required>
             <div class="invalid-feedback"
                   [class.d-block]="signinForm.controls.email.errors?.required
-                  && signinForm.controls.email.touched">
+                  && (signinForm.controls.email.touched || validated)">
               Indiquez votre email
             </div>
             <div class="invalid-feedback"
                   [class.d-block]="signinForm.controls.email.errors?.email
                   && !signinForm.controls.email.errors?.required
-                  && signinForm.controls.email.touched">
+                  && (signinForm.controls.email.touched || validated)">
               L'email indiqué n'est pas valide
             </div>
           </div>
           <div class="form-group">
             <input type="password" placeholder="Créez un mot de passe" class="form-control"
-              [class.is-invalid]="signinForm.controls.password.errors?.required
-                                  || signinForm.controls.password.errors?.minLength"
+              [class.is-invalid]="(signinForm.controls.password.errors?.required
+                                  || signinForm.controls.password.errors?.minLength)
+                                  && (signinForm.controls.password.touched || validated)"
               formControlName="password" required>
             <small class="form-text text-muted" *ngIf="!signinForm.controls.password.touched">
               Votre mot de passe doit être composé de 8 caractères minimum
             </small>
             <div class="invalid-feedback"
                   [class.d-block]="signinForm.controls.password.errors?.required
-                  && signinForm.controls.password.touched">
+                  && (signinForm.controls.password.touched || validated)">
               Veuillez entrer un mot de passe
             </div>
             <div class="invalid-feedback"
-                  [class.d-block]="signinForm.controls.password.errors?.minLength">
+                  [class.d-block]="signinForm.controls.password.errors?.minLength
+                  && (signinForm.controls.password.touched || validated)">
               Votre mot de passe doit être composé de 8 caractères minimum
             </div>
           </div>
@@ -71,7 +73,7 @@
                     formControlName="passwordConfirm" required>
             <div class="invalid-feedback"
             [class.d-block]="signinForm.controls.passwordConfirm?.required
-            && signinForm.controls.passwordConfirm.touched">
+            && (signinForm.controls.passwordConfirm.touched || validated)">
               Veuillez confirmer votre mot de passe
             </div>
             <div class="invalid-feedback"
@@ -79,7 +81,12 @@
               Les mots de passes ne correspondent pas
             </div>
           </div>
-          <button class="btn btn-primary btn-signin" [class.btn-danger]="signinError" type="submit">Inscription</button>
+          <div class="btn-signin">
+            <button class="btn" [ngClass]="{'btn-primary': !signinError, 'btn-warning': signinError }"
+                    type="submit">
+                  Inscription
+            </button>
+          </div>
       </form>
     </div>
   </div>

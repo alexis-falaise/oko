@@ -12,9 +12,13 @@
                 <div class="form-group col-12">
                     <input type="password" placeholder="Mot de passe" name="password" class="form-control" [(ngModel)]="password">
                 </div>
+                <div class="invalid-feedback col-12" [class.d-block]="message && !status">
+                    L'identifiant ou le mot de passe est incorrect
+                </div>
             </div>
             <button class="btn btn-primary login-button" (click)="login()">Connexion</button>
             <button class="btn btn-light" (click)="signin()">Inscription</button>
         </div>
     </div>
+  <mat-progress-bar mode="indeterminate" class="login-load" *ngIf="loading"></mat-progress-bar>
 </div>

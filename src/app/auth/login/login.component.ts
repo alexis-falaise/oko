@@ -11,6 +11,9 @@ import { AuthService } from '@core/auth.service';
 export class LoginComponent implements OnInit {
   email: string;
   password: string;
+  status: boolean;
+  message: string;
+  loading: boolean;
 
   constructor(
     private authService: AuthService,
@@ -18,9 +21,21 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.authService.onStatus()
+    .subscribe((status: any) => {
+      console.log(status);
+      this.loading = false;
+      if (status) {
+        this.status = status.status;
+        if (status.code === 'PASSWORD_ERROR' || status.code === 'BODY_ERROR') {
+          this.message = status.message;
+        }
+      }
+    });
   }
 
   login() {
+    this.loading = true;
     this.authService.login(this.email, this.password);
   }
 

@@ -9,9 +9,10 @@ import {
 
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
-  declarations: [LoginComponent, SigninComponent],
+  declarations: [LoginComponent, SigninComponent, LogoutComponent],
   imports: [
     CommonModule,
     FormsModule,

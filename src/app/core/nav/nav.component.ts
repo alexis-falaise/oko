@@ -15,7 +15,7 @@ export class NavComponent implements OnInit {
   previousAvailable = false;
   menuItems: Array<MenuItem> = [
     { label: 'Accueil', path: '/home' },
-    { label: 'Déposez une annonce', path: '/post/request' },
+    { label: 'Créer une annonce', path: '/post/request' },
     { label: 'Mes trajets', path: '/trips' },
     { label: 'Messages', path: '/messages' },
     { label: 'Rentabiliser un trajet', path: '/post/trip' },

@@ -45,12 +45,14 @@ export class SigninComponent implements OnInit {
 
   onSubmit() {
     this.loading = true;
+    this.signinError = false;
     this.authService.signin(this.signinForm.value)
     .subscribe((signInfo: any) => {
-      console.log(signInfo);
-      console.log(typeof signInfo.code);
       this.loading = false;
       this.signinError = signInfo.code === 'BODY_ERROR';
+      if (signInfo.status) {
+        this.authService.login(this.signinForm.value.email, this.signinForm.value.password);
+      }
     });
   }
 

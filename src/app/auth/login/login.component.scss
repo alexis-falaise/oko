@@ -6,7 +6,7 @@
     &-title {
         display: flex;
         flex-direction: row;
-        justify-content: left;
+        justify-content: center;
         margin-bottom: 50px;
         color: map-get($okoColors, blue);
     }
@@ -26,6 +26,13 @@
 
     &-button {
         margin-bottom: 15px;
+    }
+
+    &-load {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        height: 10px;
     }
 }
 

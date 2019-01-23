@@ -30,20 +30,19 @@ export class AuthService {
     return this.currentUser.asObservable();
   }
 
+  /**
+   * @returns Observable<{status: boolean, user: User}>
+   */
   onStatus(): Observable<Status> {
     return this.status.asObservable();
   }
 
-  onLoginStatus(): Observable<boolean> {
-    return this.logged.asObservable();
-  }
-
   /**
   * Get current logging status
-  * @returns Observable<{status: boolean, user: User}>
   */
-  getLoginStatus(): Observable<Object> {
-    return this.http.get(`${this.authUrl}/status`);
+  getLoginStatus() {
+    this.http.get(`${this.authUrl}/status`)
+    .subscribe(status => this.status.next(status));
   }
 
   /**
@@ -56,10 +55,27 @@ export class AuthService {
   login(login: string, password: string) {
     this.http.post(`${this.authUrl}/login`, {login: login, password: password})
     .subscribe((loginInfo: any) => {
+      console.log(loginInfo);
       if (loginInfo.status) {
         this.currentUser.next(loginInfo.user);
+        this.router.navigate(['home']);
       }
-      this.status.next({ status: loginInfo.status, message: loginInfo.message });
+      this.status.next(loginInfo);
+    });
+  }
+
+
+  /**
+   * Log a user out
+   */
+  logout() {
+    this.http.get(`${this.authUrl}/logout`)
+    .subscribe((logoutInfo: any) => {
+      if (logoutInfo.status) {
+        this.currentUser.next(null);
+        this.status.next({ status: false, message: 'Successfully disconnected' });
+        this.router.navigate(['login']);
+      }
     });
   }
 
@@ -67,7 +83,6 @@ export class AuthService {
    * Register a user into oko database
    * @param userForm: User data from signin form
    */
-
   signin(userForm) {
     delete userForm.passwordConfirm;
     return this.http.post(`${this.authUrl}/signin`, userForm);

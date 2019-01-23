@@ -6,7 +6,6 @@
     &-content {
         width: 100%;
         padding: 15px;
-        border-top: thin solid rgb(215, 215, 215);
     }
 
     &-form {
@@ -16,7 +15,7 @@
     &-title {
         display: flex;
         flex-direction: row;
-        justify-content: left;
+        justify-content: center;
         margin-bottom: 50px;
         color: map-get($okoColors, blue);
     }
@@ -29,6 +28,11 @@
 }
 
 .btn-signin {
-    position: relative;
-    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.logo-brand-wrapper {
+    height: 20vh;
 }
