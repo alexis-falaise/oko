@@ -18,6 +18,11 @@
            routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }} <span class="sr-only">(current)</span>
         </a>
       </li>
+      <li class="nav-item" *ngFor="let item of displayAccountMenuItems">
+        <a class="nav-link" [class.disabled]="item.disabled"
+           routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }} <span class="sr-only">(current)</span>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -27,7 +32,7 @@
     <a routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }}</a>
   </div>
   <hr class="divider">
-  <div class="navbar__fullscreen-item" *ngFor="let item of secondaryMenuItems" (click)="toggleMenu()">
+  <div class="navbar__fullscreen-item" *ngFor="let item of displayAccountMenuItems" (click)="toggleMenu()">
     <a routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }}</a>
   </div>
 </div>

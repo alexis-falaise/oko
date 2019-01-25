@@ -4,7 +4,7 @@
   </div>
   <div class="signin-content container">
     <h1 class="signin-title">Créez votre compte</h1>
-    <div class="signin-form">
+    <div class="signin-form justify-content-center align-items-center">
       <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
           <div class="form-row">
               <div class="form-group col-12 col-sm-6">
@@ -88,6 +88,7 @@
             </button>
           </div>
       </form>
+      <button class="btn btn-light" (click)="login()">J'ai déjà un compte</button>
     </div>
   </div>
   <mat-progress-bar mode="indeterminate" class="signin-load" *ngIf="loading"></mat-progress-bar>

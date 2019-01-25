@@ -1,3 +1,5 @@
+@import "../../../styles/variables.scss";
+
 $transitionDuration: 0.15s;
 $transitionStyle: ease-in-out;
 $animationDuration: 0.15s;
@@ -13,7 +15,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     position: fixed;
     top:0;
     z-index: 20;
-    height: 80px;
+    height: $navbarHeight;
+    flex-wrap: nowrap;
     width: 100%;
     border-bottom: rgba(255, 255, 255, .5);
     background-color: $menu-color;
@@ -33,9 +36,13 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     }
 
     &-brand {
-        display: inline-block;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
         width: auto;
         font-size: 36px;
+        padding-top: 0;
+        height: $navbarHeight;
         font-family: 'Quicksand', sans-serif;
         font-weight: 700;
         text-align: center;
@@ -89,7 +96,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     -o-animation: fullscreenEnter $animationDuration;
 
     position: fixed;
-    top: 80px;
+    top: $navbarHeight;
     z-index: 20;
     width: 100%;
     height: 100vh;

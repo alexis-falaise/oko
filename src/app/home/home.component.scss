@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 $homeHeroSize: 36px;
 $transitionDuration: 0.2s;
 $transitionStyle: ease-out;
@@ -10,8 +12,8 @@ $transitionStyle: ease-out;
         -moz-transition: $transitionDuration $transitionStyle all;
         -o-transition: $transitionDuration $transitionStyle all;
         
-        height: 30vh;
-        padding-top: 50px;
+        height: 25vh;
+        padding-top: $navbarHeight;
         background-size: 125% auto;
         background-position: center;
         display: flex;
@@ -22,6 +24,14 @@ $transitionStyle: ease-out;
         box-shadow: 0px -2px 15px rgba(0, 0, 0, .5) inset;
         font-size: $homeHeroSize;
         font-weight: 200;
+
+        &:hover {
+            transition: $transitionDuration $transitionStyle all;
+            -webkit-transition: $transitionDuration $transitionStyle all;
+            -moz-transition: $transitionDuration $transitionStyle all;
+            -o-transition: $transitionDuration $transitionStyle all;
+            box-shadow: 0 -250px 250px rgba(0, 0, 0, .5) inset;
+        }
 
         &.expanded {
             transition: $transitionDuration $transitionStyle all;
@@ -117,7 +127,7 @@ $transitionStyle: ease-out;
         overflow: scroll;
 
         &.expanded {
-            height: 70vh;
+            height: 75vh;
         }
 
         &.empty {
@@ -142,6 +152,19 @@ $transitionStyle: ease-out;
             z-index: 1;
             top: 35px;
         }
+    }
+
+    &-trip {
+        height: 0;
+    }
+
+    &-trip.expanded {
+        transition: all $transitionDuration;
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
 }
 

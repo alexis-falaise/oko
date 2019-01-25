@@ -1,0 +1,22 @@
+<div class="account container-fluid">
+  <div class="account-hero row">
+    <div class="account-hero__avatar col-4">
+      <app-avatar *ngIf="currentUser" [image]="currentUser.avatar" [size]="100"></app-avatar>
+    </div>
+    <div class="account-hero__user col-8">
+      <h1 *ngIf="currentUser">{{ currentUser.firstname }}</h1>
+    </div>
+  </div>
+  <div class="account-detail">
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Mes infos
+        </ng-template>
+        <ng-template matTabContent>
+          <app-account-info [user]="currentUser" *ngIf="currentUser"></app-account-info>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

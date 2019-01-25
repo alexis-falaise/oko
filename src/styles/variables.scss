@@ -1,4 +1,7 @@
 $hoverDuration: 0.35s;
+$animationDuration: 0.15s;
+$transitionDuration: 0.15s;
+$navbarHeight: 50px;
 
 $okoColors: (
     blue: #69F5FF,
@@ -8,3 +11,4 @@ $okoColors: (
     lime: #98FF85,
 );
 $okoGradient: linear-gradient(45deg,#69F5FF, #5FE8C9, #75FFB6, #5FE877, #98FF85);
+$heroGradient: linear-gradient(45deg,#00aac1, #7CB342);

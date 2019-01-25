@@ -6,6 +6,7 @@ import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
 import { Location } from '@models/location.model';
 
+import { environment } from '@env/environment';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -16,7 +17,7 @@ export class PostComponent implements OnInit, OnChanges {
   isTrip = false;
   isRequest = false;
   postPath = ['/post'];
-  avatarLocation = 'assets/avatar';
+  avatarLocation = environment.avatarLocation;
 
   constructor() { }
 
@@ -26,7 +27,6 @@ export class PostComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.post) {
       this.buildPostProperties(changes.post.currentValue);
-      this.buildAvatarUrl(changes.post.currentValue.user.avatar);
     }
   }
 
@@ -35,10 +35,6 @@ export class PostComponent implements OnInit, OnChanges {
     this.isTrip = post instanceof Trip;
     this.isRequest = post instanceof Request;
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
-  }
-
-  buildAvatarUrl(avatar: string): string {
-    return `${this.avatarLocation}/${avatar}`;
   }
 
 }

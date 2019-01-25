@@ -1,5 +1,7 @@
 @import '~@angular/material/theming';
 
+$post-height: 100px;
+
 .post {
     $transitionDuration: 0.1s;
     $transitionStyle: ease-out;
@@ -8,11 +10,11 @@
     -webkit-transition: $transitionDuration $transitionStyle all;
     -moz-transition: $transitionDuration $transitionStyle all;
     -o-transition: $transitionDuration $transitionStyle all;
-    height: 150px;
+    height: $post-height;
     background-color: rgb(245, 245, 245);
     border-radius: 5px;
-    width: 80%;
-    margin: 15px 10%;
+    width: 90%;
+    margin: 15px 5%;
     padding: 5px;
     overflow: hidden;
 
@@ -57,8 +59,8 @@
         overflow: hidden;
 
         &__user-avatar {
-            height: 50px;
-            width: 50px;
+            height: $post-height / 3;
+            width: $post-height / 3;
         }
 
         &__user-info {
@@ -90,7 +92,7 @@
             flex-direction: column;
             justify-content: center;
             text-align: center;
-            font-size: 36px;
+            font-size: 24px;
             color: rgb(75, 75, 75);
 
             &-details {
@@ -121,5 +123,6 @@
         justify-content: center;
         color: rgb(100, 100, 100);
         font-size: 24px;
+        padding-left: 0;
     }
 }

@@ -10,17 +10,20 @@ import { PostService } from '@core/post.service';
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit {
-  posts: Array<Post>;
+  posts: Array<Post> = [];
   @Output() listRefresh = new EventEmitter();
 
   constructor(private postService: PostService) { }
 
   ngOnInit() {
-    this.postService.onPosts()
+    this.postService.onTrips()
     .subscribe(posts => {
-      this.posts = posts;
-      this.listRefresh.emit(posts.length);
+      if (posts) {
+        this.posts = posts;
+        this.listRefresh.emit(posts.length);
+      }
     });
+    this.postService.getTrips();
   }
 
 }

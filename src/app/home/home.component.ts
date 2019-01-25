@@ -8,6 +8,8 @@ import { Post } from '@models/post/post.model';
 import { AuthService } from '@core/auth.service';
 import { PostService } from '@core/post.service';
 import { Filter } from '@models/app/filter.model';
+import { Trip } from '@models/post/trip.model';
+import { Request } from '@models/post/request.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -34,7 +36,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     timer(0, 1500).subscribe(() => this.swingDisplay());
-    this.postService.resetPosts();
   }
 
   enter() {
@@ -58,16 +59,25 @@ export class HomeComponent implements OnInit {
 
   filterPosts(userAction) {
     if (this.filter.location && this.filter.location.length > 2) {
-      this.postService.filterPosts(this.filter);
+      this.postService.getTrips(this.filter);
     }
     if (this.filter.location === '' || userAction.key === 'backspace') {
-      this.postService.resetPosts();
+      this.postService.getTrips();
     }
   }
 
   onScroll(event) {
     this.expanded = false;
     this.post();
+  }
+
+  onPan(event) {
+    if (event.velocityY > 0) {
+      this.expanded = true;
+    }
+    if (event.velocityY < 0) {
+      this.expanded = false;
+    }
   }
 
   listStatus(length) {
@@ -81,6 +91,18 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  trip() {
+    this.router.navigate(['/post/trip']);
+  }
+
+  postBatch() {
+    this.postService.createPostBatch();
+  }
+
+  deleteEverything() {
+    this.postService.deleteAllPosts();
+  }
+
   private swingDisplay() {
     this.swingLocation();
     this.swingItem();
@@ -91,7 +113,6 @@ export class HomeComponent implements OnInit {
     const nextLocationIndex = (currentLocationIndex + 1 < this.locationSamples.length)
     ? currentLocationIndex + 1 : 0;
     this.swingingLocation = this.locationSamples[nextLocationIndex];
-
   }
 
   private swingItem() {
@@ -100,4 +121,5 @@ export class HomeComponent implements OnInit {
     ? currentItemIndex + 1 : 0;
     this.swingingItem = this.itemSamples[nextItemIndex];
   }
+
 }

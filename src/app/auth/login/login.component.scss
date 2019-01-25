@@ -2,6 +2,12 @@
 
 .login {
     width: 100vw;
+    transition: all $transitionDuration;
+
+    &.blur {
+        transition: all $transitionDuration;
+        opacity: .5;
+    }
 
     &-title {
         display: flex;

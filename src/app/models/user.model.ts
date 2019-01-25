@@ -8,7 +8,7 @@ export class User {
     description?: Description;
     trips?: number;
     rating?: number;
-    id?: number;
+    id?: string;
 
     constructor(user: Partial<User>) {
         Object.assign(this, user);

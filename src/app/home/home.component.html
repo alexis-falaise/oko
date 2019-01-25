@@ -1,4 +1,4 @@
-<div class="home">
+<div class="home" (pan)="onPan($event)">
     <div class="home-hero" [style.background-image]="'url('+backgroundImage+')'"
                            [class.expanded]="expanded"
                            [class.fullscreen]="empty"
@@ -15,6 +15,8 @@
         </div>
         <div class="home-hero__action">
             <button class="btn btn-hero" (click)="validate() && post()" *ngIf="empty">Demander un service</button>
+            <button class="btn btn-primary" (click)="postBatch()">Create the fucking batch</button>
+            <button class="btn btn-danger" (click)="deleteEverything()">Delete everything</button>
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">
             <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Départs</span>
@@ -27,5 +29,8 @@
         <div class="home-list__list">
             <app-post-list (listRefresh)="listStatus($event)"></app-post-list>
         </div>
+    </div>
+    <div class="home-trip" [class.expanded]="!expanded">
+        <button class="btn btn-light" (click)="trip()">Je voyage</button>
     </div>
 </div>

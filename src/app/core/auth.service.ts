@@ -38,11 +38,30 @@ export class AuthService {
   }
 
   /**
-  * Get current logging status
+  * Get current logging status as cold Observable.
+  * Component needs to subscribe to onStatus() for basic log info
+  * or onUser() for detailled user info
   */
   getLoginStatus() {
-    this.http.get(`${this.authUrl}/status`)
-    .subscribe(status => this.status.next(status));
+    this.http.get(`${this.authUrl}/status`, { withCredentials: true })
+    .subscribe((status: any) => {
+      this.status.next(status);
+      this.currentUser.next(status.user);
+    });
+  }
+
+
+  /**
+   * Helper function for login status
+   * @returns boolean: Login state
+   */
+  isLogged(): boolean {
+    const status = this.status.getValue();
+    if (status) {
+      return status.status;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -53,12 +72,12 @@ export class AuthService {
    * @returns Object { status: boolean, message: string }
    */
   login(login: string, password: string) {
-    this.http.post(`${this.authUrl}/login`, {login: login, password: password})
+    this.http.post(`${this.authUrl}/login`, {login: login, password: password},
+    { withCredentials: true })
     .subscribe((loginInfo: any) => {
-      console.log(loginInfo);
       if (loginInfo.status) {
         this.currentUser.next(loginInfo.user);
-        this.router.navigate(['home']);
+        this.router.navigate(['/home']);
       }
       this.status.next(loginInfo);
     });
@@ -69,7 +88,7 @@ export class AuthService {
    * Log a user out
    */
   logout() {
-    this.http.get(`${this.authUrl}/logout`)
+    this.http.get(`${this.authUrl}/logout`,  { withCredentials: true })
     .subscribe((logoutInfo: any) => {
       if (logoutInfo.status) {
         this.currentUser.next(null);
@@ -85,6 +104,6 @@ export class AuthService {
    */
   signin(userForm) {
     delete userForm.passwordConfirm;
-    return this.http.post(`${this.authUrl}/signin`, userForm);
+    return this.http.post(`${this.authUrl}/signin`, userForm, { withCredentials: true });
   }
 }

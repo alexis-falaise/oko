@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, ValidationErrors, FormGroup } from '@angular/forms';
 import { AuthService } from '@core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -33,6 +34,7 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private router: Router,
     private fb: FormBuilder
   ) { }
 
@@ -54,6 +56,10 @@ export class SigninComponent implements OnInit {
         this.authService.login(this.signinForm.value.email, this.signinForm.value.password);
       }
     });
+  }
+
+  login() {
+    this.router.navigate(['/login']);
   }
 
   private passwordMatch(form: FormGroup): ValidationErrors {

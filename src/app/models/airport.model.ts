@@ -2,7 +2,7 @@ export class Airport {
     label: string;
     name: string;
     code: string;
-    id?: number;
+    id?: string;
 
     constructor(airport: Partial<Airport>) {
         Object.assign(this, airport);

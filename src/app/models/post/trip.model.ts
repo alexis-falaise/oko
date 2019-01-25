@@ -1,6 +1,7 @@
 import { Location } from '@models/location.model';
 import { Post } from '@models/post/post.model';
 import { Moment } from 'moment';
+import * as moment from 'moment';
 
 export class Trip extends Post {
     from: Location;
@@ -18,7 +19,14 @@ export class Trip extends Post {
     constructor(trip: Partial<Trip>) {
         super(trip);
         Object.assign(this, trip);
-        this.from = new Location(trip.from);
-        this.to = new Location(trip.to);
+        if (this.date) {
+            this.date = moment(trip.date);
+        }
+        if (this.from) {
+            this.from = new Location(trip.from);
+        }
+        if (this.to) {
+            this.to = new Location(trip.to);
+        }
     }
 }

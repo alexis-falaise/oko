@@ -9,7 +9,8 @@ export class Item {
     depth?: number;
     weight?: number;
     cabinOnly?: boolean;
-    id?: number;
+    price?: number;
+    id?: string;
 
     constructor(item: Partial<Item>) {
         Object.assign(this, item);

@@ -1,0 +1,35 @@
+@import "../../styles/variables.scss";
+@import "../../styles/animations.scss";
+
+.account {
+    &-hero {
+        width: 100vw;
+        height: 20vh;
+        padding-top: 50px;
+
+        animation: $animationDuration openHero;
+        -webkit-animation: $animationDuration openHero;
+        -moz-animation: $animationDuration openHero;
+        -o-animation: $animationDuration openHero;
+
+        background: $heroGradient;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        color: white;
+
+        &__avatar,
+        &__user {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-weight: 100;
+        }
+
+        &__avatar {
+            align-items: center;
+        }
+    }
+}
+
+.mat-tab-label-content {        
+    color: rgb(75, 75, 75) !important;
+}

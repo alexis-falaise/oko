@@ -1,10 +1,6 @@
-$animationDuration: 0.15s;
 
-@keyframes openHero {
-    0% { height: 0vh; margin-top: 25vh; border-top-left-radius: 50%; border-top-right-radius: 50% }
-    75% { border-top-left-radius: 25%; border-top-right-radius: 25%; }
-    100% { height: 25vh; margin-top: 0; border-radius: 0 }
-}
+@import "../../../styles/variables.scss";
+@import "../../../styles/animations.scss";
 
 .trip-detail {
     height: 100vh;
@@ -15,26 +11,39 @@ $animationDuration: 0.15s;
         -moz-animation: $animationDuration openHero;
         -o-animation: $animationDuration openHero;
 
-        background: linear-gradient(45deg,#00aac1, #7CB342);
+        background: $heroGradient;
         // background-image: url('/assets/hero-trip-detail.jpg');
         width: 100vw;
         height: 25vh;
-        padding-top: 80px;
+        padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
 
         &__from,
         &__to,
-        &__link {
-            height: 100%;
+        &__link,
+        &__date {
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: center;
         }
 
+        &__from,
+        &__to,
+        &__link {
+            height: 70%;
+        }
+
+        &__date {
+            height: 30%;
+            text-align: center;
+            color: rgba(255, 255, 255, .5);
+        }
+
         &__link {
             $heroIconSize: 64px;
+            align-items: center;
             .mat-icon {
                 height: $heroIconSize;
                 width: $heroIconSize;
@@ -60,19 +69,66 @@ $animationDuration: 0.15s;
     }
 
     &__info {
-        width: 100vw;
         height: 15vh;
+        padding: 0 5%;
         border-bottom: thin solid rgb(215, 215, 215);
+        color: rgb(75, 75, 75);
 
         &__user {
+            &-row {
+                // width: 100%;
+                height: 100%;
+            }
             &-avatar {
-                display: inline-flex;
-                height: 75px;
-                width: 75px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
             }
             &-detail {
-                display: inline-flex;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
                 height: 100%;
+            }
+
+        }
+
+        .user {
+            &-name {
+                display: block;
+                font-size: 24px;
+            }
+            &-trips {
+                display: block;
+                color: rgb(175, 175, 175);
+            }
+        }
+    }
+
+    &__engagement {
+        padding-top: 25px;
+
+        &__constraints {
+            .constraints {
+                margin-left: 0;
+                padding-left: 0;
+                list-style: none;
+
+                li {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: flex-start;
+                    color: map-get($okoColors, green);
+                    .mat-icon {
+                        margin-right: 10px;
+                    }
+                }
+
+                li.disabled {
+                    color: rgba(0, 0, 0, .4);
+                }
             }
         }
     }

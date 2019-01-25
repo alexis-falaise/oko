@@ -1,4 +1,6 @@
 import { Component, OnChanges, OnInit, Input, SimpleChanges } from '@angular/core';
+
+import { environment } from '@env/environment';
 @Component({
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',
@@ -7,8 +9,9 @@ import { Component, OnChanges, OnInit, Input, SimpleChanges } from '@angular/cor
 export class AvatarComponent implements OnInit, OnChanges {
 
   @Input() image: string;
+  @Input() size: number;
   imageUrl: string = null;
-  avatarLocation = 'assets/avatar';
+  avatarLocation = environment.avatarLocation;
 
   constructor() { }
 
@@ -23,8 +26,7 @@ export class AvatarComponent implements OnInit, OnChanges {
   }
 
   buildUrl(image: string) {
-    console.log('build avatar url', image);
-    return `url(${this.avatarLocation}/${image})`;
+    return `url('${this.avatarLocation}/${image}')`;
   }
 
 }

@@ -3,7 +3,7 @@ export class Location {
     label: string;
     airport?: Airport;
     timezone?: number;
-    id?: number;
+    id?: string;
 
     constructor(location: Partial<Location>) {
         Object.assign(this, location);

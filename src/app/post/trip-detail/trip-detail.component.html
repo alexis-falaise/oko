@@ -19,20 +19,51 @@
         {{ trip.to.airport.label }}
       </span>
     </div>
-  </div>
-  <div class="trip-detail__info row">
-    <div class="trip-detail__info__user col-6" *ngIf="trip && trip.user">
-        <div class="trip-detail__info__user-avatar">
-            <app-avatar [image]="trip.user.avatar"
-            *ngIf="trip.user.avatar"></app-avatar>
-        </div>
-        <div class="trip-detail__info__user-detail">
-          <div class="user-name">{{ trip.user.firstname }}</div>
-          <div class="user-trips">{{ trip.user.trips || 0 }} trips</div>
-        </div>
+    <div class="trip-detail__hero__date col-12" *ngIf="trip && trip.date">
+        {{ trip.date.format('DD MMMM YYYY') }}
     </div>
   </div>
-  <div class="trip-detail__engagement">
-
+  <div class="trip-detail__info row">
+    <div class="trip-detail__info__user col-6 col-sm-4" *ngIf="trip && trip.user">
+      <div class="trip-detail__info__user-row row">
+          <div class="trip-detail__info__user-avatar col-6 col-sm-4 col-md-3">
+              <app-avatar [image]="trip.user.avatar" [size]="75"></app-avatar>
+          </div>
+          <div class="trip-detail__info__user-detail col-6 col-sm-8 col-md-9">
+            <div class="user-name">{{ trip.user.firstname }}</div>
+            <div class="user-trips">{{ trip.user.trips || 0 }} trips</div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="trip-detail__engagement row" *ngIf="trip">
+    <div class="trip-detail__engagement__constraints col-12 col-sm-6">
+        <h4 class="trip-detail__engagement__contraints-title">Capacité</h4>
+        <ul class="constraints">
+          <li [class.disabled]="trip.weight == null">
+            <mat-icon>shopping_basket</mat-icon> Poids <span *ngIf="trip.weight">{{ ': ' + trip.weight + ' kg' }}</span>
+          </li>
+          <li [class.disabled]="trip.height == null">
+              <mat-icon>swap_vert</mat-icon> Hauteur <span *ngIf="trip.height">{{ ': ' + trip.height + ' cm' }}</span>
+            </li>
+            <li [class.disabled]="trip.width == null">
+                <mat-icon>swap_horiz</mat-icon> Largeur <span *ngIf="trip.width">{{ ': ' + trip.width + ' cm' }}</span>
+            </li>
+            <li [class.disabled]="trip.depth == null">
+                <mat-icon>compare_arrows</mat-icon> Profondeur <span *ngIf="trip.depth">{{ ': ' + trip.depth + ' cm' }}</span>
+            </li>
+            <li [class.disabled]="!trip.cabinOnly">
+                <mat-icon>work</mat-icon> Bagage Cabine
+            </li>
+            <li [class.disabled]="!trip.airportDrop">
+                <mat-icon>local_airport</mat-icon> Reception à l'aéroport
+            </li>
+        </ul>
+      </div>
+      <hr class="divider d-block d-sm-none">
+      <div class="trip-detail__engagement__form col-12 col-sm-6">
+        <h4 class="trip-detail__engagement__form-title">Mon article</h4>
+        <app-request-form></app-request-form>
+      </div>
   </div>
 </div>

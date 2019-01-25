@@ -1,0 +1,45 @@
+<div class="account-info container">
+  <div *ngFor="let item of keys(edit)" class="account-info__item">
+    <div *ngIf="isArray(description[item]); else simpleItem">
+      <h6 class="text-capitalize">{{ item }}</h6>
+      <mat-chip-list>
+        <mat-chip *ngFor="let element of description[item]" (click)="removeFromArray(element, description[item], item)">
+          {{ element }} x
+        </mat-chip>
+      </mat-chip-list><br>
+      <div class="row">
+        <div class="form-group col-10">
+          <input type="text" #addElement placeholder="Ajouter"
+                 class="form-control form-control-sm"
+                 (keyup.enter)="
+                 addToArray(addElement.value, description[item], item);
+                 addElement.value = '';
+                 ">
+        </div>
+        <div class="form-group col-2">
+          <button class="btn btn-secondary btn-sm btn-item"
+                  (click)="
+                  addToArray(addElement.value, description[item], item);
+                  addElement.value = '';
+                  ">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-template #simpleItem>
+      <div class="form-row" (click)="edit[item] = true">
+        <label [for]="item" class="text-capitalize">{{ item }}</label>
+        <input [name]="item" [(ngModel)]="description[item]"
+               [readonly]="!edit[item]" type="text"
+               class="form-control form-control-sm">
+      </div>
+    </ng-template>
+  </div>
+  <div class="account-info__action">
+  <mat-progress-bar mode="indeterminate" class="account-info__loading" *ngIf="loading"></mat-progress-bar>
+  <button class="btn btn-info" [disabled]="!hasEdited()" (click)="save()">
+      Enregistrer
+    </button>
+  </div>
+</div>

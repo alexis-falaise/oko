@@ -43,10 +43,6 @@ html, body {
     -webkit-text-fill-color: transparent;
 }
 
-.btn {
-    min-width: 150px;
-}
-
 .btn-primary {
     transition: all $hoverDuration;
     -webkit-transition: all $hoverDuration;
@@ -55,6 +51,7 @@ html, body {
     background: linear-gradient(45deg,#69F5FF, #5FE8C9, #75FFB6, #5FE877, #98FF85);
     outline: none !important;
     border: none !important;
+    min-width: 150px;
 
     &:hover {
         transition: all $hoverDuration;

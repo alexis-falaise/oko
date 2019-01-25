@@ -22,9 +22,12 @@ export class TripDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(param => {
       if (param && param.id) {
-        const postId = parseInt(param.id, 10);
-        this.trip = this.postService.getPostById(postId) as Trip;
-        console.log(this.trip);
+        this.postService.getTripById(param.id)
+        .subscribe(trip => {
+          if (trip) {
+            this.trip = new Trip(trip);
+          }
+        });
       }
     });
   }

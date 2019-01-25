@@ -9,9 +9,11 @@ import { RequestComponent } from './request/request.component';
 import { TripComponent } from './trip/trip.component';
 import { TripDetailComponent } from './trip-detail/trip-detail.component';
 import { RequestDetailComponent } from './request-detail/request-detail.component';
+import { RequestFormComponent } from './request-form/request-form.component';
+import { TripFormComponent } from './trip-form/trip-form.component';
 
 @NgModule({
-  declarations: [RequestComponent, TripComponent, TripDetailComponent, RequestDetailComponent],
+  declarations: [RequestComponent, TripComponent, TripDetailComponent, RequestDetailComponent, RequestFormComponent, TripFormComponent],
   imports: [
     CommonModule,
     MatIconModule,

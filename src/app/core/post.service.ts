@@ -7,11 +7,19 @@ import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
 import { Id } from '@models/id.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
+
+  private postUrl = `${environment.serverUrl}/post`;
+  private tripUrl = `${environment.serverUrl}/trip`;
+  private requestUrl = `${environment.serverUrl}/request`;
+  private trips = new BehaviorSubject<Array<Trip>>(null);
+  private requests = new BehaviorSubject<Array<Request>>(null);
 
   postData = [new Trip({
     user: {
@@ -41,9 +49,9 @@ export class PostService {
       timezone: -4,
     },
     date: moment().set({year: 2019, month: 0, day: 20}),
+    weight: 2.5,
     airportDrop: true,
     cabinOnly: true,
-    id: 1,
   }),
   new Trip({
     user: {
@@ -74,9 +82,7 @@ export class PostService {
     date: moment().set({year: 2019, month: 1, day: 3}),
     airportDrop: true,
     cabinOnly: false,
-    id: 2,
-  }),
-  new Trip({
+  }), new Trip({
     user: {
       firstname: 'Melanie',
       lastname: 'Flex',
@@ -103,22 +109,165 @@ export class PostService {
       timezone: 0,
     },
     date: moment().set({year: 2019, month: 1, day: 3}),
+    weight: 35,
     airportDrop: true,
     cabinOnly: true,
-    id: 3,
+  }), new Trip({
+    user: {
+      firstname: 'Valentin',
+      lastname: 'Tinmarre',
+      email: 'val@marre.com',
+      password: 'marre',
+    },
+    submitDate: moment(),
+    from: {
+      label: 'Nantes',
+      airport: {
+        label: 'Nantes Atlantique',
+        name: 'Aéroport Nantes Atlantique',
+        code: 'NTE',
+      },
+      timezone: -1,
+    },
+    to: {
+      label: 'Le Caire',
+      airport: {
+        label: 'Cairo International Airport',
+        name: 'Aéroport international du Caire',
+        code: 'CAI',
+      },
+      timezone: 0,
+    },
+    date: moment().set({year: 2019, month: 2, day: 19}),
+    weight: 50,
+    airportDrop: false,
+    cabinOnly: false,
+  }), new Trip({
+    user: {
+      firstname: 'Thibault',
+      lastname: 'Frère',
+      email: 'thibault@frere.com',
+      password: 'alexandre',
+    },
+    submitDate: moment(),
+    from: {
+      label: 'Lagos',
+      airport: {
+        label: 'Lagos',
+        name: 'Aéroport international Murtala Muhammed',
+        code: 'MRS',
+      },
+      timezone: -1,
+    },
+    to: {
+      label: 'Kuala Lumpur',
+      airport: {
+        label: 'KLIA',
+        name: 'Aéroport international de Kuala Lumpur',
+        code: 'KUL',
+      },
+      timezone: 0,
+    },
+    date: moment().set({year: 2019, month: 3, day: 13}),
+    height: 150,
+    width: 75,
+    depth: 40,
+    airportDrop: false,
+    cabinOnly: true,
   })
   ];
   posts = new BehaviorSubject<Array<Post>>(null);
   postDraft: Post = null;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.posts.next(this.postData);
   }
+
+  // Subscriptions
 
   onPosts(): Observable<Array<Post>> {
     return this.posts.asObservable();
   }
 
+  onTrips(): Observable<Array<Trip>> {
+    return this.trips.asObservable();
+  }
+
+  onRequests(): Observable<Array<Request>> {
+    return this.requests.asObservable();
+  }
+
+  // Getters
+
+  getPosts(filter?: Filter) {
+    this.http.get(`${this.postUrl}${ filter ? '?location=' + filter.location : '' }`, {withCredentials: true})
+    .subscribe((posts: Array<Post>) => {
+      if (posts) {
+        this.posts.next(posts);
+      }
+    });
+  }
+
+  getTrips(filter?: Filter) {
+    this.http.get(`${this.tripUrl}${ filter ? '?location=' + filter.location : '' }`, {withCredentials: true})
+    .subscribe((trips: Array<Trip>) => {
+      if (trips) {
+        console.log(trips);
+        this.trips.next(trips.map(trip => new Trip(trip)));
+      }
+    });
+  }
+
+  getRequests(filter?: Filter) {
+    this.http.get(`${this.requestUrl}${ filter ? '?item=' + filter.item : '' }`, {withCredentials: true})
+    .subscribe((requests: Array<Request>) => {
+      if (requests) {
+        this.requests.next(requests.map(request => new Request(request)));
+      }
+    });
+  }
+
+  getPostById(id: string): Observable<Post> {
+    return this.http.get(`${this.postUrl}/${id}`, {withCredentials: true}) as Observable<Post>;
+  }
+
+  getTripById(id: number): Observable<Trip> {
+    return this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true}) as Observable<Trip>;
+  }
+
+  getRequestById(id: number): Observable<Request> {
+    return this.http.get(`${this.requestUrl}/${id}`, {withCredentials: true}) as Observable<Request>;
+  }
+
+  // Creators
+
+  createPost(post: Post): Observable<Object> {
+    return this.http.post(this.postUrl, post, {withCredentials: true});
+  }
+
+  createTrip(trip: Trip): Observable<Object> {
+    return this.http.post(this.tripUrl, trip, {withCredentials: true});
+  }
+
+  createRequest(request: Request): Observable<Object> {
+    return this.http.post(this.requestUrl, request, {withCredentials: true});
+  }
+
+  // Modifiers
+
+  updatePost(post: Post): Observable<Object> {
+    return this.http.put(`${this.postUrl}/${post.id}`, post, {withCredentials: true});
+  }
+
+  updateTrip(trip: Trip): Observable<Object> {
+    return this.http.put(`${this.tripUrl}/${trip.id}`, trip, {withCredentials: true});
+  }
+
+  updateRequest(request: Request): Observable<Object> {
+    return this.http.put(`${this.requestUrl}/${request.id}`, request, {withCredentials: true});
+  }
+
+  // App related functions
   filterPosts(filter: Filter) {
     const posts = this.postData;
     const filterLocation = filter.location ? filter.location.toUpperCase() : null;
@@ -155,12 +304,23 @@ export class PostService {
     return this.postDraft;
   }
 
-  getPostById(id: number): Post {
-    const post = this.postData.find(searchedPost => {
-      return searchedPost.id === id;
+  // TESTING PURPOSES
+
+  createPostBatch() {
+    console.log('Creating post Batch');
+    this.postData.forEach(post => {
+      console.log('Post ', post);
+      this.createTrip(post)
+      .subscribe(res => console.log('Res', res));
+      this.getTrips();
     });
-    console.log('Get post by Id', post);
-    return post;
+  }
+
+  deleteAllPosts() {
+    console.log('Delete All Posts');
+    this.http.get(`${this.postUrl}/delete`, {withCredentials: true});
+    this.http.get(`${this.tripUrl}/delete`, {withCredentials: true});
+    this.http.get(`${this.requestUrl}/delete`, {withCredentials: true});
   }
 
 }

@@ -6,6 +6,7 @@ const port = 3000;
 
 export const environment = {
   production: false,
+  avatarLocation: '/assets/avatar',
   serverPort: port,
   serverUrl: `http://localhost:${port}`,
 };
