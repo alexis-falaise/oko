@@ -1,0 +1,29 @@
+@import "../../../../styles/variables.scss";
+
+.constraints-row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.constraint-checkbox {
+    border-radius: 5px;
+    padding: 15px;
+    width: 45%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    background-color: map-get($okoColors, blue-o-2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+     
+    &-details {
+        margin-left: 10px;
+    }
+
+    &.active {
+        border-radius: 5px;
+        outline: thick solid map-get($okoColors, blue);
+        box-shadow: 0 0 10px map-get($okoColors, blue-o-2);
+    }
+}

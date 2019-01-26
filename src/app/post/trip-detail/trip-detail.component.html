@@ -2,9 +2,9 @@
   <div class="trip-detail__hero row">
     <div class="trip-detail__hero__from col-6 col-sm-5" *ngIf="trip">
       <span class="trip-detail__hero__airport-code" *ngIf="trip.from">
-        {{ trip.from.airport.code }}
+        {{ trip.from.airport ? trip.from.airport.code : trip.from.label }}
       </span>
-      <span class="trip-detail__hero__airport-label" *ngIf="trip.from">
+      <span class="trip-detail__hero__airport-label" *ngIf="trip.from && trip.from.airport">
         {{ trip.from.airport.label }}
       </span>
     </div>
@@ -13,9 +13,9 @@
     </div>
     <div class="trip-detail__hero__to col-6 col-sm-5" *ngIf="trip">
       <span class="trip-detail__hero__airport-code" *ngIf="trip.to">
-        {{ trip.to.airport.code }}
+        {{ trip.to.airport ? trip.to.airport.code : trip.to.label }}
       </span>
-      <span class="trip-detail__hero__airport-label" *ngIf="trip.to">
+      <span class="trip-detail__hero__airport-label" *ngIf="trip.to && trip.to.airport">
         {{ trip.to.airport.label }}
       </span>
     </div>

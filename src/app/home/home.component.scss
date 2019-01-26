@@ -14,7 +14,7 @@ $transitionStyle: ease-out;
         
         height: 25vh;
         padding-top: $navbarHeight;
-        background-size: 125% auto;
+        background-size: 150% auto;
         background-position: center;
         display: flex;
         flex-direction: column;
@@ -25,20 +25,20 @@ $transitionStyle: ease-out;
         font-size: $homeHeroSize;
         font-weight: 200;
 
-        &:hover {
-            transition: $transitionDuration $transitionStyle all;
-            -webkit-transition: $transitionDuration $transitionStyle all;
-            -moz-transition: $transitionDuration $transitionStyle all;
-            -o-transition: $transitionDuration $transitionStyle all;
-            box-shadow: 0 -250px 250px rgba(0, 0, 0, .5) inset;
-        }
+        // &:hover {
+        //     transition: $transitionDuration $transitionStyle all;
+        //     -webkit-transition: $transitionDuration $transitionStyle all;
+        //     -moz-transition: $transitionDuration $transitionStyle all;
+        //     -o-transition: $transitionDuration $transitionStyle all;
+        //     box-shadow: 0 -250px 250px rgba(0, 0, 0, .5) inset;
+        // }
 
         &.expanded {
             transition: $transitionDuration $transitionStyle all;
             -webkit-transition: $transitionDuration $transitionStyle all;
             -moz-transition: $transitionDuration $transitionStyle all;
             -o-transition: $transitionDuration $transitionStyle all;
-            background-size: auto 125%;
+            background-size: auto 150%;
             background-position: center;
             height: 60vh;
         }
@@ -48,7 +48,7 @@ $transitionStyle: ease-out;
             -webkit-transition: $transitionDuration $transitionStyle all;
             -moz-transition: $transitionDuration $transitionStyle all;
             -o-transition: $transitionDuration $transitionStyle all;
-            background-size: auto 150%;
+            background-size: auto 200%;
             background-position: center;
             height: 100vh;
         }
@@ -110,7 +110,7 @@ $transitionStyle: ease-out;
 
         &-hero,
         &-hero.expanded {
-            background-size: 125% auto;
+            background-size: 150% auto;
         }
 
         &-hero.fullscreen {

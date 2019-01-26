@@ -1,8 +1,67 @@
 <div class="trip container-fluid">
-  <div class="trip-title-wrapper">
-    <h1 class="trip-title">Je voyage</h1>
+  <div class="trip__hero row">
+    <div class="trip__hero-title-wrapper">
+      <h1 class="trip__hero-title">Je voyage</h1>
+    </div>
+    <div class="trip__hero-type">
+        <div class="btn-group btn-group-toggle">
+          <label class="btn btn-hero btn-type" [class.active]="!return">
+            <input type="radio" name="single" id="single" [checked]="!return" (click)="return = false"> Aller Simple
+          </label>
+          <label class="btn btn-hero btn-type" [class.active]="return">
+            <input type="radio" name="return" id="return" [checked]="return" (click)="return = true"> Aller-retour
+          </label>
+        </div>
+    </div>
   </div>
-  <div class="trip-content">
-    <app-trip-form></app-trip-form>
+  <div class="trip__content">
+    <div class="content-row row">
+      <div class="trip__content__location"
+           [ngClass]="{
+             'extended': fromExtended && !locationEven,
+             'even': locationEven
+           }" (swipeleft)="fromExtended = false; locationEven = false;"
+              (click)="fromExtended = true; locationEven = false;">
+        <h4 class="location-title trip-title">Départ</h4>
+        <div class="location-selection">
+            <app-trip-location (valid)="departure($event)"></app-trip-location>
+        </div>
+      </div>
+      <div class="trip__content__location"
+          [ngClass]="{
+              'extended': !fromExtended && !locationEven,
+              'even': locationEven
+          }" (swiperight)="fromExtended = true; locationEven = false;"
+            (click)="fromExtended = false; locationEven = false;">
+        <h4 class="location-title trip-title">Arrivée</h4>
+        <div class="location-selection">
+            <app-trip-location [minDate]="departureInfo?.date" (valid)="arrival($event)"></app-trip-location>
+        </div>
+      </div>
+    </div>
+    <div class="trip__content__return" *ngIf="return">
+      <h4 class="return-title trip-title">Retour</h4>
+      <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
+      <div class="row">
+        <div class="col-6" *ngIf="arrivalInfo">
+          <app-trip-location [city]="arrivalInfo.city" [minDate]="arrivalInfo.date" (valid)="returnFrom($event)"></app-trip-location>
+        </div>
+        <div class="col-6" *ngIf="departureInfo">
+          <app-trip-location [city]="departureInfo.city" [minDate]="returnInfo?.from?.date" (valid)="returnTo($event)"></app-trip-location>
+        </div>
+      </div>
+    </div>
+    <div class="trip__content__constraints">
+      <h4 class="constraints-title trip-title">Capacité</h4>
+      <small class="text-muted">Indiquez la taille et le poids maximum de l'article que vous pouvez transporter</small>
+      <app-trip-constraints (valid)="constraints($event)"></app-trip-constraints>
+    </div>
+    <div class="trip__content__loading" *ngIf="loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="trip__content__actions">
+        <button class="btn btn-success btn-trip" (click)="save()"
+        [disabled]="!departureInfo || !arrivalInfo">Valider</button>
+      </div>
   </div>
 </div>

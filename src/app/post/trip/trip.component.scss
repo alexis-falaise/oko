@@ -1,3 +1,155 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/animations.scss";
+
 .trip {
-    padding-top: 50px;
+    &__hero {
+        animation: $animationDuration openHero;
+        -webkit-animation: $animationDuration openHero;
+        -moz-animation: $animationDuration openHero;
+        -o-animation: $animationDuration openHero;
+
+        background: $heroGradient;
+        // background-image: url('/assets/hero-trip-detail.jpg');
+        width: 100vw;
+        height: 25vh;
+        padding-top: $navbarHeight;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &-type,
+        &-title-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-type {
+            transition: all $transitionStyle $transitionDuration;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100% !important;
+
+            &.active {
+                transition: all $transitionStyle $transitionDuration;
+                background-color: rgba(255, 255, 255, 0.5) !important;
+                box-shadow: 0 0 5px rgba(0, 0, 0, .2) inset;
+            }
+        }
+    }
+
+    &__content {
+        width: 100vw;
+        height: 75vh;
+        padding-bottom: 5px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        .content-row {
+            width: 100vw;
+        }
+
+        &__location {
+            height: 25vh;
+            min-height: 250px;
+            width: 15%;
+            margin: 0 2.5%;
+            padding: 20px;
+            overflow: hidden;
+            opacity: .15;
+
+            &:hover {
+                transition: all $transitionStyle $transitionDuration;
+                opacity: .5;
+            }
+
+            &.extended {
+                transition: all $transitionStyle $transitionDuration;
+                width: 80%;
+                margin: 0;
+                box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+                border-bottom-right-radius: 5px;
+                opacity: 1;
+            }
+
+            &.even {
+                transition: all $transitionStyle $transitionDuration;
+                width: 50%;
+                margin: 0;
+                opacity: 1;
+                border-bottom: thin solid rgb(245, 245, 245);
+
+                .location-title,
+                .location-selection {
+                    display: block;
+                    min-width: 100%;
+                }
+            }
+
+            .location-title,
+            .location-selection {
+                display: block;
+                min-width: 70vw;
+            }
+
+            .location-selection {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+        &__return {
+            height: 300px;
+            width: 100%;
+            padding-top: 25px;
+            border-bottom: thin solid rgb(245, 245, 245);
+
+            .row {
+                width: 100%;
+            }
+        }
+
+        &__constraints {
+            height: 500px;
+            width: 100%;
+            padding: 25px 25px 15px 0;
+        }
+
+        &__loading {
+            position: fixed;
+            bottom: 0px;
+            height: 10px;
+            width: 110%;
+            margin-left: -5%;
+
+            .mat-progress-bar {
+                height: 10px;
+            }
+        }
+
+        &__actions {
+            height: 50px;
+            width: 100%;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            .btn-trip {
+                min-width: 300px;
+                width: 80%;
+                margin-left: -5%;
+            }
+        }
+    }
+
+    &-title {
+        font-size: 36px;
+        color: rgb(175, 175, 175);
+    }
 }
+

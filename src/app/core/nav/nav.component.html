@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light" [class.expanded]="menuDisplay">
-  <button class="navbar-toggler" type="button" aria-label="Previous" [class.available]="previousAvailable">
+  <button class="navbar-toggler navbar-previous-wrapper" type="button" aria-label="Previous"
+         [class.available]="previousAvailable" (click)="back()">
     <span class="navbar-previous">
       <mat-icon>keyboard_backspace</mat-icon>
     </span>

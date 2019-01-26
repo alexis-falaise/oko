@@ -1,0 +1,78 @@
+<form [formGroup]="constraints">
+    <div class="constraints-row form-row">
+      <div class="input-group col-12 col-sm-6 col-md-4">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+              <mat-icon>shopping_basket</mat-icon>
+          </span>
+        </div>
+        <input type="number" class="form-control" formControlName="weight" placeholder="Poids">
+        <div class="input-group-append">
+          <span class="input-group-text">kg</span>
+        </div>
+      </div>
+    </div>
+    <div class="constaints-row form-row">
+      <div class="input-group col-12 col-sm-6">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <mat-icon>swap_vert</mat-icon>
+          </span>
+        </div>
+        <input type="number" class="form-control" formControlName="height" placeholder="Hauteur">
+        <div class="input-group-append">
+          <span class="input-group-text">cm</span>
+        </div>
+      </div>
+      <div class="input-group col-12 col-sm-6">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <mat-icon>swap_horiz</mat-icon>
+          </span>
+        </div>
+        <input type="number" class="form-control" formControlName="width" placeholder="Largeur">
+        <div class="input-group-append">
+          <span class="input-group-text">cm</span>
+        </div>
+      </div>
+    </div>
+    <div class="constraints-row form-row">
+        <div class="input-group col-12 col-sm-6 col-md-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <mat-icon>compare_arrows</mat-icon>
+            </span>
+          </div>
+          <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
+          <div class="input-group-append">
+            <span class="input-group-text">cm</span>
+          </div>
+        </div>
+    </div>
+    <div class="constraints-row form-row">
+        <div class="form-group constraint-checkbox" [class.active]="constraints.controls.cabinOnly.value">
+            <div class="btn-group btn-group-toggle">
+                <label class="btn btn-info" [class.active]="constraints.controls.cabinOnly.value">
+                  <input type="checkbox" formControlName="cabinOnly">
+                  <mat-icon>work</mat-icon>
+                </label>
+            </div>
+            <div class="constraint-checkbox__details">
+                <small class="text-muted text-uppercase">Bagage Cabine</small><br>
+                <small class="text-muted">Je ne prends que des bagages en cabine</small>
+            </div>
+        </div>
+      <div class="form-group constraint-checkbox" [class.active]="constraints.controls.airportDrop.value">
+        <div class="btn-group btn-group-toggle">
+            <label class="btn btn-info" [class.active]="constraints.controls.airportDrop.value">
+              <input type="checkbox" formControlName="airportDrop">
+              <mat-icon>flight</mat-icon>
+            </label>
+        </div>
+        <div class="constraint-checkbox__details">
+            <small class="text-muted text-uppercase">Remise à l'aéroport</small><br>
+            <small class="text-muted">Je préfère donner l'article à l'aéroport</small>
+        </div>
+      </div>
+    </div>
+  </form>

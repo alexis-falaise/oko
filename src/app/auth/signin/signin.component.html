@@ -82,13 +82,13 @@
             </div>
           </div>
           <div class="btn-signin">
-            <button class="btn" [ngClass]="{'btn-primary': !signinError, 'btn-warning': signinError }"
+            <button class="btn signin-button" [ngClass]="{'btn-primary': !signinError, 'btn-warning': signinError }"
                     type="submit">
                   Inscription
             </button>
+            <button class="btn btn-light signin-button" (click)="login()">J'ai déjà un compte</button>
           </div>
       </form>
-      <button class="btn btn-light" (click)="login()">J'ai déjà un compte</button>
     </div>
   </div>
   <mat-progress-bar mode="indeterminate" class="signin-load" *ngIf="loading"></mat-progress-bar>

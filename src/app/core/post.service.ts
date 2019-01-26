@@ -6,6 +6,7 @@ import { Filter } from '@models/app/filter.model';
 import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
+import { ServerResponse } from '@models/app/server-response.model';
 import { Id } from '@models/id.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
@@ -178,8 +179,10 @@ export class PostService {
   ];
   posts = new BehaviorSubject<Array<Post>>(null);
   postDraft: Post = null;
+  tripDraft = null;
 
   constructor(private http: HttpClient) {
+    console.log('Post Service construction');
     this.posts.next(this.postData);
   }
 
@@ -199,75 +202,102 @@ export class PostService {
 
   // Getters
 
+  /**
+   * Fetch all existing posts.
+   * Cold observable, subscribe to onPosts() for results
+   * @param filter : Filter object containing location and/or item
+   */
   getPosts(filter?: Filter) {
     this.http.get(`${this.postUrl}${ filter ? '?location=' + filter.location : '' }`, {withCredentials: true})
-    .subscribe((posts: Array<Post>) => {
-      if (posts) {
-        this.posts.next(posts);
+    .subscribe((response: ServerResponse) => {
+      if (response.status) {
+        this.posts.next(response.data.map(post => new Post(post)));
       }
     });
   }
 
+  /**
+   * Fetch all existing trips.
+   * Cold observable, subscribe to onTrips() for results
+   * @param filter: Filter object containning location and/or item
+   */
   getTrips(filter?: Filter) {
     this.http.get(`${this.tripUrl}${ filter ? '?location=' + filter.location : '' }`, {withCredentials: true})
-    .subscribe((trips: Array<Trip>) => {
-      if (trips) {
-        console.log(trips);
-        this.trips.next(trips.map(trip => new Trip(trip)));
+    .subscribe((response: ServerResponse) => {
+      if (response.status) {
+        this.trips.next(response.data.map(trip => new Trip(trip)));
       }
     });
   }
 
+  /**
+   * Fetch all existing requests.
+   * Cold observable, subscribe to onRequests() for results
+   * @param filter: Filter object containning location and/or item
+   */
   getRequests(filter?: Filter) {
     this.http.get(`${this.requestUrl}${ filter ? '?item=' + filter.item : '' }`, {withCredentials: true})
-    .subscribe((requests: Array<Request>) => {
-      if (requests) {
-        this.requests.next(requests.map(request => new Request(request)));
+    .subscribe((response: ServerResponse) => {
+      if (response.status) {
+        this.requests.next(response.data.map(request => new Request(request)));
       }
     });
   }
 
+  /**
+   * Get a post by id
+   * @param id : Post unique identifier
+   */
   getPostById(id: string): Observable<Post> {
     return this.http.get(`${this.postUrl}/${id}`, {withCredentials: true}) as Observable<Post>;
   }
 
+  /**
+   * Get a trip by id
+   * @param id : Trip unique identifier
+   */
   getTripById(id: number): Observable<Trip> {
     return this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true}) as Observable<Trip>;
   }
 
+  /**
+   * Get a request by id
+   * @param id : Request unique identifier
+   */
   getRequestById(id: number): Observable<Request> {
     return this.http.get(`${this.requestUrl}/${id}`, {withCredentials: true}) as Observable<Request>;
   }
 
   // Creators
 
-  createPost(post: Post): Observable<Object> {
-    return this.http.post(this.postUrl, post, {withCredentials: true});
+  createPost(post: Post | Array<Post>): Observable<ServerResponse> {
+    return this.http.post(this.postUrl, post, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  createTrip(trip: Trip): Observable<Object> {
-    return this.http.post(this.tripUrl, trip, {withCredentials: true});
+  createTrip(trip: Trip | Array<Trip>): Observable<ServerResponse> {
+    return this.http.post(this.tripUrl, trip, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  createRequest(request: Request): Observable<Object> {
-    return this.http.post(this.requestUrl, request, {withCredentials: true});
+  createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
+    return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Modifiers
 
-  updatePost(post: Post): Observable<Object> {
-    return this.http.put(`${this.postUrl}/${post.id}`, post, {withCredentials: true});
+  updatePost(post: Post): Observable<ServerResponse> {
+    return this.http.put(`${this.postUrl}/${post.id}`, post, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  updateTrip(trip: Trip): Observable<Object> {
-    return this.http.put(`${this.tripUrl}/${trip.id}`, trip, {withCredentials: true});
+  updateTrip(trip: Trip): Observable<ServerResponse> {
+    return this.http.put(`${this.tripUrl}/${trip.id}`, trip, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  updateRequest(request: Request): Observable<Object> {
-    return this.http.put(`${this.requestUrl}/${request.id}`, request, {withCredentials: true});
+  updateRequest(request: Request): Observable<ServerResponse> {
+    return this.http.put(`${this.requestUrl}/${request.id}`, request, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // App related functions
+
   filterPosts(filter: Filter) {
     const posts = this.postData;
     const filterLocation = filter.location ? filter.location.toUpperCase() : null;
@@ -291,6 +321,16 @@ export class PostService {
 
   resetPosts() {
     this.posts.next(this.postData);
+  }
+
+  saveTripDraft(tripDraft) {
+    this.tripDraft = tripDraft;
+    console.log('Save trip draft', this.tripDraft);
+  }
+
+  getTripDraft() {
+    console.log('Get trip draft', this.tripDraft);
+    return this.tripDraft;
   }
 
   draftPost(filter: Filter) {

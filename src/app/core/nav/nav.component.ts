@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 
-import { MenuItem } from '@models/app/menu-item.model';
 import { AuthService } from '@core/auth.service';
+import { HistoryService } from '@core/history.service';
 
+import { MenuItem } from '@models/app/menu-item.model';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -35,6 +36,7 @@ export class NavComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private historyService: HistoryService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -48,17 +50,18 @@ export class NavComponent implements OnInit {
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
     });
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.authService.getLoginStatus();
-        // check if child route
-        console.log('Nav check', event);
-      }
+    this.historyService.onHistory()
+    .subscribe(history => {
+      this.previousAvailable = history.length > 1;
     });
   }
 
   toggleMenu() {
     this.menuDisplay = !this.menuDisplay;
+  }
+
+  back() {
+    this.historyService.back();
   }
 
 
