@@ -5,7 +5,7 @@
         {{ trip.from.airport ? trip.from.airport.code : trip.from.label }}
       </span>
       <span class="trip-detail__hero__airport-label" *ngIf="trip.from && trip.from.airport">
-        {{ trip.from.airport.label }}
+        {{ trip.from.airport.label || trip.from.airport.name }}
       </span>
     </div>
     <div class="trip-detail__hero__link col-2 d-none d-sm-flex" *ngIf="trip">
@@ -16,7 +16,7 @@
         {{ trip.to.airport ? trip.to.airport.code : trip.to.label }}
       </span>
       <span class="trip-detail__hero__airport-label" *ngIf="trip.to && trip.to.airport">
-        {{ trip.to.airport.label }}
+        {{ trip.to.airport.label || trip.to.airport.name }}
       </span>
     </div>
     <div class="trip-detail__hero__date col-12" *ngIf="trip && trip.date">

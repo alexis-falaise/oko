@@ -10,6 +10,7 @@ import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected
 
 import { Trip } from '@models/post/trip.model';
 import { Router } from '@angular/router';
+import { User } from '@models/user.model';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -40,13 +41,13 @@ export class TripComponent implements OnInit {
   ngOnInit() {
     const draft = this.postService.getTripDraft();
     if (draft) {
-      if (draft.returnInfo && (draft.returnInfo.from || draft.returnInfo.to)) {
-        this.returnInfo = draft.returnInfo;
+      if (draft.return && (draft.return.from || draft.return.to)) {
+        this.returnInfo = draft.return;
         this.return = true;
       }
-      this.departureInfo = draft.departureInfo;
-      this.arrivalInfo = draft.arrivalInfo;
-      this.constraintsInfo = draft.constraintsInfo;
+      this.departureInfo = draft.departure;
+      this.arrivalInfo = draft.arrival;
+      this.constraintsInfo = draft.constraints;
     }
   }
 
@@ -74,11 +75,11 @@ export class TripComponent implements OnInit {
 
   save() {
     this.loading = true;
-    const tripBatch = this.generateTripBatch();
     this.userService.getCurrentUser()
     .subscribe(
       (user) => {
         if (user) {
+          const tripBatch = this.generateTripBatch(user);
           this.postService.createTrip(tripBatch)
           .subscribe(response => {
             this.loading = false;
@@ -115,15 +116,18 @@ export class TripComponent implements OnInit {
     });
   }
 
-  private generateTripBatch() {
+  private generateTripBatch(user: User) {
     const tripBatch = [];
     const arrivalTime = moment(this.arrivalInfo.time, 'HH:mm');
     const trip = new Trip({
+      user: user,
       from : {
-        label: this.departureInfo.city
+        label: this.departureInfo.city,
+        airport: this.departureInfo.airport
       },
       to : {
-        label: this.arrivalInfo.city
+        label: this.arrivalInfo.city,
+        airport: this.arrivalInfo.airport
       },
       date: moment(this.arrivalInfo.date).hours(arrivalTime.hours()).minutes(arrivalTime.minutes()),
       ...this.constraintsInfo
@@ -132,11 +136,14 @@ export class TripComponent implements OnInit {
     if (this.return && this.returnInfo.from && this.returnInfo.to) {
       const returnTime = moment(this.returnInfo.to.time);
       const returnTrip = new Trip({
+        user: user,
         from : {
-          label: this.returnInfo.from.city
+          label: this.returnInfo.from.city,
+          airport: this.returnInfo.from.airport
         },
         to: {
-          label: this.returnInfo.to.city
+          label: this.returnInfo.to.city,
+          airport: this.returnInfo.to.airport
         },
         date: moment(this.returnInfo.to.date).hours(returnTime.hours()).minutes(returnTime.minutes()),
         ...this.constraintsInfo

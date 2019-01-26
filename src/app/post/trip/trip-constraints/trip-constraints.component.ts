@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -6,8 +6,9 @@ import { FormBuilder, Validators } from '@angular/forms';
   templateUrl: './trip-constraints.component.html',
   styleUrls: ['./trip-constraints.component.scss']
 })
-export class TripConstraintsComponent implements OnInit {
+export class TripConstraintsComponent implements OnInit, OnChanges {
 
+  @Input() constraintsInfo;
   @Output() valid = new EventEmitter();
   constraints = this.fb.group({
     height: ['', Validators.min(0)],
@@ -19,6 +20,12 @@ export class TripConstraintsComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.constraintsInfo && changes.constraintsInfo.currentValue) {
+      this.constraints.patchValue(changes.constraintsInfo.currentValue);
+    }
+  }
 
   ngOnInit() {
     this.constraints.statusChanges

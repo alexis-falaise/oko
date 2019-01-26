@@ -8,6 +8,7 @@ import {
   MatFormFieldModule,
   MatProgressBarModule,
   MatSnackBarModule,
+  MatAutocompleteModule,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -37,6 +38,7 @@ import { TripConstraintsComponent } from './trip/trip-constraints/trip-constrain
     CommonModule,
     DialogsModule,
     FormsModule,
+    MatAutocompleteModule,
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,

@@ -3,14 +3,14 @@
   "name": "Oko",
   "icons": [
     {
-      "src": "/oko/assets/oko-icon-phone.png",
+      "src": "/assets/oko-icon-phone.png",
       "type": "image/png",
       "sizes": "192x192"
     }
   ],
-  "start_url": "/oko/",
+  "start_url": "/",
   "background_color": "#69F5FF",
   "display": "standalone",
-  "scope": "/oko/",
+  "scope": "/",
   "theme_color": "#69F5FF"
 }

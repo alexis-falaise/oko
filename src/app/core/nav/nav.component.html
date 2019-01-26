@@ -16,12 +16,14 @@
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item" *ngFor="let item of menuItems">
         <a class="nav-link" [class.disabled]="item.disabled"
-           routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }} <span class="sr-only">(current)</span>
+           routerLink="{{ item.path }}" routerLinkActive="active">
+           {{ item.label }} <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item" *ngFor="let item of displayAccountMenuItems">
         <a class="nav-link" [class.disabled]="item.disabled"
-           routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }} <span class="sr-only">(current)</span>
+           routerLink="{{ item.path }}" routerLinkActive="active">
+           {{ item.label }} <span class="sr-only">(current)</span>
         </a>
       </li>
     </ul>
@@ -30,10 +32,16 @@
 
 <div class="navbar__fullscreen justify-content-center" [hidden]="!menuDisplay">
   <div class="navbar__fullscreen-item" *ngFor="let item of menuItems" (click)="toggleMenu()">
-    <a routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }}</a>
+    <a routerLink="{{ item.path }}" routerLinkActive="active">
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        {{ item.label }}
+    </a>
   </div>
   <hr class="divider">
   <div class="navbar__fullscreen-item" *ngFor="let item of displayAccountMenuItems" (click)="toggleMenu()">
-    <a routerLink="{{ item.path }}" routerLinkActive="active">{{ item.label }}</a>
+    <a routerLink="{{ item.path }}" routerLinkActive="active">
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        {{ item.label }}
+    </a>
   </div>
 </div>

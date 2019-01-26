@@ -19,14 +19,18 @@
                 <div class="row">
                     <div class="post-trip__from col-12 col-sm-5 justify-content-center">
                             {{ post.from.airport ? post.from.airport.code : post.from.label }}<br>
-                            <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from.airport">{{ post.from.airport.label }}</span>
+                            <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from.airport">
+                                {{ post.from.airport.label  || post.from.airport.name }}
+                            </span>
                         </div>
                     <div class="post-trip__link d-none d-sm-flex col-12 col-sm-2 justify-content-center">
                         <mat-icon>chevron_right</mat-icon>
                     </div>
                     <div class="post-trip__to col-12 col-sm-5 justify-content-center">
                         {{ post.to.airport ? post.to.airport.code : post.to.label }}
-                        <span class="post-trip__to-details d-none d-sm-inline" *ngIf="post.to.airport">{{ post.to.airport.label }}</span>
+                        <span class="post-trip__to-details d-none d-sm-inline" *ngIf="post.to.airport">
+                            {{ post.to.airport.label || post.to.airport.name }}
+                        </span>
                     </div>
                 </div>
             </div>

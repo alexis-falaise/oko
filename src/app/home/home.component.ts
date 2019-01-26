@@ -10,6 +10,7 @@ import { PostService } from '@core/post.service';
 import { Filter } from '@models/app/filter.model';
 import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
+import { environment } from '@env/environment.prod';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
 
   private locationSamples = ['Paris', 'Santa Cruz', 'Dakar', 'Bògota'];
   private itemSamples = ['un parfum', 'une liseuse', 'un iPhone'];
+  public prod = environment.production;
   backgroundImage = 'assets/hero.jpg';
   swingingLocation = this.locationSamples[0];
   swingingItem = this.itemSamples[0];

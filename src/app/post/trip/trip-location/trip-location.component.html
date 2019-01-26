@@ -2,19 +2,29 @@
     <div class="form-group">
         <input type="text" name="city" formControlName="city"
                placeholder="Ville"
-               [ngClass]="{'form-control': !city, 'form-control-plaintext': city}"
-               [readonly]="!!city"
+               [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
+               [readonly]="cityReadonly"
                [class.is-invalid]="location.controls.city.errors?.required
                && location.controls.city.touched" required>
         
     </div>
+    <mat-form-field class="form-group trip-location-hybrid-group">
+        <input type="text" placeholder="Aéroport" #airport (click)="fetchMatchingAirports(location.controls.city.value)"
+               matInput formControlName="airport" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAirport">
+            <mat-option *ngFor="let airport of airports" [value]="airport">
+            {{ airport.name }} |
+            <small>{{ airport.country }}</small>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
     <div class="form-row">
         <div class="form-group col-10 col-md-7">
           <input type="text" name="date" formControlName="date"
                  [matDatepicker]="picker"
                  [min]="minDate || today"
-                 [ngClass]="{'form-control': !date, 'form-control-plaintext': date}"
-                 [readonly]="!!date"
+                 [ngClass]="{'form-control': !dateReadonly, 'form-control-plaintext': dateReadonly}"
+                 [readonly]="dateReadonly"
                  placeholder="Date">
         </div>
         <div class="form-group col-2 col-md-2">
@@ -22,11 +32,11 @@
             <mat-datepicker touchUi #picker></mat-datepicker>
         </div>
         <div class="form-group col-12 col-md-3">
-          <input type="time" name="time" formControlName="time"
-                [ngClass]="{'form-control': !time, 'form-control-plaintext': time}"
-                [readonly]="!!time"
-                 placeholder="Heure">
-            <small class="text-muted">Heure</small>
+          <input name="time" formControlName="time"
+                [class.is-invalid]="location.controls.time.errors?.invalid"
+                [ngClass]="{'form-control': !timeReadonly, 'form-control-plaintext': timeReadonly}"
+                [readonly]="timeReadonly"
+                placeholder="Heure">
         </div>
     </div>
 </form>

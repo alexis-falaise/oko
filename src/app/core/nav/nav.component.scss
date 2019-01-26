@@ -119,8 +119,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         width: 110%;
         margin-left: -5%;
         text-align: center;
-        font-size: 36px;
-        font-weight: 100;
+        font-size: 24px;
+        font-weight: 700;
 
         &:hover {
             transition: all $transitionDuration;
@@ -130,5 +130,10 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         &.active {
             background-color: rgba(0, 0, 0, .2);
         }
+    }
+
+    .divider {
+        height: 1px;
+        background-color: rgb(235, 235, 235);
     }
 }

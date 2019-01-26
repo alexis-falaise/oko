@@ -13,10 +13,10 @@
                 <input matInput type="text" name="location" placeholder="{{swingingLocation}}" (keyup)="filterPosts($event)" [(ngModel)]="filter.location">
             </mat-form-field>
         </div>
-        <div class="home-hero__action">
+        <div class="home-hero__action" *ngIf="!prod || empty">
             <button class="btn btn-hero" (click)="validate() && post()" *ngIf="empty">Demander un service</button>
-            <button class="btn btn-primary" (click)="postBatch()">Create the fucking batch</button>
-            <button class="btn btn-danger" (click)="deleteEverything()">Delete everything</button>
+            <button class="btn btn-primary" (click)="postBatch()" *ngIf="!prod">Create the fucking batch</button>
+            <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button>
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">
             <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Départs</span>
@@ -30,7 +30,7 @@
             <app-post-list (listRefresh)="listStatus($event)"></app-post-list>
         </div>
     </div>
-    <div class="home-trip" [class.expanded]="!expanded">
-        <button class="btn btn-light" (click)="trip()">Je voyage</button>
+    <div class="home-trip justify-content-center" [class.expanded]="!expanded">
+        <button class="btn btn-primary" (click)="trip()">Je voyage</button>
     </div>
 </div>

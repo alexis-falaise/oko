@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment';
+
+import { GeoService } from '@core/geo.service';
+import { Airport } from '@models/airport.model';
 
 @Component({
   selector: 'app-trip-location',
@@ -20,17 +23,23 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() city = null;
   @Input() date = null;
   @Input() time = null;
+  @Input() cityReadonly = false;
+  @Input() dateReadonly = false;
+  @Input() timeReadonly = false;
   @Input() minDate = null;
+  airports = [];
   today = moment();
   location = this.fb.group({
     city: ['', Validators.required],
     date: [this.minDate || this.today, Validators.required],
-    time: ['', Validators.required]
+    airport: new FormControl({value: null, disabled: !this.airports.length}),
+    time: ['', Validators.compose([Validators.required, Validators.maxLength(5), Validators.minLength(0)])]
   });
 
   constructor(
     private fb: FormBuilder,
     private adapter: DateAdapter<any>,
+    private geoService: GeoService,
     ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,12 +63,65 @@ export class TripLocationComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.adapter.setLocale('fr');
+    this.geoService.onAirports()
+    .subscribe(airports => {
+      if (airports) {
+        this.airports = airports;
+        this.location.controls.airport.enable();
+      } else {
+        this.airports = null;
+      }
+    });
     this.location.statusChanges
     .subscribe(status => {
       if (status === 'VALID') {
         this.valid.emit(this.location.value);
       }
     });
+    this.location.controls.time.valueChanges
+    .subscribe((value: string) => {
+      this.validateTime(value);
+    });
+    this.location.controls.city.statusChanges
+    .subscribe(status => {
+      if (status === 'VALID') {
+        this.fetchMatchingAirports(this.location.controls.city.value);
+      }
+    });
+  }
+
+  displayAirport(airport: Airport) {
+    return airport ? `${airport.name} (${airport.code}) - ${airport.country}` : null;
+  }
+
+  fetchMatchingAirports(city: string) {
+    this.airports = null;
+    this.geoService.getAirports(undefined, undefined, city);
+  }
+
+  private validateTime(value: string) {
+    let hours = null;
+    let minutes = null;
+    if (value.length === 2 && !value.includes(':')) {
+      hours = parseInt(value, 10);
+      if (hours < 24 && hours >= 0) {
+        const time = `${hours}:`;
+        this.location.controls.time.patchValue(time);
+      } else {
+        this.location.controls.time.setErrors({invalid : true});
+      }
+    }
+    if (value.length > 2 && value.length <= 5) {
+      if (value.includes(':')) {
+        hours = parseInt(value.slice(0, 2), 10);
+        minutes = parseInt(value.slice(3), 10);
+        if (!(hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60)) {
+          this.location.controls.time.setErrors({invalid : true });
+        }
+      }
+    } else {
+      this.location.controls.time.setErrors({invalid : true});
+    }
   }
 
 }

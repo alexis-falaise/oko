@@ -182,7 +182,6 @@ export class PostService {
   tripDraft = null;
 
   constructor(private http: HttpClient) {
-    console.log('Post Service construction');
     this.posts.next(this.postData);
   }
 
@@ -325,11 +324,9 @@ export class PostService {
 
   saveTripDraft(tripDraft) {
     this.tripDraft = tripDraft;
-    console.log('Save trip draft', this.tripDraft);
   }
 
   getTripDraft() {
-    console.log('Get trip draft', this.tripDraft);
     return this.tripDraft;
   }
 
@@ -347,9 +344,7 @@ export class PostService {
   // TESTING PURPOSES
 
   createPostBatch() {
-    console.log('Creating post Batch');
     this.postData.forEach(post => {
-      console.log('Post ', post);
       this.createTrip(post)
       .subscribe(res => console.log('Res', res));
       this.getTrips();
@@ -357,7 +352,6 @@ export class PostService {
   }
 
   deleteAllPosts() {
-    console.log('Delete All Posts');
     this.http.get(`${this.postUrl}/delete`, {withCredentials: true});
     this.http.get(`${this.tripUrl}/delete`, {withCredentials: true});
     this.http.get(`${this.requestUrl}/delete`, {withCredentials: true});

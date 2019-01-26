@@ -72,7 +72,7 @@
             <input type="password" placeholder="Confirmez votre mot de passe" class="form-control"
                     formControlName="passwordConfirm" required>
             <div class="invalid-feedback"
-            [class.d-block]="signinForm.controls.passwordConfirm?.required
+            [class.d-block]="signinForm.controls.passwordConfirm.errors?.required
             && (signinForm.controls.passwordConfirm.touched || validated)">
               Veuillez confirmer votre mot de passe
             </div>

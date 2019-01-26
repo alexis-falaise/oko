@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { AuthService } from '@core/auth.service';
+import { GeoService } from '@core/geo.service';
 import { PostService } from '@core/post.service';
 import { UserService } from '@core/user.service';
 
@@ -46,7 +47,7 @@ import { HomeComponent } from './home/home.component';
     MatProgressBarModule,
     MatTabsModule,
   ],
-  providers: [AuthService, PostService, UserService],
+  providers: [AuthService, GeoService, PostService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

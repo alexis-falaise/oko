@@ -24,7 +24,12 @@
               (click)="fromExtended = true; locationEven = false;">
         <h4 class="location-title trip-title">Départ</h4>
         <div class="location-selection">
-            <app-trip-location (valid)="departure($event)"></app-trip-location>
+            <app-trip-location
+              [city]="departureInfo?.city"
+              [date]="departureInfo?.date"
+              [time]="departureInfo?.time"
+              (valid)="departure($event)">
+            </app-trip-location>
         </div>
       </div>
       <div class="trip__content__location"
@@ -35,7 +40,13 @@
             (click)="fromExtended = false; locationEven = false;">
         <h4 class="location-title trip-title">Arrivée</h4>
         <div class="location-selection">
-            <app-trip-location [minDate]="departureInfo?.date" (valid)="arrival($event)"></app-trip-location>
+            <app-trip-location
+            [city]="arrivalInfo?.city"
+            [date]="arrivalInfo?.date"
+            [time]="arrivalInfo?.time"
+            [minDate]="departureInfo?.date"
+            (valid)="arrival($event)">
+            </app-trip-location>
         </div>
       </div>
     </div>
@@ -44,17 +55,31 @@
       <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
       <div class="row">
         <div class="col-6" *ngIf="arrivalInfo">
-          <app-trip-location [city]="arrivalInfo.city" [minDate]="arrivalInfo.date" (valid)="returnFrom($event)"></app-trip-location>
+          <app-trip-location
+            [city]="arrivalInfo.city"
+            [cityReadonly]="true"
+            [date]="returnInfo?.from?.date"
+            [time]="returnInfo?.from?.time"
+            [minDate]="arrivalInfo?.date"
+            (valid)="returnFrom($event)">
+          </app-trip-location>
         </div>
-        <div class="col-6" *ngIf="departureInfo">
-          <app-trip-location [city]="departureInfo.city" [minDate]="returnInfo?.from?.date" (valid)="returnTo($event)"></app-trip-location>
+        <div class="col-6" *ngIf="departureInfo && arrivalInfo">
+          <app-trip-location
+            [city]="departureInfo.city"
+            [cityReadonly]="true"
+            [date]="returnInfo?.to?.date"
+            [time]="returnInfo?.to?.time"
+            [minDate]="returnInfo?.from?.date"
+            (valid)="returnTo($event)">
+          </app-trip-location>
         </div>
       </div>
     </div>
     <div class="trip__content__constraints">
       <h4 class="constraints-title trip-title">Capacité</h4>
       <small class="text-muted">Indiquez la taille et le poids maximum de l'article que vous pouvez transporter</small>
-      <app-trip-constraints (valid)="constraints($event)"></app-trip-constraints>
+      <app-trip-constraints [constraintsInfo]="constraintsInfo" (valid)="constraints($event)"></app-trip-constraints>
     </div>
     <div class="trip__content__loading" *ngIf="loading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>

@@ -62,12 +62,10 @@ export class AccountInfoComponent implements OnInit, OnChanges {
   save() {
     this.loading = true;
     this.user.description = new Description(this.description);
-    console.log(this.user);
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
       this.loading = false;
       if (res.status) {
-        console.log(res.data);
         this.userService.getCurrentUser();
         this.init(res.data);
       }

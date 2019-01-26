@@ -8,7 +8,7 @@ export const environment = {
   production: false,
   avatarLocation: '/assets/avatar',
   serverPort: port,
-  serverUrl: `http://localhost:${port}`,
+  serverUrl: `http://localhost:${port}/api`,
 };
 
 /*
