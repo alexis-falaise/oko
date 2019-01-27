@@ -56,7 +56,7 @@
 
         &__location {
             height: 25vh;
-            min-height: 325px;
+            min-height: 350px;
             width: 15%;
             margin: 0 2.5%;
             padding: 20px;
@@ -94,7 +94,7 @@
             .location-title,
             .location-selection {
                 display: block;
-                min-width: 70vw;
+                min-width: 70%;
             }
 
             .location-selection {
@@ -104,6 +104,7 @@
         }
 
         &__return {
+            animation: $animationDuration slideFromUp;
             height: 300px;
             width: 100%;
             padding-top: 25px;
@@ -115,7 +116,7 @@
         }
 
         &__constraints {
-            height: 500px;
+            height: 425px;
             width: 100%;
             padding: 25px 25px 15px 0;
         }
@@ -135,6 +136,7 @@
         &__actions {
             height: 50px;
             width: 100%;
+            margin-top: 25px;
             margin-bottom: 25px;
             display: flex;
             flex-direction: row;
@@ -145,6 +147,21 @@
                 width: 80%;
                 margin-left: -5%;
             }
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        &__content {
+            width: 70vw;
+            margin-left: 15vw;
+        }
+
+        &__loading {
+            margin-left: 15vw;
+        }
+
+        .content-row {
+            width: 70vw;
         }
     }
 

@@ -1,18 +1,18 @@
 <form [formGroup]="location" novalidate>
     <div class="form-group">
-        <input type="text" name="city" formControlName="city"
+        <input type="text" name="city" formControlName="city" (focus)="cityFocus = true" (blur)="cityFocus = false"
                placeholder="Ville"
                [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
                [readonly]="cityReadonly"
                [class.is-invalid]="location.controls.city.errors?.required
                && location.controls.city.touched" required>
-        
+        <small class="text-muted" *ngIf="cityFocus">Indiquez le nom de la ville en Anglais pour obtenir une suggestion d'aéroport</small>
     </div>
     <mat-form-field class="form-group trip-location-hybrid-group">
         <input type="text" placeholder="Aéroport" #airport (click)="fetchMatchingAirports(location.controls.city.value)"
                matInput formControlName="airport" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAirport">
-            <mat-option *ngFor="let airport of airports" [value]="airport">
+            <mat-option *ngFor="let airport of filteredAirports" [value]="airport">
             {{ airport.name }} |
             <small>{{ airport.country }}</small>
             </mat-option>

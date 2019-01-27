@@ -105,11 +105,6 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     justify-content: space-evenly;
     background-color: $expanded-menu-color;
 
-    a {
-        color: rgb(80, 80, 80);
-        text-decoration: none;
-    }
-
     &-item {
         animation: fullscreenItemsEnter $animationDuration;
         -webkit-animation: fullscreenItemsEnter $animationDuration;
@@ -130,10 +125,24 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         &.active {
             background-color: rgba(0, 0, 0, .2);
         }
+
+        a {
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: center;
+            // width: 100%;
+            height: 100%;
+            color: rgb(80, 80, 80);
+            text-decoration: none;
+        }
     }
 
     .divider {
         height: 1px;
         background-color: rgb(235, 235, 235);
     }
+}
+
+.collapse {
+    color: white;
 }

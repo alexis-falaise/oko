@@ -8,6 +8,9 @@ import {
   MatProgressBarModule,
   MatTabsModule,
   MatChipsModule,
+  MatDatepickerModule,
+  MatExpansionModule,
+  MatSnackBarModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +27,7 @@ import { AppComponent } from './app.component';
 import { AccountComponent } from './account/account.component';
 import { AccountInfoComponent } from './account/account-info/account-info.component';
 import { HomeComponent } from './home/home.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 @NgModule({
@@ -42,10 +46,14 @@ import { HomeComponent } from './home/home.component';
     FormsModule,
     SharedModule,
     MatChipsModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatExpansionModule,
     MatInputModule,
     MatIconModule,
     MatProgressBarModule,
     MatTabsModule,
+    MatSnackBarModule,
   ],
   providers: [AuthService, GeoService, PostService, UserService],
   bootstrap: [AppComponent]

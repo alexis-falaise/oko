@@ -11,6 +11,7 @@ import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected
 import { Trip } from '@models/post/trip.model';
 import { Router } from '@angular/router';
 import { User } from '@models/user.model';
+import { Airport } from '@models/airport.model';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -19,6 +20,7 @@ import { User } from '@models/user.model';
 export class TripComponent implements OnInit {
 
   fromExtended = true;
+  fromFocus = false;
   locationEven = false;
   return = false;
   departureInfo = null;
@@ -52,13 +54,14 @@ export class TripComponent implements OnInit {
   }
 
   departure(info) {
-    timer(1000).subscribe(() => this.fromExtended = false);
+    if (!(info.airport instanceof Airport)) {
+      info.aiport = new Airport({label: info.airport});
+    }
     this.departureInfo = info;
   }
 
   arrival(info) {
     this.arrivalInfo = info;
-    timer(1000).subscribe(() => this.locationEven = true);
   }
 
   returnFrom(info) {
@@ -71,6 +74,21 @@ export class TripComponent implements OnInit {
 
   constraints(info) {
     this.constraintsInfo = info;
+  }
+
+  toDeparture() {
+    this.fromExtended = true;
+    this.locationEven = false;
+  }
+
+  toArrival() {
+    this.fromExtended = false;
+    this.locationEven = false;
+  }
+
+  toSummary() {
+    this.fromExtended = false;
+    this.locationEven = true;
   }
 
   save() {
@@ -108,11 +126,14 @@ export class TripComponent implements OnInit {
   }
 
   private openDialog() {
-    this.dialog.open(NotConnectedComponent, {
+    const dialogRef = this.dialog.open(NotConnectedComponent, {
       width: '80vw',
       maxWidth: '500px',
       height: '50vh',
       maxHeight: '300px'
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loading = false;
     });
   }
 

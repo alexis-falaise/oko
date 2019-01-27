@@ -18,7 +18,7 @@
             <div class="post-trip col-8 col-sm-9 col-md-10">
                 <div class="row">
                     <div class="post-trip__from col-12 col-sm-5 justify-content-center">
-                            {{ post.from.airport ? post.from.airport.code : post.from.label }}<br>
+                            {{ post.from.label }}<br>
                             <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from.airport">
                                 {{ post.from.airport.label  || post.from.airport.name }}
                             </span>
@@ -27,15 +27,18 @@
                         <mat-icon>chevron_right</mat-icon>
                     </div>
                     <div class="post-trip__to col-12 col-sm-5 justify-content-center">
-                        {{ post.to.airport ? post.to.airport.code : post.to.label }}
+                        {{ post.to.label }}
                         <span class="post-trip__to-details d-none d-sm-inline" *ngIf="post.to.airport">
                             {{ post.to.airport.label || post.to.airport.name }}
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="post-date col-4 col-sm-3 col-md-2">
-                {{ post.date.format('DD/MM') }}
+            <div class="post-practical col-4 col-sm-3 col-md-2">
+                <div class="post-date ">{{ post.date.format('DD/MM') }}</div>
+                <div class="post-weight" *ngIf="post.weight">
+                    <mat-icon>shopping_basket</mat-icon> {{ post.weight }} kg
+                </div>
             </div>
         </div>
     </div>

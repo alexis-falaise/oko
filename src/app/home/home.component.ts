@@ -1,4 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { timer } from 'rxjs';
@@ -11,10 +13,16 @@ import { Filter } from '@models/app/filter.model';
 import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
 import { environment } from '@env/environment.prod';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class HomeComponent implements OnInit {
 
@@ -24,6 +32,7 @@ export class HomeComponent implements OnInit {
   backgroundImage = 'assets/hero.jpg';
   swingingLocation = this.locationSamples[0];
   swingingItem = this.itemSamples[0];
+  today = moment();
   posts: Array<Post>;
   filter = new Filter({});
   expanded = true;
@@ -33,11 +42,18 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private postService: PostService,
+    private adapter: DateAdapter<any>,
+    private snack: MatSnackBar,
     private router: Router,
   ) { }
 
   ngOnInit() {
     timer(0, 1500).subscribe(() => this.swingDisplay());
+    const draft = this.postService.getTripDraft();
+    if (draft) {
+      const snackRef = this.snack.open('Brouillon de trajet', 'Ouvrir', {duration: 5000});
+      snackRef.onAction().subscribe(() => this.router.navigate(['/post/trip']));
+    }
   }
 
   enter() {
@@ -59,13 +75,8 @@ export class HomeComponent implements OnInit {
     this.post();
   }
 
-  filterPosts(userAction) {
-    if (this.filter.location && this.filter.location.length > 2) {
-      this.postService.getTrips(this.filter);
-    }
-    if (this.filter.location === '' || userAction.key === 'backspace') {
-      this.postService.getTrips();
-    }
+  filterPosts(userAction?) {
+    this.postService.getTrips(this.filter);
   }
 
   onScroll(event) {
@@ -95,10 +106,6 @@ export class HomeComponent implements OnInit {
 
   trip() {
     this.router.navigate(['/post/trip']);
-  }
-
-  postBatch() {
-    this.postService.createPostBatch();
   }
 
   deleteEverything() {

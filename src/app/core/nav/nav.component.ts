@@ -16,7 +16,7 @@ export class NavComponent implements OnInit {
   menuDisplay = false;
   previousAvailable = false;
   guestAccountMenuItems: Array<MenuItem> = [
-    { label: 'Connexion', path: '/login' },
+    { label: 'Connexion', path: '/login', icon: 'power_settings_new' },
   ];
   accountMenuItems: Array<MenuItem> = [
     { label: 'Mon compte', path: '/account', icon: 'account_circle' },

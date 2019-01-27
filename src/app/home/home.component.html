@@ -15,7 +15,6 @@
         </div>
         <div class="home-hero__action" *ngIf="!prod || empty">
             <button class="btn btn-hero" (click)="validate() && post()" *ngIf="empty">Demander un service</button>
-            <button class="btn btn-primary" (click)="postBatch()" *ngIf="!prod">Create the fucking batch</button>
             <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button>
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">
@@ -25,7 +24,30 @@
         </div>
     </div>
     <div class="home-list" [class.expanded]="!expanded" [class.empty]="empty" (scroll)="onScroll($event)">
-        <div class="home-list__departures" *ngIf="!empty">Départs disponibles</div>
+        <mat-expansion-panel class="home-list__filters">
+            <mat-expansion-panel-header class="home-list__filters-header">
+                <mat-panel-title>Filtres</mat-panel-title>
+                <mat-panel-description>
+                    <span *ngIf="filter.beforeDate">Avant le {{ filter.beforeDate.format('DD MMMM') }}</span>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <div class="form-group col-5">
+                    <input type="text" name="beforeDate"
+                            class="form-control"
+                            [(ngModel)]="filter.beforeDate"
+                            (ngModelChange)="filterPosts()"
+                            [matDatepicker]="picker"
+                            [min]="today">
+                    <small class="text-muted">Avant le</small>
+                </div>
+                <div class="form-group col-1">
+                    <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <!-- <div class="home-list__departures" *ngIf="!empty">Départs disponibles</div> -->
         <div class="home-list__list">
             <app-post-list (listRefresh)="listStatus($event)"></app-post-list>
         </div>

@@ -126,7 +126,6 @@ $transitionStyle: ease-out;
     &-list {
         height: 40vh;
         overflow: scroll;
-        padding-bottom: 75px;
 
         &.expanded {
             height: 85vh;
@@ -134,6 +133,19 @@ $transitionStyle: ease-out;
 
         &.empty {
             height: 0;
+        }
+
+        &__filters {
+            position: sticky;
+            text-align: center;
+            top: 0;
+            z-index: 20;
+
+            .mat-expansion-panel-header-title {
+                text-align: center;
+                color: rgb(80, 80, 80);
+                font-weight: 700;
+            }
         }
 
         &__departures {
@@ -150,6 +162,7 @@ $transitionStyle: ease-out;
         &__list {
             box-shadow: 0px -20px 50px rgb(255, 255, 255);
             background-color: rgba(255, 255, 255, .95);
+            padding-bottom: 75px;
             position: relative;
             z-index: 1;
             top: 35px;

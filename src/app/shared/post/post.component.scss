@@ -117,12 +117,22 @@ $post-height: 100px;
         }
     }
 
-    &-date {
+    &-practical {
         display: flex;
         flex-direction: column;
         justify-content: center;
         color: rgb(100, 100, 100);
-        font-size: 24px;
         padding-left: 0;
+    }
+
+    &-date {
+        font-size: 24px;
+    }
+
+    &-weight {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 18px;
     }
 }

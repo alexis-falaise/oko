@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="constaints-row form-row">
-      <div class="input-group col-12 col-sm-6">
+      <div class="input-group col-6 col-md-4">
         <div class="input-group-prepend">
           <span class="input-group-text">
             <mat-icon>swap_vert</mat-icon>
@@ -24,7 +24,7 @@
           <span class="input-group-text">cm</span>
         </div>
       </div>
-      <div class="input-group col-12 col-sm-6">
+      <div class="input-group col-6 col-md-4">
         <div class="input-group-prepend">
           <span class="input-group-text">
             <mat-icon>swap_horiz</mat-icon>
@@ -35,8 +35,19 @@
           <span class="input-group-text">cm</span>
         </div>
       </div>
+      <div class="input-group col-4 d-none d-md-flex">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <mat-icon>compare_arrows</mat-icon>
+            </span>
+          </div>
+          <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
+          <div class="input-group-append">
+            <span class="input-group-text">cm</span>
+          </div>
+        </div>
     </div>
-    <div class="constraints-row form-row">
+    <div class="constraints-row form-row d-block d-md-none">
         <div class="input-group col-12 col-sm-6 col-md-4">
           <div class="input-group-prepend">
             <span class="input-group-text">

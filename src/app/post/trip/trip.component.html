@@ -17,12 +17,13 @@
   <div class="trip__content">
     <div class="content-row row">
       <div class="trip__content__location"
+           (mouveleave)="toArrival()"
            [ngClass]="{
              'extended': fromExtended && !locationEven,
              'even': locationEven
-           }" (swipeleft)="fromExtended = false; locationEven = false;"
-              (click)="fromExtended = true; locationEven = false;">
-        <h4 class="location-title trip-title">Départ</h4>
+           }" (swipeleft)="toArrival()"
+              (click)="toDeparture()">
+        <h4 class="location-title trip-title">Départ <mat-icon *ngIf="fromExtended">flight_takeoff</mat-icon></h4>
         <div class="location-selection">
             <app-trip-location
               [city]="departureInfo?.city"
@@ -33,12 +34,13 @@
         </div>
       </div>
       <div class="trip__content__location"
+          (mouseleave)="toSummary()"
           [ngClass]="{
               'extended': !fromExtended && !locationEven,
               'even': locationEven
-          }" (swiperight)="fromExtended = true; locationEven = false;"
-            (click)="fromExtended = false; locationEven = false;">
-        <h4 class="location-title trip-title">Arrivée</h4>
+          }" (swiperight)="toDeparture()"
+            (click)="toArrival()">
+        <h4 class="location-title trip-title">Arrivée <mat-icon *ngIf="!fromExtended">flight_land</mat-icon></h4>
         <div class="location-selection">
             <app-trip-location
             [city]="arrivalInfo?.city"

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from '@env/environment';
@@ -29,6 +29,8 @@ export class GeoService {
       if (response.status) {
         this.airports.next(response.data);
       }
+    }, (error: HttpErrorResponse) => {
+      console.log(error.error.message);
     });
   }
 
