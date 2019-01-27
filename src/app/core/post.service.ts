@@ -166,6 +166,10 @@ export class PostService {
     return this.tripDraft;
   }
 
+  deleteTripDraft() {
+    this.tripDraft = null;
+  }
+
   draftPost(filter: Filter) {
     this.postDraft = new Request({
       items: [{label : filter.item}],

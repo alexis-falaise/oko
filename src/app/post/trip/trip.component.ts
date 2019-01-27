@@ -102,6 +102,7 @@ export class TripComponent implements OnInit {
           .subscribe(response => {
             this.loading = false;
             if (response.status) {
+              this.postService.deleteTripDraft();
               this.snack.open('Voyage enregistré', 'Top!', {duration: 2000});
               this.router.navigate(['/home']);
             }
