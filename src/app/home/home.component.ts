@@ -103,10 +103,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  trip() {
-    this.router.navigate(['/post/trip']);
-  }
-
   deleteEverything() {
     this.postService.deleteAllPosts();
   }

@@ -5,7 +5,8 @@ import { RouterModule } from '@angular/router';
 import {
   MatIconModule,
   MatExpansionModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatRippleModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -29,6 +30,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatExpansionModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatRippleModule,
     RouterModule,
   ],
   exports: [

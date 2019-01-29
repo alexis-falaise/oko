@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="trip__content">
-    <div class="content-row row">
+    <div class="content-row row" (pandown)="toSummary()">
       <div class="trip__content__location"
            (mouveleave)="toArrival()"
            [ngClass]="{

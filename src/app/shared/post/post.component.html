@@ -1,4 +1,4 @@
-<div class="post row" [routerLink]="['/post', isTrip ? 'trip' : 'request', post.id]" [class.horizontal]="horizontal">
+<div matRipple class="post row" [routerLink]="['/post', isTrip ? 'trip' : 'request', post.id]" [class.horizontal]="horizontal">
     <div class="post-info col-3 col-md-2 justify-content-center"
     [style.background-image]="'url('+avatarLocation+'/'+post.user.avatar+')'">
         <!-- <div class="post-info__user-avatar">
