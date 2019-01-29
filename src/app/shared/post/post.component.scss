@@ -18,6 +18,12 @@ $post-height: 100px;
     padding: 5px;
     overflow: hidden;
 
+    &.horizontal {
+        height: 30vh;
+        min-height: 300px;
+        display: inline-flex;
+    }
+
     .row {
         height: 100%;
     }
@@ -50,7 +56,6 @@ $post-height: 100px;
     &-info {
         height: 107%;
         width: 100%;
-        padding-top: 10px;
         margin: -5px 0 -5px -5px;
         background-color: rgba(0, 0, 0, .2);
         background-size: auto 150%;
@@ -65,15 +70,15 @@ $post-height: 100px;
 
         &__user-info {
             color: rgba(255, 255, 255, .9);
-            height: 110%;
-            width: 150%;
+            height: 150%;
+            width: 200%;
             margin: -15px 0 -15px -15px;
-            padding: 10px;
+            padding: 20px 10px 10px;
             background-color: rgba(0, 0, 0, .1);
 
             &__firstname {
                 margin-bottom: 0;
-                font-size: 24px;
+                font-size: 18px;
             }   
         }
     }
@@ -92,7 +97,7 @@ $post-height: 100px;
             flex-direction: column;
             justify-content: center;
             text-align: center;
-            font-size: 24px;
+            font-size: 20px;
             color: rgb(75, 75, 75);
 
             &-details {
@@ -105,6 +110,7 @@ $post-height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             $iconSize: 64px;
             .mat-icon {
                 height: $iconSize;
@@ -133,6 +139,6 @@ $post-height: 100px;
         display: flex;
         flex-direction: row;
         align-items: center;
-        font-size: 18px;
+        font-size: 14px;
     }
 }

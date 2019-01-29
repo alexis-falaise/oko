@@ -1,4 +1,4 @@
-<div class="post row" [routerLink]="['/post', isTrip ? 'trip' : 'request', post.id]">
+<div class="post row" [routerLink]="['/post', isTrip ? 'trip' : 'request', post.id]" [class.horizontal]="horizontal">
     <div class="post-info col-3 col-md-2 justify-content-center"
     [style.background-image]="'url('+avatarLocation+'/'+post.user.avatar+')'">
         <!-- <div class="post-info__user-avatar">
@@ -16,7 +16,7 @@
     <div class="post-general col-9 col-md-10" *ngIf="isTrip">
         <div class="row">
             <div class="post-trip col-8 col-sm-9 col-md-10">
-                <div class="row">
+                <div class="row" *ngIf="!horizontal; else horizontalTrip">
                     <div class="post-trip__from col-12 col-sm-5 justify-content-center">
                             {{ post.from.label }}<br>
                             <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from.airport">
@@ -33,6 +33,25 @@
                         </span>
                     </div>
                 </div>
+                <ng-template #horizontalTrip>
+                    <div class="row">
+                        <div class="post-trip__from col-12 justify-content-center">
+                                {{ post.from.label }}<br>
+                                <span class="post-trip__from-details" *ngIf="post.from.airport">
+                                    {{ post.from.airport.label  || post.from.airport.name }}
+                                </span>
+                            </div>
+                        <div class="post-trip__link col-12 d-flex justify-content-center">
+                            <mat-icon>arrow_downward</mat-icon>
+                        </div>
+                        <div class="post-trip__to col-12 justify-content-center">
+                            {{ post.to.label }}
+                            <span class="post-trip__to-details" *ngIf="post.to.airport">
+                                {{ post.to.airport.label || post.to.airport.name }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
             <div class="post-practical col-4 col-sm-3 col-md-2">
                 <div class="post-date ">{{ post.date.format('DD/MM') }}</div>

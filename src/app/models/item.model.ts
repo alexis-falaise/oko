@@ -12,7 +12,7 @@ export class Item {
     price?: number;
     id?: string;
 
-    constructor(item: Partial<Item>) {
+    constructor(item: Partial<Item> = {}) {
         Object.assign(this, item);
     }
 }

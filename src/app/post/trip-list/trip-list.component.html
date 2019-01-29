@@ -1,0 +1,15 @@
+<div class="trip-list container-fluid">
+  <div class="trip-list__hero row justify-content-center">
+    <h1 class="trip-list__hero-title">Trajets à venir</h1>
+  </div>
+  <div class="trip-list__filters">
+    <app-post-filter (filterRefresh)="filterPosts($event)"></app-post-filter>
+  </div>
+  <div class="trip-list__list">
+    <app-post-list [trip]="true" (listRefresh)="listStatus($event)"></app-post-list>
+  </div>
+  <div class="trip-list__empty d-flex justify-content-center" *ngIf="empty">
+    <mat-icon class="list-empty">flight</mat-icon><br>
+    <div>Aucun résultat</div>
+  </div>
+</div>

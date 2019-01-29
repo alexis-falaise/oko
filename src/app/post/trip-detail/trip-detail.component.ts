@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '@core/post.service';
 
 import { Trip } from '@models/post/trip.model';
+import { DateAdapter } from '@angular/material';
 
 @Component({
   selector: 'app-trip-detail',
@@ -15,11 +16,13 @@ export class TripDetailComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private dateAdapter: DateAdapter<Date>,
     private route: ActivatedRoute,
     private postService: PostService,
   ) { }
 
   ngOnInit() {
+    this.dateAdapter.setLocale('fr');
     this.route.params.subscribe(param => {
       if (param && param.id) {
         this.postService.getTripById(param.id)

@@ -14,6 +14,7 @@ import { environment } from '@env/environment';
 })
 export class PostComponent implements OnInit, OnChanges {
   @Input() post: Post | Request | Trip;
+  @Input() horizontal = false;
   isTrip = false;
   isRequest = false;
   postPath = ['/post'];

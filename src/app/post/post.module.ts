@@ -23,6 +23,8 @@ import { RequestDetailComponent } from './request-detail/request-detail.componen
 import { RequestFormComponent } from './request-form/request-form.component';
 import { TripLocationComponent } from './trip/trip-location/trip-location.component';
 import { TripConstraintsComponent } from './trip/trip-constraints/trip-constraints.component';
+import { TripListComponent } from './trip-list/trip-list.component';
+import { RequestListComponent } from './request-list/request-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { TripConstraintsComponent } from './trip/trip-constraints/trip-constrain
     TripComponent,
     TripDetailComponent,
     TripLocationComponent,
-    TripConstraintsComponent
+    TripConstraintsComponent,
+    TripListComponent,
+    RequestListComponent
   ],
   imports: [
     CommonModule,

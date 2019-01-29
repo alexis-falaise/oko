@@ -7,7 +7,7 @@ export class Description {
     livedCountries: Array<string>;
     id?: string;
 
-    constructor(description: Partial<Description>) {
+    constructor(description: Partial<Description> = {}) {
         this.occupation = null;
         this.about = null;
         this.originCountry = null;

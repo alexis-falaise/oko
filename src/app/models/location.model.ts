@@ -5,7 +5,7 @@ export class Location {
     timezone?: number;
     id?: string;
 
-    constructor(location: Partial<Location>) {
+    constructor(location: Partial<Location> = {}) {
         Object.assign(this, location);
         if (location.airport) {
             this.airport = new Airport(location.airport);

@@ -1,0 +1,16 @@
+.post-list {
+    &.horizontal {
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+
+    .carousel-item {
+        padding: 0 25px;
+        transition: transform ease-out .3s;
+    }
+
+    .prev-icon,
+    .next-icon {
+        color: rgb(80, 80, 80);
+    }
+}

@@ -70,7 +70,7 @@ export class PostService {
     let queryString = '';
     if (filter) {
       queryString = Object.keys(filter).reduce((query, key, index) => {
-        return `${query}${index ? '&' : ''}${key + '=' + filter[key] }`;
+        return `${query}${index ? '&' : ''}${filter[key] ? key + '=' + filter[key] : '' }`;
       }, '?');
     }
     this.http.get(`${this.tripUrl}${queryString}`, {withCredentials: true})

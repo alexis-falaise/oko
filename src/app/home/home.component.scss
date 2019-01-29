@@ -15,7 +15,7 @@ $transitionStyle: ease-out;
         height: 15vh;
         min-height: 150px;
         padding-top: $navbarHeight;
-        background-size: 150% auto;
+        background-size: auto 200%;
         background-position: center;
         display: flex;
         flex-direction: column;
@@ -102,10 +102,10 @@ $transitionStyle: ease-out;
     }
 
     @media screen and (min-width: 760px) {
-
         &-hero,
         &-hero.expanded,
         &-hero.fullscreen {
+            background-position-y: 50%;
             background-position: center;
         }
 
@@ -117,14 +117,11 @@ $transitionStyle: ease-out;
         &-hero.fullscreen {
             background-size: auto 150%;
         }
-
-        &-hero {
-            background-position-y: 50%;
-        }
     }
 
     &-list {
         height: 40vh;
+        padding-top: 15px;
         overflow: scroll;
 
         &.expanded {
@@ -137,15 +134,8 @@ $transitionStyle: ease-out;
 
         &__filters {
             position: sticky;
-            text-align: center;
             top: 0;
             z-index: 11;
-
-            .mat-expansion-panel-header-title {
-                text-align: center;
-                color: rgb(80, 80, 80);
-                font-weight: 700;
-            }
         }
 
         &__departures {
@@ -162,7 +152,7 @@ $transitionStyle: ease-out;
         &__list {
             box-shadow: 0px -20px 50px rgb(255, 255, 255);
             background-color: rgba(255, 255, 255, .95);
-            padding-bottom: 75px;
+            margin-bottom: 50px;
             position: relative;
             z-index: 1;
             top: 35px;
@@ -195,7 +185,6 @@ $transitionStyle: ease-out;
 }
 
 .mat-form-field {
-    font-family: 'Rubik', 'Roboto', sans-serif !important;
     margin-top: -20px;
     margin-bottom: 5px;
     max-height: $homeHeroSize;

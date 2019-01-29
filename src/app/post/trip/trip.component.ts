@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { timer } from 'rxjs';
 import * as moment from 'moment';
 
@@ -9,7 +10,6 @@ import { UserService } from '@core/user.service';
 import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
 
 import { Trip } from '@models/post/trip.model';
-import { Router } from '@angular/router';
 import { User } from '@models/user.model';
 import { Airport } from '@models/airport.model';
 @Component({
@@ -31,16 +31,26 @@ export class TripComponent implements OnInit {
   };
   constraintsInfo = null;
   loading = false;
+  edition = false;
 
   constructor(
     private postService: PostService,
     private userService: UserService,
+    private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
     public snack: MatSnackBar
   ) { }
 
   ngOnInit() {
+    this.route.params.subscribe(param => {
+      console.log('Route param', param);
+    });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        console.log('Router event', event);
+      }
+    });
     const draft = this.postService.getTripDraft();
     if (draft) {
       if (draft.return && (draft.return.from || draft.return.to)) {

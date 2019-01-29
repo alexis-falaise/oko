@@ -10,7 +10,7 @@ export class User {
     rating?: number;
     id?: string;
 
-    constructor(user: Partial<User>) {
+    constructor(user: Partial<User> = {}) {
         Object.assign(this, user);
         if (user.description) {
             this.description = new Description(user.description);

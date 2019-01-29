@@ -5,7 +5,7 @@ export class MeetingPoint {
     country: string;
     id?: string;
 
-    constructor(point: Partial<MeetingPoint>) {
+    constructor(point: Partial<MeetingPoint> = {}) {
         Object.assign(this, point);
     }
 }

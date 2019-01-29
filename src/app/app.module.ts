@@ -55,7 +55,12 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatTabsModule,
     MatSnackBarModule,
   ],
-  providers: [AuthService, GeoService, PostService, UserService],
+  providers: [
+    AuthService,
+    GeoService,
+    PostService,
+    UserService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

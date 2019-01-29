@@ -4,7 +4,7 @@ export class Link {
     icon: string;
     id?: string;
 
-    constructor(link: Partial<Link>) {
+    constructor(link: Partial<Link> = {}) {
         Object.assign(this, link);
     }
 }

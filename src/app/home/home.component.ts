@@ -1,19 +1,17 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { timer } from 'rxjs';
 
-import { Post } from '@models/post/post.model';
-
+import { environment } from '@env/environment';
 import { AuthService } from '@core/auth.service';
 import { PostService } from '@core/post.service';
+
+import { Post } from '@models/post/post.model';
 import { Filter } from '@models/app/filter.model';
-import { Trip } from '@models/post/trip.model';
-import { Request } from '@models/post/request.model';
-import { environment } from '@env/environment.prod';
-import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -75,8 +73,9 @@ export class HomeComponent implements OnInit {
     this.post();
   }
 
-  filterPosts(userAction?) {
-    this.postService.getTrips(this.filter);
+  filterPosts(filter) {
+    const filters = Object.assign(this.filter, filter);
+    this.postService.getTrips(filters);
   }
 
   onScroll(event) {

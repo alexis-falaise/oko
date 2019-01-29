@@ -6,7 +6,7 @@ export class Filter {
     beforeDate?: Moment;
     afterDate?: Moment;
 
-    constructor(filter: Partial<Filter>) {
+    constructor(filter: Partial<Filter> = {}) {
         Object.assign(this, filter);
     }
 }
