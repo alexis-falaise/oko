@@ -15,13 +15,14 @@
     </div>
   </div>
   <div class="trip__content">
-    <div class="content-row row" (pandown)="toSummary()">
+    <div class="content-row row">
       <div class="trip__content__location"
            (mouveleave)="toArrival()"
            [ngClass]="{
              'extended': fromExtended && !locationEven,
              'even': locationEven
            }" (swipeleft)="toArrival()"
+              (swipedown)="toSummary()"
               (click)="toDeparture()">
         <h4 class="location-title trip-title">Départ <mat-icon *ngIf="fromExtended">flight_takeoff</mat-icon></h4>
         <div class="location-selection">
@@ -39,7 +40,8 @@
               'extended': !fromExtended && !locationEven,
               'even': locationEven
           }" (swiperight)="toDeparture()"
-            (click)="toArrival()">
+              (swipedown)="toSummary()"
+              (click)="toArrival()">
         <h4 class="location-title trip-title">Arrivée <mat-icon *ngIf="!fromExtended">flight_land</mat-icon></h4>
         <div class="location-selection">
             <app-trip-location
@@ -81,6 +83,25 @@
     <div class="trip__content__constraints">
       <h4 class="constraints-title trip-title">Capacité</h4>
       <small class="text-muted">Indiquez la taille et le poids maximum de l'article que vous pouvez transporter</small>
+      <button class="btn btn-info add-luggage" (click)="addLuggage()">
+        <mat-icon>add</mat-icon> Ajouter un baggage
+      </button>
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let luggage of luggages; let i = index">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <button class="btn btn-danger" (click)="removeLuggage(i)">
+                x
+              </button>
+              <mat-icon>work</mat-icon>
+              Bagage # {{ i + 1 }}
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <app-trip-sizing (complete)="sizing($event, i)"></app-trip-sizing>
+        </mat-expansion-panel>
+      </mat-accordion>
       <app-trip-constraints [constraintsInfo]="constraintsInfo" (valid)="constraints($event)"></app-trip-constraints>
     </div>
     <div class="trip__content__loading" *ngIf="loading">

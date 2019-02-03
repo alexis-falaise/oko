@@ -27,6 +27,7 @@ export class PostService {
   posts = new BehaviorSubject<Array<Post>>(null);
   postDraft: Post = null;
   tripDraft = null;
+  currentFilter = new Filter();
 
   constructor(private http: HttpClient) { }
 
@@ -68,7 +69,9 @@ export class PostService {
   getTrips(filter?: Filter) {
     const nextQuery = new Subject();
     let queryString = '';
+    filter = filter || this.currentFilter;
     if (filter) {
+      this.currentFilter = filter;
       queryString = Object.keys(filter).reduce((query, key, index) => {
         return `${query}${index ? '&' : ''}${filter[key] ? key + '=' + filter[key] : '' }`;
       }, '?');

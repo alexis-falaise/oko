@@ -15,6 +15,7 @@ $transitionStyle: ease-out;
         height: 15vh;
         min-height: 150px;
         padding-top: $navbarHeight;
+        background-image: url('assets/hero.jpg'), $heroGradient;
         background-size: auto 200%;
         background-position: center;
         display: flex;
@@ -119,8 +120,9 @@ $transitionStyle: ease-out;
         }
     }
 
-    &-list {
+    &-content {
         height: 40vh;
+        min-height: 400px;
         padding-top: 15px;
         overflow: scroll;
 
@@ -156,6 +158,19 @@ $transitionStyle: ease-out;
             position: relative;
             z-index: 1;
             top: 35px;
+
+            &-wrapper {
+                transition: all $transitionDuration;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+
+                &.expanded {
+                    transition: all $transitionDuration;
+                    justify-content: center;
+                }
+            }
         }
     }
 

@@ -77,12 +77,6 @@ export class TripLocationComponent implements OnInit, OnChanges {
         this.airports = null;
       }
     });
-    this.location.statusChanges
-    .subscribe(status => {
-      if (status === 'VALID') {
-        this.valid.emit(this.location.value);
-      }
-    });
     this.location.controls.time.valueChanges
     .subscribe((value: string) => {
       this.validateTime(value);
@@ -95,6 +89,10 @@ export class TripLocationComponent implements OnInit, OnChanges {
     });
     this.location.controls.airport.valueChanges
     .subscribe(value => this.filteredAirports = this.filterAirports(value));
+  }
+
+  submit() {
+    this.valid.emit(this.location.value);
   }
 
   setAirportList(airports: Array<Airport>) {

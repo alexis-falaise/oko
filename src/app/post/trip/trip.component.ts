@@ -12,6 +12,7 @@ import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Airport } from '@models/airport.model';
+import { Luggage } from '@models/luggage.model';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -29,6 +30,7 @@ export class TripComponent implements OnInit {
     from: null,
     to: null
   };
+  luggages: Array<Luggage> = [new Luggage()];
   constraintsInfo = null;
   loading = false;
   edition = false;
@@ -63,15 +65,25 @@ export class TripComponent implements OnInit {
     }
   }
 
+  addLuggage() {
+    this.luggages.push(new Luggage());
+  }
+
+  removeLuggage(index) {
+    this.luggages.splice(index, 1);
+  }
+
   departure(info) {
     if (!(info.airport instanceof Airport)) {
       info.aiport = new Airport({label: info.airport});
     }
     this.departureInfo = info;
+    this.toArrival();
   }
 
   arrival(info) {
     this.arrivalInfo = info;
+    this.toSummary();
   }
 
   returnFrom(info) {
@@ -99,6 +111,10 @@ export class TripComponent implements OnInit {
   toSummary() {
     this.fromExtended = false;
     this.locationEven = true;
+  }
+
+  sizing(value, luggageIndex) {
+    this.luggages[luggageIndex] = new Luggage(value);
   }
 
   save() {

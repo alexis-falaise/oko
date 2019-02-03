@@ -2,6 +2,7 @@ import { Location } from '@models/location.model';
 import { Post } from '@models/post/post.model';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { Luggage } from '@models/luggage.model';
 
 export class Trip extends Post {
     from: Location;
@@ -9,10 +10,7 @@ export class Trip extends Post {
     date: Moment;
 
     /* Transportation constraints */
-    weight: number;
-    height: number;
-    width: number;
-    depth: number;
+    luggages?: Array<Luggage>;
     airportDrop: boolean;
     cabinOnly: boolean;
 

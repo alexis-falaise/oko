@@ -1,10 +1,9 @@
-<div class="home" (pan)="onPan($event)">
-    <div class="home-hero" [style.background-image]="'url('+backgroundImage+')'"
-                           [class.expanded]="expanded"
+<div class="home" (panup)="shrink()" (pandown)="expand()">
+    <div class="home-hero" [class.expanded]="expanded"
                            [class.fullscreen]="empty"
                            (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
         <div class="home-hero__input" *ngIf="expanded">
-            Je cherche
+            Je veux me faire livrer
             <mat-form-field class="input-hero__item" floatLabel="never">
                 <input matInput type="text" name="item" placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
             </mat-form-field>
@@ -18,25 +17,27 @@
             <!-- <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button> -->
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">
-            <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Départs</span>
+            <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Trajets à venir</span>
             <span class="home-hero__summary-location" (click)="enter()">{{ filter.location }}</span>
             <span class="home-hero__summary-item" (click)="enter()">{{ filter.item }}</span>
         </div>
     </div>
-    <div class="home-list" [class.expanded]="!expanded" [class.empty]="empty" (scroll)="onScroll($event)">
-        <!-- <div class="home-list__filters">
+    <div class="home-content" [class.expanded]="!expanded" [class.empty]="empty" (scroll)="onScroll($event)">
+        <!-- <div class="home-content__filters">
             <app-post-filter (filterRefresh)="filterPosts($event)"></app-post-filter>
         </div> -->
-        <!-- <div class="home-list__departures" *ngIf="!empty">Départs disponibles</div> -->
-        <div class="d-flex justify-content-around">
-            <button matRipple class="btn btn-info btn-outline" [routerLink]="['/post/request/new']">Créer une annonce</button>
-            <button matRipple class="btn btn-light btn-outline" [routerLink]="['/post/trip']">Voir tous les trajets</button>
-        </div>
-        <div class="home-list__list">
-            <app-post-list (listRefresh)="listStatus($event)" [horizontal]="true"></app-post-list>
-        </div>
-        <div class="d-flex justify-content-center">
-            <button matRipple class="btn btn-primary" [routerLink]="['/post/trip/new']">Proposer un trajet</button>
+        <!-- <div class="home-content__departures" *ngIf="!empty">Départs disponibles</div> -->
+        <div class="home-content__list-wrapper" [class.expanded]="!expanded">
+            <div class="d-flex justify-content-around">
+                <button matRipple class="btn btn-info btn-outline" [routerLink]="['/post/request/new']">Créer une annonce</button>
+                <button matRipple class="btn btn-light btn-outline" [routerLink]="['/post/trip']">Afficher tous les trajets</button>
+            </div>
+            <div class="home-content__list">
+                <app-post-list (listRefresh)="listStatus($event)" [horizontal]="true"></app-post-list>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button matRipple class="btn btn-primary" [routerLink]="['/post/trip/new']">Proposer un trajet</button>
+            </div>
         </div>
     </div>
     <!-- <div class="home-trip justify-content-center" [class.expanded]="!expanded">

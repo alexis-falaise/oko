@@ -9,6 +9,7 @@ import {
   MatProgressBarModule,
   MatSnackBarModule,
   MatAutocompleteModule,
+  MatExpansionModule,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -25,6 +26,7 @@ import { TripLocationComponent } from './trip/trip-location/trip-location.compon
 import { TripConstraintsComponent } from './trip/trip-constraints/trip-constraints.component';
 import { TripListComponent } from './trip-list/trip-list.component';
 import { RequestListComponent } from './request-list/request-list.component';
+import { TripSizingComponent } from './trip/trip-sizing/trip-sizing.component';
 
 @NgModule({
   declarations: [
@@ -36,13 +38,15 @@ import { RequestListComponent } from './request-list/request-list.component';
     TripLocationComponent,
     TripConstraintsComponent,
     TripListComponent,
-    RequestListComponent
+    RequestListComponent,
+    TripSizingComponent
   ],
   imports: [
     CommonModule,
     DialogsModule,
     FormsModule,
     MatAutocompleteModule,
+    MatExpansionModule,
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,

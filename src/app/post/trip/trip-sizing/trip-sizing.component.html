@@ -1,0 +1,46 @@
+<form [formGroup]="sizing">
+  <div class="form-row">
+    <div class="input-group col-6">
+        <input type="text" class="form-control" formControlName="weight">
+        <small>
+          <mat-icon>shopping_basket</mat-icon>
+          Poids
+        </small>
+        <div class="input-group-append">
+          <span class="input-group-text">kg</span>
+        </div>
+    </div>
+    <div class="input-group col-6">
+        <input type="text" class="form-control" formControlName="height">
+        <small>
+          <mat-icon>swap_vert</mat-icon>
+          Hauteur
+        </small>
+        <div class="input-group-append">
+          <span class="input-group-text">cm</span>
+        </div>
+    </div>
+  </div>
+  <div class="form-row">
+      <div class="input-group col-6">
+          <input type="text" class="form-control" formControlName="width">
+          <div class="input-group-append">
+            <span class="input-group-text">cm</span>
+          </div>
+          <small>
+            <mat-icon>swap_horiz</mat-icon>
+            Largeur
+          </small>
+      </div>
+      <div class="input-group col-6">
+          <input type="text" class="form-control" formControlName="depth">
+          <small>
+            <mat-icon>compare_arrows</mat-icon>
+            Profondeur
+          </small>
+          <div class="input-group-append">
+            <span class="input-group-text">cm</span>
+          </div>
+      </div>
+    </div>
+</form>

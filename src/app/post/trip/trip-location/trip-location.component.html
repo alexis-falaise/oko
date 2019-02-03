@@ -1,4 +1,4 @@
-<form [formGroup]="location" novalidate>
+<form [formGroup]="location" (ngSubmit)="submit()" novalidate>
     <div class="form-group">
         <input type="text" name="city" formControlName="city" (focus)="cityFocus = true" (blur)="cityFocus = false"
                placeholder="Ville"
@@ -38,5 +38,6 @@
                 [readonly]="timeReadonly"
                 placeholder="Heure">
         </div>
+        <input type="submit" style="position: absolute; left: -9999px" tabindex="-1">
     </div>
 </form>

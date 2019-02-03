@@ -27,7 +27,7 @@ export class NavComponent implements OnInit {
     { label: 'Créer une annonce', path: '/post/request', icon: 'new_releases' },
     { label: 'Mes trajets', path: '/trips', icon: 'explore' },
     { label: 'Messages', path: '/messages', icon: 'email' },
-    { label: 'Je voyage', path: '/post/trip', icon: 'flight_takeoff' },
+    { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
     { label: 'Aide', path: '/help', icon: 'help' },
   ];
   displayAccountMenuItems: Array<MenuItem> = null;

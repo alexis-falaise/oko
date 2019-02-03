@@ -50,8 +50,16 @@ export class HomeComponent implements OnInit {
     const draft = this.postService.getTripDraft();
     if (draft) {
       const snackRef = this.snack.open('Brouillon de trajet', 'Ouvrir', {duration: 5000});
-      snackRef.onAction().subscribe(() => this.router.navigate(['/post/trip']));
+      snackRef.onAction().subscribe(() => this.router.navigate(['/post/trip/new']));
     }
+  }
+
+  expand() {
+    this.expanded = true;
+  }
+
+  shrink() {
+    this.expanded = false;
   }
 
   enter() {
@@ -81,15 +89,6 @@ export class HomeComponent implements OnInit {
   onScroll(event) {
     this.expanded = false;
     this.post();
-  }
-
-  onPan(event) {
-    if (event.velocityY > 0) {
-      this.expanded = true;
-    }
-    if (event.velocityY < 0) {
-      this.expanded = false;
-    }
   }
 
   listStatus(length) {

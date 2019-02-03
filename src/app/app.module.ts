@@ -11,6 +11,7 @@ import {
   MatDatepickerModule,
   MatExpansionModule,
   MatSnackBarModule,
+  MatRippleModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -53,6 +54,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatIconModule,
     MatProgressBarModule,
     MatTabsModule,
+    MatRippleModule,
     MatSnackBarModule,
   ],
   providers: [
