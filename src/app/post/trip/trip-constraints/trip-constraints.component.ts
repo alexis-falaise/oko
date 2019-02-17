@@ -12,9 +12,10 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
 
   @Input() constraintsInfo;
   @Output() complete = new EventEmitter();
-  luggages: Array<Luggage> = [];
+  luggages: Array<Luggage> = [new Luggage()];
   airportDrop = true;
   bonus = 0;
+  disclose = [];
 
   constructor(private dialog: MatDialog) {}
 
@@ -34,7 +35,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
   openLuggageDialog(luggage?: Luggage, index?: number) {
     const dialogRef = this.dialog.open(TripLuggageComponent, {
       width: '98vw',
-      height: '95vh',
+      height: '75vh',
       data: luggage ? {luggage: luggage, index: index} : null
     });
     dialogRef.afterClosed().subscribe(savingData => {
@@ -54,6 +55,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
   }
 
   editLuggage(index) {
+    this.disclose[index] = false;
     const luggage = this.luggages[index];
     this.openLuggageDialog(luggage, index);
   }

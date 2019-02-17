@@ -8,11 +8,15 @@
       <div class="luggage-list">
         <mat-card matRipple class="luggage" *ngFor="let luggage of luggages; let i = index"
                   (click)="editLuggage(i)"
-                  (swipeleft)="removeLuggage(i)">
+                  (swipeleft)="disclose[i] = true"
+                  (swiperight)="disclose[i] = false">
           <mat-card-title>
             <mat-icon>work</mat-icon>
             Bagage {{ i + 1 }}
           </mat-card-title>
+          <div class="remove-panel" *ngIf="disclose[i]" (click)="removeLuggage(i)">
+            <mat-icon>delete</mat-icon>
+          </div>
           <mat-icon class="remove-luggage" (click)="removeLuggage(i)">clear</mat-icon>
           <mat-card-subtitle>
             {{ luggage.cabin ? 'Cabine' :  'Soute' }}

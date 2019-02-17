@@ -80,17 +80,19 @@ $transitionStyle: ease-out;
 
             &-location{
                 display: block;
-                font-size: 48px;
+                font-size: 36px;
                 font-weight: 100;
+                margin-bottom: -25px;
             }
             &-item {
-                font-size: 24px;
+                font-size: 18px;
                 font-weight: 500;
             }
 
             &-empty {
-                margin-left: -5%;
-                font-size: 48px;
+                display: block;
+                margin: -25px 0 0 0;
+                font-size: 36px;
                 font-weight: 100;
             }
         }
@@ -124,11 +126,11 @@ $transitionStyle: ease-out;
     &-content {
         height: 40vh;
         min-height: 400px;
-        padding-top: 15px;
         overflow: scroll;
+        padding-top: 15px;
 
         &.expanded {
-            height: 85vh;
+            height: 75vh;
         }
 
         &.empty {

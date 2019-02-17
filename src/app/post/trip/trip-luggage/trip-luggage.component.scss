@@ -9,21 +9,27 @@
 
     .close {
         position: absolute;
-        top: 5.5vh;
+        top: 16vh;
         right: 13.5vw;
     }
 
     &__content {
+        .step-wrapper {
+            height: 39vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
         .luggage-type {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 50vh;
+            height: 20vh;
         }
 
         .luggage-weight {
-            height: 50vh;
+            height: 20vh;
         }
 
         .luggage-space {
@@ -35,6 +41,12 @@
 
         .input-label {
             display: flex;
+            margin-top: 5px;
+            justify-content: center;
+
+            .label {
+                display: inline-flex;
+            }
         }
 
         .luggage-validation {

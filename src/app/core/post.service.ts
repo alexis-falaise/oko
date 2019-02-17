@@ -184,6 +184,14 @@ export class PostService {
     return this.postDraft;
   }
 
+  getTripFilters() {
+    return this.currentFilter;
+  }
+
+  resetTripFilters() {
+    this.currentFilter = new Filter();
+  }
+
   // TESTING PURPOSES
 
   deleteAllPosts() {

@@ -3,7 +3,7 @@
     <h1 class="trip-list__hero-title">Trajets à venir</h1>
   </div>
   <div class="trip-list__filters">
-    <app-post-filter (filterRefresh)="filterPosts($event)"></app-post-filter>
+    <app-post-filter [filter]="filter" (filterRefresh)="filterPosts($event)" (resetFilter)="resetFilters()"></app-post-filter>
   </div>
   <div class="trip-list__list">
     <app-post-list [trip]="true" (listRefresh)="listStatus($event)"></app-post-list>

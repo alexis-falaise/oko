@@ -1,6 +1,9 @@
 <mat-expansion-panel class="post-filter">
     <mat-expansion-panel-header class="post-filter__header">
-        <mat-panel-title>Filtres</mat-panel-title>
+        <mat-panel-title>
+            <mat-icon class="post-filter__reset" (click)="reset()">highlight_off</mat-icon>
+            Filtres
+        </mat-panel-title>
         <mat-panel-description>
             <span *ngIf="filter.beforeDate">Avant le {{ filter.beforeDate.format('DD MMMM') }}</span>
             <span *ngIf="filter.location">À {{ filter.location }}</span>

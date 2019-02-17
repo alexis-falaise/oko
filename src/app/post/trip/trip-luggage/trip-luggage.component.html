@@ -47,55 +47,57 @@
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Espace</ng-template>
-        <small class="text-muted">L'espace qu'il me reste dans mon bagage pour transporter un article</small>
-        <div class="luggage-space">
-          <div class="form-row">
-            <div class="form-group col-12 col-md-4">
-              <div class="input-group">
-                  <input type="number" class="form-control" min="0" required [(ngModel)]="height">
-                  <div class="input-group-append">
-                    <span class="input-group-text">cm</span>
-                  </div><br>
-              </div>
-              <div class="input-label">
-                <span class="text-muted">
-                  <mat-icon>swap_vert</mat-icon>
-                  Hauteur
-                </span>
-              </div>
-            </div>
-            <div class="form-group col-12 col-md-4">
-                <div class="input-group">
-                    <input type="number" class="form-control" min="0" required [(ngModel)]="width">
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
+        <div class="step-wrapper">
+            <small class="text-muted">L'espace qu'il me reste dans mon bagage pour transporter un article</small>
+            <div class="luggage-space">
+              <div class="form-row">
+                <div class="form-group col-12 col-md-4">
+                  <div class="input-group">
+                      <input type="number" class="form-control" min="0" required [(ngModel)]="height">
+                      <div class="input-group-append">
+                        <span class="input-group-text">cm</span>
+                      </div><br>
+                  </div>
+                  <div class="input-label">
+                    <span class="label text-muted">
+                      <mat-icon>swap_vert</mat-icon>
+                      Hauteur
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group col-12 col-md-4">
+                    <div class="input-group">
+                        <input type="number" class="form-control" min="0" required [(ngModel)]="width">
+                        <div class="input-group-append">
+                          <span class="input-group-text">cm</span>
+                        </div>
+                    </div>
+                    <div class="input-label">
+                      <span class="label text-muted">
+                        <mat-icon>swap_horiz</mat-icon>
+                        Largeur
+                      </span>
                     </div>
                 </div>
-                <div class="input-label">
-                  <span class="text-muted">
-                    <mat-icon>swap_horiz</mat-icon>
-                    Largeur
-                  </span>
-                </div>
-            </div>
-            <div class="form-group col-12 col-md-4">
-              <div class="input-group">
-                  <input type="number" class="form-control" min="0" required [(ngModel)]="depth">
-                  <div class="input-group-append">
-                    <span class="input-group-text">cm</span>
+                <div class="form-group col-12 col-md-4">
+                  <div class="input-group">
+                      <input type="number" class="form-control" min="0" required [(ngModel)]="depth">
+                      <div class="input-group-append">
+                        <span class="input-group-text">cm</span>
+                      </div>
                   </div>
-              </div>
-              <div class="input-label">
-                <span class="text-muted">
-                  <mat-icon>compare_arrows</mat-icon>
-                  Profondeur
-                </span>
+                  <div class="input-label">
+                    <span class="label text-muted">
+                      <mat-icon>compare_arrows</mat-icon>
+                      Profondeur
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="luggage-validation">
-          <button class="btn btn-success" (click)="save()">Enregistrer</button>
+            <div class="luggage-validation">
+              <button class="btn btn-success" (click)="save()">Enregistrer</button>
+            </div>
         </div>
       </mat-step>
     </mat-horizontal-stepper>
