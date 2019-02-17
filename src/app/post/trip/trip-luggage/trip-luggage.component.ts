@@ -76,7 +76,8 @@ export class TripLuggageComponent implements OnInit {
         cabin: this.cabin,
         full: this.full,
       }),
-      index: this.index
+      index: this.index,
+      modifying: this.modifying,
     });
   }
 

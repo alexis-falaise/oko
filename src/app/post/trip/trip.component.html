@@ -121,16 +121,12 @@
         <small *ngIf="!departureInfo || !arrivalInfo">Complétez les informations de votre trajet</small>
         <div *ngIf="departureInfo && arrivalInfo && constraintsInfo">
             <hr class="divider">
-            <div class="row" *ngIf="constraintsInfo.luggages">
-              <h4 class="trip-title">
-                <mat-icon>work</mat-icon> {{ constraintsInfo.luggages.length }} bagage{{constraintsInfo.luggages.length > 1 ? 's': '' }}
-              </h4>
+            <div class="text-muted" *ngIf="constraintsInfo.luggages">
+              <mat-icon>work</mat-icon> {{ constraintsInfo.luggages.length }} bagage{{constraintsInfo.luggages.length > 1 ? 's': '' }}
             </div>
-            <div class="row" *ngIf="constraintsInfo.bonus">
-              <h4 class="trip-title">
-                <mat-icon>euro_symbol</mat-icon>
-                Bonus Voyageur: {{ constraintsInfo.bonus }} € 
-              </h4>
+            <div class="text-muted" *ngIf="constraintsInfo.bonus">
+              <mat-icon>euro_symbol</mat-icon>
+              Bonus Voyageur: {{ constraintsInfo.bonus }} € 
             </div>
         </div>
         <div class="trip__content__actions">

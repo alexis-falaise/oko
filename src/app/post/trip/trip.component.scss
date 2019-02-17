@@ -2,6 +2,7 @@
 @import "../../../styles/animations.scss";
 
 .trip {
+
     &__hero {
         animation: $animationDuration openHero;
         -webkit-animation: $animationDuration openHero;

@@ -24,6 +24,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
       if (constraints) {
         this.luggages = constraints.luggages;
         this.airportDrop = constraints.airportDrop;
+        this.bonus = constraints.bonus;
       }
     }
   }
@@ -38,7 +39,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe(savingData => {
       if (savingData) {
-        if (savingData.index) {
+        if (savingData.modifying) {
           this.luggages[savingData.index] = savingData.luggage;
         } else {
           this.addLuggage(savingData.luggage);

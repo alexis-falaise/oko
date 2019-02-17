@@ -81,7 +81,7 @@
       <small class="text-muted">Proposez un montant pour votre bonus. Tenez compte de la capacité que vous proposez, et du trajet que vous effectuez.</small>
       <div class="form-group">
         <div class="input-group">
-          <input type="number" class="form-control" [(ngModel)]="bonus">
+          <input type="number" class="form-control" [(ngModel)]="bonus" (ngModelChange)="emit()">
           <div class="input-group-append">
             <span class="input-group-text">€</span>
           </div>

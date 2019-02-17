@@ -25,7 +25,8 @@ $transitionStyle: ease-out;
         color: white;
         box-shadow: 0px -2px 15px rgba(0, 0, 0, .5) inset;
         font-size: $homeHeroSize;
-        font-weight: 200;
+        font-weight: 700;
+        text-shadow: 0 2px 7.5px rgba(0, 0, 0, .4);
 
         // &:hover {
         //     transition: $transitionDuration $transitionStyle all;
@@ -152,7 +153,6 @@ $transitionStyle: ease-out;
         }
 
         &__list {
-            box-shadow: 0px -20px 50px rgb(255, 255, 255);
             background-color: rgba(255, 255, 255, .95);
             margin-bottom: 50px;
             position: relative;
@@ -170,10 +170,6 @@ $transitionStyle: ease-out;
                     transition: all $transitionDuration;
                     justify-content: center;
                 }
-            }
-
-            &-buttons {
-                height: 50px;
             }
         }
     }

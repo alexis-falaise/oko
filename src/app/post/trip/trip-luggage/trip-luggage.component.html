@@ -7,7 +7,9 @@
   <div class="trip-luggage__content">
     <mat-horizontal-stepper [linear]="!modifying" labelPosition="bottom">
       <mat-step>
-        <ng-template matStepLabel>Type</ng-template>
+        <ng-template matStepLabel>
+          Type <br> {{ cabin ? 'Cabine' : 'Soute' }}
+        </ng-template>
         <small class="text-muted">Je transporte mon bagage en soute ou en cabine</small>
         <div class="luggage-type">
           <button class="btn btn-toggle" (click)="inCargo()" [class.active]="!cabin">
@@ -24,7 +26,10 @@
         </div>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Poids</ng-template>
+        <ng-template matStepLabel>
+          Poids<br>
+          <span *ngIf="weight">{{ weight }} kg</span>
+        </ng-template>
         <small class="text-muted">J'estime le poids de l'article que je peux transporter</small>
         <div class="luggage-weight">
           <div class="form-group">

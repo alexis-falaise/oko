@@ -24,8 +24,8 @@ import { Filter } from '@models/app/filter.model';
 })
 export class HomeComponent implements OnInit {
 
-  private locationSamples = ['Paris', 'Santa Cruz', 'Dakar', 'Bògota'];
-  private itemSamples = ['un parfum', 'une liseuse', 'un iPhone'];
+  private locationSamples = ['Paris', 'Santa Cruz', 'Dakar', 'Bògota', 'Lille', 'Shenzen', 'Madrid', 'Sacramento'];
+  private itemSamples = ['un parfum', 'une liseuse', 'un iPhone', 'un camembert', 'des chaussures', 'du vin', 'une guitare'];
   public prod = environment.production;
   backgroundImage = 'assets/hero.jpg';
   swingingLocation = this.locationSamples[0];
