@@ -13,6 +13,7 @@ import { DateAdapter } from '@angular/material';
 })
 export class TripDetailComponent implements OnInit {
   trip: Trip = null;
+  engagement = false;
 
   constructor(
     private router: Router,

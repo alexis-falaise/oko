@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 import { RequestComponent } from './request/request.component';
-import { RequestListComponent } from './request-list/request-list.component';
+import { RequestListComponent } from './request/request-list/request-list.component';
+import { RequestDetailComponent } from './request/request-detail/request-detail.component';
 import { TripComponent } from './trip/trip.component';
-import { TripListComponent } from './trip-list/trip-list.component';
-import { TripDetailComponent } from './trip-detail/trip-detail.component';
-import { RequestDetailComponent } from './request-detail/request-detail.component';
+import { TripListComponent } from './trip/trip-list/trip-list.component';
+import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'request', pathMatch: 'full' },

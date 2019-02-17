@@ -12,11 +12,11 @@
         </ng-template>
         <small class="text-muted">Je transporte mon bagage en soute ou en cabine</small>
         <div class="luggage-type">
-          <button class="btn btn-toggle" (click)="inCargo()" [class.active]="!cabin">
+          <button class="btn btn-toggle btn-luggage-type" (click)="inCargo()" [class.active]="!cabin">
             <mat-icon>flight</mat-icon>
             Soute
           </button>
-          <button class="btn btn-toggle" (click)="inCabin()" [class.active]="cabin">
+          <button class="btn btn-toggle btn-luggage-type" (click)="inCabin()" [class.active]="cabin">
             <mat-icon>work</mat-icon>
             Cabine
           </button>
@@ -47,7 +47,7 @@
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Espace</ng-template>
-        <div class="step-wrapper">
+        <div class="step-wrapper luggage-space-wrapper">
             <small class="text-muted">L'espace qu'il me reste dans mon bagage pour transporter un article</small>
             <div class="luggage-space">
               <div class="form-row">
@@ -95,9 +95,9 @@
                 </div>
               </div>
             </div>
-            <div class="luggage-validation">
-              <button class="btn btn-success" (click)="save()">Enregistrer</button>
-            </div>
+        </div>
+        <div class="luggage-validation">
+          <button class="btn btn-success" (click)="save()">Enregistrer</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

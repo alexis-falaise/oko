@@ -1,9 +1,10 @@
 
-@import "../../../styles/variables.scss";
-@import "../../../styles/animations.scss";
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/animations.scss";
 
 .trip-detail {
     height: 100vh;
+    overflow-y: scroll;
 
     &__hero {
         animation: $animationDuration openHero;
@@ -14,6 +15,9 @@
         background: $heroGradient;
         // background-image: url('/assets/hero-trip-detail.jpg');
         width: 100vw;
+        position: sticky;
+        z-index: 10;
+        top: 0;
         height: 25vh;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -108,9 +112,10 @@
     }
 
     &__engagement {
-        padding-top: 25px;
+        padding: 25px 0;
 
         &__constraints {
+            margin-bottom: 25px;
             .constraints {
                 margin: 10px 0;
                 padding-left: 0;
@@ -162,5 +167,12 @@
                 }
             }
         }
+
     }
+}
+
+.btn-engagement {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }

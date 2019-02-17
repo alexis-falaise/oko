@@ -1,0 +1,19 @@
+@import "../../../../styles/variables.scss";
+
+.request-item {
+    &-title {
+        font-weight: 700;
+        font-size: 24px;
+        color: $cyan-600
+    }
+    
+    &__content {
+        height: 60vh;
+        overflow-y: scroll;
+    }
+
+    &-validation {
+        display: flex;
+        justify-content: center;
+    }
+}

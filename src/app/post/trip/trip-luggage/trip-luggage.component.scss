@@ -7,17 +7,15 @@
         color: $cyan-600
     }
 
-    .close {
-        position: absolute;
-        top: 16vh;
-        right: 13.5vw;
-    }
-
     &__content {
         .step-wrapper {
             height: 39vh;
             overflow-y: scroll;
             overflow-x: hidden;
+        }
+
+        .luggage-space-wrapper {
+            height: 30vh;
         }
 
         .luggage-type {
@@ -37,16 +35,6 @@
             flex-direction: column;
             justify-content: center;
             height: 50vh;
-        }
-
-        .input-label {
-            display: flex;
-            margin-top: 5px;
-            justify-content: center;
-
-            .label {
-                display: inline-flex;
-            }
         }
 
         .luggage-validation {

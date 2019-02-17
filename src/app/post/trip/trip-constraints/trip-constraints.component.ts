@@ -12,7 +12,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
 
   @Input() constraintsInfo;
   @Output() complete = new EventEmitter();
-  luggages: Array<Luggage> = [new Luggage()];
+  luggages: Array<Luggage> = [];
   airportDrop = true;
   bonus = 0;
   disclose = [];
@@ -52,6 +52,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
   addLuggage(luggage?) {
     this.luggages.push(luggage ? luggage : new Luggage());
     this.emit();
+    this.disclose = [];
   }
 
   editLuggage(index) {

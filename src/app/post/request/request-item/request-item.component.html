@@ -1,0 +1,90 @@
+<div class="request-item">
+  <h2 class="request-item-title justify-content-around">
+      <span style="display: inline-block">{{ modifying ? 'Modifier' : 'Ajouter' }} un article</span>
+  </h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="request-item__content">
+    <form [formGroup]="item" novalidate>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article" required>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="link" placeholder="Lien e-commerce">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="photo" placeholder="Photo (lien)">
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <input type="text" class="form-control" formControlName="price" placeholder="Prix estimé">
+          <div class="input-group-append">
+            <span class="input-group-text">€</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
+      </div>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Dimensions</mat-panel-title>
+          <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="form-row">
+            <div class="input-group">
+                <input type="number" class="form-control" min="0" required formControlName="weight">
+                <div class="input-group-append">
+                  <span class="input-group-text">kg</span>
+                </div><br>
+            </div>
+            <div class="input-label">
+              <span class="label text-muted">
+                <mat-icon>shopping_basket</mat-icon>
+                Poids
+              </span>
+            </div>
+            <div class="input-group">
+                <input type="number" class="form-control" min="0" required formControlName="height">
+                <div class="input-group-append">
+                  <span class="input-group-text">cm</span>
+                </div><br>
+            </div>
+            <div class="input-label">
+              <span class="label text-muted">
+                <mat-icon>swap_vert</mat-icon>
+                Hauteur
+              </span>
+            </div>
+            <div class="input-group">
+                <input type="number" class="form-control" min="0" required formControlName="width">
+                <div class="input-group-append">
+                  <span class="input-group-text">cm</span>
+                </div><br>
+            </div>
+            <div class="input-label">
+              <span class="label text-muted">
+                <mat-icon>swap_horiz</mat-icon>
+                Largeur
+              </span>
+            </div>
+            <div class="input-group">
+                <input type="number" class="form-control" min="0" required formControlName="depth">
+                <div class="input-group-append">
+                  <span class="input-group-text">cm</span>
+                </div><br>
+            </div>
+            <div class="input-label">
+              <span class="label text-muted">
+                <mat-icon>compare_arrows</mat-icon>
+                Profondeur
+              </span>
+            </div>
+        </div>
+      </mat-expansion-panel>
+      <div class="request-item-validation">
+        <button class="btn btn-success" (click)="save()">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>

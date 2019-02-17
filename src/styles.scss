@@ -101,7 +101,7 @@ html, body {
 
 .btn-toggle {
     width: 150px;
-    display: flex;
+    display: flex !important;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -115,4 +115,20 @@ html, body {
             color: white;
         }
     }
+}
+
+.input-label {
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+
+    .label {
+        display: inline-flex;
+    }
+}
+
+.close {
+    position: relative;
+    top: -35px;
+    right: -10px;
 }

@@ -1,0 +1,31 @@
+@import "../../../styles/variables.scss";
+
+@keyframes slideEnter {
+    0% { width: 0%; opacity: .5; }
+    100% { width: 35%; opacity: 1; }
+}
+
+.remove-panel {
+    transition: all $transitionDuration;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    animation: 0.15s slideEnter;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 35%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
+    background-color: $red-800;
+    position: absolute;
+    z-index: 1;
+    .mat-icon {
+        color: white;
+    }
+
+    &:hover {
+        transition: all $transitionDuration;
+        background-color: $red-600;
+    }
+}

@@ -15,13 +15,15 @@ import { AvatarComponent } from './avatar/avatar.component';
 import { PostListComponent } from './post-list/post-list.component';
 import { PostFilterComponent } from './post-filter/post-filter.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { RemovePanelComponent } from './remove-panel/remove-panel.component';
 
 @NgModule({
   declarations: [
     PostComponent,
     AvatarComponent,
     PostListComponent,
-    PostFilterComponent
+    PostFilterComponent,
+    RemovePanelComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +40,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     PostComponent,
     PostListComponent,
     PostFilterComponent,
+    RemovePanelComponent,
   ],
 })
 export class SharedModule { }

@@ -1,7 +1,8 @@
-<form [formGroup]="location" (ngSubmit)="submit()" novalidate>
+<form [formGroup]="location" (ngSubmit)="submit()" autocomplete="off" novalidate>
     <div class="form-group">
         <input type="text" name="city" formControlName="city" (focus)="cityFocus = true" (blur)="cityFocus = false"
                placeholder="Ville"
+               autocomplete="off"
                [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
                [readonly]="cityReadonly"
                [class.is-invalid]="location.controls.city.errors?.required
@@ -21,6 +22,7 @@
     <div class="form-row">
         <div class="form-group col-10 col-md-7">
           <input type="text" name="date" formControlName="date"
+                 autocomplete="off"
                  [matDatepicker]="picker"
                  [min]="minDate || today"
                  [ngClass]="{'form-control': !dateReadonly, 'form-control-plaintext': dateReadonly}"
@@ -33,6 +35,7 @@
         </div>
         <div class="form-group col-12 col-md-3">
           <input name="time" formControlName="time"
+                autocomplete="off"
                 [class.is-invalid]="location.controls.time.errors?.invalid"
                 [ngClass]="{'form-control': !timeReadonly, 'form-control-plaintext': timeReadonly}"
                 [readonly]="timeReadonly"

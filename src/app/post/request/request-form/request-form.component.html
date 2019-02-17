@@ -1,0 +1,35 @@
+<div class="request-form container">
+  <div class="request-form__actions row">
+      <button class="btn btn-info btn-add-item col-12 col-sm-5" (click)="openItemDialog()">
+        <mat-icon>add</mat-icon> Ajouter un article
+      </button>
+      <button class="btn btn-light btn-add-item col-12 col-sm-5 offset-sm-2">
+        <mat-icon>view_carousel</mat-icon> Choisir parmi mes articles
+      </button>
+  </div>
+  <mat-card matRipple class="request-item"
+            *ngFor="let item of items; let i = index"
+            (swipeleft)="disclose[i] = true"
+            (swiperight)="disclose[i] = false"
+            (click)="openItemDialog(item, i)">
+    <mat-card-title>{{ item.label }}</mat-card-title>
+    <mat-card-subtitle>
+      <a [href]="item.link.path" target="blank">
+        <mat-icon>shopping_cart</mat-icon>
+        {{ item.link.label }}
+      </a>
+    </mat-card-subtitle>
+    <div class="request-item__image-wrapper" mat-card-image>
+      <img class="request-item__image" [src]="item.photo[0]" [alt]="item.label">
+    </div>
+    <mat-card-content>
+      <div class="request-item__price">
+        Prix: {{ item.price }} €
+      </div>
+      <div class="request-item__pictures row">
+        <div class="item-picture col-3" *ngFor="let picture of item.photo"></div>
+      </div>
+    </mat-card-content>
+    <app-remove-panel (remove)="removeItem(i)" *ngIf="disclose[i]"></app-remove-panel>
+  </mat-card>
+</div>
