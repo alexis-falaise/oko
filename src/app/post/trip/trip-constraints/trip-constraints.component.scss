@@ -1,5 +1,23 @@
 @import "../../../../styles/variables.scss";
 
+.trip-constraints {
+    &__luggage {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    &__airport {
+        margin-top: 15px;
+        .airport-title {
+            color: rgba(0, 0, 0, .6);
+        }
+
+        &-actions {
+            margin-top: 15px;
+            padding: 0 10%;
+        }
+    }
+}
+
 .constraints-row {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -26,4 +44,60 @@
         outline: thick solid map-get($okoColors, blue);
         box-shadow: 0 0 10px map-get($okoColors, blue-o-2);
     }
+}
+
+.trip-title {
+    font-size: 36px;
+    color: rgb(175, 175, 175);
+}
+
+.luggage {
+    color: rgba(0, 0, 0, .6);
+    margin-bottom: 5px;
+}
+
+.add-luggage {
+    display: flex;
+    justify-self: center;
+}
+
+.luggage-list {
+    margin-top: 15px;
+    .mat-expansion-panel-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+        &-title,
+        .mat-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            color: rgba(0, 0, 0, .6);
+        }
+    }
+}
+
+.luggage-info {
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .mat-list-item {
+        height: 40px !important;
+        display: inline-block !important;
+        width: 50%;
+    }
+}
+
+.remove-luggage {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: rgba(0, 0, 0, .54); // Same as mat-expansion indicator
+}
+
+.btn-airport {
+    min-width: 150px;
+    font-size: 14px;
 }

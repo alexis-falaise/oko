@@ -55,8 +55,8 @@
             </div>
             <div class="post-practical col-4 col-sm-3 col-md-2">
                 <div class="post-date ">{{ post.date.format('DD/MM') }}</div>
-                <div class="post-weight" *ngIf="post.weight">
-                    <mat-icon>shopping_basket</mat-icon> {{ post.weight }} kg
+                <div class="post-weight" *ngIf="weight || post.weight">
+                    <mat-icon>shopping_basket</mat-icon> {{ weight || post.weight }} kg
                 </div>
             </div>
         </div>

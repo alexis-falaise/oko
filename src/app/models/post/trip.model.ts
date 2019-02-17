@@ -13,6 +13,7 @@ export class Trip extends Post {
     luggages?: Array<Luggage>;
     airportDrop: boolean;
     cabinOnly: boolean;
+    bonus: number;
 
     constructor(trip: Partial<Trip>) {
         super(trip);

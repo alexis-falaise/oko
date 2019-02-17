@@ -1,0 +1,45 @@
+@import "../../../../styles/variables.scss";
+
+.trip-luggage {
+    &-title {
+        font-weight: 700;
+        font-size: 24px;
+        color: $cyan-600
+    }
+
+    .close {
+        position: absolute;
+        top: 5.5vh;
+        right: 13.5vw;
+    }
+
+    &__content {
+        .luggage-type {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 50vh;
+        }
+
+        .luggage-weight {
+            height: 50vh;
+        }
+
+        .luggage-space {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 50vh;
+        }
+
+        .input-label {
+            display: flex;
+        }
+
+        .luggage-validation {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

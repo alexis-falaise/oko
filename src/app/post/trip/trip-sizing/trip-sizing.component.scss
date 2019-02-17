@@ -1,0 +1,17 @@
+.trip-sizing {
+    height: 300px;
+
+    .input-label,
+    .trip-checkbox {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        color: rgba(0, 0, 0, .6);
+    }
+
+    .input-label {
+        margin-top: 5px;
+
+    }
+}

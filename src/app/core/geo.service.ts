@@ -30,7 +30,6 @@ export class GeoService {
         this.airports.next(response.data);
       }
     }, (error: HttpErrorResponse) => {
-      console.log(error.error.message);
     });
   }
 

@@ -41,25 +41,37 @@
   <div class="trip-detail__engagement container" *ngIf="trip">
     <div class="row">
         <div class="trip-detail__engagement__constraints col-12 col-sm-6">
-            <h4 class="trip-detail__engagement__contraints-title">Capacité</h4>
+            <h4 class="trip-detail__engagement__constraints-title">Capacité</h4>
+            <div class="row justify-content-center">
+              <mat-card class="trip-detail__engagement__constraints-luggage col-6 col-sm-12 col-md-6"
+                *ngFor="let luggage of trip.luggages" matRipple>
+                <mat-icon class="luggage-backdrop">{{ luggage.cabin ? 'work' : 'flight' }}</mat-icon>
+                <mat-card-title>Bagage {{ luggage.cabin ? ' cabine' : ' en soute'}}</mat-card-title>
+                <mat-card-content>
+                  <div class="luggage-property">
+                    <mat-icon>shopping_basket</mat-icon> Poids <span *ngIf="luggage.weight">{{ ': ' + luggage.weight + ' kg' }}</span>
+                  </div>
+                  <div class="luggage-property">
+                    <mat-icon>swap_vert</mat-icon> Hauteur <span *ngIf="luggage.height">{{ ': ' + luggage.height + ' cm' }}</span><br>
+                  </div>
+                  <div class="luggage-property">
+                  <mat-icon>swap_horiz</mat-icon> Largeur <span *ngIf="luggage.width">{{ ': ' + luggage.width + ' cm' }}</span><br>
+                  </div>
+                  <div class="luggage-property">
+                    <mat-icon>compare_arrows</mat-icon> Profondeur <span *ngIf="luggage.depth">{{ ': ' + luggage.depth + ' cm' }}</span>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
             <ul class="constraints">
-              <li [class.disabled]="trip.weight == null">
-                <mat-icon>shopping_basket</mat-icon> Poids <span *ngIf="trip.weight">{{ ': ' + trip.weight + ' kg' }}</span>
-              </li>
-              <li [class.disabled]="trip.height == null">
-                  <mat-icon>swap_vert</mat-icon> Hauteur <span *ngIf="trip.height">{{ ': ' + trip.height + ' cm' }}</span>
-                </li>
-                <li [class.disabled]="trip.width == null">
-                    <mat-icon>swap_horiz</mat-icon> Largeur <span *ngIf="trip.width">{{ ': ' + trip.width + ' cm' }}</span>
-                </li>
-                <li [class.disabled]="trip.depth == null">
-                    <mat-icon>compare_arrows</mat-icon> Profondeur <span *ngIf="trip.depth">{{ ': ' + trip.depth + ' cm' }}</span>
-                </li>
-                <li [class.disabled]="!trip.cabinOnly">
-                    <mat-icon>work</mat-icon> Bagage Cabine
-                </li>
                 <li [class.disabled]="!trip.airportDrop">
-                    <mat-icon>local_airport</mat-icon> Reception à l'aéroport
+                    <mat-icon>local_airport</mat-icon> Remise à l'aéroport
+                </li>
+                <li [class.disabled]="trip.airportDrop">
+                    <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
+                </li>
+                <li [class.disabled]="!trip.bonus">
+                    <mat-icon>euro_symbol</mat-icon> Bonus voyageur proposé: {{ trip.bonus || 0 }} € 
                 </li>
             </ul>
           </div>

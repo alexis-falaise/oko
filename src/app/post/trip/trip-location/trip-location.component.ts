@@ -89,6 +89,11 @@ export class TripLocationComponent implements OnInit, OnChanges {
     });
     this.location.controls.airport.valueChanges
     .subscribe(value => this.filteredAirports = this.filterAirports(value));
+    this.location.statusChanges.subscribe(status => {
+      if (status === 'VALID') {
+        this.submit();
+      }
+    });
   }
 
   submit() {

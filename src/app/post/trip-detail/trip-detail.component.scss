@@ -112,7 +112,7 @@
 
         &__constraints {
             .constraints {
-                margin-left: 0;
+                margin: 10px 0;
                 padding-left: 0;
                 list-style: none;
 
@@ -128,6 +128,37 @@
 
                 li.disabled {
                     color: rgba(0, 0, 0, .4);
+                }
+            }
+            
+            &-luggage {
+                color: rgba(0, 0, 0, .6);
+                height: 150px;
+                overflow: hidden;
+                max-width: 47.5%;
+                margin-right: 5px;
+                .luggage-backdrop {
+                    font-size: 128px;
+                    color: rgba(0, 0, 0, .1);
+                    position: absolute;
+                    left: 50%;
+                    z-index: 0;
+                }
+                
+                .mat-card-title {
+                    font-size: 16px;
+                }
+            }
+
+            .luggage-property {
+                color: rgba(0, 0, 0, .6);
+                font-size: 12px;
+                height: 20px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                .mat-icon {
+                    font-size: 14px;
                 }
             }
         }

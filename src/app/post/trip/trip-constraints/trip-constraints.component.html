@@ -1,89 +1,181 @@
-<form [formGroup]="constraints">
-    <div class="constraints-row form-row">
-      <div class="input-group col-12 col-sm-6 col-md-4">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-              <mat-icon>shopping_basket</mat-icon>
-          </span>
-        </div>
-        <input type="number" class="form-control" formControlName="weight" placeholder="Poids">
-        <div class="input-group-append">
-          <span class="input-group-text">kg</span>
-        </div>
+<div class="trip-constraints">
+    <h4 class="constraints-title trip-title">Capacité</h4>
+    <small class="text-muted">Indiquez la taille et le poids maximum de l'article que vous pouvez transporter</small>
+    <div class="trip-constraints__luggage">
+      <button class="btn btn-info add-luggage" (click)="openLuggageDialog()">
+        <mat-icon>add</mat-icon> Ajouter un bagage
+      </button>
+      <div class="luggage-list">
+        <mat-card matRipple class="luggage" *ngFor="let luggage of luggages; let i = index"
+                  (click)="editLuggage(i)"
+                  (swipeleft)="removeLuggage(i)">
+          <mat-card-title>
+            <mat-icon>work</mat-icon>
+            Bagage {{ i + 1 }}
+          </mat-card-title>
+          <mat-icon class="remove-luggage" (click)="removeLuggage(i)">clear</mat-icon>
+          <mat-card-subtitle>
+            {{ luggage.cabin ? 'Cabine' :  'Soute' }}
+          </mat-card-subtitle>
+          <mat-card-content>
+              <mat-list dense class="luggage-info">
+                  <mat-list-item>
+                    <mat-icon matListIcon>shopping_basket</mat-icon>
+                    <span matLine>{{ luggage.weight }} kg </span>
+                    <small class="text-muted" matLine>Poids disponible</small>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon matListIcon>swap_vert</mat-icon>
+                    <span matLine>{{ luggage.height }} cm</span>
+                    <small class="text-muted" matLine>Hauteur disponible</small>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon matListIcon>swap_horiz</mat-icon>
+                    <span matLine>{{ luggage.width }} cm</span>
+                    <small class="text-muted" matLine>Largeur disponible</small>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon matListIcon>compare_arrows</mat-icon>
+                    <span matLine>{{ luggage.depth }} cm</span>
+                    <small class="text-muted" matLine>Profondeur disponible</small>
+                  </mat-list-item>
+              </mat-list>
+          </mat-card-content>
+        </mat-card>
+        <!-- <mat-accordion>
+          <mat-expansion-panel *ngFor="let luggage of luggages; let i = index">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <button class="btn remove-luggage" (click)="removeLuggage(i)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+                <mat-icon>work</mat-icon>
+                Bagage {{ i + 1 }}
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-trip-sizing [sizingValues]="luggage" (complete)="sizing($event, i)"></app-trip-sizing>
+          </mat-expansion-panel>
+        </mat-accordion> -->
       </div>
     </div>
-    <div class="constaints-row form-row">
-      <div class="input-group col-6 col-md-4">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <mat-icon>swap_vert</mat-icon>
-          </span>
-        </div>
-        <input type="number" class="form-control" formControlName="height" placeholder="Hauteur">
-        <div class="input-group-append">
-          <span class="input-group-text">cm</span>
-        </div>
+    <hr class="divider">
+    <div class="trip-constraints__airport">
+      <h4 class="trip-title">Remise</h4>
+      <small class="text-muted">Indiquez le lieu de remise de l'article</small>
+      <div class="trip-constraints__airport-actions row">
+          <button class="btn btn-toggle btn-airport col-6" [class.active]="airportDrop" (click)="inAirport()">
+            <mat-icon>local_airport</mat-icon>
+            Remise à l'aéroport
+          </button>
+          <button class="btn btn-toggle btn-airport col-6" [class.active]="!airportDrop" (click)="inLocation()">
+            <mat-icon>my_location</mat-icon>
+            Remise au lieu de rendez-vous
+          </button>
       </div>
-      <div class="input-group col-6 col-md-4">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <mat-icon>swap_horiz</mat-icon>
-          </span>
-        </div>
-        <input type="number" class="form-control" formControlName="width" placeholder="Largeur">
-        <div class="input-group-append">
-          <span class="input-group-text">cm</span>
-        </div>
-      </div>
-      <div class="input-group col-4 d-none d-md-flex">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <mat-icon>compare_arrows</mat-icon>
-            </span>
-          </div>
-          <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
+    </div>
+    <hr class="divider">
+    <div class="trip-constraints__bonus">
+      <h4 class="trip-title">Bonus voyageur</h4>
+      <small class="text-muted">Proposez un montant pour votre bonus. Tenez compte de la capacité que vous proposez, et du trajet que vous effectuez.</small>
+      <div class="form-group">
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="bonus">
           <div class="input-group-append">
-            <span class="input-group-text">cm</span>
+            <span class="input-group-text">€</span>
           </div>
         </div>
+      </div>
     </div>
-    <div class="constraints-row form-row d-block d-md-none">
-        <div class="input-group col-12 col-sm-6 col-md-4">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <mat-icon>compare_arrows</mat-icon>
-            </span>
-          </div>
-          <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
-          <div class="input-group-append">
-            <span class="input-group-text">cm</span>
+    
+    <!-- <form [formGroup]="constraints">
+        <div class="constraints-row form-row">
+          <div class="input-group col-12 col-sm-6 col-md-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                  <mat-icon>shopping_basket</mat-icon>
+              </span>
+            </div>
+            <input type="number" class="form-control" formControlName="weight" placeholder="Poids">
+            <div class="input-group-append">
+              <span class="input-group-text">kg</span>
+            </div>
           </div>
         </div>
-    </div>
-    <div class="constraints-row form-row">
-        <div class="form-group constraint-checkbox" [class.active]="constraints.controls.cabinOnly.value">
+        <div class="constaints-row form-row">
+          <div class="input-group col-6 col-md-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <mat-icon>swap_vert</mat-icon>
+              </span>
+            </div>
+            <input type="number" class="form-control" formControlName="height" placeholder="Hauteur">
+            <div class="input-group-append">
+              <span class="input-group-text">cm</span>
+            </div>
+          </div>
+          <div class="input-group col-6 col-md-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <mat-icon>swap_horiz</mat-icon>
+              </span>
+            </div>
+            <input type="number" class="form-control" formControlName="width" placeholder="Largeur">
+            <div class="input-group-append">
+              <span class="input-group-text">cm</span>
+            </div>
+          </div>
+          <div class="input-group col-4 d-none d-md-flex">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <mat-icon>compare_arrows</mat-icon>
+                </span>
+              </div>
+              <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
+              <div class="input-group-append">
+                <span class="input-group-text">cm</span>
+              </div>
+            </div>
+        </div>
+        <div class="constraints-row form-row d-block d-md-none">
+            <div class="input-group col-12 col-sm-6 col-md-4">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <mat-icon>compare_arrows</mat-icon>
+                </span>
+              </div>
+              <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
+              <div class="input-group-append">
+                <span class="input-group-text">cm</span>
+              </div>
+            </div>
+        </div>
+        <div class="constraints-row form-row">
+            <div class="form-group constraint-checkbox" [class.active]="constraints.controls.cabinOnly.value">
+                <div class="btn-group btn-group-toggle">
+                    <label class="btn btn-info" [class.active]="constraints.controls.cabinOnly.value">
+                      <input type="checkbox" formControlName="cabinOnly">
+                      <mat-icon>work</mat-icon>
+                    </label>
+                </div>
+                <div class="constraint-checkbox__details">
+                    <small class="text-muted text-uppercase">Bagage Cabine</small><br>
+                    <small class="text-muted">Je ne prends que des bagages en cabine</small>
+                </div>
+            </div>
+          <div class="form-group constraint-checkbox" [class.active]="constraints.controls.airportDrop.value">
             <div class="btn-group btn-group-toggle">
-                <label class="btn btn-info" [class.active]="constraints.controls.cabinOnly.value">
-                  <input type="checkbox" formControlName="cabinOnly">
-                  <mat-icon>work</mat-icon>
+                <label class="btn btn-info" [class.active]="constraints.controls.airportDrop.value">
+                  <input type="checkbox" formControlName="airportDrop">
+                  <mat-icon>flight</mat-icon>
                 </label>
             </div>
             <div class="constraint-checkbox__details">
-                <small class="text-muted text-uppercase">Bagage Cabine</small><br>
-                <small class="text-muted">Je ne prends que des bagages en cabine</small>
+                <small class="text-muted text-uppercase">Remise à l'aéroport</small><br>
+                <small class="text-muted">Je préfère donner l'article à l'aéroport</small>
             </div>
+          </div>
         </div>
-      <div class="form-group constraint-checkbox" [class.active]="constraints.controls.airportDrop.value">
-        <div class="btn-group btn-group-toggle">
-            <label class="btn btn-info" [class.active]="constraints.controls.airportDrop.value">
-              <input type="checkbox" formControlName="airportDrop">
-              <mat-icon>flight</mat-icon>
-            </label>
-        </div>
-        <div class="constraint-checkbox__details">
-            <small class="text-muted text-uppercase">Remise à l'aéroport</small><br>
-            <small class="text-muted">Je préfère donner l'article à l'aéroport</small>
-        </div>
-      </div>
-    </div>
-  </form>
+      </form> -->
+</div>

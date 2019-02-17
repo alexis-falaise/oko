@@ -11,8 +11,8 @@
         background: $heroGradient;
         // background-image: url('/assets/hero-trip-detail.jpg');
         width: 100vw;
-        min-height: 175px;
-        height: 25vh;
+        min-height: 125px;
+        height: 15vh;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
@@ -45,7 +45,7 @@
 
     &__content {
         width: 100vw;
-        height: 75vh;
+        height: 85vh;
         padding-bottom: 5px;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -57,39 +57,8 @@
         &__location {
             height: 25vh;
             min-height: 350px;
-            width: 15%;
             margin: 0 2.5%;
             padding: 20px;
-            overflow: hidden;
-            opacity: .15;
-
-            &:hover {
-                transition: all $transitionStyle $transitionDuration;
-                opacity: .5;
-            }
-
-            &.extended {
-                transition: all $transitionStyle $transitionDuration;
-                width: 80%;
-                margin: 0;
-                box-shadow: 0 0 5px rgba(0, 0, 0, .1);
-                border-bottom-right-radius: 5px;
-                opacity: 1;
-            }
-
-            &.even {
-                transition: all $transitionStyle $transitionDuration;
-                width: 50%;
-                margin: 0;
-                opacity: 1;
-                border-bottom: thin solid rgb(245, 245, 245);
-
-                .location-title,
-                .location-selection {
-                    display: block;
-                    min-width: 100%;
-                }
-            }
 
             .location-title,
             .location-selection {
@@ -166,6 +135,9 @@
     }
 
     &-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         font-size: 36px;
         color: rgb(175, 175, 175);
     }

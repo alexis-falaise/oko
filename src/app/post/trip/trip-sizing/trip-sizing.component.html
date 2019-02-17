@@ -1,46 +1,66 @@
-<form [formGroup]="sizing">
+<form class="trip-sizing" [formGroup]="sizing">
   <div class="form-row">
-    <div class="input-group col-6">
-        <input type="text" class="form-control" formControlName="weight">
-        <small>
-          <mat-icon>shopping_basket</mat-icon>
-          Poids
-        </small>
-        <div class="input-group-append">
-          <span class="input-group-text">kg</span>
+    <div class="form-group col-6">
+        <div class="input-group">
+            <input type="text" class="form-control" formControlName="weight">
+            <div class="input-group-append">
+              <span class="input-group-text">kg</span>
+            </div>
         </div>
+        <small class="input-label">
+            <mat-icon>shopping_basket</mat-icon>
+            Poids
+        </small>
     </div>
-    <div class="input-group col-6">
-        <input type="text" class="form-control" formControlName="height">
-        <small>
+    <div class="form-group col-6">
+        <div class="input-group">
+            <input type="text" class="form-control" formControlName="height">
+            <div class="input-group-append">
+              <span class="input-group-text">cm</span>
+            </div>
+        </div>
+        <small class="input-label">
           <mat-icon>swap_vert</mat-icon>
           Hauteur
         </small>
-        <div class="input-group-append">
-          <span class="input-group-text">cm</span>
-        </div>
     </div>
   </div>
   <div class="form-row">
-      <div class="input-group col-6">
+    <div class="form-group col-6">
+      <div class="input-group">
           <input type="text" class="form-control" formControlName="width">
           <div class="input-group-append">
             <span class="input-group-text">cm</span>
           </div>
-          <small>
-            <mat-icon>swap_horiz</mat-icon>
-            Largeur
-          </small>
       </div>
-      <div class="input-group col-6">
+      <small class="input-label">
+        <mat-icon>swap_horiz</mat-icon>
+        Largeur
+      </small>
+    </div>
+    <div class="form-group col-6">
+      <div class="input-group">
           <input type="text" class="form-control" formControlName="depth">
-          <small>
-            <mat-icon>compare_arrows</mat-icon>
-            Profondeur
-          </small>
           <div class="input-group-append">
             <span class="input-group-text">cm</span>
           </div>
       </div>
+      <small class="input-label">
+        <mat-icon>compare_arrows</mat-icon>
+        Profondeur
+      </small>
     </div>
+  </div>
+  <div class="form-row">
+    <mat-checkbox class="trip-checkbox" formControlName="cabin">
+      <mat-icon>work</mat-icon>
+      Bagage Cabine
+    </mat-checkbox>
+  </div>
+  <div class="form-row">
+    <mat-checkbox class="trip-checkbox" formControlName="full">
+      <mat-icon>settings_over</mat-icon>
+      Bagage Entier
+    </mat-checkbox>
+  </div>
 </form>

@@ -2,14 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
+  MatCardModule,
   MatIconModule,
   MatInputModule,
   MatDatepickerModule,
   MatFormFieldModule,
+  MatListModule,
   MatProgressBarModule,
   MatSnackBarModule,
   MatAutocompleteModule,
   MatExpansionModule,
+  MatCheckboxModule,
+  MatStepperModule,
+  MatDialogModule,
+  MatRippleModule,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -27,6 +33,7 @@ import { TripConstraintsComponent } from './trip/trip-constraints/trip-constrain
 import { TripListComponent } from './trip-list/trip-list.component';
 import { RequestListComponent } from './request-list/request-list.component';
 import { TripSizingComponent } from './trip/trip-sizing/trip-sizing.component';
+import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +46,20 @@ import { TripSizingComponent } from './trip/trip-sizing/trip-sizing.component';
     TripConstraintsComponent,
     TripListComponent,
     RequestListComponent,
-    TripSizingComponent
+    TripSizingComponent,
+    TripLuggageComponent
+  ],
+  entryComponents: [
+    TripLuggageComponent,
   ],
   imports: [
     CommonModule,
     DialogsModule,
     FormsModule,
     MatAutocompleteModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDialogModule,
     MatExpansionModule,
     MatIconModule,
     MatInputModule,
@@ -53,7 +67,10 @@ import { TripSizingComponent } from './trip/trip-sizing/trip-sizing.component';
     MatProgressBarModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatListModule,
+    MatRippleModule,
     MatSnackBarModule,
+    MatStepperModule,
     ReactiveFormsModule,
     PostRoutingModule,
     SharedModule,

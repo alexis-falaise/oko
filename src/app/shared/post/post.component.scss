@@ -106,6 +106,10 @@ $post-height: 100px;
             }
         }
 
+        &__to {
+            font-weight: 700;
+        }
+
         &__link {
             display: flex;
             flex-direction: column;

@@ -28,7 +28,7 @@
         </div> -->
         <!-- <div class="home-content__departures" *ngIf="!empty">Départs disponibles</div> -->
         <div class="home-content__list-wrapper" [class.expanded]="!expanded">
-            <div class="d-flex justify-content-around">
+            <div class="home-content__list-buttons d-flex justify-content-around">
                 <button matRipple class="btn btn-info btn-outline" [routerLink]="['/post/request/new']">Créer une annonce</button>
                 <button matRipple class="btn btn-light btn-outline" [routerLink]="['/post/trip']">Afficher tous les trajets</button>
             </div>

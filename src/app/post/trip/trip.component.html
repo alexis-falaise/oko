@@ -3,7 +3,7 @@
     <div class="trip__hero-title-wrapper">
       <h1 class="trip__hero-title">Je voyage</h1>
     </div>
-    <div class="trip__hero-type">
+    <!-- <div class="trip__hero-type">
         <div class="btn-group btn-group-toggle">
           <label class="btn btn-hero btn-type" [class.active]="!return">
             <input type="radio" name="single" id="single" [checked]="!return" (click)="return = false"> Aller Simple
@@ -12,53 +12,63 @@
             <input type="radio" name="return" id="return" [checked]="return" (click)="return = true"> Aller-retour
           </label>
         </div>
-    </div>
+    </div> -->
   </div>
   <div class="trip__content">
-    <div class="content-row row">
-      <div class="trip__content__location"
-           (mouveleave)="toArrival()"
-           [ngClass]="{
-             'extended': fromExtended && !locationEven,
-             'even': locationEven
-           }" (swipeleft)="toArrival()"
-              (swipedown)="toSummary()"
-              (click)="toDeparture()">
-        <h4 class="location-title trip-title">Départ <mat-icon *ngIf="fromExtended">flight_takeoff</mat-icon></h4>
-        <div class="location-selection">
+    <mat-vertical-stepper>
+      <mat-step>
+        <ng-template matStepLabel>
+          Départ
+          <div *ngIf="departureInfo && departureInfo.city && departureInfo.date">
+           {{ departureInfo.city }} - {{ departureInfo.date.format('DD/MM') }} - {{ departureInfo.time }}
+          </div>
+        </ng-template>
+        <div class="trip__content__location">
+          <h4 class="location-title trip-title">Départ <mat-icon>flight_takeoff</mat-icon></h4>
+          <div class="location-selection">
             <app-trip-location
               [city]="departureInfo?.city"
               [date]="departureInfo?.date"
               [time]="departureInfo?.time"
               (valid)="departure($event)">
             </app-trip-location>
+          </div>
         </div>
-      </div>
-      <div class="trip__content__location"
-          (mouseleave)="toSummary()"
-          [ngClass]="{
-              'extended': !fromExtended && !locationEven,
-              'even': locationEven
-          }" (swiperight)="toDeparture()"
-              (swipedown)="toSummary()"
-              (click)="toArrival()">
-        <h4 class="location-title trip-title">Arrivée <mat-icon *ngIf="!fromExtended">flight_land</mat-icon></h4>
-        <div class="location-selection">
-            <app-trip-location
-            [city]="arrivalInfo?.city"
-            [date]="arrivalInfo?.date"
-            [time]="arrivalInfo?.time"
-            [minDate]="departureInfo?.date"
-            (valid)="arrival($event)">
-            </app-trip-location>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          Arrivée
+          <div *ngIf="arrivalInfo && arrivalInfo.city && arrivalInfo.date">
+           {{ arrivalInfo.city }} - {{ arrivalInfo.date.format('DD/MM') }} - {{ arrivalInfo.time }}
+          </div>
+        </ng-template>
+        <div class="trip__content__location" [class.extended]="true">
+          <h4 class="location-title trip-title">Arrivée <mat-icon>flight_land</mat-icon></h4>
+          <div class="location-selection">
+          <app-trip-location
+          [city]="arrivalInfo?.city"
+          [date]="arrivalInfo?.date"
+          [time]="arrivalInfo?.time"
+          [minDate]="departureInfo?.date"
+          (valid)="arrival($event)">
+          </app-trip-location>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="trip__content__return" *ngIf="return">
-      <h4 class="return-title trip-title">Retour</h4>
-      <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
-      <div class="row">
-        <div class="col-6" *ngIf="arrivalInfo">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          Informations
+          <div *ngIf="constraintsInfo && constraintsInfo.luggages && constraintsInfo.luggages.length">
+            {{ constraintsInfo.luggages.length }} bagage{{ constraintsInfo.luggages.length > 1 ? 's' : ''}}
+          </div>
+        </ng-template>
+        <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
+      </mat-step>
+      <!-- <mat-step *ngIf="return">
+        <ng-template matStepLabel>Retour - Départ</ng-template>
+        <h4 class="return-title trip-title">Départ <mat-icon>flight_takeoff</mat-icon></h4>
+        <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
+        <div class="trip__content__location" *ngIf="arrivalInfo">
           <app-trip-location
             [city]="arrivalInfo.city"
             [cityReadonly]="true"
@@ -68,7 +78,12 @@
             (valid)="returnFrom($event)">
           </app-trip-location>
         </div>
-        <div class="col-6" *ngIf="departureInfo && arrivalInfo">
+      </mat-step>
+      <mat-step *ngIf="return">
+        <ng-template matStepLabel>Retour - Arrivée</ng-template>
+        <h4 class="return-title trip-title">Arrivée <mat-icon>flight_land</mat-icon></h4>
+        <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
+        <div class="trip__content__location" *ngIf="departureInfo && arrivalInfo">
           <app-trip-location
             [city]="departureInfo.city"
             [cityReadonly]="true"
@@ -78,38 +93,54 @@
             (valid)="returnTo($event)">
           </app-trip-location>
         </div>
+      </mat-step>
+      <mat-step *ngIf="return">
+        <ng-template matStepLabel>Informations retour</ng-template>
+        <app-trip-constraints [constraintsInfo]="return.constraintsInfo" (complete)="returnConstraints($event)"></app-trip-constraints>
+      </mat-step> -->
+      <mat-step>
+        <ng-template matStepLabel>Validation</ng-template>
+        <div class="row">
+          <div class="col-12 col-sm-6" *ngIf="departureInfo && departureInfo.airport">
+            <h4 class="trip-title">
+              <mat-icon>flight_takeoff</mat-icon>
+              {{ departureInfo.city }}
+            </h4>
+            <small class="text-muted">{{ departureInfo.airport.name }}</small><br>
+            <span>{{ departureInfo.date.format('DD/MM') }} - {{ departureInfo.time }}</span>
+          </div>
+          <div class="col-12 col-sm-6" *ngIf="arrivalInfo && arrivalInfo.airport">
+            <h4 class="trip-title">
+              <mat-icon>flight_land</mat-icon>
+              {{ arrivalInfo.city }}
+            </h4>
+            <small class="text-muted">{{ arrivalInfo.airport.name }}</small><br>
+            <span>{{ arrivalInfo.date.format('DD/MM') }} - {{ arrivalInfo.time }}</span>
+          </div>
+        </div>
+        <small *ngIf="!departureInfo || !arrivalInfo">Complétez les informations de votre trajet</small>
+        <div *ngIf="departureInfo && arrivalInfo && constraintsInfo">
+            <hr class="divider">
+            <div class="row" *ngIf="constraintsInfo.luggages">
+              <h4 class="trip-title">
+                <mat-icon>work</mat-icon> {{ constraintsInfo.luggages.length }} bagage{{constraintsInfo.luggages.length > 1 ? 's': '' }}
+              </h4>
+            </div>
+            <div class="row" *ngIf="constraintsInfo.bonus">
+              <h4 class="trip-title">
+                <mat-icon>euro_symbol</mat-icon>
+                Bonus Voyageur: {{ constraintsInfo.bonus }} € 
+              </h4>
+            </div>
+        </div>
+        <div class="trip__content__actions">
+          <button class="btn btn-success btn-trip" (click)="save()"
+          [disabled]="!departureInfo || !arrivalInfo">Valider</button>
       </div>
-    </div>
-    <div class="trip__content__constraints">
-      <h4 class="constraints-title trip-title">Capacité</h4>
-      <small class="text-muted">Indiquez la taille et le poids maximum de l'article que vous pouvez transporter</small>
-      <button class="btn btn-info add-luggage" (click)="addLuggage()">
-        <mat-icon>add</mat-icon> Ajouter un baggage
-      </button>
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let luggage of luggages; let i = index">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <button class="btn btn-danger" (click)="removeLuggage(i)">
-                x
-              </button>
-              <mat-icon>work</mat-icon>
-              Bagage # {{ i + 1 }}
-            </mat-panel-title>
-            <mat-panel-description>
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <app-trip-sizing (complete)="sizing($event, i)"></app-trip-sizing>
-        </mat-expansion-panel>
-      </mat-accordion>
-      <app-trip-constraints [constraintsInfo]="constraintsInfo" (valid)="constraints($event)"></app-trip-constraints>
-    </div>
+      </mat-step>
+    </mat-vertical-stepper>
     <div class="trip__content__loading" *ngIf="loading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
-    <div class="trip__content__actions">
-        <button class="btn btn-success btn-trip" (click)="save()"
-        [disabled]="!departureInfo || !arrivalInfo">Valider</button>
-      </div>
   </div>
 </div>

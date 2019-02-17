@@ -1,0 +1,98 @@
+<div class="trip-luggage">
+  <h2 class="trip-luggage-title justify-content-around">
+    <span style="display: inline-block">{{ modifying ? 'Modifier' : 'Ajouter' }} un bagage</span>
+  </h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="trip-luggage__content">
+    <mat-horizontal-stepper [linear]="!modifying" labelPosition="bottom">
+      <mat-step>
+        <ng-template matStepLabel>Type</ng-template>
+        <small class="text-muted">Je transporte mon bagage en soute ou en cabine</small>
+        <div class="luggage-type">
+          <button class="btn btn-toggle" (click)="inCargo()" [class.active]="!cabin">
+            <mat-icon>flight</mat-icon>
+            Soute
+          </button>
+          <button class="btn btn-toggle" (click)="inCabin()" [class.active]="cabin">
+            <mat-icon>work</mat-icon>
+            Cabine
+          </button>
+        </div>
+        <div class="luggage-validation">
+          <button class="btn btn-success" matStepperNext>Valider</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Poids</ng-template>
+        <small class="text-muted">J'estime le poids de l'article que je peux transporter</small>
+        <div class="luggage-weight">
+          <div class="form-group">
+            <div class="input-group">
+                <input type="number" class="form-control" min="0" required [(ngModel)]="weight">
+                <div class="input-group-append">
+                  <span class="input-group-text">kg</span>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="luggage-validation">
+          <button class="btn btn-success" matStepperNext>Valider</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Espace</ng-template>
+        <small class="text-muted">L'espace qu'il me reste dans mon bagage pour transporter un article</small>
+        <div class="luggage-space">
+          <div class="form-row">
+            <div class="form-group col-12 col-md-4">
+              <div class="input-group">
+                  <input type="number" class="form-control" min="0" required [(ngModel)]="height">
+                  <div class="input-group-append">
+                    <span class="input-group-text">cm</span>
+                  </div><br>
+              </div>
+              <div class="input-label">
+                <span class="text-muted">
+                  <mat-icon>swap_vert</mat-icon>
+                  Hauteur
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-12 col-md-4">
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" required [(ngModel)]="width">
+                    <div class="input-group-append">
+                      <span class="input-group-text">cm</span>
+                    </div>
+                </div>
+                <div class="input-label">
+                  <span class="text-muted">
+                    <mat-icon>swap_horiz</mat-icon>
+                    Largeur
+                  </span>
+                </div>
+            </div>
+            <div class="form-group col-12 col-md-4">
+              <div class="input-group">
+                  <input type="number" class="form-control" min="0" required [(ngModel)]="depth">
+                  <div class="input-group-append">
+                    <span class="input-group-text">cm</span>
+                  </div>
+              </div>
+              <div class="input-label">
+                <span class="text-muted">
+                  <mat-icon>compare_arrows</mat-icon>
+                  Profondeur
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="luggage-validation">
+          <button class="btn btn-success" (click)="save()">Enregistrer</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>

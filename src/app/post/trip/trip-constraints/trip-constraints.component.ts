@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { Luggage } from '@models/luggage.model';
+import { TripLuggageComponent } from '../trip-luggage/trip-luggage.component';
 
 @Component({
   selector: 'app-trip-constraints',
@@ -9,31 +11,74 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class TripConstraintsComponent implements OnInit, OnChanges {
 
   @Input() constraintsInfo;
-  @Output() valid = new EventEmitter();
-  constraints = this.fb.group({
-    height: ['', Validators.min(0)],
-    width: ['', Validators.min(0)],
-    depth: ['', Validators.min(0)],
-    weight: ['', Validators.min(0)],
-    airportDrop: this.fb.control(false),
-    cabinOnly: this.fb.control(false)
-  });
+  @Output() complete = new EventEmitter();
+  luggages: Array<Luggage> = [];
+  airportDrop = true;
+  bonus = 0;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private dialog: MatDialog) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.constraintsInfo && changes.constraintsInfo.currentValue) {
-      this.constraints.patchValue(changes.constraintsInfo.currentValue);
+    if (changes.constraintsInfo) {
+      const constraints = changes.constraintsInfo.currentValue;
+      if (constraints) {
+        this.luggages = constraints.luggages;
+        this.airportDrop = constraints.airportDrop;
+      }
     }
   }
 
-  ngOnInit() {
-    this.constraints.statusChanges
-    .subscribe(status => {
-      if (status === 'VALID') {
-        this.valid.emit(this.constraints.value);
+  ngOnInit() {}
+
+  openLuggageDialog(luggage?: Luggage, index?: number) {
+    const dialogRef = this.dialog.open(TripLuggageComponent, {
+      width: '98vw',
+      height: '95vh',
+      data: luggage ? {luggage: luggage, index: index} : null
+    });
+    dialogRef.afterClosed().subscribe(savingData => {
+      if (savingData) {
+        if (savingData.index) {
+          this.luggages[savingData.index] = savingData.luggage;
+        } else {
+          this.addLuggage(savingData.luggage);
+        }
       }
     });
+  }
+
+  addLuggage(luggage?) {
+    this.luggages.push(luggage ? luggage : new Luggage());
+    this.emit();
+  }
+
+  editLuggage(index) {
+    const luggage = this.luggages[index];
+    this.openLuggageDialog(luggage, index);
+  }
+
+  removeLuggage(index) {
+    this.luggages.splice(index, 1);
+    this.emit();
+  }
+
+  inAirport() {
+    this.airportDrop = true;
+    this.emit();
+  }
+
+  inLocation() {
+    this.airportDrop = false;
+    this.emit();
+  }
+
+  emit() {
+    const constraints = {
+      luggages: this.luggages,
+      airportDrop: this.airportDrop,
+      bonus: this.bonus,
+    };
+    this.complete.emit(constraints);
   }
 
 }

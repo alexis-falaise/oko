@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,8 @@ import { FormBuilder, Validators } from '@angular/forms';
   templateUrl: './trip-sizing.component.html',
   styleUrls: ['./trip-sizing.component.scss']
 })
-export class TripSizingComponent implements OnInit {
+export class TripSizingComponent implements OnInit, OnChanges {
+  @Input() sizingValues;
   @Output() complete = new EventEmitter();
   sizing = this.fb.group({
     weight: [null, Validators.min(0)],
@@ -19,7 +20,18 @@ export class TripSizingComponent implements OnInit {
 
   constructor(private fb: FormBuilder) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.sizingValues) {
+      this.sizing.patchValue(changes.sizingValues.currentValue);
+    }
+  }
+
   ngOnInit() {
+    this.sizing.statusChanges.subscribe(status => {
+      if (status === 'VALID') {
+        this.submit();
+      }
+    });
   }
 
   submit() {
