@@ -47,10 +47,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     timer(0, 1500).subscribe(() => this.swingDisplay());
-    const draft = this.postService.getTripDraft();
-    if (draft) {
-      const snackRef = this.snack.open('Brouillon de trajet', 'Ouvrir', {duration: 5000});
-      snackRef.onAction().subscribe(() => this.router.navigate(['/post/trip/new']));
+    const tripDraft = this.postService.getTripDraft();
+    const requestDraft = this.postService.getRequestDraft();
+    if (tripDraft || requestDraft) {
+      const snackRef = this.snack.open('Brouillon de ' + (tripDraft ? 'trajet' : 'demande'), 'Ouvrir', {duration: 7500});
+      const route = tripDraft ? '/post/trip/new' : 'post/trip/' + requestDraft.trip.id;
+      snackRef.onAction().subscribe(() => this.router.navigate([route]));
     }
   }
 

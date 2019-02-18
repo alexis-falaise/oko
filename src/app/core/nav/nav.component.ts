@@ -54,6 +54,11 @@ export class NavComponent implements OnInit {
     .subscribe(history => {
       this.previousAvailable = history.length > 1;
     });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.authService.getLoginStatus();
+      }
+    });
   }
 
   toggleMenu() {

@@ -27,6 +27,7 @@ export class PostService {
   posts = new BehaviorSubject<Array<Post>>(null);
   postDraft: Post = null;
   tripDraft = null;
+  requestDraft: Request = null;
   currentFilter = new Filter();
 
   constructor(private http: HttpClient) { }
@@ -121,7 +122,7 @@ export class PostService {
    * Get a trip by id
    * @param id : Trip unique identifier
    */
-  getTripById(id: number): Observable<Trip> {
+  getTripById(id: string): Observable<Trip> {
     return this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true}) as Observable<Trip>;
   }
 
@@ -129,8 +130,25 @@ export class PostService {
    * Get a request by id
    * @param id : Request unique identifier
    */
-  getRequestById(id: number): Observable<Request> {
+  getRequestById(id: string): Observable<Request> {
     return this.http.get(`${this.requestUrl}/${id}`, {withCredentials: true}) as Observable<Request>;
+  }
+
+  /**
+   * Get a request by author id
+   * @param id : User that authored the request unique identifier
+   */
+  getRequestByAuthor(id: string): Observable<ServerResponse> {
+    return this.http.get(`${this.requestUrl}/author/${id}`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  /**
+   * Get a request by trip id given an author id
+   * @param authorId : Author unique identifier
+   * @param tripId : Trip unique identifier
+   */
+  getRequestByTrip(authorId: string, tripId: string): Observable<ServerResponse> {
+    return this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Creators
@@ -140,10 +158,12 @@ export class PostService {
   }
 
   createTrip(trip: Trip | Array<Trip>): Observable<ServerResponse> {
+    this.deleteTripDraft();
     return this.http.post(this.tripUrl, trip, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
+    this.deleteRequestDraft();
     return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
@@ -161,6 +181,14 @@ export class PostService {
     return this.http.put(`${this.requestUrl}/${request.id}`, request, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  closeRequest(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.requestUrl}/${id}/close`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  validateRequest(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
   saveTripDraft(tripDraft) {
     this.tripDraft = tripDraft;
   }
@@ -171,6 +199,18 @@ export class PostService {
 
   deleteTripDraft() {
     this.tripDraft = null;
+  }
+
+  saveRequestDraft(requestDraft) {
+    this.requestDraft = requestDraft;
+  }
+
+  getRequestDraft() {
+    return this.requestDraft;
+  }
+
+  deleteRequestDraft() {
+    this.requestDraft = null;
   }
 
   draftPost(filter: Filter) {

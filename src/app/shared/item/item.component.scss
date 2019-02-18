@@ -1,32 +1,6 @@
-@import "../../../../styles/variables.scss";
-@import "../../../../styles/animations.scss";
+@import "../../../styles/variables.scss";
 
-.request-form {
-    width: 100vw;
-    padding: 0 25px;
-    animation: $animationDuration slideFromUp;
-    &-title {
-        color: rgb(175, 175, 175);
-        font-size: 16px;
-    }
-
-    &__actions {
-        margin-bottom: 15px;
-    }
-
-    &__meeting {
-        margin-top: 15px;
-    }
-
-    &__validation {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 15px;
-    }
-}
-
-.request-item {
+.item {
     max-height: 300px;
 
     &__title {
@@ -82,11 +56,4 @@
         font-weight: 700;
         color: rgb(75, 75, 75);
     }
-}
-
-.btn-add-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 5px;
 }

@@ -1,0 +1,25 @@
+@import "../../../../styles/variables.scss";
+
+.request-detail {
+    &__hero {
+        animation: $animationDuration openHero;
+        -webkit-animation: $animationDuration openHero;
+        -moz-animation: $animationDuration openHero;
+        -o-animation: $animationDuration openHero;
+
+        background: $heroGradient;
+        // background-image: url('/assets/hero-trip-detail.jpg');
+        width: 100vw;
+        position: sticky;
+        z-index: 10;
+        top: 0;
+        height: 15vh;
+        min-height: 150px;
+        padding-top: $navbarHeight;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        color: white;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+}

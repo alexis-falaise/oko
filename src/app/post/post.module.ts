@@ -16,6 +16,7 @@ import {
   MatStepperModule,
   MatDialogModule,
   MatRippleModule,
+  MatSlideToggleModule,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -71,6 +72,7 @@ import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component
     MatDatepickerModule,
     MatMomentDateModule,
     MatListModule,
+    MatSlideToggleModule,
     MatRippleModule,
     MatSnackBarModule,
     MatStepperModule,

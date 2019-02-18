@@ -1,3 +1,9 @@
-<p>
-  request-detail works!
-</p>
+<div class="request-detail container-fluid">
+  <div class="request-detail__hero row">
+    <h2>Résumé de la demande</h2>
+  </div>
+  <div class="request-detail__summary">
+    <h3 class="request-detail__summary-title">Articles</h3>
+    <app-item *ngFor="let item of request.items" [item]="item" [removable]="false"></app-item>
+  </div>
+</div>

@@ -6,7 +6,8 @@ import {
   MatIconModule,
   MatExpansionModule,
   MatDatepickerModule,
-  MatRippleModule
+  MatRippleModule,
+  MatCardModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -16,6 +17,7 @@ import { PostListComponent } from './post-list/post-list.component';
 import { PostFilterComponent } from './post-filter/post-filter.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RemovePanelComponent } from './remove-panel/remove-panel.component';
+import { ItemComponent } from './item/item.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import { RemovePanelComponent } from './remove-panel/remove-panel.component';
     AvatarComponent,
     PostListComponent,
     PostFilterComponent,
-    RemovePanelComponent
+    RemovePanelComponent,
+    ItemComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatIconModule,
+    MatCardModule,
     MatExpansionModule,
     MatDatepickerModule,
     MatMomentDateModule,
@@ -41,6 +45,7 @@ import { RemovePanelComponent } from './remove-panel/remove-panel.component';
     PostListComponent,
     PostFilterComponent,
     RemovePanelComponent,
+    ItemComponent,
   ],
 })
 export class SharedModule { }

@@ -7,29 +7,91 @@
         <mat-icon>view_carousel</mat-icon> Choisir parmi mes articles
       </button>
   </div>
-  <mat-card matRipple class="request-item"
-            *ngFor="let item of items; let i = index"
-            (swipeleft)="disclose[i] = true"
-            (swiperight)="disclose[i] = false"
+  <app-item *ngFor="let item of items; let i = index"
+            [item]="item"
+            (remove)="removeItem(i)"
             (click)="openItemDialog(item, i)">
-    <mat-card-title>{{ item.label }}</mat-card-title>
-    <mat-card-subtitle>
-      <a [href]="item.link.path" target="blank">
-        <mat-icon>shopping_cart</mat-icon>
-        {{ item.link.label }}
-      </a>
-    </mat-card-subtitle>
-    <div class="request-item__image-wrapper" mat-card-image>
-      <img class="request-item__image" [src]="item.photo[0]" [alt]="item.label">
-    </div>
-    <mat-card-content>
-      <div class="request-item__price">
-        Prix: {{ item.price }} €
+  </app-item>
+  <div class="request-form__meeting">
+    <form [formGroup]="meeting">
+      <div class="form-group">
+        <mat-slide-toggle formControlName="airportPickup">Je peux récupérer mes articles à l'aéroport</mat-slide-toggle><br>
+        <small class="text-muted" *ngIf="airport">
+          Je récupère mes articles à l'aéroport d'arrivée du voyageur:
+          {{ trip.to.airport.name }} ( {{ trip.to.airport.code }} )
+        </small>
       </div>
-      <div class="request-item__pictures row">
-        <div class="item-picture col-3" *ngFor="let picture of item.photo"></div>
+      <div *ngIf="!meeting.controls.airportPickup.value">
+        <h5 class="request-form__meeting-title">Lieu de rendez-vous</h5>
+        <form [formGroup]="meeting.controls.meetingPoint">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Adresse" formControlName="adress" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Ville" formControlName="city" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Code postal" formControlName="zip" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Pays" formControlName="country" required>
+            </div>
+        </form>
       </div>
-    </mat-card-content>
-    <app-remove-panel (remove)="removeItem(i)" *ngIf="disclose[i]"></app-remove-panel>
-  </mat-card>
+      <div class="form-group">
+        <mat-slide-toggle formControlName="urgent">Demande urgente</mat-slide-toggle><br>
+        <small class="text-muted">
+          Précisez si votre demande est contrainte par des délais, ou motivée par des raisons importantes
+        </small>
+      </div>
+      <div *ngIf="meeting.controls.urgent.value">
+        <form [formGroup]="meeting.controls.urgentDetails">
+          <div class="form-group">
+              <textarea rows="2" class="form-control" placeholder="Raison de l'urgence" formControlName="explaination">
+              </textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-10 col-md-7">
+                <input type="text" name="date" formControlName="date"
+                        autocomplete="off"
+                        [matDatepicker]="picker"
+                        [min]="today"
+                        [ngClass]="{'form-control': !dateReadonly, 'form-control-plaintext': dateReadonly}"
+                        [readonly]="dateReadonly"
+                        placeholder="Remise avant le">
+              </div>
+              <div class="form-group col-2 col-md-2">
+                  <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
+              </div>
+            </div>
+        </form>
+      </div>
+      <h5 class="form-title">Bonus voyageur</h5>
+      <small class="text-muted">
+        Faites une contre proposition concernant le bonus voyageur.
+        Tenez compte du prix du produit que vous souhaitez faire transporter et de son encombrement
+        pour estimer une compensation juste.
+      </small>
+      <div class="form-group">
+        <mat-slide-toggle (change)="bonusAgreement($event)">J'accepte la proposition voyageur</mat-slide-toggle>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <input type="number" min="0" class="form-control" placeholder="Bonus voyageur" formControlName="bonus" required>
+          <div class="input-group-append">
+            <span class="input-group-text">€</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="request-form__validation row">
+    <button class="btn btn-success" [disabled]="
+        (!items || items && !items.length)
+        || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
+      " (click)="request()">
+      Faire une demande <span *ngIf="author"> à {{ trip.user.firstname }}</span>
+    </button>
+  </div>
 </div>

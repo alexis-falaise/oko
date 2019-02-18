@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '@core/post.service';
 
 import { Trip } from '@models/post/trip.model';
-import { DateAdapter } from '@angular/material';
+import { DateAdapter, MatSnackBar } from '@angular/material';
+import { UserService } from '@core/user.service';
+import { Request } from '@models/post/request.model';
 
 @Component({
   selector: 'app-trip-detail',
@@ -13,13 +15,17 @@ import { DateAdapter } from '@angular/material';
 })
 export class TripDetailComponent implements OnInit {
   trip: Trip = null;
+  requests: Array<Request> = null;
+  currentRequest: Request = null;
   engagement = false;
 
   constructor(
     private router: Router,
     private dateAdapter: DateAdapter<Date>,
     private route: ActivatedRoute,
+    private userService: UserService,
     private postService: PostService,
+    private snack: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -30,8 +36,41 @@ export class TripDetailComponent implements OnInit {
         .subscribe(trip => {
           if (trip) {
             this.trip = new Trip(trip);
+            const requestDraft = this.postService.getRequestDraft();
+            if (requestDraft && requestDraft.trip.id === this.trip.id) {
+              this.engagement = true;
+            }
+            this.getUserRequests();
           }
         });
+      }
+    });
+  }
+
+  getUserRequests() {
+    this.userService.getCurrentUser()
+    .subscribe(user => {
+      this.postService.getRequestByTrip(user.id, this.trip.id)
+      .subscribe((response) => {
+        if (response.status) {
+          this.requests = response.data.map(request => new Request(request));
+          this.currentRequest = this.requests.find(request => !request.closed && !request.validated);
+        }
+      });
+    });
+  }
+
+  closeRequest() {
+    console.log(this.currentRequest);
+    this.postService.closeRequest(this.currentRequest.id)
+    .subscribe((response) => {
+      console.log(response);
+      if (response.status) {
+        const request = new Request(response.data);
+        if (request.id === this.currentRequest.id && request.closed) {
+          this.snack.open('La demande a été annulée', 'OK');
+          this.currentRequest = null;
+        }
       }
     });
   }

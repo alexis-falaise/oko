@@ -43,6 +43,7 @@ export class RequestItemComponent implements OnInit {
 
   save() {
     const item = new Item(this.item.value);
+    item.photo = [this.item.value.photo];
     item.link = new Link({label: this.item.value.label, path: this.item.value.link});
     this.dialogRef.close({
       item: item,

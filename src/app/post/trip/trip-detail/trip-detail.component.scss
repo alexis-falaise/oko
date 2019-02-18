@@ -169,6 +169,24 @@
         }
 
     }
+
+    &__pending {
+        border-radius: 5px;
+        background-color: $amber-100;
+        padding: 10px;
+
+        &-title {
+            font-weight: 400;
+            color: $amber-800-dark;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &-item {
+            margin-bottom: 5px;
+        }
+    }
 }
 
 .btn-engagement {

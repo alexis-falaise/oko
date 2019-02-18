@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./request-detail.component.scss']
 })
 export class RequestDetailComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
