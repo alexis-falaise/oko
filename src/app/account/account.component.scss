@@ -5,6 +5,7 @@
     &-hero {
         width: 100vw;
         height: 20vh;
+        min-height: 175px;
         padding-top: 50px;
 
         animation: $animationDuration openHero;
@@ -26,6 +27,16 @@
 
         &__avatar {
             align-items: center;
+        }
+    }
+
+    &-link {
+        transition: all $transitionDuration;
+        text-decoration: none;
+        &:hover {
+            transition: all $transitionDuration;
+            color: rgb(105, 105, 105);
+            text-decoration: none;
         }
     }
 }

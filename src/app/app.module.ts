@@ -13,8 +13,10 @@ import {
   MatSnackBarModule,
   MatRippleModule,
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AccountModule } from './account/account.module';
 import { CoreModule } from '@core/core.module';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
@@ -25,21 +27,17 @@ import { PostService } from '@core/post.service';
 import { UserService } from '@core/user.service';
 
 import { AppComponent } from './app.component';
-import { AccountComponent } from './account/account.component';
-import { AccountInfoComponent } from './account/account-info/account-info.component';
 import { HomeComponent } from './home/home.component';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    AccountComponent,
-    AccountInfoComponent,
   ],
   imports: [
     AuthModule,
+    AccountModule,
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,

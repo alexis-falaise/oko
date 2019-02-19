@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { User } from '@models/user.model';
 import { Description } from '@models/description.model';
 import { keyframes } from '@angular/animations';
@@ -9,8 +9,8 @@ import { UserService } from '@core/user.service';
   templateUrl: './account-info.component.html',
   styleUrls: ['./account-info.component.scss']
 })
-export class AccountInfoComponent implements OnInit, OnChanges {
-  @Input() user: User;
+export class AccountInfoComponent implements OnInit {
+  user: User;
   description: Description;
   edit: any = {};
   keys = Object.keys;
@@ -20,12 +20,12 @@ export class AccountInfoComponent implements OnInit, OnChanges {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.user) {
-      this.init(changes.user.currentValue);
-    }
+    this.userService.getCurrentUser()
+    .subscribe(user => {
+      if (user) {
+        this.init(user);
+      }
+    });
   }
 
   init(user: User) {

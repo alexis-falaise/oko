@@ -51,9 +51,9 @@ export class TripDetailComponent implements OnInit {
     this.userService.getCurrentUser()
     .subscribe(user => {
       this.postService.getRequestByTrip(user.id, this.trip.id)
-      .subscribe((response) => {
-        if (response.status) {
-          this.requests = response.data.map(request => new Request(request));
+      .subscribe((requests) => {
+        if (requests) {
+          this.requests = requests.map(request => new Request(request));
           this.currentRequest = this.requests.find(request => !request.closed && !request.validated);
         }
       });

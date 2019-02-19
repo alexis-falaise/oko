@@ -8,15 +8,15 @@
     </div>
   </div>
   <div class="account-detail">
-    <mat-tab-group>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          Mes infos
-        </ng-template>
-        <ng-template matTabContent>
-          <app-account-info [user]="currentUser" *ngIf="currentUser"></app-account-info>
-        </ng-template>
-      </mat-tab>
-    </mat-tab-group>
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link *ngFor="let category of categories"
+         class="account-link"
+         [routerLink]="category.path"
+         routerLinkActive #rla="routerLinkActive"
+         [active]="rla.isActive">
+        {{ category.label }}
+      </a>
+    </nav>
+    <router-outlet></router-outlet>
   </div>
 </div>

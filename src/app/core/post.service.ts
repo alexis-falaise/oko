@@ -127,6 +127,14 @@ export class PostService {
   }
 
   /**
+   * Get a trip by author id
+   * @param id : User unique identifier
+   */
+  getTripByAuthor(id: string): Observable<Array<Trip>> {
+    return this.http.get(`${this.tripUrl}/author/${id}`, {withCredentials: true}) as Observable<Array<Trip>>;
+  }
+
+  /**
    * Get a request by id
    * @param id : Request unique identifier
    */
@@ -138,8 +146,8 @@ export class PostService {
    * Get a request by author id
    * @param id : User that authored the request unique identifier
    */
-  getRequestByAuthor(id: string): Observable<ServerResponse> {
-    return this.http.get(`${this.requestUrl}/author/${id}`, {withCredentials: true}) as Observable<ServerResponse>;
+  getRequestByAuthor(id: string): Observable<Array<Request>> {
+    return this.http.get(`${this.requestUrl}/author/${id}`, {withCredentials: true}) as Observable<Array<Request>>;
   }
 
   /**
@@ -147,8 +155,8 @@ export class PostService {
    * @param authorId : Author unique identifier
    * @param tripId : Trip unique identifier
    */
-  getRequestByTrip(authorId: string, tripId: string): Observable<ServerResponse> {
-    return this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true}) as Observable<ServerResponse>;
+  getRequestByTrip(authorId: string, tripId: string): Observable<Array<Request>> {
+    return this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true}) as Observable<Array<Request>>;
   }
 
   // Creators

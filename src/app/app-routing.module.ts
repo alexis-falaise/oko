@@ -7,6 +7,10 @@ import { LogoutComponent } from './auth/logout/logout.component';
 import { AccountComponent } from './account/account.component';
 
 import { AuthGuard } from './guards/auth.guard';
+import { AccountInfoComponent } from './account/account-info/account-info.component';
+import { AccountRequestComponent } from './account/account-request/account-request.component';
+import { AccountTripComponent } from './account/account-trip/account-trip.component';
+import { AccountItemComponent } from './account/account-item/account-item.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,7 +18,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'signin', component: SigninComponent },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard],
+    children: [
+      { path: 'info', component: AccountInfoComponent },
+      { path: 'request', component: AccountRequestComponent },
+      { path: 'trip', component: AccountTripComponent },
+      { path: 'item', component: AccountItemComponent },
+    ] },
   { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
 ];
 

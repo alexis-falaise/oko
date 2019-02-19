@@ -61,12 +61,12 @@
      Conditions de remise
    </h4>
    <div *ngIf="request && request.airportPickup">
-     <ng-template class="agreement" *ngIf="request.trip && request.trip.airportDrop; else pickupAgreement">
+     <div class="agreement" *ngIf="request.trip && request.trip.airportDrop; else pickupAgreement">
          <mat-icon>flight</mat-icon> Remise à l'aéroport {{ request.trip.to.airport.name }}
-     </ng-template>
+     </div>
    </div>
    <div *ngIf="request && !request.airportPickup">
-     <ng-template *ngIf="request.trip && !request.trip.airportDrop; else pickupAgreement">
+     <div *ngIf="request.trip && !request.trip.airportDrop; else pickupAgreement">
        <div class="agreement">
            <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
        </div>
@@ -76,7 +76,7 @@
          <span *ngIf="request.meetingPoint.zip">({{ request.meetingPoint.zip }})</span>
          <span *ngIf="request.meetingPoint.country"> - {{ request.meetingPoint.country }}</span>
        </div>
-     </ng-template>
+     </div>
    </div>
  </div>
  <hr class="divider">

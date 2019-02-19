@@ -19,15 +19,16 @@ export class NavComponent implements OnInit {
     { label: 'Connexion', path: '/login', icon: 'power_settings_new' },
   ];
   accountMenuItems: Array<MenuItem> = [
-    { label: 'Mon compte', path: '/account', icon: 'account_circle' },
+    { label: 'Mon compte', path: '/account/info', icon: 'account_circle' },
+    { label: 'Mes trajets', path: '/account/trip', icon: 'explore' },
+    { label: 'Mes demandes', path: '/account/request', icon: 'new_releases' },
     { label: 'Déconnexion', path: '/logout', icon: 'power_settings_new' }
   ];
   menuItems: Array<MenuItem> = [
     { label: 'Accueil', path: '/home', icon: 'home' },
-    { label: 'Créer une annonce', path: '/post/request', icon: 'new_releases' },
-    { label: 'Mes trajets', path: '/trips', icon: 'explore' },
-    { label: 'Messages', path: '/messages', icon: 'email' },
+    { label: 'Faire une demande', path: '/post/request', icon: 'new_releases' },
     { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
+    { label: 'Messages', path: '/messages', icon: 'email' },
     { label: 'Aide', path: '/help', icon: 'help' },
   ];
   displayAccountMenuItems: Array<MenuItem> = null;
