@@ -95,7 +95,7 @@
       </div>
     </div>
     <ng-template #pending>
-      <div class="trip-detail__pending" *ngIf="currentRequest && !currentRequest.closed && !currentRequest.validated">
+      <div matRipple (click)="openRequest()" class="trip-detail__pending" *ngIf="currentRequest && !currentRequest.closed && !currentRequest.validated">
         <h5 class="trip-detail__pending-title">
           <mat-icon>add_alert</mat-icon> Vous avez une demande en attente
         </h5>

@@ -60,6 +60,10 @@ export class TripDetailComponent implements OnInit {
     });
   }
 
+  openRequest() {
+    this.router.navigate([`/post/request/${this.currentRequest.id}`]);
+  }
+
   closeRequest() {
     this.postService.closeRequest(this.currentRequest.id)
     .subscribe((response) => {

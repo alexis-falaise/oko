@@ -1,6 +1,9 @@
 @import "../../../../styles/variables.scss";
 
 .request-detail {
+    height: 100vh;
+    overflow-y: scroll;
+
     &__hero {
         animation: $animationDuration openHero;
         -webkit-animation: $animationDuration openHero;
@@ -25,9 +28,11 @@
     }
 
     &__status {
+        margin-top: 15px;
         border-radius: 5px;
         width: 95%;
         margin-left: 2.5%;
+        text-align: center;
 
         &.good {
             background-color: #dcedc8;
@@ -50,10 +55,28 @@
     }
 
     &__trip {
+        transition: all $transitionDuration;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .05);
+        }
+
         &-date {
             margin: 10px 0;
             color: rgba(0, 0, 0, .6);
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .arrival {
+                display: flex;
+                align-items: center;
+                text-align: center;
+            }
 
             .arrival-time {
                 font-size: 24px;
@@ -85,6 +108,27 @@
                 color: rgb(75, 75, 75);
                 text-align: center;
             }
+        }
+    }
+
+    &__conditions {
+        .agreement {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            color: rgb(175, 175, 175);
+        }
+    }
+
+    &__contact {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+
+        .btn-contact {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
     }
 
