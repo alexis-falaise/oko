@@ -41,11 +41,12 @@ export class RequestFormComponent implements OnInit {
     airportPickup: [false],
     urgent: [false],
     urgentDetails: this.fb.group({
-      explaination: [''],
+      explaination: ['', Validators.required],
       date: [null],
     }),
-    bonus: [''],
+    bonus: ['', Validators.required],
   });
+  bonusAgreed = false;
 
   constructor(
     private dialog: MatDialog,
@@ -118,8 +119,8 @@ export class RequestFormComponent implements OnInit {
         .subscribe(response => {
           if (response.status) {
             const createdRequest = new Request(response.data);
-            this.snack.open('Demande enregistrée', 'Ca marche', {duration: 3000});
-            this.router.navigate(['post/request/' + createdRequest.id]);
+            this.snack.open('Demande enregistrée', 'Top!', {duration: 3000});
+            this.router.navigate([`post/request/${createdRequest.id}`]);
           } else {
             this.snack.open('Un problème a eu lieu', 'Réessayer', {duration: 5000});
           }

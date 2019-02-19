@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
 import { Item } from '@models/item.model';
 import { MeetingPoint } from '@models/meeting-point.model';
@@ -16,10 +17,13 @@ export class Request extends Post {
         explaination: string;
         date: Moment;
     };
+    handler?: User;
     bonus?: number;
     trip?: Trip;
     closed?: boolean;
+    accepted?: boolean;
     validated?: boolean;
+    paid?: boolean;
 
     constructor(request: Partial<Request> = {}) {
         super(request);
@@ -35,11 +39,13 @@ export class Request extends Post {
 
     isCabinOnly(): boolean {
         let fitsCabin = true;
-        this.items.forEach(item => {
-            if (!item.cabinOnly) {
-                fitsCabin = false;
-            }
-        });
+        if (this.items) {
+            this.items.forEach(item => {
+                if (!item.cabinOnly) {
+                    fitsCabin = false;
+                }
+            });
+        }
         return fitsCabin;
     }
 }

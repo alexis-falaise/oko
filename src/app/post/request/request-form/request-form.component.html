@@ -16,7 +16,7 @@
     <form [formGroup]="meeting">
       <div class="form-group">
         <mat-slide-toggle formControlName="airportPickup">Je peux récupérer mes articles à l'aéroport</mat-slide-toggle><br>
-        <small class="text-muted" *ngIf="airport">
+        <small class="text-muted" *ngIf="trip.to && trip.to.airport">
           Je récupère mes articles à l'aéroport d'arrivée du voyageur:
           {{ trip.to.airport.name }} ( {{ trip.to.airport.code }} )
         </small>
@@ -47,7 +47,7 @@
       <div *ngIf="meeting.controls.urgent.value">
         <form [formGroup]="meeting.controls.urgentDetails">
           <div class="form-group">
-              <textarea rows="2" class="form-control" placeholder="Raison de l'urgence" formControlName="explaination">
+              <textarea rows="2" class="form-control" placeholder="Raison de l'urgence" formControlName="explaination" required>
               </textarea>
             </div>
             <div class="form-row">
@@ -78,7 +78,7 @@
       </div>
       <div class="form-group">
         <div class="input-group">
-          <input type="number" min="0" class="form-control" placeholder="Bonus voyageur" formControlName="bonus" required>
+          <input type="number" min="0" class="form-control" placeholder="Bonus voyageur" formControlName="bonus" [required]="bonusAgreed">
           <div class="input-group-append">
             <span class="input-group-text">€</span>
           </div>
@@ -90,8 +90,9 @@
     <button class="btn btn-success" [disabled]="
         (!items || items && !items.length)
         || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
+        || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
       " (click)="request()">
-      Faire une demande <span *ngIf="author"> à {{ trip.user.firstname }}</span>
+      Faire une demande <span *ngIf="trip.user.firstname"> à {{ trip.user.firstname }}</span>
     </button>
   </div>
 </div>

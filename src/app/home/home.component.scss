@@ -5,6 +5,9 @@ $transitionDuration: 0.2s;
 $transitionStyle: ease-out;
 
 .home {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     &-hero {
         transition: $transitionDuration $transitionStyle all;
@@ -66,7 +69,6 @@ $transitionStyle: ease-out;
             -webkit-transition: $transitionDuration $transitionStyle all;
             -moz-transition: $transitionDuration $transitionStyle all;
             -o-transition: $transitionDuration $transitionStyle all;
-            padding-left: 5%;
 
             &-location:hover,
             &-item:hover {
@@ -126,7 +128,7 @@ $transitionStyle: ease-out;
     &-content {
         height: 40vh;
         min-height: 400px;
-        overflow: scroll;
+        overflow-y: scroll;
         padding-top: 15px;
 
         &.expanded {
@@ -172,6 +174,11 @@ $transitionStyle: ease-out;
                     transition: all $transitionDuration;
                     justify-content: center;
                 }
+            }
+
+            &-buttons {
+                width: 100%;
+                margin-left: 0.5%;
             }
         }
     }

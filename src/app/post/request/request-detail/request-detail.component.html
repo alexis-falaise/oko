@@ -2,8 +2,53 @@
   <div class="request-detail__hero row">
     <h2>Résumé de la demande</h2>
   </div>
+  <div class="request-detail__status"
+       [class.good]="request.accepted || request.validated"
+       [class.bad]="request.closed"
+       *ngIf="request.closed || request.accepted || request.validated">
+       <span *ngIf="request.closed">La demande a été annulée</span>
+       <span *ngIf="request.accepted">La demande a été acceptée {{ request.handler ? 'par ' + request.handler.firstname : '' }}</span>
+       <span *ngIf="request.validated">Cette demande a été validée</span>
+  </div>
+  <div class="request-detail__actions justify-content-around">
+    <button class="btn btn-warning" disabled *ngIf="!request.accepted && !request.closed">En attente</button>
+    <button class="btn btn-success" [disabled]="request.validated" *ngIf="request.accepted" (click)="validate()">Valider la réception</button>
+    <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler la demande</button>
+  </div>
   <div class="request-detail__summary">
-    <h3 class="request-detail__summary-title">Articles</h3>
+    <h4 class="request-detail__summary-title">Articles</h4>
     <app-item *ngFor="let item of request.items" [item]="item" [removable]="false"></app-item>
   </div>
+  <hr class="divider">
+  <div class="request-detail__trip" *ngIf="request && request.trip">
+    <h4 class="request-detail__trip-title">Voyage</h4>
+    <div class="request-detail__trip-date">
+      <mat-icon>today</mat-icon> Arrivée <br>
+      <span class="arrival-time">{{ request.trip.date.format('DD/MM HH:mm') }}</span>
+    </div>
+    <div class="row request-detail__trip-info">
+      <div class="col-1 d-flex align-items-center">
+        <mat-icon>flight_takeoff</mat-icon>
+      </div>
+      <div class="col-4 location">
+        <div class="city-name">{{ request.trip.from.label }} </div>
+        <div class="airport-name" *ngIf="request.trip.from.airport">
+            {{ request.trip.from.airport.name }}
+        </div>
+      </div>
+      <div class="col-2 d-flex align-items-center">
+        <mat-icon>chevron_right</mat-icon>
+      </div>
+      <div class="col-4 location">
+        <div class="city-name">{{ request.trip.to.label }}</div>
+        <div class="airport-name" *ngIf="request.trip.to.airport">
+          {{ request.trip.to.airport.name }}
+        </div>
+      </div>
+      <div class="col-1 d-flex align-items-center">
+        <mat-icon>flight_land</mat-icon>
+      </div>
+    </div>
+  </div>
+  <mat-progress-bar class="loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 </div>

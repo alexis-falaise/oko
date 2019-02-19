@@ -61,14 +61,12 @@ export class TripDetailComponent implements OnInit {
   }
 
   closeRequest() {
-    console.log(this.currentRequest);
     this.postService.closeRequest(this.currentRequest.id)
     .subscribe((response) => {
-      console.log(response);
       if (response.status) {
         const request = new Request(response.data);
         if (request.id === this.currentRequest.id && request.closed) {
-          this.snack.open('La demande a été annulée', 'OK');
+          this.snack.open('La demande a été annulée', 'OK', {duration: 3000});
           this.currentRequest = null;
         }
       }
