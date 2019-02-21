@@ -13,7 +13,6 @@ import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Airport } from '@models/airport.model';
 import { Luggage } from '@models/luggage.model';
-import { BoundTextAst } from '@angular/compiler';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -35,6 +34,7 @@ export class TripComponent implements OnInit {
   constraintsInfo = null;
   loading = false;
   edition = false;
+  trip: Trip = null;
 
   constructor(
     private postService: PostService,
@@ -46,12 +46,41 @@ export class TripComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(param => {
-      console.log('Route param', param);
-    });
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        console.log('Router event', event);
+    this.route.url.subscribe(segments => {
+      const editionSegment = segments.find(segment => segment.path === 'edit');
+      this.loading = true;
+      if (editionSegment) {
+        this.edition = true;
+        this.route.params.subscribe(param => {
+          const id = param.id;
+          this.postService.getTripById(id)
+          .subscribe(trip => {
+            trip = new Trip(trip);
+            this.trip = trip;
+            console.log(trip);
+            console.log(trip.date.format('DD/MM/YYYY'));
+            this.departureInfo = {
+              city: trip.from.label,
+              airport: new Airport(trip.from.airport),
+              date: moment(),
+              time: `${moment().hours()}:${moment().minutes()}`
+            };
+            this.arrivalInfo = {
+              city: trip.to.label,
+              airport: new Airport(trip.to.airport),
+              date: trip.date,
+              time: trip.date.format('HH:mm'),
+            };
+            this.constraintsInfo = {
+              luggages: trip.luggages.map(luggage => new Luggage(luggage)),
+              airportDrop: trip.airportDrop,
+              bonus: trip.bonus
+            };
+            this.loading = false;
+          });
+        });
+      } else {
+        this.loading = false;
       }
     });
     const draft = this.postService.getTripDraft();
@@ -131,6 +160,19 @@ export class TripComponent implements OnInit {
       (error) => {
         this.saveError();
       });
+  }
+
+  removeTrip() {
+    this.postService.removeTrip(this.trip)
+    .subscribe((serverResponse) => {
+      if (serverResponse.status) {
+        this.snack.open('Le trajet a bien été supprimé', 'OK', {duration: 3000});
+        this.router.navigate(['/account/trip']);
+      } else {
+        const snackRef = this.snack.open('Erreur lors de la suppression du trajet', 'Réessayer', {duration: 3000});
+        snackRef.onAction().subscribe(() => this.removeTrip());
+      }
+    });
   }
 
   private saveError() {

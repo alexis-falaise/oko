@@ -26,6 +26,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() city = null;
   @Input() date = null;
   @Input() time = null;
+  @Input() airport = null;
   @Input() cityReadonly = false;
   @Input() dateReadonly = false;
   @Input() timeReadonly = false;
@@ -54,11 +55,16 @@ export class TripLocationComponent implements OnInit, OnChanges {
     }
     if (changes.date) {
       const date = changes.date.currentValue;
+      console.log(date);
       this.location.controls.date.patchValue(date);
     }
     if (changes.time) {
       const time = changes.time.currentValue;
       this.location.controls.time.patchValue(time);
+    }
+    if (changes.airport) {
+      const airport = changes.airport.currentValue;
+      this.location.controls.airport.patchValue(airport);
     }
     if (changes.minDate) {
       const minDate = changes.minDate.currentValue;

@@ -12,10 +12,10 @@ export class AccountComponent implements OnInit {
 
   currentUser: User = null;
   categories: Array<Link> = [
-    { label: 'Mes infos', path: '/account/info' },
-    { label: 'Mes demandes', path: '/account/request' },
-    { label: 'Mes trajets', path: '/account/trip' },
-    { label: 'Mes articles', path: '/account/item' },
+    { label: 'Infos', path: '/account/info', icon: 'account_box' },
+    { label: 'Trajets', path: '/account/trip', icon: 'explore' },
+    { label: 'Demandes', path: '/account/request', icon: 'new_releases' },
+    { label: 'Articles', path: '/account/item', icon: 'shopping_cart' },
   ];
 
   constructor(

@@ -1,3 +1,8 @@
-<div class="remove-panel" (click)="removeEvent()">
-    <mat-icon>delete</mat-icon>
+<div class="remove-panel" >
+    <div class="remove-panel__edit" (click)="editItem()" *ngIf="editable">
+        <mat-icon>edit</mat-icon>
+    </div>
+    <div class="remove-panel__remove" [style.width]="editable ? '50%' : '100%'" (click)="removeItem()">
+        <mat-icon>delete</mat-icon>
+    </div>
 </div>

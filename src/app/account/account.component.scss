@@ -31,6 +31,9 @@
     }
 
     &-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         transition: all $transitionDuration;
         text-decoration: none;
         &:hover {

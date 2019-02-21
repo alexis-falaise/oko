@@ -83,13 +83,7 @@ export class PostService {
       if (response.status) {
         const trips: Array<Trip> = response.data
         .map((trip: Trip) => new Trip(trip))
-        .sort((first, second) => {
-          if (moment(first.date).isBefore(second.date)) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
+        .sort((first, second) =>  moment(first.date).isBefore(second.date) ? -1 : 1);
         this.trips.next(trips);
         nextQuery.next(true);
       }
@@ -196,6 +190,22 @@ export class PostService {
   validateRequest(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
   }
+
+  // Deleters
+
+  removePost(post: Post): Observable<ServerResponse> {
+    return this.http.delete(`${this.postUrl}/${post.id}`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  removeTrip(trip: Trip): Observable<ServerResponse> {
+    return this.http.delete(`${this.tripUrl}/${trip.id}`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  removeRequest(request: Request): Observable<ServerResponse> {
+    return this.http.delete(`${this.requestUrl}/${request.id}`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  // In app functions
 
   saveTripDraft(tripDraft) {
     this.tripDraft = tripDraft;

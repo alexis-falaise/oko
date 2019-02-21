@@ -14,6 +14,7 @@
          [routerLink]="category.path"
          routerLinkActive #rla="routerLinkActive"
          [active]="rla.isActive">
+         <mat-icon>{{ category.icon }}</mat-icon>
         {{ category.label }}
       </a>
     </nav>

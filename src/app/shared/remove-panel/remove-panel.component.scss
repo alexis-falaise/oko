@@ -7,25 +7,46 @@
 
 .remove-panel {
     transition: all $transitionDuration;
-    display: flex;
     cursor: pointer;
-    justify-content: center;
-    align-items: center;
+    display: flex;
+    flex-direction: row;
     animation: 0.15s slideEnter;
     top: 0;
     right: 0;
     height: 100%;
-    width: 35%;
+    width: 50%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
-    background-color: $red-800;
     position: absolute;
     z-index: 1;
     .mat-icon {
         color: white;
     }
 
-    &:hover {
-        transition: all $transitionDuration;
-        background-color: $red-600;
+    &__remove {
+        background-color: $red-800;
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
+
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: $red-600;
+        }
+    }
+
+    &__edit {
+        background-color: $amber-800;
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
+
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: $amber-600;
+        }
     }
 }

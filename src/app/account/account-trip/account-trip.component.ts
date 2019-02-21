@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+
 import { UserService } from '@core/user.service';
 import { PostService } from '@core/post.service';
+
 import { Trip } from '@models/post/trip.model';
 
 @Component({
@@ -12,8 +16,9 @@ export class AccountTripComponent implements OnInit {
   trips: Array<Trip> = null;
 
   constructor(
-    private userService: UserService,
     private postService: PostService,
+    private userService: UserService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -23,11 +28,19 @@ export class AccountTripComponent implements OnInit {
         this.postService.getTripByAuthor(user.id)
         .subscribe(trips => {
           if (trips) {
-            this.trips = trips.map(trip => new Trip(trip));
+            this.trips = trips.map(trip => new Trip(trip)).sort((a, b) => moment(a.date).isBefore(b.date) ? -1 : 1);
           }
         });
       }
     });
+  }
+
+  newTrip() {
+    this.router.navigate(['/post/trip/new']);
+  }
+
+  remove(index: number) {
+    this.trips.splice(index, 1);
   }
 
 }

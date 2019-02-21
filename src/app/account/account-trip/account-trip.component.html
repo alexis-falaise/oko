@@ -1,3 +1,7 @@
 <div class="account-trip container">
-  <app-post [post]="trip" [horizontal]="true" *ngFor="let trip of trips"></app-post>
+    <small class="text-muted account-trip-hint">Swipez vers la gauche pour editer ou supprimer un trajet</small>
+    <button class="btn btn-info btn-new-trip" (click)="newTrip()">
+        <mat-icon>flight_takeoff</mat-icon> Nouveau trajet
+    </button>
+    <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of trips; let i = index;"></app-post>
 </div>

@@ -7,7 +7,8 @@ import {
   MatExpansionModule,
   MatDatepickerModule,
   MatRippleModule,
-  MatCardModule
+  MatCardModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -37,6 +38,7 @@ import { ItemComponent } from './item/item.component';
     MatDatepickerModule,
     MatMomentDateModule,
     MatRippleModule,
+    MatSnackBarModule,
     RouterModule,
   ],
   exports: [

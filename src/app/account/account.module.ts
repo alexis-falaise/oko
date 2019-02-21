@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import {
   MatChipsModule,
   MatProgressBarModule,
-  MatTabsModule
+  MatTabsModule,
+  MatIconModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -32,9 +33,10 @@ import { AccountComponent } from './account.component';
     SharedModule,
     CommonModule,
     FormsModule,
-    MatTabsModule,
     MatChipsModule,
-    MatProgressBarModule
+    MatIconModule,
+    MatProgressBarModule,
+    MatTabsModule,
   ],
   exports: [
     AccountComponent,

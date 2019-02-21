@@ -1,5 +1,15 @@
 .account-trip {
-    height: 80vh;
+    height: 72vh;
     overflow-y: scroll;
     overflow-x: hidden;
+    text-align: center;
+
+    .btn-new-trip {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 75%;
+        margin: 15px 12.5% 0;
+    }
 }

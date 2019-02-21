@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-remove-panel',
@@ -6,14 +6,20 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./remove-panel.component.scss']
 })
 export class RemovePanelComponent implements OnInit {
+  @Input() editable = false;
   @Output() remove = new EventEmitter();
+  @Output() edit = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  removeEvent() {
+  editItem() {
+    this.edit.emit();
+  }
+
+  removeItem() {
     this.remove.emit();
   }
 

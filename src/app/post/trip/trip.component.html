@@ -1,7 +1,7 @@
 <div class="trip container-fluid">
   <div class="trip__hero row">
     <div class="trip__hero-title-wrapper">
-      <h1 class="trip__hero-title">Je voyage</h1>
+      <h1 class="trip__hero-title">{{ edition ? 'Mon' : 'Je'}} voyage</h1>
     </div>
     <!-- <div class="trip__hero-type">
         <div class="btn-group btn-group-toggle">
@@ -15,6 +15,9 @@
     </div> -->
   </div>
   <div class="trip__content">
+    <button class="btn btn-danger btn-remove-trip" (click)="removeTrip()" *ngIf="edition">
+      <mat-icon>delete</mat-icon> Supprimer ce trajet
+    </button>
     <mat-vertical-stepper>
       <mat-step>
         <ng-template matStepLabel>
@@ -30,10 +33,14 @@
               [city]="departureInfo?.city"
               [date]="departureInfo?.date"
               [time]="departureInfo?.time"
+              [airport]="departureInfo?.airport"
               (valid)="departure($event)">
             </app-trip-location>
           </div>
         </div>
+        <button class="btn btn-success"
+                [disabled]="!departureInfo || (departureInfo && (!departureInfo.city || !departureInfo.date || !departureInfo.time))"
+                matStepperNext>Valider</button>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>
@@ -45,15 +52,19 @@
         <div class="trip__content__location" [class.extended]="true">
           <h4 class="location-title trip-title">Arrivée <mat-icon>flight_land</mat-icon></h4>
           <div class="location-selection">
-          <app-trip-location
-          [city]="arrivalInfo?.city"
-          [date]="arrivalInfo?.date"
-          [time]="arrivalInfo?.time"
-          [minDate]="departureInfo?.date"
-          (valid)="arrival($event)">
-          </app-trip-location>
+            <app-trip-location
+            [city]="arrivalInfo?.city"
+            [date]="arrivalInfo?.date"
+            [time]="arrivalInfo?.time"
+            [airport]="arrivalInfo?.airport"
+            [minDate]="edition ? arrivalInfo?.date : departureInfo?.date"
+            (valid)="arrival($event)">
+            </app-trip-location>
           </div>
         </div>
+        <button class="btn btn-success"
+                [disabled]="!arrivalInfo || (arrivalInfo && (!arrivalInfo.city || !arrivalInfo.date || !arrivalInfo.time))"
+                matStepperNext>Valider</button>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>
@@ -63,6 +74,9 @@
           </div>
         </ng-template>
         <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
+        <button class="btn btn-success"
+                [disabled]="!constraintsInfo || (constraintsInfo && (!constraintsInfo.luggages.length || !constraintsInfo.bonus))"
+                matStepperNext>Valider</button>
       </mat-step>
       <!-- <mat-step *ngIf="return">
         <ng-template matStepLabel>Retour - Départ</ng-template>
