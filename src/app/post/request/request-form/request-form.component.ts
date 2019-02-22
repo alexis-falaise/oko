@@ -140,7 +140,6 @@ export class RequestFormComponent implements OnInit {
       trip: this.trip,
       ...this.meeting.value
     });
-    console.log('Making request', saveRequest);
     this.userService.getCurrentUser()
     .subscribe(currentUser => {
       saveRequest.user = currentUser;

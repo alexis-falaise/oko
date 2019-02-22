@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser'; 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { UserService } from '@core/user.service';
@@ -15,10 +16,24 @@ export class DisplayItem extends Item {
   }
 }
 
+declare var Hammer: any;
+export class MyHammerConfig extends HammerGestureConfig  {
+  buildHammer(element: HTMLElement) {
+    const mc = new Hammer(element, {
+      touchAction: 'pan-x'
+    });
+    return mc;
+  }
+}
+
 @Component({
   selector: 'app-request-item-selection',
   templateUrl: './request-item-selection.component.html',
-  styleUrls: ['./request-item-selection.component.scss']
+  styleUrls: ['./request-item-selection.component.scss'],
+  providers: [{
+    provide: HAMMER_GESTURE_CONFIG,
+    useClass: MyHammerConfig
+  }]
 })
 export class RequestItemSelectionComponent implements OnInit {
   selectableItems: Array<DisplayItem>;

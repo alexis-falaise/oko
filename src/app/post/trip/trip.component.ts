@@ -200,7 +200,7 @@ export class TripComponent implements OnInit {
       city: trip.from.label,
       airport: new Airport(trip.from.airport),
       date: trip.departureDate || moment(),
-      time: trip.departureDate.format('HH:mm') || `${moment().hours()}:${moment().minutes()}`,
+      time: trip.departureDate ? trip.departureDate.format('HH:mm') : `${moment().hours()}:${moment().minutes()}`,
     };
     this.arrivalInfo = {
       city: trip.to.label,
