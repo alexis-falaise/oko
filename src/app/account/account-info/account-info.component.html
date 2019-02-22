@@ -37,7 +37,6 @@
     </ng-template>
   </div>
   <div class="account-info__action">
-  <mat-progress-bar mode="indeterminate" class="account-info__loading" *ngIf="loading"></mat-progress-bar>
   <button class="btn btn-info" [disabled]="!hasEdited()" (click)="save()">
       Enregistrer
     </button>

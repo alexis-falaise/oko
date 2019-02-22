@@ -34,7 +34,7 @@ declare var Hammer: any;
 export class MyHammerConfig extends HammerGestureConfig  {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, {
-      touchAction: 'pan-y'
+      touchAction: 'pan-x pan-y'
     });
     return mc;
   }

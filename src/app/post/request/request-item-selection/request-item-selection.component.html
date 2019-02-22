@@ -11,6 +11,7 @@
                 (click)="toggleItem(item)"
                 *ngFor="let item of selectableItems; let i = index"
                 [item]="item"
+                [removable]="false"
                 [creator]="true">
       </app-item>
     </div>
