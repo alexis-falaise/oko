@@ -33,4 +33,9 @@ export class HistoryService {
     this.history.next(history);
     this.router.navigate([route]);
   }
+
+  hasBack(): boolean {
+    const history = this.history.getValue();
+    return !!history.length;
+  }
 }

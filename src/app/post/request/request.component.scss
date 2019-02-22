@@ -1,22 +1,39 @@
-@keyframes enter {
-    0% {
-        box-shadow: 5px 0px 15px rgba(0, 0, 0, .5);
-        margin-left: 100%;
-    }
-    100% {
-        margin-left: 0%;
-    }
-}
-
-$animationDuration: 0.25s;
+@import "../../../styles/animations.scss";
+@import "../../../styles/variables.scss";
 
 .request {
-    padding-top: 50px;
     height: 100vh;
 
-    animation: $animationDuration enter;
-    -webkit-animation: $animationDuration enter;
-    -moz-animation: $animationDuration enter;
-    -o-animation: $animationDuration enter;
-    
+    &__hero {
+        animation: $animationDuration openHero;
+        -webkit-animation: $animationDuration openHero;
+        -moz-animation: $animationDuration openHero;
+        -o-animation: $animationDuration openHero;
+
+        background: $heroGradient;
+        // background-image: url('/assets/hero-trip-detail.jpg');
+        width: 100vw;
+        min-height: 175px;
+        height: 15vh;
+        padding-top: $navbarHeight;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        color: white;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    &__form {
+        height: 75vh;
+        padding-top: 15px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        &-hint {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    }
 }

@@ -3,6 +3,7 @@ import { User } from '@models/user.model';
 import { Description } from '@models/description.model';
 import { keyframes } from '@angular/animations';
 import { UserService } from '@core/user.service';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-account-info',
@@ -15,15 +16,19 @@ export class AccountInfoComponent implements OnInit {
   edit: any = {};
   keys = Object.keys;
   isArray = Array.isArray;
-  loading = false;
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private uiService: UiService
+  ) { }
 
   ngOnInit() {
+    this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
         this.init(user);
+        this.uiService.setLoading(false);
       }
     });
   }
@@ -60,11 +65,11 @@ export class AccountInfoComponent implements OnInit {
   }
 
   save() {
-    this.loading = true;
+    this.uiService.setLoading(true);
     this.user.description = new Description(this.description);
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
-      this.loading = false;
+       this.uiService.setLoading(false);
       if (res.status) {
         this.userService.getCurrentUser();
         this.init(res.data);

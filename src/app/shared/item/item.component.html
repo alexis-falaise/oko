@@ -4,12 +4,12 @@
     </div>
     <mat-card-title class="item__title">{{ item.label }}</mat-card-title>
     <mat-card-subtitle class="item__subtitle">
-      <a class="item__link" [href]="item.link.path" target="blank">
+      <a class="item__link" [href]="item.link.path" target="blank" *ngIf="!creator">
         <mat-icon>shopping_cart</mat-icon>
         {{ item.link.label }}
       </a>
     </mat-card-subtitle>
-    <div class="item__image-wrapper" mat-card-image>
+    <div class="item__image-wrapper" mat-card-image *ngIf="item?.photo?.length">
       <img class="item__image" [src]="item.photo[0]" [alt]="item.label">
     </div>
     <mat-card-content>

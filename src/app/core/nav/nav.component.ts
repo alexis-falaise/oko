@@ -26,7 +26,7 @@ export class NavComponent implements OnInit {
   ];
   menuItems: Array<MenuItem> = [
     { label: 'Accueil', path: '/home', icon: 'home' },
-    { label: 'Faire une demande', path: '/post/request', icon: 'new_releases' },
+    { label: 'Faire une demande', path: '/post/request/new', icon: 'new_releases' },
     { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
     { label: 'Messages', path: '/messages', icon: 'email' },
     { label: 'Aide', path: '/help', icon: 'help' },
@@ -39,7 +39,6 @@ export class NavComponent implements OnInit {
     private authService: AuthService,
     private historyService: HistoryService,
     private router: Router,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {

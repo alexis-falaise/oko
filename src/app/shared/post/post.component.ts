@@ -72,7 +72,6 @@ export class PostComponent implements OnInit, OnChanges {
     ? this.postService.removeTrip(this.post as Trip)
     : this.postService.removeRequest(this.post as Request);
     removalService.subscribe((serverResponse) => {
-      console.log(serverResponse);
       if (serverResponse.status) {
         this.snack.open(`${this.isTrip ? 'Le trajet' : 'La demande'} a bien été supprimé ${this.isTrip ? '' : 'e'}`,
                         'OK', {duration: 3000});

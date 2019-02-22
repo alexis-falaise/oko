@@ -1,0 +1,44 @@
+@import "../../../../styles/variables.scss";
+
+.request-item-selection {
+    &-title {
+        font-weight: 700;
+        font-size: 24px;
+        color: $cyan-600
+    }
+
+    &__content {
+        height: 320px;
+        display: flex;
+        justify-content: flex-start;
+        overflow-y: hidden;
+        overflow-x: scroll;
+        padding-left: 10px;
+    }
+
+    &__item {
+        display: inline-flex;
+        transition: all $transitionDuration;
+        width: 90%;
+        height: 94%;
+        margin: 5px 15px;
+
+        &.selected {
+            transition: all $transitionDuration;
+            margin: 5px 15px;
+            box-shadow: 0 0 15px 10px $cyan-200-light;
+        }
+    }
+
+    &__validation {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    &__loading {
+        height: 10px;
+        position: relative;
+        top: -17px;
+    }
+}

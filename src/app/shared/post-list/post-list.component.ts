@@ -3,6 +3,7 @@ import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit, ViewChil
 import { Post } from '@models/post/post.model';
 
 import { PostService } from '@core/post.service';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-post-list',
@@ -16,14 +17,19 @@ export class PostListComponent implements OnInit, AfterViewInit {
   @Input() trip = true;
   @Input() horizontal = false;
 
-  constructor(private postService: PostService) { }
+  constructor(
+    private postService: PostService,
+    private uiService: UiService,
+  ) { }
 
   ngOnInit() {
+    this.uiService.setLoading(true);
     if (this.trip) {
       this.postService.onTrips()
       .subscribe(trips => {
         if (trips) {
           this.setPosts(trips);
+          this.uiService.setLoading(false);
         }
       });
       if (!this.posts.length) {
@@ -34,6 +40,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
       .subscribe(requests => {
         if (requests) {
           this.setPosts(requests);
+          this.uiService.setLoading(false);
         }
       });
       if (!this.posts.length) {

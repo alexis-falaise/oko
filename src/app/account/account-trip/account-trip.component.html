@@ -3,5 +3,9 @@
     <button class="btn btn-info btn-new-trip" (click)="newTrip()">
         <mat-icon>flight_takeoff</mat-icon> Nouveau trajet
     </button>
+    <!-- <button mat-fab class="btn-new-trip--fab" color="primary" (click)="newTrip()">
+        <mat-icon>flight_takeoff</mat-icon>
+    </button> -->
+    
     <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of trips; let i = index;"></app-post>
 </div>

@@ -22,8 +22,8 @@
       <mat-step>
         <ng-template matStepLabel>
           Départ
-          <div *ngIf="departureInfo && departureInfo.city && departureInfo.date">
-           {{ departureInfo.city }} - {{ departureInfo.date.format('DD/MM') }} - {{ departureInfo.time }}
+          <div *ngIf="departureSave?.city && departureSave?.date">
+           {{ departureSave.city }} - {{ departureSave.date.format('DD/MM') }} - {{ departureSave.time }}
           </div>
         </ng-template>
         <div class="trip__content__location">
@@ -39,14 +39,14 @@
           </div>
         </div>
         <button class="btn btn-success"
-                [disabled]="!departureInfo || (departureInfo && (!departureInfo.city || !departureInfo.date || !departureInfo.time))"
+                [disabled]="!departureSave || !departureSave?.city || !departureSave?.date || !departureSave?.time"
                 matStepperNext>Valider</button>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>
           Arrivée
-          <div *ngIf="arrivalInfo && arrivalInfo.city && arrivalInfo.date">
-           {{ arrivalInfo.city }} - {{ arrivalInfo.date.format('DD/MM') }} - {{ arrivalInfo.time }}
+          <div *ngIf="arrivalSave?.city && arrivalSave?.date">
+           {{ arrivalSave.city }} - {{ arrivalSave.date.format('DD/MM') }} - {{ arrivalSave.time }}
           </div>
         </ng-template>
         <div class="trip__content__location" [class.extended]="true">
@@ -54,98 +54,66 @@
           <div class="location-selection">
             <app-trip-location
             [city]="arrivalInfo?.city"
-            [date]="arrivalInfo?.date"
+            [date]="departureSave?.date || arrivalInfo?.date"
             [time]="arrivalInfo?.time"
             [airport]="arrivalInfo?.airport"
-            [minDate]="edition ? arrivalInfo?.date : departureInfo?.date"
+            [minDate]="edition ? arrivalInfo?.date : departureSave?.date"
             (valid)="arrival($event)">
             </app-trip-location>
           </div>
         </div>
         <button class="btn btn-success"
-                [disabled]="!arrivalInfo || (arrivalInfo && (!arrivalInfo.city || !arrivalInfo.date || !arrivalInfo.time))"
+                [disabled]="!arrivalSave || !arrivalSave?.city || !arrivalSave?.date || !arrivalSave?.time"
                 matStepperNext>Valider</button>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>
           Informations
-          <div *ngIf="constraintsInfo && constraintsInfo.luggages && constraintsInfo.luggages.length">
-            {{ constraintsInfo.luggages.length }} bagage{{ constraintsInfo.luggages.length > 1 ? 's' : ''}}
+          <div *ngIf="constraintsSave?.luggages && constraintsSave?.luggages.length">
+            {{ constraintsSave.luggages.length }} bagage{{ constraintsSave.luggages.length > 1 ? 's' : ''}}
           </div>
         </ng-template>
         <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
         <button class="btn btn-success"
-                [disabled]="!constraintsInfo || (constraintsInfo && (!constraintsInfo.luggages.length || !constraintsInfo.bonus))"
+                [disabled]="!constraintsSave || !constraintsSave?.luggages?.length || !constraintsSave?.bonus"
                 matStepperNext>Valider</button>
       </mat-step>
-      <!-- <mat-step *ngIf="return">
-        <ng-template matStepLabel>Retour - Départ</ng-template>
-        <h4 class="return-title trip-title">Départ <mat-icon>flight_takeoff</mat-icon></h4>
-        <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
-        <div class="trip__content__location" *ngIf="arrivalInfo">
-          <app-trip-location
-            [city]="arrivalInfo.city"
-            [cityReadonly]="true"
-            [date]="returnInfo?.from?.date"
-            [time]="returnInfo?.from?.time"
-            [minDate]="arrivalInfo?.date"
-            (valid)="returnFrom($event)">
-          </app-trip-location>
-        </div>
-      </mat-step>
-      <mat-step *ngIf="return">
-        <ng-template matStepLabel>Retour - Arrivée</ng-template>
-        <h4 class="return-title trip-title">Arrivée <mat-icon>flight_land</mat-icon></h4>
-        <small class="text-muted" *ngIf="!departureInfo && !arrivalInfo">Completez les informations sur votre trajet</small>
-        <div class="trip__content__location" *ngIf="departureInfo && arrivalInfo">
-          <app-trip-location
-            [city]="departureInfo.city"
-            [cityReadonly]="true"
-            [date]="returnInfo?.to?.date"
-            [time]="returnInfo?.to?.time"
-            [minDate]="returnInfo?.from?.date"
-            (valid)="returnTo($event)">
-          </app-trip-location>
-        </div>
-      </mat-step>
-      <mat-step *ngIf="return">
-        <ng-template matStepLabel>Informations retour</ng-template>
-        <app-trip-constraints [constraintsInfo]="return.constraintsInfo" (complete)="returnConstraints($event)"></app-trip-constraints>
-      </mat-step> -->
       <mat-step>
         <ng-template matStepLabel>Validation</ng-template>
         <div class="row">
-          <div class="col-12 col-sm-6" *ngIf="departureInfo && departureInfo.airport">
+          <div class="col-12 col-sm-6" *ngIf="departureSave && departureSave.airport">
             <h4 class="trip-title">
               <mat-icon>flight_takeoff</mat-icon>
-              {{ departureInfo.city }}
+              {{ departureSave.city }}
             </h4>
-            <small class="text-muted">{{ departureInfo.airport.name }}</small><br>
-            <span>{{ departureInfo.date.format('DD/MM') }} - {{ departureInfo.time }}</span>
+            <small class="text-muted">{{ departureSave.airport.name }}</small><br>
+            <span>{{ departureSave.date.format('DD/MM') }} - {{ departureSave.time }}</span>
           </div>
-          <div class="col-12 col-sm-6" *ngIf="arrivalInfo && arrivalInfo.airport">
+          <div class="col-12 col-sm-6" *ngIf="arrivalSave && arrivalSave.airport">
             <h4 class="trip-title">
               <mat-icon>flight_land</mat-icon>
-              {{ arrivalInfo.city }}
+              {{ arrivalSave.city }}
             </h4>
-            <small class="text-muted">{{ arrivalInfo.airport.name }}</small><br>
-            <span>{{ arrivalInfo.date.format('DD/MM') }} - {{ arrivalInfo.time }}</span>
+            <small class="text-muted">{{ arrivalSave.airport.name }}</small><br>
+            <span>{{ arrivalSave.date.format('DD/MM') }} - {{ arrivalSave.time }}</span>
           </div>
         </div>
-        <small *ngIf="!departureInfo || !arrivalInfo">Complétez les informations de votre trajet</small>
-        <div *ngIf="departureInfo && arrivalInfo && constraintsInfo">
+        <small *ngIf="!departureSave || !arrivalSave">Complétez les informations de votre trajet</small>
+        <div *ngIf="departureSave && arrivalSave && constraintsSave">
             <hr class="divider">
-            <div class="text-muted" *ngIf="constraintsInfo.luggages">
-              <mat-icon>work</mat-icon> {{ constraintsInfo.luggages.length }} bagage{{constraintsInfo.luggages.length > 1 ? 's': '' }}
+            <div class="text-muted d-flex align-items-center" *ngIf="constraintsSave?.luggages">
+              <mat-icon>work</mat-icon> {{ constraintsSave.luggages.length }} bagage{{constraintsSave.luggages.length > 1 ? 's': '' }}
             </div>
-            <div class="text-muted" *ngIf="constraintsInfo.bonus">
+            <div class="text-muted d-flex align-items-center" *ngIf="constraintsSave?.bonus">
               <mat-icon>euro_symbol</mat-icon>
-              Bonus Voyageur: {{ constraintsInfo.bonus }} € 
+              Bonus Voyageur: {{ constraintsSave.bonus }} € 
             </div>
         </div>
         <div class="trip__content__actions">
           <button class="btn btn-success btn-trip" (click)="save()"
-          [disabled]="!departureInfo || !arrivalInfo">Valider</button>
+          [disabled]="!departureSave || !arrivalSave">
+            Valider
+          </button>
       </div>
       </mat-step>
     </mat-vertical-stepper>

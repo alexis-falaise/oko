@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 
@@ -12,6 +12,7 @@ import { Id } from '@models/id.model';
 
 import { environment } from '@env/environment';
 import { takeUntil } from 'rxjs/operators';
+import { Item } from '@models/item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -153,6 +154,14 @@ export class PostService {
     return this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true}) as Observable<Array<Request>>;
   }
 
+  /**
+   * Get items by author id
+   * @param id : User that created the items unique identifier
+   */
+  getItemByAuthor(id: string): Observable<Array<Item>> {
+    return this.http.get(`${this.requestUrl}/author/${id}/item`, {withCredentials: true}) as Observable<Array<Item>>;
+  }
+
   // Creators
 
   createPost(post: Post | Array<Post>): Observable<ServerResponse> {
@@ -176,10 +185,12 @@ export class PostService {
   }
 
   updateTrip(trip: Trip): Observable<ServerResponse> {
+    this.deleteTripDraft();
     return this.http.put(`${this.tripUrl}/${trip.id}`, trip, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   updateRequest(request: Request): Observable<ServerResponse> {
+    this.deleteRequestDraft();
     return this.http.put(`${this.requestUrl}/${request.id}`, request, {withCredentials: true}) as Observable<ServerResponse>;
   }
 

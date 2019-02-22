@@ -2,7 +2,6 @@
 @import "../../../../styles/animations.scss";
 
 .request-form {
-    width: 100vw;
     padding: 0 25px;
     animation: $animationDuration slideFromUp;
     &-title {
@@ -87,6 +86,8 @@
 .btn-add-item {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
     margin-bottom: 5px;
+    width: 100%;
 }

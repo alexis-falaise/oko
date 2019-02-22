@@ -12,6 +12,7 @@ import { PostService } from '@core/post.service';
 
 import { Post } from '@models/post/post.model';
 import { Filter } from '@models/app/filter.model';
+import { UiService } from '@core/ui.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -40,12 +41,14 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private postService: PostService,
+    private uiService: UiService,
     private adapter: DateAdapter<any>,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
 
   ngOnInit() {
+    this.uiService.setLoading(false);
     timer(0, 1500).subscribe(() => this.swingDisplay());
     const tripDraft = this.postService.getTripDraft();
     const requestDraft = this.postService.getRequestDraft();

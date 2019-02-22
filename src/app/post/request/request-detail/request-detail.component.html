@@ -71,7 +71,7 @@
            <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
        </div>
        <div>
-         {{ request.meetingPoint.address }}
+         {{ request.meetingPoint.adress }}
          <span *ngIf="request.meetingPoint.city">, {{ request.meetingPoint.city }} </span>
          <span *ngIf="request.meetingPoint.zip">({{ request.meetingPoint.zip }})</span>
          <span *ngIf="request.meetingPoint.country"> - {{ request.meetingPoint.country }}</span>
@@ -81,13 +81,12 @@
  </div>
  <hr class="divider">
  <div class="request-detail__contact" *ngIf="request && request.trip && request.trip.user">
-   <button class="btn btn-info btn-contact">
+   <button class="btn btn-info btn-contact" [disabled]="request.closed">
      <mat-icon>mail</mat-icon>
      Contacter {{ request.trip.user.firstname }}
    </button>
  </div>
   </div>
-  <mat-progress-bar class="loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 </div>
 
 <ng-template #pickupAgreement>

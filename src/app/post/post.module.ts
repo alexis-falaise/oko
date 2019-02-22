@@ -18,6 +18,7 @@ import {
   MatRippleModule,
   MatSlideToggleModule,
 } from '@angular/material';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { PostRoutingModule } from './post-routing.module';
@@ -36,6 +37,7 @@ import { TripConstraintsComponent } from './trip/trip-constraints/trip-constrain
 import { TripListComponent } from './trip/trip-list/trip-list.component';
 import { TripSizingComponent } from './trip/trip-sizing/trip-sizing.component';
 import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component';
+import { RequestItemSelectionComponent } from './request/request-item-selection/request-item-selection.component';
 
 @NgModule({
   declarations: [
@@ -50,11 +52,13 @@ import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component
     RequestListComponent,
     TripSizingComponent,
     TripLuggageComponent,
-    RequestItemComponent
+    RequestItemComponent,
+    RequestItemSelectionComponent
   ],
   entryComponents: [
     TripLuggageComponent,
     RequestItemComponent,
+    RequestItemSelectionComponent,
   ],
   imports: [
     CommonModule,
@@ -76,6 +80,7 @@ import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component
     MatRippleModule,
     MatSnackBarModule,
     MatStepperModule,
+    NgxMaterialTimepickerModule.forRoot(),
     ReactiveFormsModule,
     PostRoutingModule,
     SharedModule,

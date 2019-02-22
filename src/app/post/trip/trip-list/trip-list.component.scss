@@ -21,6 +21,15 @@
         color: white;
     }
 
+    &__loading {
+        animation: $animationDuration appear;
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
+        height: 10px;
+    }
+
     &__filters {
         position: sticky;
         top: 0;

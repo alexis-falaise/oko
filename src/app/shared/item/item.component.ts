@@ -10,7 +10,9 @@ export class ItemComponent implements OnInit, OnChanges {
   @Input() item: Item;
   @Input() removable = true;
   @Input() removePanel: boolean;
+  @Input() creator = false;
   @Output() remove = new EventEmitter();
+
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {

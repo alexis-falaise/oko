@@ -6,6 +6,7 @@ import { PostService } from '@core/post.service';
 
 import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-request-detail',
@@ -14,19 +15,19 @@ import { Trip } from '@models/post/trip.model';
 })
 export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
-  loading: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private postService: PostService,
+    private uiService: UiService,
     private snack: MatSnackBar,
     private dateAdapter: DateAdapter<any>
   ) { }
 
   ngOnInit() {
     this.dateAdapter.setLocale('fr');
-    this.loading = true;
+    this.uiService.setLoading(true);
     this.route.params.subscribe(param => {
       if (param && param.id) {
         this.postService.getRequestById(param.id)
@@ -35,8 +36,7 @@ export class RequestDetailComponent implements OnInit {
             const currentRequest = new Request(request);
             currentRequest.trip = new Trip(currentRequest.trip);
             this.request = currentRequest;
-            this.loading = false;
-            console.log(request);
+            this.uiService.setLoading(false);
           }
         });
       }
@@ -44,26 +44,25 @@ export class RequestDetailComponent implements OnInit {
   }
 
   validate() {
-    this.loading = true;
+    this.uiService.setLoading(true);
     this.postService.validateRequest(this.request.id)
     .subscribe((response) => {
       if (response.status) {
         this.snack.open('La demande a été validée', 'OK', {duration: 3000});
         this.request = new Request(response.data);
-        this.loading = false;
+        this.uiService.setLoading(false);
       }
     });
   }
 
   cancel() {
-    this.loading = true;
+    this.uiService.setLoading(true);
     this.postService.closeRequest(this.request.id)
     .subscribe((response) => {
       if (response.status) {
         this.snack.open('La demande a été annulée', 'OK', {duration: 3000});
         this.request = new Request(response.data);
-        console.log(response.data);
-        this.loading = false;
+        this.uiService.setLoading(false);
       }
     });
   }

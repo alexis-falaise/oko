@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import * as moment from 'moment';
 import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
 import { Item } from '@models/item.model';
@@ -33,6 +34,12 @@ export class Request extends Post {
         }
         if (request.meetingPoint) {
             this.meetingPoint = new MeetingPoint(request.meetingPoint);
+        }
+        if (request.location) {
+            this.location = new Location(request.location);
+        }
+        if (request.urgentDetails && request.urgentDetails.date) {
+            this.urgentDetails.date = moment(request.urgentDetails.date);
         }
         this.cabinOnly = this.isCabinOnly();
     }

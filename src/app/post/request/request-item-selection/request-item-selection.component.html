@@ -1,0 +1,22 @@
+<div class="request-item-selection">
+    <h2 class="request-item-selection-title justify-content-around">
+        <span style="display: inline-block">Selectionner parmis mes articles {{ selectedItems.length ? '('+ selectedItems.length +')' : '' }}</span>
+    </h2>
+    <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+    <hr class="divider">
+    <mat-progress-bar class="request-item-selection__loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <div class="request-item-selection__content">
+      <app-item class="request-item-selection__item"
+                [class.selected]="item.selected"
+                (click)="toggleItem(item)"
+                *ngFor="let item of selectableItems; let i = index"
+                [item]="item"
+                [creator]="true">
+      </app-item>
+    </div>
+    <div class="request-item-selection__validation">
+      <button class="btn btn-success" (click)="saveItems()">
+        Valider
+      </button>
+    </div>
+</div>

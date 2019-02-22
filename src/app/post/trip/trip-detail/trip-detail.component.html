@@ -36,6 +36,11 @@
             </div>
         </div>
       </div>
+      <div class="trip-detail__info__route col-6 col-sm-4" *ngIf="trip && trip.user">
+        <button class="btn btn-light btn-icon btn-route">
+          <mat-icon>timeline</mat-icon> Voir le parcours de {{ trip.user.firstname }}
+        </button>
+      </div>
     </div>
   </div>
   <div class="trip-detail__engagement container" *ngIf="trip">

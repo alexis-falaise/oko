@@ -55,7 +55,6 @@ export class TripLocationComponent implements OnInit, OnChanges {
     }
     if (changes.date) {
       const date = changes.date.currentValue;
-      console.log(date);
       this.location.controls.date.patchValue(date);
     }
     if (changes.time) {
@@ -83,18 +82,22 @@ export class TripLocationComponent implements OnInit, OnChanges {
         this.airports = null;
       }
     });
+
     this.location.controls.time.valueChanges
     .subscribe((value: string) => {
       this.validateTime(value);
     });
+
     this.location.controls.city.statusChanges
     .subscribe(status => {
       if (status === 'VALID') {
         this.fetchMatchingAirports(this.location.controls.city.value);
       }
     });
+
     this.location.controls.airport.valueChanges
     .subscribe(value => this.filteredAirports = this.filterAirports(value));
+
     this.location.statusChanges.subscribe(status => {
       if (status === 'VALID') {
         this.submit();

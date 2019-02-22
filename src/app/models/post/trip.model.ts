@@ -7,6 +7,7 @@ import { Luggage } from '@models/luggage.model';
 export class Trip extends Post {
     from: Location;
     to: Location;
+    departureDate: Moment;
     date: Moment;
 
     /* Transportation constraints */
@@ -18,13 +19,16 @@ export class Trip extends Post {
     constructor(trip: Partial<Trip>) {
         super(trip);
         Object.assign(this, trip);
-        if (this.date) {
+        if (trip.date) {
             this.date = moment(trip.date);
         }
-        if (this.from) {
+        if (trip.departureDate) {
+            this.departureDate = moment(trip.departureDate)
+        }
+        if (trip.from) {
             this.from = new Location(trip.from);
         }
-        if (this.to) {
+        if (trip.to) {
             this.to = new Location(trip.to);
         }
     }

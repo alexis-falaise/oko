@@ -1,9 +1,13 @@
 <div class="request container-fluid">
-  <div class="request-title-wrapper">
-      <h1 class="request-title">Demander un service</h1>
+  <div class="request__hero row">
+      <h1 class="request__hero-title">Demander un service</h1>
   </div>
-  
-  <div class="request-form-wrapper" *ngIf="request">
-    {{ request.location.label }}
+  <div class="request__form">
+    <div class="request__form-hint">
+      <small class="text-muted">
+        Créez une demande pour un futur voyageur. Commencez par ajouter un article, et laissez vous guider.
+      </small>
+    </div>
+    <app-request-form></app-request-form>
   </div>
 </div>

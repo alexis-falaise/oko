@@ -109,6 +109,11 @@
                 color: rgb(175, 175, 175);
             }
         }
+
+        &__route {
+            display: flex;
+            padding: 15px 0;
+        }
     }
 
     &__engagement {
@@ -116,6 +121,12 @@
 
         &__constraints {
             margin-bottom: 25px;
+
+            &-title {
+                display: flex;
+                justify-content: center;
+            }
+
             .constraints {
                 margin: 10px 0;
                 padding-left: 0;
@@ -168,6 +179,13 @@
             }
         }
 
+        &__form {
+            &-title {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
     }
 
     &__pending {
@@ -192,6 +210,10 @@
 
         &-item {
             margin-bottom: 5px;
+        }
+
+        &-close {
+            z-index: 10;
         }
     }
 }

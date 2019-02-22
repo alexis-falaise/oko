@@ -13,6 +13,7 @@ import { UserService } from '@core/user.service';
 import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
 import { Trip } from '@models/post/trip.model';
 import { Router } from '@angular/router';
+import { RequestItemSelectionComponent } from '../request-item-selection/request-item-selection.component';
 
 @Component({
   selector: 'app-request-form',
@@ -22,15 +23,17 @@ import { Router } from '@angular/router';
 export class RequestFormComponent implements OnInit {
   @Input() trip: Trip;
   today = moment();
-  items: Array<Item> = [new Item({
-    label: 'iPhone XS',
-    photo: ['https://static.fnac-static.com/multimedia/Images/FR/MDM/25/ca/8d/9292325/1540-1/tsp20180920193530/Apple-iPhone-XS-64-Go-5-8-Or.jpg'],
-    link: new Link({
-      label: 'Acheter un iphone',
-      path: 'https://www.apple.com/fr/shop/buy-iphone/iphone-xs/%C3%A9cran-5,8-pouces-64go-argent#00,10,20',
-    }),
-    price: 1155.28
-  })];
+  items: Array<Item> = [];
+  // #TODO: clean test
+  // items: Array<Item> = [new Item({
+  //   label: 'iPhone XS',
+  //   photo: ['https://static.fnac-static.com/multimedia/Images/FR/MDM/25/ca/8d/9292325/1540-1/tsp20180920193530/Apple-iPhone-XS-64-Go-5-8-Or.jpg'],
+  //   link: new Link({
+  //     label: 'Acheter un iphone',
+  //     path: 'https://www.apple.com/fr/shop/buy-iphone/iphone-xs/%C3%A9cran-5,8-pouces-64go-argent#00,10,20',
+  //   }),
+  //   price: 1155.28
+  // })];
   meeting = this.fb.group({
     meetingPoint: this.fb.group({
       adress: ['', Validators.required],
@@ -85,6 +88,32 @@ export class RequestFormComponent implements OnInit {
         }
       }
     });
+  }
+
+  openItemSelectionDialog() {
+    const notConnected = () => {
+      const snackRef = this.snack.open('Connectez-vous !', 'Connexion', {duration: 3000});
+      snackRef.onAction().subscribe(() => {
+        this.router.navigate(['/login']);
+      });
+    };
+    this.userService.getCurrentUser()
+    .subscribe(user => {
+      if (user) {
+        const dialogRef = this.dialog.open(RequestItemSelectionComponent, {
+          height: '500px',
+          width: '75vw',
+          data: user,
+        });
+        dialogRef.afterClosed().subscribe(selection => {
+          if (selection) {
+            selection.forEach(item => this.addItem(item));
+          }
+        });
+      } else {
+        notConnected();
+      }
+    }, (err) => notConnected());
   }
 
   addItem(item) {

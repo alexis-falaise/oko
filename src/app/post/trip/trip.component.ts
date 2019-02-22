@@ -24,13 +24,11 @@ export class TripComponent implements OnInit {
   fromFocus = false;
   locationEven = false;
   return = false;
+  departureSave = null;
   departureInfo = null;
+  arrivalSave = null;
   arrivalInfo = null;
-  returnInfo = {
-    from: null,
-    to: null,
-    constraints: null,
-  };
+  constraintsSave = null;
   constraintsInfo = null;
   loading = false;
   edition = false;
@@ -57,25 +55,7 @@ export class TripComponent implements OnInit {
           .subscribe(trip => {
             trip = new Trip(trip);
             this.trip = trip;
-            console.log(trip);
-            console.log(trip.date.format('DD/MM/YYYY'));
-            this.departureInfo = {
-              city: trip.from.label,
-              airport: new Airport(trip.from.airport),
-              date: moment(),
-              time: `${moment().hours()}:${moment().minutes()}`
-            };
-            this.arrivalInfo = {
-              city: trip.to.label,
-              airport: new Airport(trip.to.airport),
-              date: trip.date,
-              time: trip.date.format('HH:mm'),
-            };
-            this.constraintsInfo = {
-              luggages: trip.luggages.map(luggage => new Luggage(luggage)),
-              airportDrop: trip.airportDrop,
-              bonus: trip.bonus
-            };
+            this.setDataFromTrip(trip);
             this.loading = false;
           });
         });
@@ -83,58 +63,28 @@ export class TripComponent implements OnInit {
         this.loading = false;
       }
     });
-    const draft = this.postService.getTripDraft();
-    if (draft) {
-      if (draft.return && (draft.return.from || draft.return.to)) {
-        this.returnInfo = draft.return;
-        this.return = true;
-      }
-      this.departureInfo = draft.departure;
-      this.arrivalInfo = draft.arrival;
-      this.constraintsInfo = draft.constraints;
-    }
+    this.manageDrafts();
   }
 
   departure(info) {
-    if (!(info.airport instanceof Airport)) {
-      info.aiport = new Airport({label: info.airport});
+    if (info) {
+      if (!(info.airport instanceof Airport)) {
+        info.airport = new Airport(info.airport);
+      }
+      this.departureSave = info;
     }
-    this.departureInfo = info;
   }
 
   arrival(info) {
-    this.arrivalInfo = info;
-  }
-
-  returnFrom(info) {
-    this.returnInfo.from = info;
-  }
-
-  returnTo(info) {
-    this.returnInfo.to = info;
+    if (info) {
+      this.arrivalSave = info;
+    }
   }
 
   constraints(info) {
-    this.constraintsInfo = info;
-  }
-
-  returnConstraints(info) {
-    this.returnInfo.constraints = info;
-  }
-
-  toDeparture() {
-    this.fromExtended = true;
-    this.locationEven = false;
-  }
-
-  toArrival() {
-    this.fromExtended = false;
-    this.locationEven = false;
-  }
-
-  toSummary() {
-    this.fromExtended = false;
-    this.locationEven = true;
+    if (info) {
+      this.constraintsSave = info;
+    }
   }
 
   save() {
@@ -143,16 +93,27 @@ export class TripComponent implements OnInit {
     .subscribe(
       (user) => {
         if (user) {
-          const tripBatch = this.generateTripBatch(user);
-          this.postService.createTrip(tripBatch)
-          .subscribe(response => {
+          const trip = this.generateTrip(user);
+          if (!this.edition) {
+            this.postService.createTrip(trip)
+            .subscribe(response => {
             this.loading = false;
-            if (response.status) {
-              this.postService.deleteTripDraft();
-              this.snack.open('Voyage enregistré', 'Top!', {duration: 2000});
-              this.router.navigate(['/home']);
-            }
-          });
+              if (response.status) {
+                this.postService.deleteTripDraft();
+                this.snack.open('Voyage enregistré', 'Top!', {duration: 2000});
+                this.router.navigate(['/home']);
+              }
+            });
+          } else {
+            this.postService.updateTrip(trip)
+            .subscribe(response => {
+              this.loading = false;
+              if (response.status) {
+                this.snack.open('Voyage modifié', 'OK', {duration: 2500});
+                this.router.navigate(['/account/trip']);
+              }
+            });
+          }
         } else {
           this.saveError();
         }
@@ -177,10 +138,11 @@ export class TripComponent implements OnInit {
 
   private saveError() {
     this.postService.saveTripDraft({
-      departure: this.departureInfo,
-      arrival: this.arrivalInfo,
-      constraints: this.constraintsInfo,
-      return: this.returnInfo
+      departure: this.departureSave,
+      arrival: this.arrivalSave,
+      constraints: this.constraintsSave,
+      edition: this.edition,
+      trip: this.trip || null,
     });
     this.openDialog();
   }
@@ -199,49 +161,76 @@ export class TripComponent implements OnInit {
 
   private generateTripBatch(user: User) {
     const tripBatch = [];
-    const arrivalTime = moment(this.arrivalInfo.time, 'HH:mm');
-    const constraints = this.constraintsInfo;
-    const luggages = this.constraintsInfo.luggages;
-    const bonus = this.constraintsInfo.bonus;
+    const trip = this.generateTrip(user);
+    tripBatch.push(trip);
+    return tripBatch;
+  }
+
+  private generateTrip(user: User) {
+    const departureTime = moment(this.departureSave.time, 'HH:mm');
+    const arrivalTime = moment(this.arrivalSave.time, 'HH:mm');
+    const constraints = this.constraintsSave;
+    const luggages = constraints.luggages;
+    const bonus = constraints.bonus;
     delete constraints.luggages;
     const trip = new Trip({
       user: user,
       from : {
-        label: this.departureInfo.city,
-        airport: this.departureInfo.airport
+        label: this.departureSave.city,
+        airport: this.departureSave.airport
       },
       to : {
-        label: this.arrivalInfo.city,
-        airport: this.arrivalInfo.airport
+        label: this.arrivalSave.city,
+        airport: this.arrivalSave.airport
       },
       luggages: luggages,
       bonus: bonus,
-      date: moment(this.arrivalInfo.date).hours(arrivalTime.hours()).minutes(arrivalTime.minutes()),
+      departureDate: moment(this.departureSave.date).hours(departureTime.hours()).minutes(departureTime.minutes()),
+      date: moment(this.arrivalSave.date).hours(arrivalTime.hours()).minutes(arrivalTime.minutes()),
       ...constraints
     });
-    tripBatch.push(trip);
-    // const returnConstraints = this.returnInfo.constraints;
-    // const returnLuggages = this.returnInfo.constraints.luggages;
-    // delete returnConstraints.luggages;
-    // if (this.return && this.returnInfo.from && this.returnInfo.to) {
-    //   const returnTime = moment(this.returnInfo.to.time);
-    //   const returnTrip = new Trip({
-    //     user: user,
-    //     from : {
-    //       label: this.returnInfo.from.city,
-    //       airport: this.returnInfo.from.airport
-    //     },
-    //     to: {
-    //       label: this.returnInfo.to.city,
-    //       airport: this.returnInfo.to.airport
-    //     },
-    //     luggages: returnLuggages,
-    //     date: moment(this.returnInfo.to.date).hours(returnTime.hours()).minutes(returnTime.minutes()),
-    //     ...returnConstraints
-    //   });
-    //   tripBatch.push(returnTrip);
-    // }
-    return tripBatch;
+    if (this.edition) {
+      trip.id = this.trip.id;
+    }
+    return trip;
+  }
+
+  private setDataFromTrip(trip: Trip) {
+    this.departureInfo = {
+      city: trip.from.label,
+      airport: new Airport(trip.from.airport),
+      date: trip.departureDate || moment(),
+      time: trip.departureDate.format('HH:mm') || `${moment().hours()}:${moment().minutes()}`,
+    };
+    this.arrivalInfo = {
+      city: trip.to.label,
+      airport: new Airport(trip.to.airport),
+      date: trip.date,
+      time: trip.date.format('HH:mm'),
+    };
+    this.constraintsInfo = {
+      luggages: trip.luggages.map(luggage => new Luggage(luggage)),
+      airportDrop: trip.airportDrop,
+      bonus: trip.bonus
+    };
+    this.constraintsSave = this.constraintsInfo;
+  }
+
+  private manageDrafts() {
+    const draft = this.postService.getTripDraft();
+    if (draft) {
+      this.departureInfo = draft.departure;
+      this.departureSave = draft.departure;
+      this.arrivalInfo = draft.arrival;
+      this.arrivalSave = draft.arrival;
+      this.constraintsInfo = draft.constraints;
+      this.constraintsSave = draft.constraints;
+      this.edition = draft.edition;
+      this.trip = draft.trip;
+      if (this.edition) {
+        this.router.navigate(['post', 'trip', draft.trip.id, 'edit']);
+      }
+    }
   }
 
 }

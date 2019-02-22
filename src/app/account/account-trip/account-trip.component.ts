@@ -6,6 +6,7 @@ import { UserService } from '@core/user.service';
 import { PostService } from '@core/post.service';
 
 import { Trip } from '@models/post/trip.model';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-account-trip',
@@ -18,10 +19,12 @@ export class AccountTripComponent implements OnInit {
   constructor(
     private postService: PostService,
     private userService: UserService,
+    private uiService: UiService,
     private router: Router,
   ) { }
 
   ngOnInit() {
+    this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
@@ -29,6 +32,7 @@ export class AccountTripComponent implements OnInit {
         .subscribe(trips => {
           if (trips) {
             this.trips = trips.map(trip => new Trip(trip)).sort((a, b) => moment(a.date).isBefore(b.date) ? -1 : 1);
+            this.uiService.setLoading(false);
           }
         });
       }

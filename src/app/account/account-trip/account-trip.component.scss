@@ -1,8 +1,12 @@
 .account-trip {
-    height: 72vh;
+    height: 66vh;
     overflow-y: scroll;
     overflow-x: hidden;
-    text-align: center;
+
+    .account-trip-hint {
+        display: flex;
+        justify-content: center;
+    }
 
     .btn-new-trip {
         display: flex;
@@ -11,5 +15,11 @@
         align-items: center;
         width: 75%;
         margin: 15px 12.5% 0;
+        &--fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 20;
+        }
     }
 }

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '@core/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { UiService } from '@core/ui.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +13,22 @@ export class AppComponent implements OnInit {
   title = 'oko';
   logged = false;
   displayNav = false;
+  loading: boolean;
   hideNavOn = ['/login', '/logout', '/signin'];
 
   constructor(
     private authService: AuthService,
+    private uiService: UiService,
+    private ref: ChangeDetectorRef,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.uiService.onLoading().subscribe(loadingState => {
+      this.loading = loadingState;
+      this.ref.detectChanges();
+    });
+    // this.uiService.onLoading().subscribe(loadingState => this.loading = loadingState);
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.displayNav = this.hideNavOn.findIndex(item => item === event.url) === -1;

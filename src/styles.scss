@@ -105,16 +105,23 @@ html, body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: rgb(225, 225, 225);
+    margin-bottom: 5px;
+    background-color: rgb(235, 235, 235) !important;
 
     &.active {
-        background-color: $cyan-600;
+        background-color: $cyan-600 !important;
         color: white;
 
         &:hover {
             color: white;
         }
     }
+}
+
+.btn-icon {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
 }
 
 .input-label {
@@ -131,4 +138,18 @@ html, body {
     position: relative;
     top: -35px;
     right: -10px;
+}
+
+.timepicker {
+    &__header {
+        background-color: #00bcd4 !important;
+    }
+
+    &-button {
+        color: #00bcd4 !important;
+    }
+}
+
+.clock-face__number > span.active {
+    background-color: #00bcd4 !important;
 }

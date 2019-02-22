@@ -6,7 +6,9 @@ import {
   MatChipsModule,
   MatProgressBarModule,
   MatTabsModule,
-  MatIconModule
+  MatIconModule,
+  MatButtonModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -33,9 +35,11 @@ import { AccountComponent } from './account.component';
     SharedModule,
     CommonModule,
     FormsModule,
+    MatButtonModule,
     MatChipsModule,
     MatIconModule,
     MatProgressBarModule,
+    MatSnackBarModule,
     MatTabsModule,
   ],
   exports: [

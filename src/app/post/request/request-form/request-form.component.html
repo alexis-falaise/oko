@@ -1,11 +1,15 @@
 <div class="request-form container">
   <div class="request-form__actions row">
-      <button class="btn btn-info btn-add-item col-12 col-sm-5" (click)="openItemDialog()">
-        <mat-icon>add</mat-icon> Ajouter un article
-      </button>
-      <button class="btn btn-light btn-add-item col-12 col-sm-5 offset-sm-2">
-        <mat-icon>view_carousel</mat-icon> Choisir parmi mes articles
-      </button>
+      <div class="col-12 col-sm-6">
+          <button class="btn btn-info btn-add-item" (click)="openItemDialog()">
+            <mat-icon>add</mat-icon> Ajouter un article
+          </button>
+      </div>
+      <div class="col-12 col-sm-6">
+          <button class="btn btn-light btn-add-item" (click)="openItemSelectionDialog()">
+            <mat-icon>view_carousel</mat-icon> Choisir parmi mes articles
+          </button>
+      </div>
   </div>
   <app-item *ngFor="let item of items; let i = index"
             [item]="item"
@@ -16,9 +20,9 @@
     <form [formGroup]="meeting">
       <div class="form-group">
         <mat-slide-toggle formControlName="airportPickup">Je peux récupérer mes articles à l'aéroport</mat-slide-toggle><br>
-        <small class="text-muted" *ngIf="trip.to && trip.to.airport">
-          Je récupère mes articles à l'aéroport d'arrivée du voyageur:
-          {{ trip.to.airport.name }} ( {{ trip.to.airport.code }} )
+        <small class="text-muted">
+          Je récupère mes articles à l'aéroport d'arrivée du voyageur
+          <span *ngIf="trip?.to && trip?.to.airport">: {{ trip.to.airport.name }} ( {{ trip.to.airport.code }} )</span>
         </small>
       </div>
       <div *ngIf="!meeting.controls.airportPickup.value">
@@ -69,11 +73,11 @@
       </div>
       <h5 class="form-title">Bonus voyageur</h5>
       <small class="text-muted">
-        Faites une contre proposition concernant le bonus voyageur.
+        Faites une <span *ngIf="trip">contre</span> proposition concernant le bonus voyageur.
         Tenez compte du prix du produit que vous souhaitez faire transporter et de son encombrement
         pour estimer une compensation juste.
       </small>
-      <div class="form-group">
+      <div class="form-group" *ngIf="trip">
         <mat-slide-toggle (change)="bonusAgreement($event)">J'accepte la proposition voyageur</mat-slide-toggle>
       </div>
       <div class="form-group">
@@ -92,7 +96,7 @@
         || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
         || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
       " (click)="request()">
-      Faire une demande <span *ngIf="trip.user.firstname"> à {{ trip.user.firstname }}</span>
+      Faire une demande <span *ngIf="trip?.user?.firstname"> à {{ trip.user.firstname }}</span>
     </button>
   </div>
 </div>

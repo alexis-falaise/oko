@@ -1,3 +1,5 @@
-<p>
-  account-item works!
-</p>
+<div class="account-item container">
+  <div class="account-item__item" *ngFor="let item of items">
+    <app-item [item]="item"></app-item>
+  </div>
+</div>
