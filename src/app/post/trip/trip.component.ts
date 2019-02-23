@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { timer } from 'rxjs';
@@ -13,6 +13,7 @@ import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Airport } from '@models/airport.model';
 import { Luggage } from '@models/luggage.model';
+import { UiService } from '@core/ui.service';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -37,8 +38,10 @@ export class TripComponent implements OnInit {
   constructor(
     private postService: PostService,
     private userService: UserService,
+    private uiService: UiService,
     private route: ActivatedRoute,
     private router: Router,
+    private ref: ChangeDetectorRef,
     public dialog: MatDialog,
     public snack: MatSnackBar
   ) { }
@@ -57,6 +60,7 @@ export class TripComponent implements OnInit {
             this.trip = trip;
             this.setDataFromTrip(trip);
             this.loading = false;
+            this.ref.detectChanges();
           });
         });
       } else {
