@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import * as $ from 'jquery';
 
 import { AuthService } from '@core/auth.service';
@@ -11,8 +11,8 @@ import { MenuItem } from '@models/app/menu-item.model';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit {
-
+export class NavComponent implements OnInit, OnChanges {
+  @Input() drawer = false;
   menuDisplay = false;
   previousAvailable = false;
   guestAccountMenuItems: Array<MenuItem> = [
@@ -28,6 +28,7 @@ export class NavComponent implements OnInit {
     { label: 'Accueil', path: '/home', icon: 'home' },
     { label: 'Faire une demande', path: '/post/request/new', icon: 'new_releases' },
     { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
+    { label: 'Trajets disponibles', path: '/post/trip', icon: 'map'},
     { label: 'Messages', path: '/messages', icon: 'email' },
     { label: 'Aide', path: '/help', icon: 'help' },
   ];
@@ -40,6 +41,12 @@ export class NavComponent implements OnInit {
     private historyService: HistoryService,
     private router: Router,
   ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.drawer) {
+      this.menuDisplay = changes.drawer.currentValue;
+    }
+  }
 
   ngOnInit() {
     this.authService.onStatus()
@@ -69,5 +76,8 @@ export class NavComponent implements OnInit {
     this.historyService.back();
   }
 
+  hide() {
+    this.menuDisplay = false;
+  }
 
 }

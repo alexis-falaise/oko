@@ -15,6 +15,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     position: fixed;
     top:0;
     z-index: 20;
+    display: flex;
+    justify-content: center;
     height: $navbarHeight;
     flex-wrap: nowrap;
     width: 100%;
@@ -41,6 +43,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         width: auto;
         font-size: 36px;
         padding-top: 0;
+        margin-left: 10px;
         height: $navbarHeight;
         font-family: 'Quicksand', sans-serif;
         font-weight: 700;
@@ -53,6 +56,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 
     &-toggler {
         border: none;
+        position: absolute;
+        left: 20px;
 
         &-icon {
             color: white;
@@ -79,13 +84,13 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 }
 
 @keyframes fullscreenItemsEnter {
-    0% { opacity: 0; margin-top: -10%; }
-    100% { opacity: 1; margin-top: 0%; }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @keyframes fullscreenEnter {
-    0% { opacity: 0 }
-    100% { opacity: 1 }
+    0% { opacity: 0.5; margin-left: -50%; }
+    100% { opacity: 1; margin-left: 0%; }
 }
 
 .navbar__fullscreen {
@@ -97,8 +102,9 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     position: fixed;
     top: $navbarHeight;
     z-index: 20;
-    width: 100%;
+    width: 90%;
     height: 100vh;
+    box-shadow: 5px 3px 7px rgba(0, 0, 0, .05);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -110,9 +116,9 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         -moz-animation: fullscreenItemsEnter $animationDuration;
         -o-animation: fullscreenItemsEnter $animationDuration;
         transition: all $transitionDuration;
-        width: 110%;
-        margin-left: -5%;
-        text-align: center;
+        width: 100%;
+        padding-left: 10%;
+        text-align: left;
         font-size: 24px;
         font-weight: 700;
 

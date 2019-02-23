@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   title = 'oko';
   logged = false;
   displayNav = false;
+  drawerExpanded = false;
   loading: boolean;
   hideNavOn = ['/login', '/logout', '/signin'];
 
@@ -47,5 +48,13 @@ export class AppComponent implements OnInit {
 
   updateLogStatus(status: boolean) {
     this.logged = status;
+  }
+
+  displayDrawer() {
+    this.drawerExpanded = true;
+  }
+
+  hideDrawer() {
+    this.drawerExpanded = false;
   }
 }

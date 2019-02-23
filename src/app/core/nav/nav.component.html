@@ -1,16 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-light" [class.expanded]="menuDisplay">
-  <button class="navbar-toggler navbar-previous-wrapper" type="button" aria-label="Previous"
+  <!-- <button class="navbar-toggler navbar-previous-wrapper" type="button" aria-label="Previous"
          [class.available]="previousAvailable" (click)="back()">
     <span class="navbar-previous">
       <mat-icon>keyboard_backspace</mat-icon>
     </span>
-  </button>
-  <a class="navbar-brand mx-auto" href="#">ọkọ</a>
+  </button> -->
   <button class="navbar-toggler" type="button"
-          aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
+    aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
     <span class="navbar-toggler-icon" *ngIf="!menuDisplay"></span>
     <mat-icon *ngIf="menuDisplay">clear</mat-icon>
   </button>
+  <a class="navbar-brand" href="#">ọkọ</a>
+
 
   <div class="collapse navbar-collapse right" id="menu-collapse">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -30,7 +31,7 @@
   </div>
 </nav>
 
-<div class="navbar__fullscreen justify-content-center" [hidden]="!menuDisplay">
+<div class="navbar__fullscreen justify-content-center" (swipeLeft)="hide()" [hidden]="!menuDisplay">
   <div class="navbar__fullscreen-item" *ngFor="let item of menuItems" (click)="toggleMenu()">
     <a routerLink="{{ item.path }}" routerLinkActive="active">
         <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
