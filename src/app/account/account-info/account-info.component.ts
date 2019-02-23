@@ -16,6 +16,10 @@ export class AccountInfoComponent implements OnInit {
   edit: any = {};
   keys = Object.keys;
   isArray = Array.isArray;
+  camelToTitle = (camelCase) => camelCase
+  .replace(/([A-Z])/g, (match) => ` ${match}`)
+  .replace(/^./, (match) => match.toUpperCase())
+  .trim()
 
   constructor(
     private userService: UserService,

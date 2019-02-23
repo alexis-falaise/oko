@@ -1,17 +1,21 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 import { PostService } from '@core/post.service';
-import { Filter } from '@models/app/filter.model';
 import { UiService } from '@core/ui.service';
 
+import { Filter } from '@models/app/filter.model';
 @Component({
   selector: 'app-trip-list',
   templateUrl: './trip-list.component.html',
   styleUrls: ['./trip-list.component.scss']
 })
-export class TripListComponent implements OnInit {
+export class TripListComponent implements OnInit, OnDestroy {
   empty = false;
   filter = new Filter();
   loading = false;
+  ngUnsubscribe = new Subject();
 
   constructor(
     private postService: PostService,
@@ -22,6 +26,7 @@ export class TripListComponent implements OnInit {
   ngOnInit() {
     this.init();
     this.uiService.onLoading()
+    .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(loadingState => {
       this.loading = loadingState;
       this.ref.detectChanges();
@@ -47,4 +52,8 @@ export class TripListComponent implements OnInit {
     this.empty = listLength === 0;
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next(null);
+    this.ngUnsubscribe.complete();
+  }
 }

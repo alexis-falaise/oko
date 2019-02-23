@@ -36,9 +36,9 @@
             </div>
         </div>
       </div>
-      <div class="trip-detail__info__route col-6 col-sm-4" *ngIf="trip && trip.user">
+      <div class="trip-detail__info__route col-4 offset-2" *ngIf="trip && trip.user">
         <button class="btn btn-light btn-icon btn-route">
-          <mat-icon>timeline</mat-icon> Voir le parcours de {{ trip.user.firstname }}
+          <mat-icon>timeline</mat-icon> Parcours de {{ trip.user.firstname }}
         </button>
       </div>
     </div>
@@ -90,7 +90,12 @@
           Vous avez effectué {{ requests.length }} demande{{ requests.length > 1 ? 's' : '' }} pour ce trajet
       </small>
     </div>
-    <div class="trip-detail__engagement__form d-flex justify-content-center" *ngIf="!currentRequest; else pending">
+    <div class="trip-detail__edition" *ngIf="own">
+      <button class="btn btn-info btn-icon" [routerLink]="['/post/trip', trip.id, 'edit']">
+        <mat-icon>edit</mat-icon> Modifier
+      </button>
+    </div>
+    <div class="trip-detail__engagement__form d-flex justify-content-center" *ngIf="!currentRequest && !own; else pending">
       <button class="btn btn-info btn-engagement" (click)="engagement = true" *ngIf="!engagement">
         <mat-icon>shop</mat-icon> Faire une demande
       </button>
@@ -100,7 +105,7 @@
       </div>
     </div>
     <ng-template #pending>
-      <div matRipple (click)="openRequest()" class="trip-detail__pending" *ngIf="currentRequest && !currentRequest.closed && !currentRequest.validated">
+      <div matRipple (click)="openRequest()" class="trip-detail__pending" *ngIf="currentRequest && !currentRequest.closed && !currentRequest.validated && !own">
         <h5 class="trip-detail__pending-title">
           <mat-icon>add_alert</mat-icon> Vous avez une demande en attente
         </h5>

@@ -187,8 +187,16 @@
         }
 
     }
+    
+    &__edition {
+        animation: $animationDuration appear;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
 
     &__pending {
+        animation: 0.5s appear;
         transition: all $transitionDuration;
         border-radius: 5px;
         background-color: $amber-100;

@@ -18,6 +18,7 @@ export class TripDetailComponent implements OnInit {
   requests: Array<Request> = null;
   currentRequest: Request = null;
   engagement = false;
+  own = false;
 
   constructor(
     private router: Router,
@@ -40,6 +41,10 @@ export class TripDetailComponent implements OnInit {
             if (requestDraft && requestDraft.trip.id === this.trip.id) {
               this.engagement = true;
             }
+            this.userService.getCurrentUser()
+            .subscribe(user => {
+              this.own = user.id === trip.user.id;
+            });
             this.getUserRequests();
           }
         });

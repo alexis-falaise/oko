@@ -8,6 +8,17 @@
         justify-content: center;
     }
 
+    &__new {
+        background-color: white;
+        width: 100vw;
+        margin-left: -8vw;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 1px 0 5px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .05);
+    }
+
     .btn-new-trip {
         display: flex;
         flex-direction: row;
