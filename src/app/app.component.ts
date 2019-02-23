@@ -57,4 +57,8 @@ export class AppComponent implements OnInit {
   hideDrawer() {
     this.drawerExpanded = false;
   }
+
+  manageDrawer(state) {
+    this.drawerExpanded = state;
+  }
 }

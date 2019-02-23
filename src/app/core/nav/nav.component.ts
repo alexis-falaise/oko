@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import * as $ from 'jquery';
 
@@ -13,6 +13,7 @@ import { MenuItem } from '@models/app/menu-item.model';
 })
 export class NavComponent implements OnInit, OnChanges {
   @Input() drawer = false;
+  @Output() drawerChanges = new EventEmitter();
   menuDisplay = false;
   previousAvailable = false;
   guestAccountMenuItems: Array<MenuItem> = [
@@ -70,6 +71,7 @@ export class NavComponent implements OnInit, OnChanges {
 
   toggleMenu() {
     this.menuDisplay = !this.menuDisplay;
+    this.drawerChanges.emit(this.menuDisplay);
   }
 
   back() {
@@ -78,6 +80,7 @@ export class NavComponent implements OnInit, OnChanges {
 
   hide() {
     this.menuDisplay = false;
+    this.drawerChanges.emit(this.menuDisplay);
   }
 
 }
