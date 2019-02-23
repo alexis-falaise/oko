@@ -1,12 +1,8 @@
 @import "../../../styles/variables.scss";
 
 .item {
-    min-width: 150px;
     max-height: 300px;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    width: 300px;
 
     &__title {
         font-size: 18px;

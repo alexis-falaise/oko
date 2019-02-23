@@ -11,11 +11,12 @@
           </button>
       </div>
   </div>
-  <app-item *ngFor="let item of items; let i = index"
-            [item]="item"
-            (remove)="removeItem(i)"
-            (click)="openItemDialog(item, i)">
-  </app-item>
+  <div class="request-form__item" *ngFor="let item of items; let i = index">
+    <app-item [item]="item"
+              (remove)="removeItem(i)"
+              (click)="openItemDialog(item, i)">
+    </app-item>
+  </div>
   <div class="request-form__meeting">
     <form [formGroup]="meeting">
       <div class="form-group">

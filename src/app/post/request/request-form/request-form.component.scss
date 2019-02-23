@@ -17,6 +17,13 @@
         margin-top: 15px;
     }
 
+    &__item {
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     &__validation {
         display: flex;
         flex-direction: row;

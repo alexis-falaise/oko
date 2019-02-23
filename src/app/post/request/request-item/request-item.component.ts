@@ -35,7 +35,9 @@ export class RequestItemComponent implements OnInit {
   ngOnInit() {
     if (this.data) {
       this.item.patchValue(this.data.item);
-      this.item.controls.link.patchValue(this.data.item.link.path);
+      if (this.data.item.link) {
+        this.item.controls.link.patchValue(this.data.item.link.path);
+      }
       this.index = this.data.index;
       this.modifying = this.data.modifying;
     }
