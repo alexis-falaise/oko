@@ -1,4 +1,5 @@
-<div class="main" (swipeRight)="displayDrawer()" (swipeLeft)="hideDrawer()">
+<div class="main">
+    <div class="main__drawer-sensitive" (swipeRight)="displayDrawer()" (swipeLeft)="hideDrawer()"></div>
     <app-nav [drawer]="drawerExpanded" *ngIf="displayNav"></app-nav>
     <router-outlet></router-outlet>
     <mat-progress-bar class="loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
