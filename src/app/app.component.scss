@@ -4,11 +4,12 @@
     overflow: hidden;
 
     &__drawer-sensitive {
-        width: 15%;
+        width: 10%;
         height: 100%;
         position: absolute;
         top: 0;
         left: 0;
+        z-index: 100;
     }
 }
 

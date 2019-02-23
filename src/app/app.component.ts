@@ -61,4 +61,8 @@ export class AppComponent implements OnInit {
   manageDrawer(state) {
     this.drawerExpanded = state;
   }
+
+  toggleDrawer() {
+    this.drawerExpanded = !this.drawerExpanded;
+  }
 }
