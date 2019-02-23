@@ -72,6 +72,7 @@ export class PostService {
     const nextQuery = new Subject();
     let queryString = '';
     filter = filter || this.currentFilter;
+    filter.afterDate = moment();
     if (filter) {
       this.currentFilter = filter;
       queryString = Object.keys(filter).reduce((query, key, index) => {

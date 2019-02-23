@@ -18,7 +18,7 @@
     <button class="btn btn-danger btn-remove-trip" (click)="removeTrip()" *ngIf="edition">
       <mat-icon>delete</mat-icon> Supprimer ce trajet
     </button>
-    <mat-vertical-stepper>
+    <mat-vertical-stepper #stepper>
       <mat-step>
         <ng-template matStepLabel>
           Départ
@@ -34,7 +34,7 @@
               [date]="departureInfo?.date"
               [time]="departureInfo?.time"
               [airport]="departureInfo?.airport"
-              (valid)="departure($event)">
+              (valid)="departure($event, stepper)">
             </app-trip-location>
           </div>
         </div>
@@ -58,7 +58,7 @@
             [time]="arrivalInfo?.time"
             [airport]="arrivalInfo?.airport"
             [minDate]="edition ? arrivalInfo?.date : departureSave?.date"
-            (valid)="arrival($event)">
+            (valid)="arrival($event, stepper)">
             </app-trip-location>
           </div>
         </div>
@@ -73,7 +73,7 @@
             {{ constraintsSave.luggages.length }} bagage{{ constraintsSave.luggages.length > 1 ? 's' : ''}}
           </div>
         </ng-template>
-        <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
+        <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event, stepper)"></app-trip-constraints>
         <button class="btn btn-success"
                 [disabled]="!constraintsSave || !constraintsSave?.luggages?.length || !constraintsSave?.bonus"
                 matStepperNext>Valider</button>
@@ -87,7 +87,9 @@
               {{ departureSave.city }}
             </h4>
             <small class="text-muted">{{ departureSave.airport.name }}</small><br>
-            <span>{{ departureSave.date.format('DD/MM') }} - {{ departureSave.time }}</span>
+            <span *ngIf="departureSave?.date && departureSave?.time">
+              {{ departureSave.date.format('DD/MM') }} - {{ departureSave.time }}
+            </span>
           </div>
           <div class="col-12 col-sm-6" *ngIf="arrivalSave && arrivalSave.airport">
             <h4 class="trip-title">
@@ -95,7 +97,9 @@
               {{ arrivalSave.city }}
             </h4>
             <small class="text-muted">{{ arrivalSave.airport.name }}</small><br>
-            <span>{{ arrivalSave.date.format('DD/MM') }} - {{ arrivalSave.time }}</span>
+            <span *ngIf="arrivalSave?.date && arrivalSave?.time">
+              {{ arrivalSave.date.format('DD/MM') }} - {{ arrivalSave.time }}
+            </span>
           </div>
         </div>
         <small *ngIf="!departureSave || !arrivalSave">Complétez les informations de votre trajet</small>

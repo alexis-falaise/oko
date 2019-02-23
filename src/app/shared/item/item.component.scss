@@ -1,8 +1,12 @@
 @import "../../../styles/variables.scss";
 
 .item {
+    min-width: 150px;
     max-height: 300px;
     max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     &__title {
         font-size: 18px;
@@ -41,6 +45,12 @@
                 background-color: rgba(255, 255, 255, .1);
             }
         }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-self: flex-end;
     }
 
     &__price {

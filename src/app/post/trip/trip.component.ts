@@ -1,11 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { timer } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { MatDialog, MatSnackBar, MatStepper } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
 import { UserService } from '@core/user.service';
+import { UiService } from '@core/ui.service';
 
 import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
 
@@ -13,7 +13,6 @@ import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Airport } from '@models/airport.model';
 import { Luggage } from '@models/luggage.model';
-import { UiService } from '@core/ui.service';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -70,24 +69,27 @@ export class TripComponent implements OnInit {
     this.manageDrafts();
   }
 
-  departure(info) {
+  departure(info, stepper: MatStepper) {
     if (info) {
       if (!(info.airport instanceof Airport)) {
         info.airport = new Airport(info.airport);
       }
       this.departureSave = info;
+      stepper.next();
     }
   }
 
-  arrival(info) {
+  arrival(info, stepper: MatStepper) {
     if (info) {
       this.arrivalSave = info;
+      stepper.next();
     }
   }
 
-  constraints(info) {
+  constraints(info, stepper: MatStepper) {
     if (info) {
       this.constraintsSave = info;
+      stepper.next();
     }
   }
 

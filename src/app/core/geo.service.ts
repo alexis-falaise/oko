@@ -13,6 +13,7 @@ export class GeoService {
   private airportUrl = `${environment.serverUrl}/airport`;
 
   airports = new BehaviorSubject(null);
+  cities = new BehaviorSubject(null);
 
   constructor(
     private http: HttpClient,
@@ -20,6 +21,10 @@ export class GeoService {
 
   onAirports() {
     return this.airports.asObservable();
+  }
+
+  onCities() {
+    return this.cities.asObservable();
   }
 
   getAirports(code?: string, name?: string, city?: string, country?: string) {
@@ -30,11 +35,25 @@ export class GeoService {
         this.airports.next(response.data);
       }
     }, (error: HttpErrorResponse) => {
-      console.error(error);
+      // #TODO Log errors
+      // console.error(error);
     });
   }
 
   getAirportById(id: number): Observable<Airport> {
     return this.http.get(`${this.airportUrl}/${id}`) as Observable<Airport>;
+  }
+
+  getCities(city?: string) {
+    this.http.get(`${this.airportUrl}/city/${city}`, {withCredentials: true})
+    .subscribe((response: ServerResponse) => {
+      if (response.status) {
+        this.cities.next(response.data);
+      } else {
+        this.cities.next(null);
+      }
+    }, (error: HttpErrorResponse) => {
+      this.cities.next(null);
+    });
   }
 }

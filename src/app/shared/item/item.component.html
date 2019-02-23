@@ -3,16 +3,16 @@
       <mat-icon>clear</mat-icon>
     </div>
     <mat-card-title class="item__title">{{ item.label }}</mat-card-title>
-    <mat-card-subtitle class="item__subtitle">
+    <mat-card-subtitle class="item__subtitle" *ngIf="item?.link">
       <a class="item__link" [href]="item.link.path" target="blank" *ngIf="!creator">
         <mat-icon>shopping_cart</mat-icon>
         {{ item.link.label }}
       </a>
     </mat-card-subtitle>
-    <div class="item__image-wrapper" mat-card-image *ngIf="item?.photo?.length">
+    <div class="item__image-wrapper" mat-card-image *ngIf="item?.photo?.length && item.photo[0] != ''">
       <img class="item__image" [src]="item.photo[0]" [alt]="item.label">
     </div>
-    <mat-card-content>
+    <mat-card-content class="item__content">
       <div class="item__price">
         Prix: {{ item.price }} €
       </div>

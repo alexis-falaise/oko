@@ -1,17 +1,39 @@
-<form [formGroup]="location" (ngSubmit)="submit()" autocomplete="off" novalidate>
+<form [formGroup]="location" (ngSubmit)="submit()" autocomplete="off" class="needs-validation" novalidate>
     <div class="form-group">
         <input type="text" name="city" formControlName="city" (focus)="cityFocus = true" (blur)="cityFocus = false"
                placeholder="Ville"
                autocomplete="off"
                [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
                [readonly]="cityReadonly"
+               [matAutocomplete]="citiesAuto"
+               (keyup)="fetchCities(location.controls.city.value)"
                [class.is-invalid]="location.controls.city.errors?.required
-               && location.controls.city.touched" required>
+               && location.controls.city.touched
+               || (submitted && location.controls.city.invalid)" required>
+        <mat-autocomplete #citiesAuto="matAutocomplete">
+            <mat-option *ngFor="let city of cities" [value]="city">
+                {{ city }}
+            </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback"
+            [class.d-block]="location.controls.city.errors?.required
+            && (location.controls.city.touched)">
+            Indiquez une ville
+        </div>
         <small class="text-muted" *ngIf="cityFocus">Indiquez le nom de la ville en Anglais pour obtenir une suggestion d'aéroport</small>
     </div>
     <mat-form-field class="form-group trip-location-hybrid-group">
         <input type="text" placeholder="Aéroport" #airport (click)="fetchMatchingAirports(location.controls.city.value)"
+               [class.is-invalid]="location.controls.airport.errors?.invalid
+               || (location.controls.airport.errors?.required
+               && location.controls.airport.touched)
+               || (submitted && location.controls.airport.invalid)"
                matInput formControlName="airport" [matAutocomplete]="auto">
+        <div class="invalid-feedback"
+            [class.d-block]="location.controls.airport.errors?.required
+            && location.controls.airport.touched">
+            Indiquez un aéroport
+        </div>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAirport">
             <mat-option *ngFor="let airport of filteredAirports" [value]="airport">
             {{ airport.name }} |
@@ -24,10 +46,19 @@
           <input type="text" name="date" formControlName="date"
                  autocomplete="off"
                  [matDatepicker]="picker"
+                 [class.is-invalid]="location.controls.date.errors?.invalid
+                 || (location.controls.date.errors?.required
+                 && location.controls.date.touched)
+                 || (submitted && location.controls.date.invalid)"
                  [min]="minDate || today"
                  [ngClass]="{'form-control': !dateReadonly, 'form-control-plaintext': dateReadonly}"
                  [readonly]="dateReadonly"
                  placeholder="Date">
+            <div class="invalid-feedback"
+                [class.d-block]="location.controls.date.errors?.required
+                && location.controls.date.touched">
+                Sélectionnez une date
+            </div>
         </div>
         <div class="form-group col-2 col-md-2">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
@@ -35,12 +66,21 @@
         </div>
         <div class="form-group col-12 col-md-3">
           <input name="time" formControlName="time"
-                [class.is-invalid]="location.controls.time.errors?.invalid"
+                [class.is-invalid]="location.controls.time.errors?.invalid
+                || location.controls.time.errors?.required
+                && (location.controls.time.touched)
+                || (submitted && location.controls.time.invalid)"
                 [ngClass]="{'form-control': !timeReadonly, 'form-control-plaintext': timeReadonly}"
                 [readonly]="timeReadonly"
                 placeholder="Heure"
                 [format]="24"
+                (keyup.enter)="submit()"
                 [ngxTimepicker]="timePicker">
+        <div class="invalid-feedback"
+            [class.d-block]="location.controls.time.errors?.required
+            && (location.controls.time.touched)">
+            Indiquez une heure
+        </div>
           <ngx-material-timepicker #timePicker></ngx-material-timepicker>
           <!-- <input name="time" formControlName="time"
                 autocomplete="off"

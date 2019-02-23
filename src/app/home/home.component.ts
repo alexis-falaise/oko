@@ -102,8 +102,8 @@ export class HomeComponent implements OnInit {
 
   post() {
     if (this.empty && !this.expanded || this.validated) {
-      this.postService.draftPost(this.filter);
-      this.router.navigate(['/post/request']);
+      this.postService.saveRequestDraft({items: [{label: this.filter.item}]});
+      this.router.navigate(['/post/request/new']);
     }
   }
 

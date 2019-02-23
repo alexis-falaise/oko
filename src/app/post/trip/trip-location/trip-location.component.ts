@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -32,19 +32,22 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() timeReadonly = false;
   @Input() minDate = null;
   airports = [];
+  cities: Array<string> = [];
   filteredAirports: Array<Airport>;
   today = moment();
   cityFocus = false;
   location = this.fb.group({
     city: ['', Validators.required],
     date: [this.minDate || this.today, Validators.required],
-    airport: new FormControl({value: null, disabled: !this.airports.length}),
+    airport: new FormControl({value: null, disabled: !this.airports.length}, Validators.required),
     time: ['', Validators.compose([Validators.required, Validators.maxLength(5), Validators.minLength(0)])]
   });
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
     private adapter: DateAdapter<any>,
+    private ref: ChangeDetectorRef,
     private geoService: GeoService,
     ) { }
 
@@ -83,6 +86,16 @@ export class TripLocationComponent implements OnInit, OnChanges {
       }
     });
 
+    this.geoService.onCities()
+    .subscribe(cities => {
+      if (cities) {
+        this.cities = cities;
+        this.ref.detectChanges();
+      } else {
+        this.cities = null;
+      }
+    });
+
     this.location.controls.time.valueChanges
     .subscribe((value: string) => {
       this.validateTime(value);
@@ -98,15 +111,14 @@ export class TripLocationComponent implements OnInit, OnChanges {
     this.location.controls.airport.valueChanges
     .subscribe(value => this.filteredAirports = this.filterAirports(value));
 
-    this.location.statusChanges.subscribe(status => {
-      if (status === 'VALID') {
-        this.submit();
-      }
-    });
+    this.location.valueChanges.subscribe(() => this.submitted = false);
   }
 
   submit() {
-    this.valid.emit(this.location.value);
+    if (this.location.valid) {
+      this.valid.emit(this.location.value);
+    }
+    this.submitted = true;
   }
 
   setAirportList(airports: Array<Airport>) {
@@ -121,6 +133,10 @@ export class TripLocationComponent implements OnInit, OnChanges {
   fetchMatchingAirports(city: string) {
     this.setAirportList(null);
     this.geoService.getAirports(undefined, undefined, city);
+  }
+
+  fetchCities(city: string) {
+    this.geoService.getCities(city);
   }
 
   private filterAirports(value: string): Array<Airport> {
