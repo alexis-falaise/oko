@@ -21,7 +21,7 @@ export class RequestItemComponent implements OnInit {
     depth: [null, Validators.min(0)],
     weight: [null, Validators.min(0)],
     cabinOnly: [false],
-    price: [0, Validators.compose([Validators.min(0), Validators.required])],
+    price: ['', Validators.compose([Validators.min(0), Validators.required])],
   });
   index: number;
   modifying: boolean;

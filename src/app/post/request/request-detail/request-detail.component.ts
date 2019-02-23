@@ -34,7 +34,9 @@ export class RequestDetailComponent implements OnInit {
         .subscribe((request) => {
           if (request) {
             const currentRequest = new Request(request);
-            currentRequest.trip = new Trip(currentRequest.trip);
+            if (currentRequest.trip) {
+              currentRequest.trip = new Trip(currentRequest.trip);
+            }
             this.request = currentRequest;
             this.uiService.setLoading(false);
           }

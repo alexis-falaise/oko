@@ -54,7 +54,16 @@ export class HomeComponent implements OnInit {
     const requestDraft = this.postService.getRequestDraft();
     if (tripDraft || requestDraft) {
       const snackRef = this.snack.open('Brouillon de ' + (tripDraft ? 'trajet' : 'demande'), 'Ouvrir', {duration: 7500});
-      const route = tripDraft ? '/post/trip/new' : 'post/trip/' + requestDraft.trip.id;
+      let route;
+      if (tripDraft) {
+        route = '/post/trip/new';
+      } else {
+        if (requestDraft) {
+          route  = requestDraft.trip ? ('/post/trip/' + requestDraft.trip.id ) : '/post/request/new';
+        } else {
+          route = '/home';
+        }
+      }
       snackRef.onAction().subscribe(() => this.router.navigate([route]));
     }
   }

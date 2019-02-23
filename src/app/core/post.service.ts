@@ -175,6 +175,7 @@ export class PostService {
   }
 
   createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
+    console.log('Create request', request);
     this.deleteRequestDraft();
     return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
   }

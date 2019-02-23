@@ -6,35 +6,49 @@
   <hr class="divider">
   <div class="request-item__content">
     <form [formGroup]="item" novalidate>
-      <div class="form-group">
-        <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article" required>
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" formControlName="link" placeholder="Lien e-commerce">
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" formControlName="photo" placeholder="Photo (lien)">
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" formControlName="description" placeholder="Description" required>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <input type="text" class="form-control" formControlName="price" placeholder="Prix estimé">
-          <div class="input-group-append">
-            <span class="input-group-text">€</span>
+      <mat-horizontal-stepper labelPosition="bottom">
+        <mat-step>
+          <ng-template matStepLabel>Infos</ng-template>
+            <div class="request-item__step-content">
+              <div class="form-group">
+                <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" formControlName="description" placeholder="Description" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" formControlName="photo" placeholder="Photo (lien)">
+              </div>
+            </div>
+            <div class="request-item__step-validation">
+                <button class="btn btn-success" matStepperNext>Valider</button>
+            </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Achat</ng-template>
+          <div class="request-item__step-content">
+            <div class="form-group">
+              <input type="text" class="form-control" formControlName="link" placeholder="Lien e-commerce">
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" formControlName="price" placeholder="Prix estimé">
+                <div class="input-group-append">
+                  <span class="input-group-text">€</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
-      </div>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Dimensions</mat-panel-title>
-          <mat-panel-description></mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="form-row">
+          <div class="request-item__step-validation">
+              <button class="btn btn-success" matStepperNext>Valider</button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Dimensions</ng-template>
+          <div class="request-item__step-content">
+            <div class="form-group">
+            <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
+            </div>
             <div class="input-group">
                 <input type="number" class="form-control" min="0" required formControlName="weight">
                 <div class="input-group-append">
@@ -83,11 +97,12 @@
                 Profondeur
               </span>
             </div>
-        </div>
-      </mat-expansion-panel>
-      <div class="request-item-validation">
-        <button class="btn btn-success" (click)="save()">Enregistrer</button>
-      </div>
+          </div>
+          <div class="request-item__step-validation">
+            <button class="btn btn-success" (click)="save()">Enregistrer</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
     </form>
   </div>
 </div>

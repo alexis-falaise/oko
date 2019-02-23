@@ -2,7 +2,7 @@
 @import "../../../../styles/animations.scss";
 
 .request-form {
-    padding: 0 25px;
+    padding: 0 25px 25px;
     animation: $animationDuration slideFromUp;
     &-title {
         color: rgb(175, 175, 175);

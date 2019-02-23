@@ -3,7 +3,7 @@
       <mat-icon>clear</mat-icon>
     </div>
     <mat-card-title class="item__title">{{ item.label }}</mat-card-title>
-    <mat-card-subtitle class="item__subtitle" *ngIf="item?.link">
+    <mat-card-subtitle class="item__subtitle" *ngIf="item?.link?.path && item?.link?.path != ''">
       <a class="item__link" [href]="item.link.path" target="blank" *ngIf="!creator">
         <mat-icon>shopping_cart</mat-icon>
         {{ item.link.label }}

@@ -8,13 +8,25 @@
     }
     
     &__content {
-        height: 60vh;
-        overflow-y: scroll;
+        height: 68vh;
     }
 
-    &-validation {
-        display: flex;
-        justify-content: center;
-        margin-top: 15px;
-    }
+    &__step {
+
+        &-content {
+            height: 40vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        &-validation {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+    } 
 }

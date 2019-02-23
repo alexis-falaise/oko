@@ -75,7 +75,7 @@ export class RequestFormComponent implements OnInit {
 
   openItemDialog(item?: Item, index?: number) {
     const dialogRef = this.dialog.open(RequestItemComponent, {
-      height: '75vh',
+      height: '85vh',
       width: '95vw',
       data: item ? { item: item, index: index, modifying: true } : null,
     });
@@ -140,6 +140,7 @@ export class RequestFormComponent implements OnInit {
       trip: this.trip,
       ...this.meeting.value
     });
+
     this.userService.getCurrentUser()
     .subscribe(currentUser => {
       saveRequest.user = currentUser;
@@ -151,20 +152,23 @@ export class RequestFormComponent implements OnInit {
             this.snack.open('Demande enregistrée', 'Top!', {duration: 3000});
             this.router.navigate([`post/request/${createdRequest.id}`]);
           } else {
-            this.snack.open('Un problème a eu lieu', 'Réessayer', {duration: 5000});
+            this.requestServerError();
           }
-        });
+        }, (error) => this.requestServerError());
       } else {
         this.requestError(saveRequest);
       }
-    }, (error) => {
-        this.requestError(saveRequest);
-    });
+    }, (error) => this.requestError(saveRequest));
   }
 
   private requestError(draft) {
     this.postService.saveRequestDraft(draft);
     this.dialog.open(NotConnectedComponent);
+  }
+
+  private requestServerError() {
+    const snackRef = this.snack.open('Un problème a eu lieu', 'Réessayer', {duration: 5000});
+    snackRef.onAction().subscribe(() => this.request());
   }
 
 }
