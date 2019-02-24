@@ -31,12 +31,12 @@ export class HomeComponent implements OnInit {
   backgroundImage = 'assets/hero.jpg';
   swingingLocation = this.locationSamples[0];
   swingingItem = this.itemSamples[0];
-  today = moment();
-  posts: Array<Post>;
+  posts: Array<Post> = null;
   filter = new Filter({});
   expanded = true;
   empty = false;
   validated = false;
+  today = moment();
 
   constructor(
     private authService: AuthService,
@@ -66,6 +66,7 @@ export class HomeComponent implements OnInit {
       }
       snackRef.onAction().subscribe(() => this.router.navigate([route]));
     }
+    this.postService.getTrips();
   }
 
   expand() {

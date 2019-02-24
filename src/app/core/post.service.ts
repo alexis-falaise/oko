@@ -75,9 +75,7 @@ export class PostService {
     filter.afterDate = moment();
     if (filter) {
       this.currentFilter = filter;
-      queryString = Object.keys(filter).reduce((query, key, index) => {
-        return `${query}${index ? '&' : ''}${filter[key] ? key + '=' + filter[key] : '' }`;
-      }, '?');
+      queryString = this.buildQueryString(filter);
     }
     this.http.get(`${this.tripUrl}${queryString}`, {withCredentials: true})
     .pipe(takeUntil(nextQuery))
@@ -98,10 +96,23 @@ export class PostService {
    * @param filter: Filter object containning location and/or item
    */
   getRequests(filter?: Filter) {
-    this.http.get(`${this.requestUrl}${ filter ? '?item=' + filter.item : '' }`, {withCredentials: true})
+    const nextQuery = new Subject();
+    let queryString = '';
+    filter = filter || this.currentFilter;
+    filter.afterDate = moment();
+    if (filter) {
+      this.currentFilter = filter;
+      queryString = this.buildQueryString(filter);
+    }
+    this.http.get(`${this.requestUrl}${queryString}`, {withCredentials: true})
+    .pipe(takeUntil(nextQuery))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
-        this.requests.next(response.data.map(request => new Request(request)));
+        const requests = response.data
+        .map(request => new Request(request))
+        .sort((first, second) => moment(first.date).isBefore(second.date) ? -1 : 1);
+        this.requests.next(requests);
+        nextQuery.next(true);
       }
     });
   }
@@ -269,6 +280,12 @@ export class PostService {
     this.http.get(`${this.postUrl}/delete`, {withCredentials: true});
     this.http.get(`${this.tripUrl}/delete`, {withCredentials: true});
     this.http.get(`${this.requestUrl}/delete`, {withCredentials: true});
+  }
+
+  private buildQueryString(filter: Filter) {
+    return Object.keys(filter).reduce((query, key, index) => {
+      return `${query}${index ? '&' : ''}${filter[key] ? key + '=' + filter[key] : '' }`;
+    }, '?');
   }
 
 }

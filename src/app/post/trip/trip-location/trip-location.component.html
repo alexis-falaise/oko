@@ -12,7 +12,7 @@
                || (submitted && location.controls.city.invalid)" required>
         <mat-autocomplete #citiesAuto="matAutocomplete">
             <mat-option *ngFor="let city of cities" [value]="city.city">
-                {{ city.city }}
+                {{ city.city }} ({{ city.country}} )
             </mat-option>
         </mat-autocomplete>
         <div class="invalid-feedback"

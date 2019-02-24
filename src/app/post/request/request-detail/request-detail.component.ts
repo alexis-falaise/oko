@@ -7,6 +7,7 @@ import { PostService } from '@core/post.service';
 import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { UiService } from '@core/ui.service';
+import { UserService } from '@core/user.service';
 
 @Component({
   selector: 'app-request-detail',
@@ -15,10 +16,12 @@ import { UiService } from '@core/ui.service';
 })
 export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
+  own = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService,
     private postService: PostService,
     private uiService: UiService,
     private snack: MatSnackBar,
@@ -33,16 +36,25 @@ export class RequestDetailComponent implements OnInit {
         this.postService.getRequestById(param.id)
         .subscribe((request) => {
           if (request) {
-            const currentRequest = new Request(request);
-            if (currentRequest.trip) {
-              currentRequest.trip = new Trip(currentRequest.trip);
-            }
-            this.request = currentRequest;
-            this.uiService.setLoading(false);
+            this.userService.getCurrentUser()
+            .subscribe(user => {
+              if (user) {
+                this.own = user.id === request.user.id;
+              }
+              this.setRequest(request);
+            }, (err) => this.setRequest(request));
           }
         });
       }
     });
+  }
+
+  setRequest(request: Request) {
+    if (request.trip) {
+      request.trip = new Trip(request.trip);
+    }
+    this.request = new Request(request);
+    this.uiService.setLoading(false);
   }
 
   validate() {

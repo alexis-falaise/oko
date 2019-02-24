@@ -5,6 +5,12 @@ export class Filter {
     location: string;
     beforeDate?: Moment;
     afterDate?: Moment;
+    closed?: boolean;
+    open?: boolean;
+    accepted?: boolean;
+    validated?: boolean;
+    city?: string;
+    country?: string;
 
     constructor(filter: Partial<Filter> = {}) {
         Object.assign(this, filter);

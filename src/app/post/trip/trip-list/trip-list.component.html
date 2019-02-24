@@ -7,10 +7,6 @@
     <app-post-filter [filter]="filter" (filterRefresh)="filterPosts($event)" (resetFilter)="resetFilters()"></app-post-filter>
   </div>
   <div class="trip-list__list">
-    <app-post-list [trip]="true" (listRefresh)="listStatus($event)"></app-post-list>
-  </div>
-  <div class="trip-list__empty d-flex justify-content-center" *ngIf="empty">
-    <mat-icon class="list-empty">flight</mat-icon><br>
-    <div>Aucun résultat</div>
+    <app-post-list [trip]="true"></app-post-list>
   </div>
 </div>

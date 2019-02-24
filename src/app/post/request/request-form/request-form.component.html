@@ -51,6 +51,9 @@
       </div>
       <div *ngIf="!meeting.controls.airportPickup.value">
         <h5 class="request-form__meeting-title">Lieu de rendez-vous</h5>
+        <small class="text-muted">
+          Cette information ne sera communiquée qu'au voyageur
+        </small>
         <form [formGroup]="meeting.controls.meetingPoint">
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Adresse" formControlName="adress" required>
@@ -120,7 +123,8 @@
         || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
         || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
       " (click)="request()">
-      Faire une demande <span *ngIf="trip?.user?.firstname"> à {{ trip.user.firstname }}</span>
+       <span *ngIf="trip?.user?.firstname">Faire une demande à {{ trip.user.firstname }}</span>
+       <span *ngIf="freeRequest || !trip">Créer une annonce</span>
     </button>
   </div>
 </div>

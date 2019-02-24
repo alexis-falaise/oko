@@ -9,14 +9,14 @@
         </div> -->
         <div class="post-info__user-info">
             <div class="post-info__user-info__firstname">
-                {{ post.user.firstname }}
+                {{ post.user.firstname || 'Oko user' }}
             </div>
             <div class="post-info__user-info__trips">
-                {{ post.user.trips || 0 }} trips
+                {{ post.user.trips || 0 }} voyages
             </div>
         </div>
     </div>
-    <div class="post-general col-9 col-md-10" *ngIf="isTrip">
+    <div class="post-general col-9 col-md-10" *ngIf="isTrip; else request">
         <div class="row">
             <div class="post-trip col-8 col-sm-9 col-md-10">
                 <div class="row" *ngIf="!horizontal; else horizontalTrip">
@@ -64,6 +64,46 @@
             </div>
         </div>
     </div>
+    <ng-template #request>
+        <div class="post-general post-request col-9 col-md-10">
+            <div class="row">
+                <div class="post-request__content col-6 col-sm-8">
+                    <div class="row post-request__content__items">
+                        <div class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</div>
+                    </div>
+                    <div class="row post-request__content__location" *ngIf="post?.meetingPoint">
+                        {{ post.meetingPoint.city }} - {{ post.meetingPoint.country }}
+                    </div>
+                </div>
+                <div class="post-request__practical col-6 col-sm-4">
+                    <div class="post-request__practical__property" *ngIf="post.cabinOnly; else cargo">
+                        <mat-icon>work</mat-icon> En cabine
+                    </div>
+                    <ng-template #cargo>
+                        <div class="post-request__practical__property">
+                            <mat-icon>flight</mat-icon> En soute
+                        </div>
+                    </ng-template>
+                    <div class="post-request__practical__property" *ngIf="post.airportPickup; else meetingPoint">
+                        <mat-icon>flight</mat-icon> A l'aéroport
+                    </div>
+                    <ng-template #meetingPoint>
+                        <div class="post-request__practical__property">
+                            <mat-icon>my_location</mat-icon> Rendez-vous
+                        </div>
+                    </ng-template>
+                    <div class="post-request__practical__property" *ngIf="post.trip; else freeRequest">
+                        <mat-icon>map</mat-icon> Voyage sélectionné
+                    </div>
+                    <ng-template #freeRequest>
+                        <div class="post-request__practical__property">
+                            <mat-icon>info</mat-icon> En attente
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </ng-template>
     <app-remove-panel [editable]="editable"
                       (edit)="editPost()"
                       (remove)="removePost()"

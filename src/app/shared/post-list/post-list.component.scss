@@ -13,4 +13,20 @@
     .next-icon {
         color: rgb(80, 80, 80);
     }
+
+    &__empty {
+        $emptyColor: rgb(175, 175, 175);
+        color: $emptyColor;
+        $iconSize: 64px;
+        height: 30vh;
+        align-items: center;
+        .mat-icon {
+            width: $iconSize;
+            height: $iconSize;
+        }
+        .material-icons {
+            font-size: $iconSize;
+            color: $emptyColor;
+        }
+    }
 }

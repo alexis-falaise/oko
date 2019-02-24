@@ -46,6 +46,9 @@ export class PostComponent implements OnInit, OnChanges {
     this.post = post;
     this.isTrip = post instanceof Trip;
     this.isRequest = post instanceof Request;
+    if (this.isRequest) {
+      console.log('Request', post);
+    }
     if (post instanceof Trip && post.luggages) {
       const luggages = post.luggages as any;
       this.weight = luggages.reduce((acc: number, luggage: Luggage) => acc + luggage.weight, 0) as number;

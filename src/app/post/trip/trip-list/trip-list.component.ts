@@ -12,7 +12,6 @@ import { Filter } from '@models/app/filter.model';
   styleUrls: ['./trip-list.component.scss']
 })
 export class TripListComponent implements OnInit, OnDestroy {
-  empty = false;
   filter = new Filter();
   loading = false;
   ngUnsubscribe = new Subject();
@@ -46,10 +45,6 @@ export class TripListComponent implements OnInit, OnDestroy {
   resetFilters() {
     this.postService.resetTripFilters();
     this.init();
-  }
-
-  listStatus(listLength: number) {
-    this.empty = listLength === 0;
   }
 
   ngOnDestroy() {

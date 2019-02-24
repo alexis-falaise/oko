@@ -1,20 +1,20 @@
 <div class="request-detail container-fluid">
   <div class="request-detail__hero row">
-    <h2>Résumé de la demande</h2>
+    <h2>Résumé de l'annonce</h2>
   </div>
   <div class="container">
       <div class="request-detail__status"
       [class.good]="request.accepted || request.validated"
       [class.bad]="request.closed"
       *ngIf="request.closed || request.accepted || request.validated">
-      <span *ngIf="request.closed">La demande a été annulée</span>
-      <span *ngIf="request.accepted">La demande a été acceptée {{ request.handler ? 'par ' + request.handler.firstname : '' }}</span>
-      <span *ngIf="request.validated">Cette demande a été validée</span>
+      <span *ngIf="request.closed">L'annonce a été annulée</span>
+      <span *ngIf="request.accepted">L'annonce a été acceptée {{ request.handler ? 'par ' + request.handler.firstname : '' }}</span>
+      <span *ngIf="request.validated">Cette annonce a été validée</span>
  </div>
- <div class="request-detail__actions justify-content-around">
+ <div class="request-detail__actions justify-content-around" *ngIf="own">
    <button class="btn btn-warning" disabled *ngIf="!request.accepted && !request.closed">En attente</button>
    <button class="btn btn-success" [disabled]="request.validated" *ngIf="request.accepted" (click)="validate()">Valider la réception</button>
-   <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler la demande</button>
+   <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler l'annonce</button>
  </div>
  <div class="request-detail__location">
    <h4 class="request-detail__location-title request-detail__section-title">Ma ville</h4>
@@ -23,10 +23,10 @@
    </div>
    <ng-template #noCity>
      <span class="text-muted">
-       Aucune ville d'arrivée définie pour cette demande.
+       Aucune ville d'arrivée définie pour cette annonce.
       </span>
-      <button class="btn btn-info btn-icon" [routerLink]="['post', 'request', request.id, 'edit']">
-        <mat-icon>edit</mat-icon> Modifier la demande
+      <button class="btn btn-info btn-icon" [routerLink]="['/post/request', request.id, 'edit']">
+        <mat-icon>edit</mat-icon> Modifier l'annonce
       </button>
    </ng-template>
  </div>
@@ -39,10 +39,10 @@
    <h4 class="request-detail__trip-title request-detail__section-title">Voyage</h4>
    <div class="request-detail__trip-date">
      <div class="arrival">
-         <mat-icon>today</mat-icon> Arrivée de {{ request.trip.user.firstname }}
+         <mat-icon>today</mat-icon> Arrivée <span *ngIf="request?.trip?.user"> de {{ request?.trip?.user?.firstname }}</span>
      </div>
      <div class="arrival-time">
-         {{ request.trip.date.format('DD/MM HH:mm') }}
+         {{ request?.trip?.date?.format('DD/MM HH:mm') }}
      </div>
    </div>
    <div class="row request-detail__trip-info">
@@ -50,9 +50,9 @@
        <mat-icon>flight_takeoff</mat-icon>
      </div>
      <div class="col-4 location">
-       <div class="city-name">{{ request.trip.from.label }} </div>
-       <div class="airport-name" *ngIf="request.trip.from.airport">
-           {{ request.trip.from.airport.name }}
+       <div class="city-name">{{ request?.trip?.from?.label }} </div>
+       <div class="airport-name" *ngIf="request?.trip?.from?.airport">
+           {{ request?.trip?.from?.airport?.name }}
        </div>
      </div>
      <div class="col-2 d-flex align-items-center">
@@ -75,7 +75,7 @@
      Conditions de remise
    </h4>
    <div *ngIf="request && request.airportPickup">
-     <div class="agreement" *ngIf="request.trip && request.trip.airportDrop; else pickupAgreement">
+     <div class="agreement" *ngIf="request?.trip?.airportDrop; else pickupAgreement">
          <mat-icon>flight</mat-icon> Remise à l'aéroport {{ request.trip.to.airport.name }}
      </div>
    </div>
@@ -94,7 +94,7 @@
    </div>
  </div>
  <hr class="divider">
- <div class="request-detail__contact" *ngIf="request && request.trip && request.trip.user">
+ <div class="request-detail__contact" *ngIf="request?.trip?.user && own">
    <button class="btn btn-info btn-contact" [disabled]="request.closed">
      <mat-icon>mail</mat-icon>
      Contacter {{ request.trip.user.firstname }}
@@ -105,6 +105,6 @@
 
 <ng-template #pickupAgreement>
   <div class="agreement">
-    <mat-icon>forum</mat-icon> Point de remise à définir {{ request.trip ? ' avec ' + request.trip.user.firstname : '' }}
+    <mat-icon>forum</mat-icon> Point de remise à définir {{ request?.trip?.user ? ' avec ' + request.trip.user.firstname : '' }}
   </div>
 </ng-template>

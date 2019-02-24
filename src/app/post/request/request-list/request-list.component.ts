@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PostService } from '@core/post.service';
+import { Request } from '@models/post/request.model';
+import { Filter } from '@models/app/filter.model';
 
 @Component({
   selector: 'app-request-list',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RequestListComponent implements OnInit {
 
-  constructor() { }
+  requests: Array<Request> = null;
+
+  constructor(
+    private postService: PostService,
+  ) { }
 
   ngOnInit() {
+    this.postService.getRequests(new Filter({open: true}));
   }
 
 }

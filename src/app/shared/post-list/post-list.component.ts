@@ -13,8 +13,9 @@ import { UiService } from '@core/ui.service';
 export class PostListComponent implements OnInit, AfterViewInit {
   posts: Array<Post> = [];
   carousel: any;
+  empty = false;
   @Output() listRefresh = new EventEmitter();
-  @Input() trip = true;
+  @Input() trip = false;
   @Input() horizontal = false;
 
   constructor(
@@ -63,6 +64,11 @@ export class PostListComponent implements OnInit, AfterViewInit {
   }
 
   setPosts(posts) {
+    if (!posts || posts && !posts.length) {
+      this.empty = true;
+    } else {
+      this.empty = false;
+    }
     this.posts = posts;
     this.listRefresh.emit(posts.length);
   }

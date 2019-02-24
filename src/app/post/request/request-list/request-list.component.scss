@@ -1,0 +1,27 @@
+@import "../../../../styles/variables.scss";
+
+.request-list {
+    height: 100vh;
+
+    &__hero {
+        animation: $animationDuration openHero;
+        -webkit-animation: $animationDuration openHero;
+        -moz-animation: $animationDuration openHero;
+        -o-animation: $animationDuration openHero;
+
+        background-image: $heroGradient;
+        background-size: 100% auto;
+        background-position: center;
+        width: 100vw;
+        height: 25vh;
+        padding-top: $navbarHeight;
+        align-items: center;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        color: white;
+    }
+
+    &__list {
+        height: 65vh;
+        overflow-y: scroll;
+    }
+}
