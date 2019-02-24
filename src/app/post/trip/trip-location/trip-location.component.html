@@ -6,7 +6,7 @@
                [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
                [readonly]="cityReadonly"
                [matAutocomplete]="citiesAuto"
-               (keyup)="fetchCities(meeting.controls.city.value)"
+               (keyup)="fetchCities(location.controls.city.value)"
                [class.is-invalid]="location.controls.city.errors?.required
                && location.controls.city.touched
                || (submitted && location.controls.city.invalid)" required>

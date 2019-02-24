@@ -75,7 +75,7 @@
             {{ constraintsSave.luggages.length }} bagage{{ constraintsSave.luggages.length > 1 ? 's' : ''}}
           </div>
         </ng-template>
-        <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event, stepper)"></app-trip-constraints>
+        <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
         <button class="btn btn-success"
                 [disabled]="!constraintsSave || !constraintsSave?.luggages?.length || !constraintsSave?.bonus"
                 matStepperNext>Valider</button>

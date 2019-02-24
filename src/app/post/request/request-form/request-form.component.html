@@ -23,8 +23,7 @@
         <input type="text" name="city" formControlName="city"
           placeholder="Ville"
           autocomplete="off"
-          [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
-          [readonly]="cityReadonly"
+          class="form-control"
           [matAutocomplete]="citiesAuto"
           (keyup)="fetchCities(meeting.controls.city.value)"
           [class.is-invalid]="meeting.controls.city.errors?.required
