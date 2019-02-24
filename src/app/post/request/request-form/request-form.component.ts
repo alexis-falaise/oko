@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
@@ -14,13 +14,14 @@ import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected
 import { Trip } from '@models/post/trip.model';
 import { Router } from '@angular/router';
 import { RequestItemSelectionComponent } from '../request-item-selection/request-item-selection.component';
+import { GeoService } from '@core/geo.service';
 
 @Component({
   selector: 'app-request-form',
   templateUrl: './request-form.component.html',
   styleUrls: ['./request-form.component.scss']
 })
-export class RequestFormComponent implements OnInit {
+export class RequestFormComponent implements OnInit, OnDestroy {
   @Input() trip: Trip;
   today = moment();
   items: Array<Item> = [];
@@ -34,7 +35,9 @@ export class RequestFormComponent implements OnInit {
   //   }),
   //   price: 1155.28
   // })];
+  cities: Array<string> = [];
   meeting = this.fb.group({
+    city: [],
     meetingPoint: this.fb.group({
       adress: ['', Validators.required],
       city: ['', Validators.required],
@@ -57,11 +60,26 @@ export class RequestFormComponent implements OnInit {
     private router: Router,
     private postService: PostService,
     private userService: UserService,
+    private geoService: GeoService,
     private snack: MatSnackBar,
   ) { }
 
   ngOnInit() {
+    this.geoService.onCities()
+    .subscribe(cities => this.cities = cities);
+    this.meeting.controls.city.valueChanges
+    .subscribe(city => {
+      this.meeting.controls.meetingPoint.patchValue({city: city.city, country: city.country});
+    });
     this.checkDraft();
+  }
+
+  fetchCities(city: string) {
+    this.geoService.getCities(city);
+  }
+
+  displayCity(city: {city: string, country: string}) {
+    return city ? city.city : '';
   }
 
   checkDraft() {
@@ -135,10 +153,12 @@ export class RequestFormComponent implements OnInit {
   }
 
   request() {
+    const meeting = this.meeting.value;
+    delete meeting.city;
     const saveRequest = new Request({
       items: this.items,
       trip: this.trip,
-      ...this.meeting.value
+      ...meeting,
     });
 
     this.userService.getCurrentUser()
@@ -169,6 +189,10 @@ export class RequestFormComponent implements OnInit {
   private requestServerError() {
     const snackRef = this.snack.open('Un problème a eu lieu', 'Réessayer', {duration: 5000});
     snackRef.onAction().subscribe(() => this.request());
+  }
+
+  ngOnDestroy() {
+    this.geoService.getCities(null);
   }
 
 }

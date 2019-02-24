@@ -20,7 +20,31 @@
   <div class="request-form__meeting">
     <form [formGroup]="meeting">
       <div class="form-group">
-        <mat-slide-toggle formControlName="airportPickup">Je peux récupérer mes articles à l'aéroport</mat-slide-toggle><br>
+        <input type="text" name="city" formControlName="city"
+          placeholder="Ville"
+          autocomplete="off"
+          [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
+          [readonly]="cityReadonly"
+          [matAutocomplete]="citiesAuto"
+          (keyup)="fetchCities(meeting.controls.city.value)"
+          [class.is-invalid]="meeting.controls.city.errors?.required
+          && meeting.controls.city.touched" required>
+          <mat-autocomplete #citiesAuto="matAutocomplete" [displayWith]="displayCity">
+              <mat-option *ngFor="let city of cities" [value]="city">
+                  {{ city.city }} ( {{city.country}} )
+              </mat-option>
+          </mat-autocomplete>
+          <div class="invalid-feedback"
+              [class.d-block]="meeting.controls.city.errors?.required
+              && (meeting.controls.city.touched)">
+              Indiquez une ville
+          </div>
+          <small class="text-muted">
+            La ville dans laquelle je souhaite recevoir mon article
+          </small>
+      </div>
+      <div class="form-group">
+        <mat-slide-toggle formControlName="airportPickup">Remise à l'aéroport</mat-slide-toggle><br>
         <small class="text-muted">
           Je récupère mes articles à l'aéroport d'arrivée du voyageur
           <span *ngIf="trip?.to && trip?.to.airport">: {{ trip.to.airport.name }} ( {{ trip.to.airport.code }} )</span>

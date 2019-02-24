@@ -15,7 +15,16 @@ export class AccountInfoComponent implements OnInit {
   description: Description;
   edit: any = {};
   keys = Object.keys;
+  french = {
+    'occupation': 'Emploi',
+    'interests': 'Loisirs',
+    'about': 'A propos',
+    'originCountry': 'Pays d\'origine',
+    'visitedCountries': 'Pays visités',
+    'livedCountries': 'Pays où j\'ai vécu',
+  };
   isArray = Array.isArray;
+  frenchization = (word) => this.french[word];
   camelToTitle = (camelCase) => camelCase
   .replace(/([A-Z])/g, (match) => ` ${match}`)
   .replace(/^./, (match) => match.toUpperCase())
