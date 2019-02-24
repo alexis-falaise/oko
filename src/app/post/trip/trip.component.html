@@ -34,6 +34,7 @@
               [date]="departureInfo?.date"
               [time]="departureInfo?.time"
               [airport]="departureInfo?.airport"
+              [edition]="edition"
               (valid)="departure($event, stepper)">
             </app-trip-location>
           </div>
@@ -58,6 +59,7 @@
             [time]="arrivalInfo?.time"
             [airport]="arrivalInfo?.airport"
             [minDate]="edition ? arrivalInfo?.date : departureSave?.date"
+            [edition]="edition"
             (valid)="arrival($event, stepper)">
             </app-trip-location>
           </div>

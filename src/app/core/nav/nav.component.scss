@@ -14,7 +14,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     -o-transition: $transitionDuration $transitionStyle all;
     position: fixed;
     top:0;
-    z-index: 20;
+    z-index: 101;
     display: flex;
     justify-content: center;
     height: $navbarHeight;
@@ -61,6 +61,11 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 
         &-icon {
             color: white;
+        }
+
+        &:focus {
+            border: none;
+            outline: none;
         }
     }
 

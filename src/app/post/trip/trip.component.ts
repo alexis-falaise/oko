@@ -75,21 +75,24 @@ export class TripComponent implements OnInit {
         info.airport = new Airport(info.airport);
       }
       this.departureSave = info;
-      stepper.next();
+      if (!this.edition) {
+        stepper.next();
+      }
     }
   }
 
   arrival(info, stepper: MatStepper) {
     if (info) {
       this.arrivalSave = info;
-      stepper.next();
+      if (!this.edition) {
+        stepper.next();
+      }
     }
   }
 
-  constraints(info, stepper: MatStepper) {
+  constraints(info) {
     if (info) {
       this.constraintsSave = info;
-      stepper.next();
     }
   }
 
@@ -220,6 +223,10 @@ export class TripComponent implements OnInit {
       bonus: trip.bonus
     };
     this.constraintsSave = this.constraintsInfo;
+    if (this.edition) {
+      this.departureSave = this.departureInfo;
+      this.arrivalSave = this.arrivalInfo;
+    }
   }
 
   private manageDrafts() {

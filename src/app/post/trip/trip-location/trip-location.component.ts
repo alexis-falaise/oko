@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { GeoService } from '@core/geo.service';
@@ -31,6 +30,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() dateReadonly = false;
   @Input() timeReadonly = false;
   @Input() minDate = null;
+  @Input() edition = false;
   airports = [];
   cities: Array<string> = [];
   filteredAirports: Array<Airport>;
@@ -112,6 +112,14 @@ export class TripLocationComponent implements OnInit, OnChanges {
     .subscribe(value => this.filteredAirports = this.filterAirports(value));
 
     this.location.valueChanges.subscribe(() => this.submitted = false);
+
+    if (this.edition) {
+      this.location.statusChanges.subscribe(status => {
+        if (status === 'VALID') {
+          this.submit();
+        }
+      });
+    }
   }
 
   submit() {
