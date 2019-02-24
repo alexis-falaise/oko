@@ -19,7 +19,7 @@
   </div>
   <div class="request-form__meeting">
     <form [formGroup]="meeting">
-      <div class="form-group">
+      <div class="form-group" *ngIf="freeRequest">
         <input type="text" name="city" formControlName="city"
           placeholder="Ville"
           autocomplete="off"

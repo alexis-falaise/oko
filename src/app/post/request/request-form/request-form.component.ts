@@ -23,6 +23,7 @@ import { GeoService } from '@core/geo.service';
 })
 export class RequestFormComponent implements OnInit, OnDestroy {
   @Input() trip: Trip;
+  @Input() freeRequest = false;
   today = moment();
   items: Array<Item> = [];
   // #TODO: clean test
