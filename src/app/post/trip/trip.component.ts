@@ -55,8 +55,7 @@ export class TripComponent implements OnInit {
           const id = param.id;
           this.postService.getTripById(id)
           .subscribe(trip => {
-            trip = new Trip(trip);
-            this.trip = trip;
+            this.trip = new Trip(trip);
             this.setDataFromTrip(trip);
             this.loading = false;
             this.ref.detectChanges();

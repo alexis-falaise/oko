@@ -27,6 +27,12 @@
         align-items: center;
     }
 
+    &__date {
+        display: inline-flex;
+        margin-top: -35px;
+        color: rgba(255, 255, 255, .6);
+    }
+
     &__status {
         margin-top: 15px;
         border-radius: 5px;

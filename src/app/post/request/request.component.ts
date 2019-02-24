@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PostService } from '@core/post.service';
 
 import { Request } from '@models/post/request.model';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '@core/user.service';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-request',
@@ -9,10 +12,14 @@ import { Request } from '@models/post/request.model';
   styleUrls: ['./request.component.scss']
 })
 export class RequestComponent implements OnInit {
-  request: Request = null;
+  request: Request = new Request();
+  edition = false;
 
   constructor(
-    private postService: PostService
+    private userService: UserService,
+    private postService: PostService,
+    private uiService: UiService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -20,6 +27,20 @@ export class RequestComponent implements OnInit {
     if (draft) {
       this.request = draft;
     }
+    this.uiService.setLoading(true);
+    this.route.url.subscribe(segments => {
+      const editionSegment = segments.find(segment => segment.path === 'edit');
+      if (editionSegment) {
+        this.edition = true;
+        this.route.params.subscribe(params => {
+          this.postService.getRequestById(params.id)
+          .subscribe(request => {
+            this.request = new Request(request);
+            this.uiService.setLoading(false);
+          });
+        });
+      }
+    });
   }
 
 }

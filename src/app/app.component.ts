@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { AuthService } from '@core/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
+import * as moment from 'moment';
+
+import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    moment.locale('fr');
     this.uiService.onLoading().subscribe(loadingState => {
       this.loading = loadingState;
       this.ref.detectChanges();

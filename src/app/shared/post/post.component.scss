@@ -132,13 +132,24 @@ $post-height: 100px;
         &__content {
             padding-left: 20px;
             &__items {
-                height: 75%;
                 overflow-y: scroll;
             }
             &__location {
-                height: 25%;
-                font-size: 16px;
-                color: rgb(125, 125, 125);
+                $locationSize: 12px;
+                $locationColor: rgb(125, 125, 125);
+                font-size: $locationSize;
+                color: $locationColor;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                .mat-icon {
+                    height: $locationSize;
+                    width: $locationSize;
+                }
+                .material-icons {
+                    font-size: $locationSize;
+                    color: $locationColor;
+                }
             }
             &__item {
                 font-size: 12px;
@@ -148,6 +159,10 @@ $post-height: 100px;
         }
 
         &__practical {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            
             &__property {
                 $propertySize: 10px;
                 $propertyColor: rgb(75, 75, 75);
@@ -163,6 +178,11 @@ $post-height: 100px;
                 .material-icons {
                     font-size: $propertySize;
                     color: $propertyColor;
+                }
+
+                &__date {
+                    color: rgb(125, 125, 125);
+                    font-size: 8px;
                 }
             }
         }

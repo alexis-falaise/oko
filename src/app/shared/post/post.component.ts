@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, SimpleChanges, EventEmitter } from '@angular/core';
+import * as moment from 'moment';
 
 import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
@@ -9,6 +10,7 @@ import { Luggage } from '@models/luggage.model';
 import { Router } from '@angular/router';
 import { PostService } from '@core/post.service';
 import { MatSnackBar } from '@angular/material';
+import { Item } from '@models/item.model';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -26,6 +28,7 @@ export class PostComponent implements OnInit, OnChanges {
   postPath = ['/post'];
   avatarLocation = environment.avatarLocation;
   panel = false;
+  moment = moment;
 
   constructor(
     private router: Router,
@@ -44,14 +47,16 @@ export class PostComponent implements OnInit, OnChanges {
 
   buildPostProperties(post) {
     this.post = post;
+    console.log(post);
     this.isTrip = post instanceof Trip;
     this.isRequest = post instanceof Request;
-    if (this.isRequest) {
-      console.log('Request', post);
-    }
     if (post instanceof Trip && post.luggages) {
       const luggages = post.luggages as any;
       this.weight = luggages.reduce((acc: number, luggage: Luggage) => acc + luggage.weight, 0) as number;
+    }
+    if (post instanceof Request && post.items) {
+      const items = post.items as any;
+      this.weight = items.reduce((acc: number, item: Item) => acc + item.weight, 0) as number;
     }
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
   }

@@ -1,28 +1,28 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
-import { RequestItemComponent } from '../request-item/request-item.component';
-import { Item } from '@models/item.model';
-import { Link } from '@models/link.model';
-import { Airport } from '@models/airport.model';
-import { PostService } from '@core/post.service';
-import { Request } from '@models/post/request.model';
 import { UserService } from '@core/user.service';
-import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
-import { Trip } from '@models/post/trip.model';
-import { Router } from '@angular/router';
-import { RequestItemSelectionComponent } from '../request-item-selection/request-item-selection.component';
+import { PostService } from '@core/post.service';
 import { GeoService } from '@core/geo.service';
+import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
+import { RequestItemComponent } from '../request-item/request-item.component';
+import { RequestItemSelectionComponent } from '../request-item-selection/request-item-selection.component';
+
+import { Item } from '@models/item.model';
+import { Request } from '@models/post/request.model';
+import { Trip } from '@models/post/trip.model';
 
 @Component({
   selector: 'app-request-form',
   templateUrl: './request-form.component.html',
   styleUrls: ['./request-form.component.scss']
 })
-export class RequestFormComponent implements OnInit, OnDestroy {
+export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() trip: Trip;
+  @Input() request: Request;
   @Input() freeRequest = false;
   today = moment();
   items: Array<Item> = [];
@@ -64,6 +64,12 @@ export class RequestFormComponent implements OnInit, OnDestroy {
     private geoService: GeoService,
     private snack: MatSnackBar,
   ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.request) {
+      this.setEditableRequest(changes.request.currentValue);
+    }
+  }
 
   ngOnInit() {
     this.geoService.onCities()
@@ -153,7 +159,18 @@ export class RequestFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  request() {
+  setEditableRequest(request: Request) {
+    this.meeting.patchValue(request);
+    if (request.meetingPoint && request.meetingPoint.city && request.meetingPoint.country) {
+      this.meeting.controls.city.patchValue({
+        city: request.meetingPoint.city,
+        country: request.meetingPoint.country
+      });
+    }
+    this.items = request.items;
+  }
+
+  saveRequest() {
     const meeting = this.meeting.value;
     delete meeting.city;
     const saveRequest = new Request({
@@ -189,7 +206,7 @@ export class RequestFormComponent implements OnInit, OnDestroy {
 
   private requestServerError() {
     const snackRef = this.snack.open('Un problème a eu lieu', 'Réessayer', {duration: 5000});
-    snackRef.onAction().subscribe(() => this.request());
+    snackRef.onAction().subscribe(() => this.saveRequest());
   }
 
   ngOnDestroy() {

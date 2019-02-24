@@ -7,6 +7,7 @@ export class User {
     avatar?: string;
     description?: Description;
     trips?: number;
+    requests?: number;
     rating?: number;
     id?: string;
 

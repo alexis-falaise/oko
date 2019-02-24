@@ -13,7 +13,8 @@
         background-size: 100% auto;
         background-position: center;
         width: 100vw;
-        height: 25vh;
+        height: 15vh;
+        min-height: 150px;
         padding-top: $navbarHeight;
         align-items: center;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -21,7 +22,8 @@
     }
 
     &__list {
-        height: 65vh;
+        height: 77vh;
         overflow-y: scroll;
+        padding-bottom: 100px;
     }
 }

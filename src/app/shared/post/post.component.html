@@ -68,11 +68,12 @@
         <div class="post-general post-request col-9 col-md-10">
             <div class="row">
                 <div class="post-request__content col-6 col-sm-8">
-                    <div class="row post-request__content__items">
+                    <div class="row post-request__content__items h-75">
                         <div class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</div>
                     </div>
-                    <div class="row post-request__content__location" *ngIf="post?.meetingPoint">
-                        {{ post.meetingPoint.city }} - {{ post.meetingPoint.country }}
+                    <div class="row post-request__content__location h-25" *ngIf="post?.meetingPoint">
+                        <mat-icon>place</mat-icon>{{ post.meetingPoint.city }} <span *ngIf="post.meetingPoint?.country"> - {{ post.meetingPoint.country }}</span>
+                        <span *ngIf="!post.meetingPoint?.city && !post.meetingPoint.country">Non renseigné</span>
                     </div>
                 </div>
                 <div class="post-request__practical col-6 col-sm-4">
@@ -100,6 +101,12 @@
                             <mat-icon>info</mat-icon> En attente
                         </div>
                     </ng-template>
+                    <div class="post-request__practical__property" *ngIf="weight">
+                        <mat-icon>shopping_basket</mat-icon> {{ weight }} kg
+                    </div>
+                    <div class="post-request__practical__property__date" *ngIf="post.submitDate">
+                        Posté le {{ moment(post.submitDate).format('DD/MM') }} à {{ moment(post.submitDate).format('HH:mm')}}
+                    </div>
                 </div>
             </div>
         </div>

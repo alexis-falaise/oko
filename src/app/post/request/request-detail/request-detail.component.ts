@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar, DateAdapter } from '@angular/material';
+import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
 
@@ -16,6 +17,7 @@ import { UserService } from '@core/user.service';
 })
 export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
+  moment = moment;
   own = false;
 
   constructor(

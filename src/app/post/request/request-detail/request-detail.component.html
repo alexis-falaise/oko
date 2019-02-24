@@ -1,6 +1,9 @@
 <div class="request-detail container-fluid">
   <div class="request-detail__hero row">
     <h2>Résumé de l'annonce</h2>
+    <small class="request-detail__date" *ngIf="request.submitDate">
+      Posté {{ moment(request.submitDate).fromNow() }}
+    </small>
   </div>
   <div class="container">
       <div class="request-detail__status"
@@ -18,7 +21,7 @@
  </div>
  <div class="request-detail__location">
    <h4 class="request-detail__location-title request-detail__section-title">Ma ville</h4>
-   <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
+   <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country && own; else noCity">
      <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
    </div>
    <ng-template #noCity>
@@ -74,24 +77,27 @@
    <h4 class="request-detail__conditions-title request-detail__section-title">
      Conditions de remise
    </h4>
-   <div *ngIf="request && request.airportPickup">
-     <div class="agreement" *ngIf="request?.trip?.airportDrop; else pickupAgreement">
-         <mat-icon>flight</mat-icon> Remise à l'aéroport {{ request.trip.to.airport.name }}
-     </div>
+   <div *ngIf="request?.trip; else requestPickup">
+    <div *ngIf="request && request.airportPickup">
+        <div class="agreement" *ngIf="request?.trip?.airportDrop; else pickupAgreement">
+            <mat-icon>flight</mat-icon> Remise à l'aéroport {{ request.trip.to.airport.name }}
+        </div>
+      </div>
+      <div *ngIf="request && !request.airportPickup">
+        <div *ngIf="request.trip && !request.trip.airportDrop; else pickupAgreement">
+          <div class="agreement">
+              <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
+          </div>
+          <div>
+            {{ request.meetingPoint.adress }}
+            <span *ngIf="request.meetingPoint.city">, {{ request.meetingPoint.city }} </span>
+            <span *ngIf="request.meetingPoint.zip">({{ request.meetingPoint.zip }})</span>
+            <span *ngIf="request.meetingPoint.country"> - {{ request.meetingPoint.country }}</span>
+          </div>
+        </div>
+      </div>
    </div>
-   <div *ngIf="request && !request.airportPickup">
-     <div *ngIf="request.trip && !request.trip.airportDrop; else pickupAgreement">
-       <div class="agreement">
-           <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
-       </div>
-       <div>
-         {{ request.meetingPoint.adress }}
-         <span *ngIf="request.meetingPoint.city">, {{ request.meetingPoint.city }} </span>
-         <span *ngIf="request.meetingPoint.zip">({{ request.meetingPoint.zip }})</span>
-         <span *ngIf="request.meetingPoint.country"> - {{ request.meetingPoint.country }}</span>
-       </div>
-     </div>
-   </div>
+
  </div>
  <hr class="divider">
  <div class="request-detail__contact" *ngIf="request?.trip?.user && own">
@@ -102,6 +108,24 @@
  </div>
   </div>
 </div>
+
+<ng-template #requestPickup>
+  <div class="agreement" *ngIf="request.airportPickup; else requestMeeting">
+    <mat-icon>flight</mat-icon> Réception à l'aéroport
+  </div>
+</ng-template>
+
+<ng-template #requestMeeting>
+  <div class="agreement">
+    <mat-icon>my_location</mat-icon> Réception au point de rendez-vous:
+  </div>
+  <div>
+      {{ request.meetingPoint?.adress }}
+      <span *ngIf="request.meetingPoint?.city">, {{ request.meetingPoint.city }} </span>
+      <span *ngIf="request.meetingPoint?.zip">({{ request.meetingPoint.zip }})</span>
+      <span *ngIf="request.meetingPoint?.country"> - {{ request.meetingPoint.country }}</span>
+  </div>
+</ng-template>
 
 <ng-template #pickupAgreement>
   <div class="agreement">
