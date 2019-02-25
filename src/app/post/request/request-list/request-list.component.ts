@@ -11,13 +11,28 @@ import { Filter } from '@models/app/filter.model';
 export class RequestListComponent implements OnInit {
 
   requests: Array<Request> = null;
+  filter = new Filter({open: true});
+  filterComponentOptions = {
+    country: true,
+    city: true,
+    beforeDate: true,
+  };
 
   constructor(
     private postService: PostService,
   ) { }
 
   ngOnInit() {
-    this.postService.getRequests(new Filter({open: true}));
+    this.postService.getRequests(this.filter);
+  }
+
+  filterRequests(filter: Filter) {
+    filter.open = true;
+    this.postService.getRequests(filter);
+  }
+
+  resetFilters() {
+    this.postService.resetRequestFilters();
   }
 
 }

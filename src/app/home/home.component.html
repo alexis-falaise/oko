@@ -1,11 +1,13 @@
-<div class="home" (panup)="shrink()" (pandown)="expand()">
+<div class="home" [class.expanded]="expanded" [class.fullscreen]="empty" (panup)="shrink()" (pandown)="expand()">
     <div class="home-hero" [class.expanded]="expanded"
                            [class.fullscreen]="empty"
                            (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
         <div class="home-hero__input" *ngIf="expanded">
             Je veux me faire livrer
             <mat-form-field class="input-hero__item" floatLabel="never">
-                <input matInput type="text" name="item" placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
+                <input matInput type="text" name="item"
+                       autocomplete="off"
+                       placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
             </mat-form-field>
             à
             <mat-form-field class="input-hero__location" floatLabel="never">
@@ -23,7 +25,7 @@
             </mat-form-field>
         </div>
         <div class="home-hero__action" *ngIf="expanded">
-            <button class="btn" [class.btn-hero]="empty" (click)="validate() && post()">Faire une demande de livraison</button>
+            <button class="btn" [class.btn-hero]="empty" (click)="validate(); post()">Faire une demande de livraison</button>
             <!-- <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button> -->
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">

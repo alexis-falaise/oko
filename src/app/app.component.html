@@ -1,7 +1,7 @@
 <div class="main">
     <div class="main__drawer-sensitive" (click)="toggleDrawer()" (swipeRight)="displayDrawer()" (swipeLeft)="hideDrawer()"></div>
     <div class="main__history-sensitive" (swipeRight)="back()"></div>
-    <app-nav [drawer]="drawerExpanded" (drawerChanges)="manageDrawer($event)" *ngIf="displayNav"></app-nav>
+    <app-nav [light]="lightNav" [drawer]="drawerExpanded" (drawerChanges)="manageDrawer($event)" *ngIf="displayNav"></app-nav>
     <router-outlet></router-outlet>
     <mat-progress-bar class="loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 </div>

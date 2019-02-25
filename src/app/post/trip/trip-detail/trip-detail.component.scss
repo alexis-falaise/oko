@@ -17,8 +17,8 @@
         width: 100vw;
         position: sticky;
         z-index: 10;
-        top: 0;
-        height: 25vh;
+        top: -20vh;
+        height: 40vh;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
@@ -37,6 +37,8 @@
         &__to,
         &__link {
             height: 70%;
+            position: sticky;
+            top: 0;
         }
 
         &__date {

@@ -10,6 +10,9 @@ import * as moment from 'moment';
 })
 export class PostFilterComponent implements OnInit, OnChanges {
   @Input() filter = new Filter();
+  @Input() options = {
+    location: true,
+  };
   @Output() filterRefresh = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
   today = moment();
@@ -19,6 +22,9 @@ export class PostFilterComponent implements OnInit, OnChanges {
   ngOnChanges(change: SimpleChanges) {
     if (change.filter) {
       this.filter = change.filter.currentValue;
+    }
+    if (change.options) {
+      this.options = change.options.currentValue;
     }
   }
 

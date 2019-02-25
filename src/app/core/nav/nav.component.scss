@@ -3,15 +3,12 @@
 $transitionDuration: 0.15s;
 $transitionStyle: ease-in-out;
 $animationDuration: 0.15s;
+$iconsColor: rgb(125, 125, 125);
 $menu-color: rgba(255, 255, 255, .2);
 $expanded-menu-color: rgba(255, 255, 255, .95);
 
 .navbar {
-
     transition: $transitionDuration $transitionStyle all;
-    -webkit-transition: $transitionDuration $transitionStyle all;
-    -moz-transition: $transitionDuration $transitionStyle all;
-    -o-transition: $transitionDuration $transitionStyle all;
     position: fixed;
     top:0;
     z-index: 101;
@@ -20,17 +17,19 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     height: $navbarHeight;
     flex-wrap: nowrap;
     width: 100%;
-    border-bottom: rgba(255, 255, 255, .5);
+    border-bottom: thin solid rgba(255, 255, 255, .5);
     background-color: $menu-color;
 
     &:hover,
     &.expanded {
         transition: $transitionDuration $transitionStyle all;
-        -webkit-transition: $transitionDuration $transitionStyle all;
-        -moz-transition: $transitionDuration $transitionStyle all;
-        -o-transition: $transitionDuration $transitionStyle all;
-        border-bottom: rgb(255, 255, 255);
+        border-bottom: thin solid rgb(255, 255, 255);
         background-color: rgba(255, 255, 255, .6);
+        .mat-icon,
+        .material-icon {
+            transition: $transitionDuration all;
+            color: $iconsColor;
+        }
     }
 
     &.expanded {
@@ -59,7 +58,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         position: absolute;
         left: 20px;
 
-        &-icon {
+        .mat-icon,
+        .material-icon {
             color: white;
         }
 
@@ -85,6 +85,51 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 
             opacity: 1;
         }
+    }
+
+    &.light {
+        transition: $transitionDuration $transitionStyle all;
+        background-color: rgba(255, 255, 255, 0);
+        border: none;
+
+        .navbar {
+            &-brand {
+                transition: $transitionDuration $transitionStyle all;
+                opacity: 0;
+            }
+            &-toggler {
+                .mat-icon,
+                .material-icon {
+                    transition: $transitionDuration $transitionStyle all;
+                    color: white;
+                }
+            }
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .2);
+        }
+
+        &.expanded {
+            background-color: $expanded-menu-color;
+            .navbar-toggler {
+                .mat-icon,
+                .material-icon {
+                    transition: $transitionDuration $transitionStyle all;
+                    color: $iconsColor;
+                }
+            }
+        }
+
+        &:hover,
+        &.expanded {
+            transition: $transitionDuration $transitionStyle all;
+            .navbar-brand {
+                transition: $transitionDuration $transitionStyle all;
+                opacity: 1;
+            }
+        }
+        
     }
 }
 

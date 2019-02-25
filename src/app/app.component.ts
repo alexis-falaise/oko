@@ -15,9 +15,11 @@ export class AppComponent implements OnInit {
   title = 'oko';
   logged = false;
   displayNav = false;
+  lightNav = false;
   drawerExpanded = false;
   loading: boolean;
   hideNavOn = ['/login', '/logout', '/signin'];
+  lightNavOn = ['/post'];
 
   constructor(
     private authService: AuthService,
@@ -35,9 +37,11 @@ export class AppComponent implements OnInit {
       this.ref.detectChanges();
     });
     // this.uiService.onLoading().subscribe(loadingState => this.loading = loadingState);
+    this.router.onSameUrlNavigation = 'reload';
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.displayNav = this.hideNavOn.findIndex(item => item === event.url) === -1;
+        this.lightNav = this.lightNavOn.findIndex(item => event.url.includes(item)) !== -1;
       }
     });
     this.authService.onStatus()

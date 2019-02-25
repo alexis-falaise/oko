@@ -13,23 +13,20 @@ import { Filter } from '@models/app/filter.model';
 })
 export class TripListComponent implements OnInit, OnDestroy {
   filter = new Filter();
+  filterComponentOptions = {
+    location: true,
+    beforeDate: true
+  };
   loading = false;
   ngUnsubscribe = new Subject();
 
   constructor(
     private postService: PostService,
-    private uiService: UiService,
     private ref: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
     this.init();
-    this.uiService.onLoading()
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(loadingState => {
-      this.loading = loadingState;
-      this.ref.detectChanges();
-    });
   }
 
   init() {
@@ -38,7 +35,6 @@ export class TripListComponent implements OnInit, OnDestroy {
   }
 
   filterPosts(filter) {
-    this.uiService.setLoading(true);
     this.postService.getTrips(filter);
   }
 

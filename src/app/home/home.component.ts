@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material';
@@ -56,31 +56,26 @@ export class HomeComponent implements OnInit {
     private uiService: UiService,
     private geoService: GeoService,
     private adapter: DateAdapter<any>,
+    private ref: ChangeDetectorRef,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
 
   ngOnInit() {
-    this.geoService.onCities().subscribe(cities => this.cities = cities);
-    this.geoService.getCities();
-    this.uiService.setLoading(false);
+    this.geoService.onCities().subscribe(cities => {
+      this.uiService.setLoading(false);
+      this.cities = cities;
+    });
+    this.init();
+    this.manageDrafts();
+  }
+
+  init() {
     timer(0, 1500).subscribe(() => this.swingDisplay());
-    const tripDraft = this.postService.getTripDraft();
-    const requestDraft = this.postService.getRequestDraft();
-    if (tripDraft || requestDraft) {
-      const snackRef = this.snack.open('Brouillon de ' + (tripDraft ? 'trajet' : 'demande'), 'Ouvrir', {duration: 7500});
-      let route;
-      if (tripDraft) {
-        route = '/post/trip/new';
-      } else {
-        if (requestDraft) {
-          route  = requestDraft.trip ? ('/post/trip/' + requestDraft.trip.id ) : '/post/request/new';
-        } else {
-          route = '/home';
-        }
-      }
-      snackRef.onAction().subscribe(() => this.router.navigate([route]));
-    }
+    this.uiService.setLoading(false);
+    this.geoService.getCities();
+    this.filter = new Filter({});
+    this.postService.resetTripFilters();
     this.postService.getTrips();
   }
 
@@ -114,7 +109,8 @@ export class HomeComponent implements OnInit {
   }
 
   filterPosts() {
-    const searchValue = this.city instanceof City ? this.city.city : this.city;
+    this.uiService.setLoading(true);
+    const searchValue = typeof this.city === 'string' ? this.city : this.city.city;
     this.filter = new Filter({location: searchValue, item: this.filter.item});
     this.postService.getTrips(this.filter);
     this.geoService.getCities(searchValue);
@@ -122,7 +118,6 @@ export class HomeComponent implements OnInit {
 
   onScroll(event) {
     this.expanded = false;
-    this.post();
   }
 
   listStatus(length) {
@@ -134,22 +129,45 @@ export class HomeComponent implements OnInit {
   }
 
   post() {
-    if (this.empty) {
+    this.uiService.setLoading(true);
+    if (this.empty && this.city) {
       const isCity = typeof this.city !== 'string';
       const requestDraft = new Request({
-        items: [{label: this.filter.item}],
         meetingPoint: {
           city: isCity ? this.city['city'] : undefined,
           country: isCity ? this.city['country'] : undefined
         }
       });
+      if (this.filter.item) {
+        requestDraft.items = [{label: this.filter.item}];
+      }
       this.postService.saveRequestDraft(requestDraft);
-      this.router.navigate(['/post/request/new']);
     }
+    this.router.navigate(['/post/request/new']);
   }
 
   deleteEverything() {
     this.postService.deleteAllPosts();
+  }
+
+  private manageDrafts() {
+    const tripDraft = this.postService.getTripDraft();
+    const requestDraft = this.postService.getRequestDraft();
+    if (tripDraft || requestDraft) {
+      const snackMessage = 'Brouillon de ' + (tripDraft ? 'trajet' : 'demande');
+      const snackRef = this.snack.open(snackMessage, 'Ouvrir', {duration: 5000});
+      let route;
+      if (tripDraft) {
+        route = '/post/trip/new';
+      } else {
+        if (requestDraft) {
+          route  = requestDraft.trip ? ('/post/trip/' + requestDraft.trip.id ) : '/post/request/new';
+        } else {
+          route = '/home';
+        }
+      }
+      snackRef.onAction().subscribe(() => this.router.navigate([route]));
+    }
   }
 
   private swingDisplay() {

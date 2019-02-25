@@ -11,16 +11,16 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1000;
+        z-index: 51;
     }
 
     &__history-sensitive {
         width: 100%;
         height: 15vh;
         position: absolute;
-        top: $navbarHeight;
+        top: 0;
         left: 0;
-        z-index: 50;
+        z-index: 49;
     }
 }
 
@@ -30,4 +30,5 @@
     left: 0;
     width: 100%;
     height: 10px;
+    z-index: 200;
 }

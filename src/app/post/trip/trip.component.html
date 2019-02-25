@@ -70,9 +70,11 @@
           </div>
         </ng-template>
         <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
-        <button class="btn btn-success"
-                [disabled]="!constraintsSave || !constraintsSave?.luggages?.length"
-                matStepperNext>Valider</button>
+        <div class="trip-validation d-flex justify-content-center">
+            <button class="btn btn-success"
+            [disabled]="!constraintsSave || !constraintsSave?.luggages?.length"
+            matStepperNext>Valider</button>
+        </div>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Validation</ng-template>

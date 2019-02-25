@@ -9,6 +9,11 @@ $transitionStyle: ease-out;
     overflow-y: scroll;
     overflow-x: hidden;
 
+    &.expanded,
+    &.fullscreen {
+        overflow: hidden;
+    }
+
     &-hero {
         transition: $transitionDuration $transitionStyle all;
         -webkit-transition: $transitionDuration $transitionStyle all;
@@ -31,7 +36,7 @@ $transitionStyle: ease-out;
         font-weight: 700;
         text-shadow: 0 2px 7.5px rgba(0, 0, 0, .4);
         position: relative;
-        z-index: 51; // Cover history sensitive area (set at z-50)
+        z-index: 50; // Cover history sensitive area (set at z-50)
 
         // &:hover {
         //     transition: $transitionDuration $transitionStyle all;
@@ -111,12 +116,14 @@ $transitionStyle: ease-out;
             justify-content: center;
             
             .btn {
+                transition: all $transitionDuration;
                 color: rgba(255, 255, 255, .4);
                 cursor: pointer;
 
                 &:hover {
-                    color: rgba(255, 255, 255, .6);
-                    background-color: rgba(255, 255, 255, .1);
+                    transition: all $transitionDuration;
+                    color: rgba(255, 255, 255, .8);
+                    background-color: rgba(255, 255, 255, .2);
                 }
             }
         }
@@ -151,7 +158,7 @@ $transitionStyle: ease-out;
         }
 
         &.empty {
-            height: 0;
+            height: 0 !important;
         }
 
         &__filters {

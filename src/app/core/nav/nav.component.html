@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light" [class.expanded]="menuDisplay">
+<nav class="navbar navbar-expand-lg navbar-light" [class.expanded]="menuDisplay" [class.light]="light">
   <!-- <button class="navbar-toggler navbar-previous-wrapper" type="button" aria-label="Previous"
          [class.available]="previousAvailable" (click)="back()">
     <span class="navbar-previous">
@@ -7,7 +7,7 @@
   </button> -->
   <button class="navbar-toggler" type="button"
     aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
-    <span class="navbar-toggler-icon" *ngIf="!menuDisplay"></span>
+    <mat-icon *ngIf="!menuDisplay">menu</mat-icon>
     <mat-icon *ngIf="menuDisplay">clear</mat-icon>
   </button>
   <a class="navbar-brand" href="#">ọkọ</a>
@@ -32,14 +32,14 @@
 </nav>
 
 <div class="navbar__fullscreen justify-content-center" (swipeLeft)="hide()" [hidden]="!menuDisplay">
-  <div class="navbar__fullscreen-item" *ngFor="let item of menuItems" (click)="toggleMenu()">
+  <div class="navbar__fullscreen-item" *ngFor="let item of menuItems" (click)="hide()">
     <a routerLink="{{ item.path }}" routerLinkActive="active">
         <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
         {{ item.label }}
     </a>
   </div>
   <hr class="divider">
-  <div class="navbar__fullscreen-item" *ngFor="let item of displayAccountMenuItems" (click)="toggleMenu()">
+  <div class="navbar__fullscreen-item" *ngFor="let item of displayAccountMenuItems" (click)="hide()">
     <a routerLink="{{ item.path }}" routerLinkActive="active">
         <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
         {{ item.label }}

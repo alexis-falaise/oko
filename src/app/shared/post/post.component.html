@@ -12,7 +12,7 @@
                 {{ post.user.firstname || 'Oko user' }}
             </div>
             <div class="post-info__user-info__trips">
-                {{ post.user.trips || 0 }} voyage{{ post.user?.trips ? 's': '' }}
+                {{ post.user.trips || 0 }} voyage{{ post.user?.trips > 1 ? 's': '' }}
             </div>
         </div>
     </div>
@@ -69,7 +69,9 @@
             <div class="row">
                 <div class="post-request__content col-6 col-sm-8">
                     <div class="row post-request__content__items h-75">
-                        <div class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</div>
+                        <ul>
+                            <li class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</li>
+                        </ul>
                     </div>
                     <div class="row post-request__content__location h-25" *ngIf="post?.meetingPoint">
                         <mat-icon>place</mat-icon>{{ post.meetingPoint.city }} 

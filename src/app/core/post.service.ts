@@ -13,6 +13,7 @@ import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { Item } from '@models/item.model';
+import { UiService } from './ui.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +30,14 @@ export class PostService {
   postDraft: Post = null;
   tripDraft = null;
   requestDraft: Request = null;
-  currentFilter = new Filter();
+  currentTripFilter = new Filter();
+  currentRequestFilter = new Filter();
 
   constructor(
     private http: HttpClient,
     private userService: UserService,
-  ) { console.log('Post service construction', this); }
+    private uiService: UiService,
+  ) { }
 
   // Subscriptions
 
@@ -58,9 +61,11 @@ export class PostService {
    * @param filter : Filter object containing location and/or item
    */
   getPosts(filter?: Filter) {
+    this.uiService.setLoading(true);
     this.http.get(`${this.postUrl}${ filter ? '?location=' + filter.location : '' }`, {withCredentials: true})
     .subscribe((response: ServerResponse) => {
       if (response.status) {
+        this.uiService.setLoading(false);
         this.posts.next(response.data.map(post => new Post(post)));
       }
     });
@@ -73,11 +78,12 @@ export class PostService {
    */
   getTrips(filter?: Filter) {
     const nextQuery = new Subject();
+    this.uiService.setLoading(true);
     let queryString = '';
-    filter = filter || this.currentFilter;
+    filter = filter || this.currentTripFilter;
     filter.afterDate = moment();
     if (filter) {
-      this.currentFilter = filter;
+      this.currentTripFilter = filter;
       queryString = this.buildQueryString(filter);
     }
     this.http.get(`${this.tripUrl}${queryString}`, {withCredentials: true})
@@ -96,10 +102,12 @@ export class PostService {
           const resultingTrips = outputTrips.sort((first, second) =>  moment(first.date).isBefore(second.date) ? -1 : 1);
           this.trips.next(resultingTrips);
           nextQuery.next(true);
+          this.uiService.setLoading(false);
         });
         if (trips && !trips.length) {
           this.trips.next([]);
           nextQuery.next(true);
+          this.uiService.setLoading(false);
         }
       }
     });
@@ -111,12 +119,13 @@ export class PostService {
    * @param filter: Filter object containning location and/or item
    */
   getRequests(filter?: Filter) {
+    this.uiService.setLoading(true);
     const nextQuery = new Subject();
     let queryString = '';
-    filter = filter || this.currentFilter;
+    filter = filter || this.currentRequestFilter;
     filter.afterDate = moment();
     if (filter) {
-      this.currentFilter = filter;
+      this.currentRequestFilter = filter;
       queryString = this.buildQueryString(filter);
     }
     this.http.get(`${this.requestUrl}${queryString}`, {withCredentials: true})
@@ -128,6 +137,7 @@ export class PostService {
         .sort((first, second) => moment(first.date).isBefore(second.date) ? -1 : 1);
         this.requests.next(requests);
         nextQuery.next(true);
+        this.uiService.setLoading(false);
       }
     });
   }
@@ -281,11 +291,19 @@ export class PostService {
   }
 
   getTripFilters() {
-    return this.currentFilter;
+    return this.currentTripFilter;
   }
 
   resetTripFilters() {
-    this.currentFilter = new Filter();
+    this.currentTripFilter = new Filter();
+  }
+
+  getRequestFilters() {
+    return this.currentRequestFilter;
+  }
+
+  resetRequestFilters() {
+    this.currentRequestFilter = new Filter();
   }
 
   // TESTING PURPOSES

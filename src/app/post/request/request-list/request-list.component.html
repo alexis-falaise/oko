@@ -2,6 +2,13 @@
   <div class="request-list__hero row justify-content-center">
     <h2 class="request-list__hero-title">Annonces</h2>
   </div>
+  <div class="request-list__filters">
+      <app-post-filter [filter]="filter"
+                       [options]="filterComponentOptions"
+                       (filterRefresh)="filterRequests($event)"
+                       (resetFilter)="resetFilters()">
+      </app-post-filter>
+    </div>
   <div class="request-list__list">
     <app-post-list></app-post-list>
   </div>

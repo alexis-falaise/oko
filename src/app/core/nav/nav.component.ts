@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 
 import { AuthService } from '@core/auth.service';
@@ -13,6 +13,7 @@ import { MenuItem } from '@models/app/menu-item.model';
 })
 export class NavComponent implements OnInit, OnChanges {
   @Input() drawer = false;
+  @Input() light = false;
   @Output() drawerChanges = new EventEmitter();
   menuDisplay = false;
   previousAvailable = false;
@@ -42,11 +43,15 @@ export class NavComponent implements OnInit, OnChanges {
     private authService: AuthService,
     private historyService: HistoryService,
     private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.drawer) {
       this.menuDisplay = changes.drawer.currentValue;
+    }
+    if (changes.light) {
+      this.light = changes.light.currentValue;
     }
   }
 
@@ -65,6 +70,7 @@ export class NavComponent implements OnInit, OnChanges {
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
+        this.hide();
         this.authService.getLoginStatus();
       }
     });

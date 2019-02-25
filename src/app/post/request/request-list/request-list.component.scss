@@ -14,11 +14,17 @@
         background-position: center;
         width: 100vw;
         height: 15vh;
-        min-height: 150px;
+        min-height: 125px;
         padding-top: $navbarHeight;
         align-items: center;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
+    }
+
+    &__filters {
+        position: sticky;
+        top: 0;
+        z-index: 11;
     }
 
     &__list {
