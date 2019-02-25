@@ -145,6 +145,7 @@ $post-height: 100px;
                 .mat-icon {
                     height: $locationSize;
                     width: $locationSize;
+                    margin-right: 5px;
                 }
                 .material-icons {
                     font-size: $locationSize;
@@ -174,6 +175,7 @@ $post-height: 100px;
                 .mat-icon {
                     height: $propertySize;
                     width: $propertySize;
+                    margin-right: 5px;
                 }
                 .material-icons {
                     font-size: $propertySize;
@@ -201,9 +203,18 @@ $post-height: 100px;
     }
 
     &-weight {
+        $weightSize: 14px;
         display: flex;
         flex-direction: row;
         align-items: center;
-        font-size: 14px;
+        font-size: $weightSize;
+        .mat-icon {
+            width: $weightSize;
+            height: $weightSize;
+            margin-right: 5px;
+        }
+        .material-icons {
+            font-size: $weightSize;
+        }
     }
 }

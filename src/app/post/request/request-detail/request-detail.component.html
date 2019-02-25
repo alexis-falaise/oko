@@ -20,29 +20,31 @@
    <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler l'annonce</button>
  </div>
  <div class="request-detail__location">
-   <h4 class="request-detail__location-title request-detail__section-title">Ma ville</h4>
+   <h4 class="request-detail__location-title request-detail__section-title">
+     {{ own ? 'Ma ville' : 'Ville de remise' }}
+   </h4>
    <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country && own; else noCity">
      <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
    </div>
    <ng-template #noCity>
-     <span class="text-muted">
-       Aucune ville d'arrivée définie pour cette annonce.
-      </span>
-      <button class="btn btn-info btn-icon" [routerLink]="['/post/request', request.id, 'edit']">
-        <mat-icon>edit</mat-icon> Modifier l'annonce
-      </button>
+    <small class="text-muted">
+      Aucune ville d'arrivée définie pour cette annonce.
+    </small>
+    <button class="btn btn-info btn-icon" *ngIf="own" [routerLink]="['/post/request', request.id, 'edit']">
+      <mat-icon>edit</mat-icon> Modifier l'annonce
+    </button>
    </ng-template>
  </div>
  <div class="request-detail__summary">
    <h4 class="request-detail__summary-title request-detail__section-title">Articles</h4>
    <app-item *ngFor="let item of request.items" [item]="item" [removable]="false"></app-item>
  </div>
- <hr class="divider">
- <div class="request-detail__trip" matRipple (click)="openTrip()" *ngIf="request && request.trip">
+ <hr class="divider" *ngIf="request?.trip">
+ <div class="request-detail__trip" matRipple (click)="openTrip()" *ngIf="request?.trip">
    <h4 class="request-detail__trip-title request-detail__section-title">Voyage</h4>
    <div class="request-detail__trip-date">
      <div class="arrival">
-         <mat-icon>today</mat-icon> Arrivée <span *ngIf="request?.trip?.user"> de {{ request?.trip?.user?.firstname }}</span>
+         <mat-icon>today</mat-icon> Arrivée {{ request?.trip?.user ? ' de ' + request?.trip?.user?.firstname : '' }}
      </div>
      <div class="arrival-time">
          {{ request?.trip?.date?.format('DD/MM HH:mm') }}

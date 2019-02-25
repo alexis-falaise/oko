@@ -33,22 +33,29 @@ export class TripDetailComponent implements OnInit {
     this.dateAdapter.setLocale('fr');
     this.route.params.subscribe(param => {
       if (param && param.id) {
-        this.postService.getTripById(param.id)
-        .subscribe(trip => {
-          if (trip) {
-            this.trip = new Trip(trip);
-            const requestDraft = this.postService.getRequestDraft();
-            if (requestDraft && requestDraft.trip.id === this.trip.id) {
-              this.engagement = true;
-            }
-            this.userService.getCurrentUser()
-            .subscribe(user => {
-              this.own = user.id === trip.user.id;
-            });
-            this.getUserRequests();
-          }
-        });
+        this.fetchTrip(param.id);
       }
+    });
+  }
+
+  fetchTrip(id: string) {
+    this.postService.getTripById(id)
+    .subscribe(trip => {
+      if (trip) {
+        this.trip = new Trip(trip);
+        const requestDraft = this.postService.getRequestDraft();
+        if (requestDraft && requestDraft.trip.id === this.trip.id) {
+          this.engagement = true;
+        }
+        this.userService.getCurrentUser()
+        .subscribe(user => {
+          this.own = user.id === trip.user.id;
+        }, (err) => {});
+        this.getUserRequests();
+      }
+    }, (err) => {
+      const snackRef = this.snack.open('Erreur lors du chargement du voyage', 'Réessayer', {duration: 3000});
+      snackRef.onAction().subscribe(() => this.fetchTrip(id));
     });
   }
 
@@ -61,8 +68,8 @@ export class TripDetailComponent implements OnInit {
           this.requests = requests.map(request => new Request(request));
           this.currentRequest = this.requests.find(request => !request.closed && !request.validated);
         }
-      });
-    });
+      }, (err) => this.snack.open('Erreur lors du chargement des annonces', 'OK', {duration: 3000}));
+    }, (err) => {});
   }
 
   openRequest() {

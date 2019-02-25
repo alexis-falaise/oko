@@ -39,9 +39,6 @@
             </app-trip-location>
           </div>
         </div>
-        <button class="btn btn-success"
-                [disabled]="!departureSave || !departureSave?.city || !departureSave?.date || !departureSave?.time"
-                matStepperNext>Valider</button>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>
@@ -64,9 +61,6 @@
             </app-trip-location>
           </div>
         </div>
-        <button class="btn btn-success"
-                [disabled]="!arrivalSave || !arrivalSave?.city || !arrivalSave?.date || !arrivalSave?.time"
-                matStepperNext>Valider</button>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>
@@ -77,7 +71,7 @@
         </ng-template>
         <app-trip-constraints [constraintsInfo]="constraintsInfo" (complete)="constraints($event)"></app-trip-constraints>
         <button class="btn btn-success"
-                [disabled]="!constraintsSave || !constraintsSave?.luggages?.length || !constraintsSave?.bonus"
+                [disabled]="!constraintsSave || !constraintsSave?.luggages?.length"
                 matStepperNext>Valider</button>
       </mat-step>
       <mat-step>

@@ -12,8 +12,8 @@ import { Airport } from '@models/airport.model';
 export class GeoService {
   private airportUrl = `${environment.serverUrl}/airport`;
 
-  airports = new BehaviorSubject(null);
-  cities = new BehaviorSubject(null);
+  airports = new BehaviorSubject([]);
+  cities = new BehaviorSubject([]);
 
   constructor(
     private http: HttpClient,
@@ -50,10 +50,18 @@ export class GeoService {
       if (response.status) {
         this.cities.next(response.data);
       } else {
-        this.cities.next(null);
+        this.cities.next([]);
       }
     }, (error: HttpErrorResponse) => {
-      this.cities.next(null);
+      this.cities.next([]);
     });
+  }
+
+  resetAirports() {
+    this.airports.next([]);
+  }
+
+  resetCities() {
+    this.cities.next([]);
   }
 }

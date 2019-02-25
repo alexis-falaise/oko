@@ -147,6 +147,15 @@ export class TripLocationComponent implements OnInit, OnChanges {
     this.geoService.getCities(city);
   }
 
+  focusCity() {
+    this.cityFocus = true;
+    this.geoService.resetCities();
+  }
+
+  blurCity() {
+    this.cityFocus = false;
+  }
+
   private filterAirports(value: string): Array<Airport> {
     const filterValue = value && isString(value) ? value.toLowerCase() : '';
     return this.airports ? this.airports

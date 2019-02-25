@@ -65,8 +65,7 @@ export class RequestDetailComponent implements OnInit {
     .subscribe((response) => {
       if (response.status) {
         this.snack.open('La demande a été validée', 'OK', {duration: 3000});
-        this.request = new Request(response.data);
-        this.uiService.setLoading(false);
+        this.setRequest(response.data);
       }
     });
   }
@@ -77,8 +76,7 @@ export class RequestDetailComponent implements OnInit {
     .subscribe((response) => {
       if (response.status) {
         this.snack.open('La demande a été annulée', 'OK', {duration: 3000});
-        this.request = new Request(response.data);
-        this.uiService.setLoading(false);
+        this.setRequest(response.data);
       }
     });
   }

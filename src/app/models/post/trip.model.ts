@@ -23,7 +23,7 @@ export class Trip extends Post {
             this.date = moment(trip.date);
         }
         if (trip.departureDate) {
-            this.departureDate = moment(trip.departureDate)
+            this.departureDate = moment(trip.departureDate);
         }
         if (trip.from) {
             this.from = new Location(trip.from);

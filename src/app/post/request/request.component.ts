@@ -39,6 +39,8 @@ export class RequestComponent implements OnInit {
             this.uiService.setLoading(false);
           });
         });
+      } else {
+        this.uiService.setLoading(false);
       }
     });
   }

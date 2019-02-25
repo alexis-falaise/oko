@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
+import { HistoryService } from '@core/history.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private historyService: HistoryService,
     private uiService: UiService,
     private ref: ChangeDetectorRef,
     private router: Router
@@ -27,6 +29,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     moment.locale('fr');
+    this.hideDrawer();
     this.uiService.onLoading().subscribe(loadingState => {
       this.loading = loadingState;
       this.ref.detectChanges();
@@ -66,5 +69,9 @@ export class AppComponent implements OnInit {
 
   toggleDrawer() {
     this.drawerExpanded = !this.drawerExpanded;
+  }
+
+  back() {
+    window.history.back();
   }
 }

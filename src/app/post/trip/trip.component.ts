@@ -55,8 +55,9 @@ export class TripComponent implements OnInit {
           const id = param.id;
           this.postService.getTripById(id)
           .subscribe(trip => {
-            this.trip = new Trip(trip);
-            this.setDataFromTrip(trip);
+            const formattedTrip = new Trip(trip);
+            this.trip = formattedTrip;
+            this.setDataFromTrip(formattedTrip);
             this.loading = false;
             this.ref.detectChanges();
           });
@@ -74,18 +75,14 @@ export class TripComponent implements OnInit {
         info.airport = new Airport(info.airport);
       }
       this.departureSave = info;
-      if (!this.edition) {
-        stepper.next();
-      }
+      stepper.next();
     }
   }
 
   arrival(info, stepper: MatStepper) {
     if (info) {
       this.arrivalSave = info;
-      if (!this.edition) {
-        stepper.next();
-      }
+      stepper.next();
     }
   }
 

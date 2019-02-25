@@ -47,7 +47,6 @@ export class PostComponent implements OnInit, OnChanges {
 
   buildPostProperties(post) {
     this.post = post;
-    console.log(post);
     this.isTrip = post instanceof Trip;
     this.isRequest = post instanceof Request;
     if (post instanceof Trip && post.luggages) {

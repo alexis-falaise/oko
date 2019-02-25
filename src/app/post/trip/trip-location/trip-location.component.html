@@ -1,6 +1,6 @@
 <form [formGroup]="location" (ngSubmit)="submit()" autocomplete="off" class="needs-validation" novalidate>
     <div class="form-group">
-        <input type="text" name="city" formControlName="city" (focus)="cityFocus = true" (blur)="cityFocus = false"
+        <input type="text" name="city" formControlName="city" (focus)="focusCity()" (blur)="blurCity()"
                placeholder="Ville"
                autocomplete="off"
                [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
@@ -53,6 +53,7 @@
                  [min]="minDate || today"
                  [ngClass]="{'form-control': !dateReadonly, 'form-control-plaintext': dateReadonly}"
                  [readonly]="dateReadonly"
+                 (keyup.enter)="submit()"
                  placeholder="Date">
             <div class="invalid-feedback"
                 [class.d-block]="location.controls.date.errors?.required
@@ -92,3 +93,9 @@
         <input type="submit" style="position: absolute; left: -9999px" tabindex="-1">
     </div>
 </form>
+
+<button class="btn btn-success"
+        [disabled]="location.invalid"
+        (click)="submit()">
+    Valider
+</button>
