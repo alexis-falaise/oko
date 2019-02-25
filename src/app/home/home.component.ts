@@ -9,10 +9,20 @@ import { timer } from 'rxjs';
 import { environment } from '@env/environment';
 import { AuthService } from '@core/auth.service';
 import { PostService } from '@core/post.service';
+import { UiService } from '@core/ui.service';
 
 import { Post } from '@models/post/post.model';
 import { Filter } from '@models/app/filter.model';
-import { UiService } from '@core/ui.service';
+import { Request } from '@models/post/request.model';
+import { GeoService } from '@core/geo.service';
+
+class City {
+  city: string;
+  country: string;
+  constructor(city: Partial<City>) {
+    Object.assign(this, city);
+  }
+}
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -37,17 +47,22 @@ export class HomeComponent implements OnInit {
   empty = false;
   validated = false;
   today = moment();
+  city: City | string;
+  cities: Array<City> = [];
 
   constructor(
     private authService: AuthService,
     private postService: PostService,
     private uiService: UiService,
+    private geoService: GeoService,
     private adapter: DateAdapter<any>,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
 
   ngOnInit() {
+    this.geoService.onCities().subscribe(cities => this.cities = cities);
+    this.geoService.getCities();
     this.uiService.setLoading(false);
     timer(0, 1500).subscribe(() => this.swingDisplay());
     const tripDraft = this.postService.getTripDraft();
@@ -93,12 +108,16 @@ export class HomeComponent implements OnInit {
       this.validated = true;
       this.expanded = false;
     }
-    this.post();
+    if (this.empty) {
+      this.post();
+    }
   }
 
-  filterPosts(filter) {
-    const filters = Object.assign(this.filter, filter);
-    this.postService.getTrips(filters);
+  filterPosts() {
+    const searchValue = this.city instanceof City ? this.city.city : this.city;
+    this.filter = new Filter({location: searchValue, item: this.filter.item});
+    this.postService.getTrips(this.filter);
+    this.geoService.getCities(searchValue);
   }
 
   onScroll(event) {
@@ -110,9 +129,21 @@ export class HomeComponent implements OnInit {
     this.empty = length === 0;
   }
 
+  displayCity(city: City) {
+    return city ? city.city : '';
+  }
+
   post() {
-    if (this.empty && !this.expanded || this.validated) {
-      this.postService.saveRequestDraft({items: [{label: this.filter.item}]});
+    if (this.empty) {
+      const isCity = typeof this.city !== 'string';
+      const requestDraft = new Request({
+        items: [{label: this.filter.item}],
+        meetingPoint: {
+          city: isCity ? this.city['city'] : undefined,
+          country: isCity ? this.city['country'] : undefined
+        }
+      });
+      this.postService.saveRequestDraft(requestDraft);
       this.router.navigate(['/post/request/new']);
     }
   }

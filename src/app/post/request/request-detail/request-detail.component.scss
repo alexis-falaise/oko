@@ -59,6 +59,10 @@
     &__location,
     &__summary {
         margin-top: 15px;
+        
+        &__item {
+            margin-bottom: 10px;
+        }
     }
 
     &__trip {
@@ -118,7 +122,8 @@
         }
     }
 
-    &__contact {
+    &__contact,
+    &__modify {
         display: flex;
         justify-content: center;
         margin-bottom: 25px;

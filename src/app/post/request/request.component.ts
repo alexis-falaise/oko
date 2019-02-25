@@ -23,7 +23,7 @@ export class RequestComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const draft = this.postService.getCurrentDraft() as Request;
+    const draft = this.postService.getRequestDraft() as Request;
     if (draft) {
       this.request = draft;
     }

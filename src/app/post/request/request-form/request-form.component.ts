@@ -26,21 +26,11 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() freeRequest = false;
   today = moment();
   items: Array<Item> = [];
-  // #TODO: clean test
-  // items: Array<Item> = [new Item({
-  //   label: 'iPhone XS',
-  //   photo: ['https://static.fnac-static.com/multimedia/Images/FR/MDM/25/ca/8d/9292325/1540-1/tsp20180920193530/Apple-iPhone-XS-64-Go-5-8-Or.jpg'],
-  //   link: new Link({
-  //     label: 'Acheter un iphone',
-  //     path: 'https://www.apple.com/fr/shop/buy-iphone/iphone-xs/%C3%A9cran-5,8-pouces-64go-argent#00,10,20',
-  //   }),
-  //   price: 1155.28
-  // })];
   cities: Array<string> = [];
   meeting = this.fb.group({
     city: [],
     meetingPoint: this.fb.group({
-      adress: ['', Validators.required],
+      address: ['', Validators.required],
       city: ['', Validators.required],
       zip: ['', Validators.required],
       country: ['', Validators.required],
@@ -54,6 +44,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     bonus: ['', Validators.required],
   });
   bonusAgreed = false;
+  edition = false;
+  requestId: string;
 
   constructor(
     private dialog: MatDialog,
@@ -92,9 +84,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   checkDraft() {
     const draft = this.postService.getRequestDraft();
     if (draft) {
-      this.items = draft.items;
-      delete draft.items;
-      this.meeting.patchValue(draft);
+      this.setEditableRequest(draft);
     }
   }
 
@@ -168,6 +158,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
     this.items = request.items;
+    this.requestId = request.id;
+    this.edition = true;
   }
 
   saveRequest() {
@@ -176,6 +168,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const saveRequest = new Request({
       items: this.items,
       trip: this.trip,
+      id: this.edition ? this.requestId : undefined,
       ...meeting,
     });
 
@@ -183,16 +176,19 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(currentUser => {
       saveRequest.user = currentUser;
       if (currentUser) {
-        this.postService.createRequest(saveRequest)
-        .subscribe(response => {
+        const requestService = this.edition
+        ? this.postService.updateRequest(saveRequest)
+        : this.postService.createRequest(saveRequest);
+        requestService.subscribe(response => {
           if (response.status) {
-            const createdRequest = new Request(response.data);
-            this.snack.open('Demande enregistrée', 'Top!', {duration: 3000});
-            this.router.navigate([`post/request/${createdRequest.id}`]);
+            const responseRequest = new Request(response.data);
+            this.snack.open(`Annonce ${this.edition ? 'enregistrée' : 'modifiée'}`, 'Top!', {duration: 3000});
+            this.router.navigate([`post/request/${responseRequest.id}`]);
           } else {
             this.requestServerError();
           }
         }, (error) => this.requestServerError());
+
       } else {
         this.requestError(saveRequest);
       }

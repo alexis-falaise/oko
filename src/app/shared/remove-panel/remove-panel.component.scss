@@ -23,6 +23,7 @@
     }
 
     &__remove {
+        transition: all $transitionDuration;
         background-color: $red-800;
         width: 50%;
         display: flex;
@@ -37,6 +38,7 @@
     }
 
     &__edit {
+        transition: all $transitionDuration;
         background-color: $amber-800;
         width: 50%;
         display: flex;

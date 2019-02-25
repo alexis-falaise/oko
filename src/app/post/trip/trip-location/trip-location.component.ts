@@ -90,7 +90,6 @@ export class TripLocationComponent implements OnInit, OnChanges {
     .subscribe(cities => {
       if (cities) {
         this.cities = cities;
-        this.ref.detectChanges();
       } else {
         this.cities = null;
       }

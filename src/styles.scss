@@ -69,6 +69,10 @@ html, body {
     -webkit-text-fill-color: transparent;
 }
 
+.btn {
+    border-radius: 1.5rem !important;
+}
+
 .btn-primary {
     transition: all $hoverDuration;
     -webkit-transition: all $hoverDuration;

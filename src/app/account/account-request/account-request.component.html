@@ -1,3 +1,9 @@
-<p>
-  account-request works!
-</p>
+<div class="account-request container">
+  <small class="text-muted account-request-hint">Swipez vers la gauche pour editer ou supprimer une annonce</small>
+  <div class="account-request__new">
+      <button class="btn btn-info btn-new-trip" (click)="newRequest()">
+          <mat-icon>new_releases</mat-icon> Déposer une annonce
+      </button>
+  </div>
+  <app-post [post]="request" [editable]="true" (remove)="remove(i)" *ngFor="let request of requests; let i = index;"></app-post>
+</div>

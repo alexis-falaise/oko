@@ -1,4 +1,5 @@
 import { Description } from '@models/description.model';
+import { MeetingPoint } from './meeting-point.model';
 export class User {
     firstname: string;
     lastname: string;
@@ -9,6 +10,7 @@ export class User {
     trips?: number;
     requests?: number;
     rating?: number;
+    address?: MeetingPoint;
     id?: string;
 
     constructor(user: Partial<User> = {}) {

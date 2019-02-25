@@ -24,8 +24,8 @@
           placeholder="Ville"
           autocomplete="off"
           class="form-control"
-          [matAutocomplete]="citiesAuto"
           (keyup)="fetchCities(meeting.controls.city.value)"
+          [matAutocomplete]="citiesAuto"
           [class.is-invalid]="meeting.controls.city.errors?.required
           && meeting.controls.city.touched" required>
           <mat-autocomplete #citiesAuto="matAutocomplete" [displayWith]="displayCity">
@@ -56,7 +56,7 @@
         </small>
         <form [formGroup]="meeting.controls.meetingPoint">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Adresse" formControlName="adress" required>
+              <input type="text" class="form-control" placeholder="Adresse" formControlName="address" required>
             </div>
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Ville" formControlName="city" required>
@@ -123,8 +123,8 @@
         || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
         || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
       " (click)="saveRequest()">
-       <span *ngIf="trip?.user?.firstname">Faire une demande à {{ trip.user.firstname }}</span>
-       <span *ngIf="freeRequest || !trip">Créer une annonce</span>
+       <span *ngIf="trip?.user?.firstname">{{ edition ? 'Faire une demande à' : 'Modifier ma demande pour' }} {{ trip.user.firstname }}</span>
+       <span *ngIf="freeRequest || !trip">{{ edition ? 'Modifier' : 'Créer' }} une annonce</span>
     </button>
   </div>
 </div>

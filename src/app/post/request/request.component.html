@@ -1,9 +1,9 @@
 <div class="request container-fluid">
   <div class="request__hero row">
-      <h1 class="request__hero-title">Créer une annonce</h1>
+      <h1 class="request__hero-title">{{ edition ? 'Modifier' : 'Créer'}} une annonce</h1>
   </div>
   <div class="request__form">
-    <div class="request__form-hint">
+    <div class="request__form-hint" *ngIf="!edition">
       <small class="text-muted">
         Créez une annonce pour un futur voyageur. Commencez par ajouter un article, et laissez vous guider.
       </small>

@@ -30,6 +30,8 @@ $transitionStyle: ease-out;
         font-size: $homeHeroSize;
         font-weight: 700;
         text-shadow: 0 2px 7.5px rgba(0, 0, 0, .4);
+        position: relative;
+        z-index: 51; // Cover history sensitive area (set at z-50)
 
         // &:hover {
         //     transition: $transitionDuration $transitionStyle all;
@@ -47,6 +49,7 @@ $transitionStyle: ease-out;
             background-size: auto 150%;
             background-position: center;
             height: 60vh;
+            min-height: 400px;
         }
 
         &.fullscreen {
@@ -101,9 +104,21 @@ $transitionStyle: ease-out;
 
         &__action {
             display: flex;
-            margin-top: 30px;
+            position: relative;
+            z-index: 20;
+            margin-top: 20px;
             flex-direction: row;
             justify-content: center;
+            
+            .btn {
+                color: rgba(255, 255, 255, .4);
+                cursor: pointer;
+
+                &:hover {
+                    color: rgba(255, 255, 255, .6);
+                    background-color: rgba(255, 255, 255, .1);
+                }
+            }
         }
     }
 
@@ -129,7 +144,7 @@ $transitionStyle: ease-out;
         height: 40vh;
         min-height: 400px;
         overflow-y: scroll;
-        padding-top: 15px;
+        overflow-x: hidden;
 
         &.expanded {
             height: 75vh;
@@ -157,11 +172,7 @@ $transitionStyle: ease-out;
         }
 
         &__list {
-            background-color: rgba(255, 255, 255, .95);
-            margin-bottom: 50px;
-            position: relative;
-            z-index: 1;
-            top: 35px;
+            min-height: 50vh;
 
             &-wrapper {
                 transition: all $transitionDuration;
@@ -177,8 +188,9 @@ $transitionStyle: ease-out;
             }
 
             &-buttons {
+                display: block;
                 width: 100%;
-                margin-left: 0.5%;
+                margin: 10px 0.5% 0 0;
             }
         }
     }
@@ -227,4 +239,9 @@ $transitionStyle: ease-out;
 
 .mat-form-field-infix {
     width: 100% !important;
+}
+
+.btn-home-full {
+    width: 95vw;
+    margin-left: 2.5vw;
 }

@@ -30,7 +30,7 @@ export class NavComponent implements OnInit, OnChanges {
     { label: 'Faire une demande', path: '/post/request/new', icon: 'new_releases' },
     { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
     { label: 'Trajets disponibles', path: '/post/trip', icon: 'map'},
-    { label: 'Annonces', path: '/post/request', icon: 'view_day'},
+    { label: 'Annonces', path: '/post/request/', icon: 'view_day'},
     { label: 'Messages', path: '/messages', icon: 'email' },
     { label: 'Aide', path: '/help', icon: 'help' },
   ];

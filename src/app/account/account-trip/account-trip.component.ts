@@ -11,7 +11,7 @@ import { UiService } from '@core/ui.service';
 @Component({
   selector: 'app-account-trip',
   templateUrl: './account-trip.component.html',
-  styleUrls: ['./account-trip.component.scss']
+  styleUrls: ['../account-post.component.scss']
 })
 export class AccountTripComponent implements OnInit {
   trips: Array<Trip> = null;

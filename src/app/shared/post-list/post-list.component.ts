@@ -33,7 +33,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
           this.uiService.setLoading(false);
         }
       });
-      if (!this.posts.length) {
+      if (!this.posts) {
         this.postService.getTrips();
       }
     } else {
@@ -44,7 +44,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
           this.uiService.setLoading(false);
         }
       });
-      if (!this.posts.length) {
+      if (!this.posts) {
         this.postService.getRequests();
       }
     }

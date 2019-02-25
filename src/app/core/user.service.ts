@@ -24,6 +24,14 @@ export class UserService {
     return this.http.get(`${this.userUrl}/${id}`, {withCredentials: true}) as Observable<User>;
   }
 
+  getUserPublicInfoById(id: string): Observable<User> {
+    return this.http.get(`${this.userUrl}/${id}/public`, {withCredentials: true}) as Observable<User>;
+  }
+
+  getUserStatsById(id: string): Observable<User> {
+    return this.http.get(`${this.userUrl}/${id}/stats`, {withCredentials: true}) as Observable<User>;
+  }
+
   updateUser(user: User): Observable<Object> {
     return this.http.put(`${this.userUrl}/${user.id}`, user, {withCredentials: true});
   }

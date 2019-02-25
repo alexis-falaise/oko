@@ -19,7 +19,9 @@ $post-height: 100px;
     overflow: hidden;
 
     &.horizontal {
-        height: 30vh;
+        height: 55vh;
+        width: 95vw;
+        margin-left: -2.5vw;
         min-height: 300px;
         display: inline-flex;
     }
@@ -135,7 +137,7 @@ $post-height: 100px;
                 overflow-y: scroll;
             }
             &__location {
-                $locationSize: 12px;
+                $locationSize: 11px;
                 $locationColor: rgb(125, 125, 125);
                 font-size: $locationSize;
                 color: $locationColor;
@@ -150,6 +152,12 @@ $post-height: 100px;
                 .material-icons {
                     font-size: $locationSize;
                     color: $locationColor;
+                }
+                &__country {
+                    display: inline-flex;
+                    margin-left: 5px;
+                    font-size: 9px;
+                    color: rgb(175, 175, 175);
                 }
             }
             &__item {

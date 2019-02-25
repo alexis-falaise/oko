@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, Subject, forkJoin } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
+
+import { environment } from '@env/environment';
+import { UserService } from './user.service';
 
 import { Filter } from '@models/app/filter.model';
 import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
 import { ServerResponse } from '@models/app/server-response.model';
-import { Id } from '@models/id.model';
-
-import { environment } from '@env/environment';
-import { takeUntil } from 'rxjs/operators';
 import { Item } from '@models/item.model';
 
 @Injectable({
@@ -31,7 +31,10 @@ export class PostService {
   requestDraft: Request = null;
   currentFilter = new Filter();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+  ) { console.log('Post service construction', this); }
 
   // Subscriptions
 
@@ -81,11 +84,23 @@ export class PostService {
     .pipe(takeUntil(nextQuery))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
-        const trips: Array<Trip> = response.data
-        .map((trip: Trip) => new Trip(trip))
-        .sort((first, second) =>  moment(first.date).isBefore(second.date) ? -1 : 1);
-        this.trips.next(trips);
-        nextQuery.next(true);
+        const trips: Array<Trip> = response.data;
+        forkJoin(trips.map(trip => Observable.create(observer => {
+          this.userService.getUserStatsById(trip.user.id)
+          .subscribe(user => {
+            trip.user = user;
+            observer.next(new Trip(trip));
+            observer.complete();
+          });
+        }))).subscribe(outputTrips => {
+          const resultingTrips = outputTrips.sort((first, second) =>  moment(first.date).isBefore(second.date) ? -1 : 1);
+          this.trips.next(resultingTrips);
+          nextQuery.next(true);
+        });
+        if (trips && !trips.length) {
+          this.trips.next([]);
+          nextQuery.next(true);
+        }
       }
     });
   }
@@ -186,7 +201,6 @@ export class PostService {
   }
 
   createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
-    console.log('Create request', request);
     this.deleteRequestDraft();
     return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
   }

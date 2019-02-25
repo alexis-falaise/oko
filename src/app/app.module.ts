@@ -12,6 +12,7 @@ import {
   MatExpansionModule,
   MatSnackBarModule,
   MatRippleModule,
+  MatAutocompleteModule,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -54,6 +55,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     CoreModule,
     FormsModule,
     SharedModule,
+    MatAutocompleteModule,
     MatChipsModule,
     MatDatepickerModule,
     MatMomentDateModule,

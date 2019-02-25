@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.onStatus()
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((status: any) => {
-      this.uiService.setLoading(false);
       if (status) {
         this.status = status.status;
         if (status.status) {
@@ -45,7 +44,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.message = status.message;
         }
       }
+      this.uiService.setLoading(false);
     });
+    this.authService.getLoginStatus();
   }
 
   login() {

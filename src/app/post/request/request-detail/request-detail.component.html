@@ -6,108 +6,114 @@
     </small>
   </div>
   <div class="container">
-      <div class="request-detail__status"
-      [class.good]="request.accepted || request.validated"
-      [class.bad]="request.closed"
-      *ngIf="request.closed || request.accepted || request.validated">
+    <div class="request-detail__status"
+    [class.good]="request.accepted || request.validated"
+    [class.bad]="request.closed"
+    *ngIf="request.closed || request.accepted || request.validated">
       <span *ngIf="request.closed">L'annonce a été annulée</span>
       <span *ngIf="request.accepted">L'annonce a été acceptée {{ request.handler ? 'par ' + request.handler.firstname : '' }}</span>
       <span *ngIf="request.validated">Cette annonce a été validée</span>
- </div>
- <div class="request-detail__actions justify-content-around" *ngIf="own">
-   <button class="btn btn-warning" disabled *ngIf="!request.accepted && !request.closed">En attente</button>
-   <button class="btn btn-success" [disabled]="request.validated" *ngIf="request.accepted" (click)="validate()">Valider la réception</button>
-   <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler l'annonce</button>
- </div>
- <div class="request-detail__location">
-   <h4 class="request-detail__location-title request-detail__section-title">
-     {{ own ? 'Ma ville' : 'Ville de remise' }}
-   </h4>
-   <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country && own; else noCity">
-     <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
-   </div>
-   <ng-template #noCity>
-    <small class="text-muted">
-      Aucune ville d'arrivée définie pour cette annonce.
-    </small>
-    <button class="btn btn-info btn-icon" *ngIf="own" [routerLink]="['/post/request', request.id, 'edit']">
-      <mat-icon>edit</mat-icon> Modifier l'annonce
-    </button>
-   </ng-template>
- </div>
- <div class="request-detail__summary">
-   <h4 class="request-detail__summary-title request-detail__section-title">Articles</h4>
-   <app-item *ngFor="let item of request.items" [item]="item" [removable]="false"></app-item>
- </div>
- <hr class="divider" *ngIf="request?.trip">
- <div class="request-detail__trip" matRipple (click)="openTrip()" *ngIf="request?.trip">
-   <h4 class="request-detail__trip-title request-detail__section-title">Voyage</h4>
-   <div class="request-detail__trip-date">
-     <div class="arrival">
-         <mat-icon>today</mat-icon> Arrivée {{ request?.trip?.user ? ' de ' + request?.trip?.user?.firstname : '' }}
-     </div>
-     <div class="arrival-time">
-         {{ request?.trip?.date?.format('DD/MM HH:mm') }}
-     </div>
-   </div>
-   <div class="row request-detail__trip-info">
-     <div class="col-1 d-flex align-items-center">
-       <mat-icon>flight_takeoff</mat-icon>
-     </div>
-     <div class="col-4 location">
-       <div class="city-name">{{ request?.trip?.from?.label }} </div>
-       <div class="airport-name" *ngIf="request?.trip?.from?.airport">
-           {{ request?.trip?.from?.airport?.name }}
-       </div>
-     </div>
-     <div class="col-2 d-flex align-items-center">
-       <mat-icon>chevron_right</mat-icon>
-     </div>
-     <div class="col-4 location">
-       <div class="city-name">{{ request.trip.to.label }}</div>
-       <div class="airport-name" *ngIf="request.trip.to.airport">
-         {{ request.trip.to.airport.name }}
-       </div>
-     </div>
-     <div class="col-1 d-flex align-items-center">
-       <mat-icon>flight_land</mat-icon>
-     </div>
-   </div>
- </div>
- <hr class="divider">
- <div class="request-detail__conditions">
-   <h4 class="request-detail__conditions-title request-detail__section-title">
-     Conditions de remise
-   </h4>
-   <div *ngIf="request?.trip; else requestPickup">
-    <div *ngIf="request && request.airportPickup">
-        <div class="agreement" *ngIf="request?.trip?.airportDrop; else pickupAgreement">
-            <mat-icon>flight</mat-icon> Remise à l'aéroport {{ request.trip.to.airport.name }}
+    </div>
+  <div class="request-detail__actions justify-content-around" *ngIf="own">
+    <button class="btn btn-warning" disabled *ngIf="!request.accepted && !request.closed">En attente</button>
+    <button class="btn btn-success" [disabled]="request.validated" *ngIf="request.accepted" (click)="validate()">Valider la réception</button>
+    <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler l'annonce</button>
+  </div>
+  <div class="request-detail__location">
+    <h4 class="request-detail__location-title request-detail__section-title">
+      {{ own ? 'Ma ville' : 'Ville de remise' }}
+    </h4>
+    <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country && own; else noCity">
+      <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
+    </div>
+    <ng-template #noCity>
+      <small class="text-muted">
+        Aucune ville d'arrivée définie pour cette annonce.
+      </small>
+      <button class="btn btn-info btn-icon" *ngIf="own" [routerLink]="['/post/request', request.id, 'edit']">
+        <mat-icon>edit</mat-icon> Modifier l'annonce
+      </button>
+    </ng-template>
+  </div>
+  <div class="request-detail__summary">
+    <h4 class="request-detail__summary-title request-detail__section-title">Articles</h4>
+    <div class="request-detail__summary__item" *ngFor="let item of request.items">
+      <app-item [item]="item" [removable]="false"></app-item>
+    </div>
+  </div>
+  <hr class="divider" *ngIf="request?.trip && own">
+  <div class="request-detail__trip" matRipple (click)="openTrip()" *ngIf="request?.trip && own">
+    <h4 class="request-detail__trip-title request-detail__section-title">Voyage</h4>
+    <div class="request-detail__trip-date">
+      <div class="arrival">
+          <mat-icon>today</mat-icon> Arrivée {{ request?.trip?.user ? ' de ' + request?.trip?.user?.firstname : '' }}
+      </div>
+      <div class="arrival-time">
+          {{ request?.trip?.date?.format('DD/MM HH:mm') }}
+      </div>
+    </div>
+    <div class="row request-detail__trip-info">
+      <div class="col-1 d-flex align-items-center">
+        <mat-icon>flight_takeoff</mat-icon>
+      </div>
+      <div class="col-4 location">
+        <div class="city-name">{{ request?.trip?.from?.label }} </div>
+        <div class="airport-name" *ngIf="request?.trip?.from?.airport">
+            {{ request?.trip?.from?.airport?.name }}
         </div>
       </div>
-      <div *ngIf="request && !request.airportPickup">
-        <div *ngIf="request.trip && !request.trip.airportDrop; else pickupAgreement">
-          <div class="agreement">
-              <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
+      <div class="col-2 d-flex align-items-center">
+        <mat-icon>chevron_right</mat-icon>
+      </div>
+      <div class="col-4 location">
+        <div class="city-name">{{ request.trip.to.label }}</div>
+        <div class="airport-name" *ngIf="request.trip.to.airport">
+          {{ request.trip.to.airport.name }}
+        </div>
+      </div>
+      <div class="col-1 d-flex align-items-center">
+        <mat-icon>flight_land</mat-icon>
+      </div>
+    </div>
+  </div>
+  <hr class="divider">
+  <div class="request-detail__conditions">
+    <h4 class="request-detail__conditions-title request-detail__section-title">
+      Conditions de remise
+    </h4>
+    <div *ngIf="request?.trip; else requestPickup">
+      <div *ngIf="request && request.airportPickup">
+          <div class="agreement" *ngIf="request?.trip?.airportDrop; else pickupAgreement">
+              <mat-icon>flight</mat-icon> Remise à l'aéroport {{ request.trip.to.airport.name }}
           </div>
-          <div>
-            {{ request.meetingPoint.adress }}
-            <span *ngIf="request.meetingPoint.city">, {{ request.meetingPoint.city }} </span>
-            <span *ngIf="request.meetingPoint.zip">({{ request.meetingPoint.zip }})</span>
-            <span *ngIf="request.meetingPoint.country"> - {{ request.meetingPoint.country }}</span>
+        </div>
+        <div *ngIf="request && !request.airportPickup">
+          <div *ngIf="request.trip && !request.trip.airportDrop; else pickupAgreement">
+            <div class="agreement">
+                <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
+            </div>
+            <div>
+              {{ request.meetingPoint.address }}
+              <span *ngIf="request.meetingPoint.city">, {{ request.meetingPoint.city }} </span>
+              <span *ngIf="request.meetingPoint.zip">({{ request.meetingPoint.zip }})</span>
+              <span *ngIf="request.meetingPoint.country"> - {{ request.meetingPoint.country }}</span>
+            </div>
           </div>
         </div>
       </div>
-   </div>
-
- </div>
- <hr class="divider">
- <div class="request-detail__contact" *ngIf="request?.trip?.user && own">
-   <button class="btn btn-info btn-contact" [disabled]="request.closed">
-     <mat-icon>mail</mat-icon>
-     Contacter {{ request.trip.user.firstname }}
-   </button>
- </div>
+    </div>
+    <hr class="divider">
+    <div class="request-detail__contact" *ngIf="request?.trip?.user && own">
+      <button class="btn btn-info btn-contact" [disabled]="request.closed">
+        <mat-icon>mail</mat-icon>
+        Contacter {{ request.trip.user.firstname }}
+      </button>
+    </div>
+    <div class="request-detail__modify" *ngIf="own">
+        <button class="btn btn-info btn-icon" [routerLink]="['/post/request', request.id, 'edit']">
+          <mat-icon>edit</mat-icon> Modifier l'annonce
+        </button>
+    </div>
   </div>
 </div>
 
@@ -122,7 +128,7 @@
     <mat-icon>my_location</mat-icon> Réception au point de rendez-vous:
   </div>
   <div>
-      {{ request.meetingPoint?.adress }}
+      {{ request.meetingPoint?.address }}
       <span *ngIf="request.meetingPoint?.city">, {{ request.meetingPoint.city }} </span>
       <span *ngIf="request.meetingPoint?.zip">({{ request.meetingPoint.zip }})</span>
       <span *ngIf="request.meetingPoint?.country"> - {{ request.meetingPoint.country }}</span>
