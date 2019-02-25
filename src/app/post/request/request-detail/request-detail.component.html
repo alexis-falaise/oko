@@ -35,6 +35,7 @@
       </button>
     </ng-template>
   </div>
+  <hr class="divider">
   <div class="request-detail__summary">
     <h4 class="request-detail__summary-title request-detail__section-title">Articles</h4>
     <div class="request-detail__summary__item" *ngFor="let item of request.items">
@@ -81,6 +82,23 @@
     <h4 class="request-detail__conditions-title request-detail__section-title">
       Conditions de remise
     </h4>
+    <div class="request-detail__conditions-urgent" *ngIf="request.urgent">
+      <div class="row">
+        <mat-icon class="col-3">
+          announcement
+        </mat-icon>
+        <div class="col-9">
+          <h5 class="request-detail__conditions-urgent__title">Demande urgente</h5>
+          <hr class="divider">
+          <small class="text-muted">
+            Pour une remise avant le {{ request.urgentDetails.date.format('DD/MM/YYYY') }}
+          </small>
+          <div *ngIf="request.urgentDetails?.explaination">
+            " {{ request.urgentDetails.explaination }} "
+          </div>
+        </div>
+      </div>
+    </div>
     <div *ngIf="request?.trip; else requestPickup">
       <div *ngIf="request && request.airportPickup">
           <div class="agreement" *ngIf="request?.trip?.airportDrop; else pickupAgreement">

@@ -14,6 +14,7 @@ import { RequestItemSelectionComponent } from '../request-item-selection/request
 import { Item } from '@models/item.model';
 import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-request-form',
@@ -24,6 +25,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() trip: Trip;
   @Input() request: Request;
   @Input() freeRequest = false;
+  @Input() edition = false;
   today = moment();
   items: Array<Item> = [];
   cities: Array<string> = [];
@@ -32,7 +34,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     meetingPoint: this.fb.group({
       address: ['', Validators.required],
       city: ['', Validators.required],
-      zip: ['', Validators.required],
+      zip: [''],
       country: ['', Validators.required],
     }),
     airportPickup: [false],
@@ -44,7 +46,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     bonus: ['', Validators.required],
   });
   bonusAgreed = false;
-  edition = false;
   requestId: string;
 
   constructor(
@@ -58,8 +59,13 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.edition) {
+      this.edition = changes.edition.currentValue;
+    }
     if (changes.request) {
-      this.setEditableRequest(changes.request.currentValue);
+      if (this.edition) {
+        this.setEditableRequest(changes.request.currentValue);
+      }
     }
   }
 
@@ -157,7 +163,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         country: request.meetingPoint.country
       });
     }
-    this.items = request.items;
+    if (request.items) {
+      this.items = request.items;
+    }
     this.requestId = request.id;
     this.edition = true;
   }
@@ -185,9 +193,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
             this.snack.open(`Annonce ${this.edition ? 'enregistrée' : 'modifiée'}`, 'Top!', {duration: 3000});
             this.router.navigate([`post/request/${responseRequest.id}`]);
           } else {
-            this.requestServerError();
+            this.requestServerError(response.message, response.code);
           }
-        }, (error) => this.requestServerError());
+        }, (error: HttpErrorResponse) => this.requestServerError(error.message, error.statusText));
 
       } else {
         this.requestError(saveRequest);
@@ -200,8 +208,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     this.dialog.open(NotConnectedComponent);
   }
 
-  private requestServerError() {
-    const snackRef = this.snack.open('Un problème a eu lieu', 'Réessayer', {duration: 5000});
+  private requestServerError(message: string, code: string) {
+    const snackRef = this.snack.open(`Un problème a eu lieu. (${message} - ${code})`, 'Réessayer', {duration: 5000});
     snackRef.onAction().subscribe(() => this.saveRequest());
   }
 
