@@ -50,6 +50,7 @@
           </div>
           <div class="form-group">
             <input type="password" placeholder="Créez un mot de passe" class="form-control"
+                   minlength="8"
               [class.is-invalid]="(signinForm.controls.password.errors?.required
                                   || signinForm.controls.password.errors?.minLength)
                                   && (signinForm.controls.password.touched || validated)"
@@ -57,32 +58,39 @@
             <small class="form-text text-muted" *ngIf="!signinForm.controls.password.touched">
               Votre mot de passe doit être composé de 8 caractères minimum
             </small>
-            <div class="invalid-feedback"
-                  [class.d-block]="signinForm.controls.password.errors?.required
+            <div class="invalid-feedback d-block"
+                  *ngIf="signinForm.controls.password.errors?.required
                   && (signinForm.controls.password.touched || validated)">
               Veuillez entrer un mot de passe
             </div>
-            <div class="invalid-feedback"
-                  [class.d-block]="signinForm.controls.password.errors?.minLength
+            <div class="invalid-feedback d-block"
+                  *ngIf="(signinForm.controls.password.value.length < 8)
                   && (signinForm.controls.password.touched || validated)">
               Votre mot de passe doit être composé de 8 caractères minimum
             </div>
           </div>
           <div class="form-group">
             <input type="password" placeholder="Confirmez votre mot de passe" class="form-control"
+                    minlength="8"
+                    [class.is-invalid]="(signinForm.controls.passwordConfirm.errors?.required
+                    || signinForm.controls.password.value !== signinForm.controls.passwordConfirm.value)
+                    && (signinForm.controls.passwordConfirm.touched || validated)"
                     formControlName="passwordConfirm" required>
-            <div class="invalid-feedback"
-            [class.d-block]="signinForm.controls.passwordConfirm.errors?.required
+            <div class="invalid-feedback d-block"
+            *ngIf="(signinForm.controls.passwordConfirm.errors?.required)
             && (signinForm.controls.passwordConfirm.touched || validated)">
               Veuillez confirmer votre mot de passe
             </div>
-            <div class="invalid-feedback"
-            [class.d-block]="signinForm.errors?.passwordMismatch">
+            <div class="invalid-feedback d-block"
+            *ngIf="signinForm.controls.password.value !== signinForm.controls.passwordConfirm.value
+            && (signinForm.controls.passwordConfirm.touched || validated)">
               Les mots de passes ne correspondent pas
             </div>
           </div>
           <div class="btn-signin">
             <button class="btn signin-button" [ngClass]="{'btn-primary': !signinError, 'btn-warning': signinError }"
+                    [disabled]="signinForm.invalid
+                    || signinForm.controls.password.value !== signinForm.controls.passwordConfirm.value"
                     type="submit">
                   Inscription
             </button>

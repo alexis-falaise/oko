@@ -14,6 +14,7 @@ import { Request } from '@models/post/request.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { Item } from '@models/item.model';
 import { UiService } from './ui.service';
+import { User } from '@models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -92,14 +93,21 @@ export class PostService {
       if (response.status) {
         const trips: Array<Trip> = response.data;
         forkJoin(trips.map(trip => Observable.create(observer => {
-          this.userService.getUserStatsById(trip.user.id)
-          .subscribe(user => {
-            trip.user = user;
+          if (trip.user && trip.user.id) {
+            this.userService.getUserStatsById(trip.user.id)
+            .subscribe(user => {
+              trip.user = user;
+              observer.next(new Trip(trip));
+              observer.complete();
+            });
+          } else {
             observer.next(new Trip(trip));
             observer.complete();
+          }
+        }))).subscribe((outputTrips: Array<Trip>) => {
+          const resultingTrips = outputTrips.sort((first, second) =>  {
+            return moment(first.date).isBefore(second.date) ? -1 : 1;
           });
-        }))).subscribe(outputTrips => {
-          const resultingTrips = outputTrips.sort((first, second) =>  moment(first.date).isBefore(second.date) ? -1 : 1);
           this.trips.next(resultingTrips);
           nextQuery.next(true);
           this.uiService.setLoading(false);
@@ -132,12 +140,32 @@ export class PostService {
     .pipe(takeUntil(nextQuery))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
-        const requests = response.data
-        .map(request => new Request(request))
-        .sort((first, second) => moment(first.date).isBefore(second.date) ? -1 : 1);
-        this.requests.next(requests);
-        nextQuery.next(true);
-        this.uiService.setLoading(false);
+        const requests = response.data;
+        forkJoin(requests.map(request => Observable.create(observer => {
+          if (request.user && request.user.id) {
+            this.userService.getUserStatsById(request.user.id)
+            .subscribe(user => {
+              request.user = user;
+              observer.next(new Request(request));
+              observer.complete();
+            });
+          } else {
+            observer.next(new Request(request));
+            observer.complete();
+          }
+        }))).subscribe((outputRequests: Array<Request>) => {
+          const resultingRequests = outputRequests.sort((first, second) => {
+            return moment(first.submitDate).isAfter(second.submitDate) ? -1 : 1;
+          });
+          this.requests.next(resultingRequests);
+          nextQuery.next(true);
+          this.uiService.setLoading(false);
+        });
+        if (requests && !requests.length) {
+          this.requests.next([]);
+          nextQuery.next(true);
+          this.uiService.setLoading(false);
+        }
       }
     });
   }
@@ -155,7 +183,24 @@ export class PostService {
    * @param id : Trip unique identifier
    */
   getTripById(id: string): Observable<Trip> {
-    return this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true}) as Observable<Trip>;
+    return Observable.create(observer => {
+      this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true})
+      .subscribe((trip: Trip) => {
+        if (trip.user && trip.user.id) {
+          this.userService.getUserStatsById(trip.user.id)
+          .subscribe((user: User) => {
+            trip.user = user;
+            const outputTrip = new Trip(trip);
+            observer.next(outputTrip);
+            observer.complete();
+          });
+        } else {
+          const outputTrip = new Trip(trip);
+          observer.next(outputTrip);
+          observer.complete();
+        }
+      });
+    });
   }
 
   /**

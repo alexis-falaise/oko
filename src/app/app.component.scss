@@ -10,7 +10,7 @@
         height: 100%;
         position: absolute;
         top: 0;
-        left: 0;
+        right: 0;
         z-index: 51;
     }
 
@@ -21,6 +21,15 @@
         top: 0;
         left: 0;
         z-index: 49;
+
+        &-side {
+            width: 7.5%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 49;
+        }
     }
 }
 

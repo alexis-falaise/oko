@@ -1,9 +1,14 @@
 <div class="account-trip container">
     <small class="text-muted account-trip-hint">Swipez vers la gauche pour editer ou supprimer un trajet</small>
     <div class="account-trip__new">
-        <button class="btn btn-info btn-new-trip" (click)="newTrip()">
+        <button class="btn btn-info btn-new-trip" *ngIf="!hasDraft; else draft" (click)="newTrip()">
             <mat-icon>flight_takeoff</mat-icon> Nouveau trajet
         </button>
+        <ng-template #draft>
+            <button class="btn btn-warning btn-new-trip" (click)="newTrip()">
+                <mat-icon>edit</mat-icon> Voir mon brouillon
+            </button>
+        </ng-template>
     </div>
     <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of trips; let i = index;"></app-post>
 </div>

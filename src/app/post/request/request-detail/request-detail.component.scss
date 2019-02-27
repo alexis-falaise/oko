@@ -17,7 +17,7 @@
         z-index: 10;
         top: 0;
         height: 15vh;
-        min-height: 150px;
+        min-height: 160px;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
@@ -25,6 +25,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        &-title {
+            font-size: 24px;
+        }
     }
 
     &__date {
@@ -133,6 +137,7 @@
             }
             border-radius: 5px;
             background-color: $red-100;
+            margin-bottom: 25px;
             &__title {
                 color: $red-800-dark;
             }

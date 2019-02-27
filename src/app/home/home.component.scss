@@ -16,9 +16,6 @@ $transitionStyle: ease-out;
 
     &-hero {
         transition: $transitionDuration $transitionStyle all;
-        -webkit-transition: $transitionDuration $transitionStyle all;
-        -moz-transition: $transitionDuration $transitionStyle all;
-        -o-transition: $transitionDuration $transitionStyle all;
         
         height: 15vh;
         min-height: 150px;
@@ -48,9 +45,6 @@ $transitionStyle: ease-out;
 
         &.expanded {
             transition: $transitionDuration $transitionStyle all;
-            -webkit-transition: $transitionDuration $transitionStyle all;
-            -moz-transition: $transitionDuration $transitionStyle all;
-            -o-transition: $transitionDuration $transitionStyle all;
             background-size: auto 150%;
             background-position: center;
             height: 60vh;
@@ -59,9 +53,6 @@ $transitionStyle: ease-out;
 
         &.fullscreen {
             transition: $transitionDuration $transitionStyle all;
-            -webkit-transition: $transitionDuration $transitionStyle all;
-            -moz-transition: $transitionDuration $transitionStyle all;
-            -o-transition: $transitionDuration $transitionStyle all;
             background-size: auto 200%;
             background-position: center;
             height: 100vh;
@@ -74,16 +65,13 @@ $transitionStyle: ease-out;
 
         &__summary {
             transition: $transitionDuration $transitionStyle all;
-            -webkit-transition: $transitionDuration $transitionStyle all;
-            -moz-transition: $transitionDuration $transitionStyle all;
-            -o-transition: $transitionDuration $transitionStyle all;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
 
             &-location:hover,
             &-item:hover {
                 transition: $transitionDuration $transitionStyle all;
-                -webkit-transition: $transitionDuration $transitionStyle all;
-                -moz-transition: $transitionDuration $transitionStyle all;
-                -o-transition: $transitionDuration $transitionStyle all;
                 color: #5FE8C9;
                 cursor: pointer;
             }
@@ -92,9 +80,10 @@ $transitionStyle: ease-out;
                 display: block;
                 font-size: 36px;
                 font-weight: 100;
-                margin-bottom: -25px;
             }
+
             &-item {
+                margin-top: -10px;
                 font-size: 18px;
                 font-weight: 500;
             }

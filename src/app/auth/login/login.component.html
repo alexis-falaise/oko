@@ -8,10 +8,12 @@
             <div class="row">
                 <div class="form-group col-12">
                     <input type="text" placeholder="Email" name="email" class="form-control"
+                    (keyup.enter)="login()"
                     [class.is-invalid]="message && !status" [(ngModel)]="email">
                 </div>
                 <div class="form-group col-12">
                     <input type="password" placeholder="Mot de passe" name="password" class="form-control"
+                    (keyup.enter)="login()"
                     [class.is-invalid]="message && !status" [(ngModel)]="password">
                 </div>
             </div>

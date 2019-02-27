@@ -30,6 +30,8 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+    screen.orientation.lock('portrait');
     moment.locale('fr');
     this.hideDrawer();
     this.uiService.onLoading().subscribe(loadingState => {

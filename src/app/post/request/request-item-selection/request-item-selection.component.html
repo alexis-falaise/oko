@@ -14,10 +14,17 @@
                 [removable]="false"
                 [creator]="true">
       </app-item>
+      <div class="request-item-selection__empty d-flex justify-content-center" *ngIf="!selectableItems.length">
+          <mat-icon>error_outline</mat-icon><br>
+          <div>Aucun article enregistré</div>
+      </div>
     </div>
     <div class="request-item-selection__validation">
-      <button class="btn btn-success" (click)="saveItems()">
-        Valider
+      <button class="btn" [ngClass]="{
+        'btn-success': selectableItems.length,
+        'btn-info': !selectableItems.length
+      }" (click)="saveItems()">
+        {{ selectableItems.length ?  'Valider' : 'Fermer' }}
       </button>
     </div>
 </div>

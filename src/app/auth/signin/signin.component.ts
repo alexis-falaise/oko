@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, ValidationErrors, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, ValidationErrors, FormGroup, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AuthService } from '@core/auth.service';
 import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-signin',
@@ -9,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
+
   signinForm = this.fb.group({
     firstname: ['', Validators.required],
     lastname: ['', Validators.required],
@@ -16,17 +19,15 @@ export class SigninComponent implements OnInit {
       Validators.required,
       Validators.email
     ])],
-    password: ['', Validators.compose([
+    password: ['', [
       Validators.required,
       Validators.minLength(8)
-    ])],
-    passwordConfirm: ['', Validators.compose([
+    ]],
+    passwordConfirm: ['', [
       Validators.required,
       Validators.minLength(8),
-    ])],
-  }, {
-    validators: this.passwordMatch,
-  });
+    ]],
+  }, {validator: this.passwordMatch});
   validForm = false;
   validated = false;
   signinError = false;
@@ -62,10 +63,9 @@ export class SigninComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  private passwordMatch(form: FormGroup): ValidationErrors {
-    const firstpass = form.get('password');
-    const secondpass = form.get('passwordConfirm');
-    return firstpass === secondpass ? { 'passwordMismatch': true } : null;
+  private passwordMatch(control: AbstractControl): ValidationErrors {
+      const firstpass = control.get('password');
+      const secondpass = control.get('passwordConfirm');
+      return firstpass === secondpass ? { 'passwordMismatch': true } : null;
   }
-
 }

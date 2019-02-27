@@ -14,7 +14,10 @@
                 <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article" required>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="description" placeholder="Description" required>
+                <textarea rows="5" class="form-control" formControlName="description"
+                          placeholder="Description (edition d'un livre, taille d'un vêtement, couleur, fournisseur, boutique, année, modèle...)" required>
+                   
+                </textarea>
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" formControlName="photo" placeholder="Photo (lien)">
@@ -49,53 +52,63 @@
             <div class="form-group">
             <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
             </div>
-            <div class="input-group">
-                <input type="number" class="form-control" min="0" required formControlName="weight">
-                <div class="input-group-append">
-                  <span class="input-group-text">kg</span>
-                </div><br>
-            </div>
-            <div class="input-label">
-              <span class="label text-muted">
-                <mat-icon>shopping_basket</mat-icon>
-                Poids
-              </span>
-            </div>
-            <div class="input-group">
-                <input type="number" class="form-control" min="0" required formControlName="height">
-                <div class="input-group-append">
-                  <span class="input-group-text">cm</span>
-                </div><br>
-            </div>
-            <div class="input-label">
-              <span class="label text-muted">
-                <mat-icon>swap_vert</mat-icon>
-                Hauteur
-              </span>
-            </div>
-            <div class="input-group">
-                <input type="number" class="form-control" min="0" required formControlName="width">
-                <div class="input-group-append">
-                  <span class="input-group-text">cm</span>
-                </div><br>
-            </div>
-            <div class="input-label">
-              <span class="label text-muted">
-                <mat-icon>swap_horiz</mat-icon>
-                Largeur
-              </span>
-            </div>
-            <div class="input-group">
-                <input type="number" class="form-control" min="0" required formControlName="depth">
-                <div class="input-group-append">
-                  <span class="input-group-text">cm</span>
-                </div><br>
-            </div>
-            <div class="input-label">
-              <span class="label text-muted">
-                <mat-icon>compare_arrows</mat-icon>
-                Profondeur
-              </span>
+            <div class="form-row">
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                  <div class="input-group">
+                      <input type="number" class="form-control" min="0" required formControlName="weight">
+                      <div class="input-group-append">
+                        <span class="input-group-text">kg</span>
+                      </div><br>
+                  </div>
+                  <div class="input-label">
+                    <span class="label text-muted">
+                      <mat-icon>shopping_basket</mat-icon>
+                      Poids
+                    </span>
+                  </div>
+              </div>
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" required formControlName="height">
+                    <div class="input-group-append">
+                      <span class="input-group-text">cm</span>
+                    </div><br>
+                </div>
+                <div class="input-label">
+                  <span class="label text-muted">
+                    <mat-icon>swap_vert</mat-icon>
+                    Hauteur
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" required formControlName="width">
+                    <div class="input-group-append">
+                      <span class="input-group-text">cm</span>
+                    </div><br>
+                </div>
+                <div class="input-label">
+                  <span class="label text-muted">
+                    <mat-icon>swap_horiz</mat-icon>
+                    Largeur
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" required formControlName="depth">
+                    <div class="input-group-append">
+                      <span class="input-group-text">cm</span>
+                    </div><br>
+                </div>
+                <div class="input-label">
+                  <span class="label text-muted">
+                    <mat-icon>compare_arrows</mat-icon>
+                    Profondeur
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="request-item__step-validation">

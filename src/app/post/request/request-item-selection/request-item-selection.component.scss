@@ -41,4 +41,21 @@
         position: relative;
         top: -17px;
     }
+
+    &__empty {
+        $emptyColor: rgb(175, 175, 175);
+        $iconSize: 64px;
+        color: $emptyColor;
+        height: 30vh;
+        width: 100%;
+        align-items: center;
+        .mat-icon {
+            width: $iconSize;
+            height: $iconSize;
+        }
+        .material-icons {
+            font-size: $iconSize;
+            color: $emptyColor;
+        }
+    }
 }

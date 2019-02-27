@@ -30,8 +30,8 @@
         </div>
         <div class="home-hero__summary" *ngIf="!expanded">
             <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Trajets à venir</span>
-            <span class="home-hero__summary-location" (click)="enter()">{{ filter.location }}</span>
-            <span class="home-hero__summary-item" (click)="enter()">{{ filter.item }}</span>
+            <span class="home-hero__summary-location" *ngIf="filter.location" (click)="enter()">{{ filter.location }}</span>
+            <span class="home-hero__summary-item" *ngIf="filter.item" (click)="enter()">{{ filter.item }}</span>
         </div>
     </div>
     <div class="home-content" [class.expanded]="!expanded" [class.empty]="empty" (scroll)="onScroll($event)">

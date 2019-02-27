@@ -5,13 +5,12 @@
       <mat-icon>keyboard_backspace</mat-icon>
     </span>
   </button> -->
+  <a class="navbar-brand" href="#">ọkọ</a>
   <button class="navbar-toggler" type="button"
     aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
     <mat-icon *ngIf="!menuDisplay">menu</mat-icon>
     <mat-icon *ngIf="menuDisplay">clear</mat-icon>
   </button>
-  <a class="navbar-brand" href="#">ọkọ</a>
-
 
   <div class="collapse navbar-collapse right" id="menu-collapse">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -31,7 +30,7 @@
   </div>
 </nav>
 
-<div class="navbar__fullscreen justify-content-center" (swipeLeft)="hide()" [hidden]="!menuDisplay">
+<div class="navbar__fullscreen justify-content-center" (swipeRight)="hide()" [hidden]="!menuDisplay">
   <div class="navbar__fullscreen-item" *ngFor="let item of menuItems" (click)="hide()">
     <a routerLink="{{ item.path }}" routerLinkActive="active">
         <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>

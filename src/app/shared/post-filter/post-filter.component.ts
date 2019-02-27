@@ -3,6 +3,15 @@ import { Filter } from '@models/app/filter.model';
 import { DateAdapter } from '@angular/material';
 import * as moment from 'moment';
 
+class FilterOptions {
+  location: boolean;
+  city: boolean;
+  country: boolean;
+  beforeDate: boolean;
+  constructor(options: Partial<FilterOptions>) {
+    Object.assign(this, options);
+  }
+}
 @Component({
   selector: 'app-post-filter',
   templateUrl: './post-filter.component.html',
@@ -10,9 +19,7 @@ import * as moment from 'moment';
 })
 export class PostFilterComponent implements OnInit, OnChanges {
   @Input() filter = new Filter();
-  @Input() options = {
-    location: true,
-  };
+  @Input() options = new FilterOptions({location: true});
   @Output() filterRefresh = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
   today = moment();
@@ -24,7 +31,7 @@ export class PostFilterComponent implements OnInit, OnChanges {
       this.filter = change.filter.currentValue;
     }
     if (change.options) {
-      this.options = change.options.currentValue;
+      this.options = new FilterOptions(change.options.currentValue);
     }
   }
 

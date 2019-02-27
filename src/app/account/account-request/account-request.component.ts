@@ -15,6 +15,7 @@ import { UiService } from '@core/ui.service';
 })
 export class AccountRequestComponent implements OnInit {
   requests: Array<Request> = null;
+  hasDraft = false;
 
   constructor(
     private userService: UserService,
@@ -39,6 +40,7 @@ export class AccountRequestComponent implements OnInit {
         });
       }
     });
+    this.manageDrafts();
   }
 
   newRequest() {
@@ -47,6 +49,11 @@ export class AccountRequestComponent implements OnInit {
 
   remove(index: number) {
     this.requests.splice(index, 1);
+  }
+
+  private manageDrafts() {
+    const draft = this.postService.getRequestDraft();
+    this.hasDraft = !!draft;
   }
 
 }

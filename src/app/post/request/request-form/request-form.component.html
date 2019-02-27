@@ -78,7 +78,8 @@
       <div *ngIf="meeting.controls.urgent.value">
         <form [formGroup]="meeting.controls.urgentDetails">
           <div class="form-group">
-              <textarea rows="2" class="form-control" placeholder="Raison de l'urgence" formControlName="explaination" required>
+              <textarea rows="2" class="form-control" placeholder="Raison de l'urgence (facultatif)"
+                         formControlName="explaination">
               </textarea>
             </div>
             <div class="form-row">
@@ -123,7 +124,7 @@
         || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
         || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
       " (click)="saveRequest()">
-       <span *ngIf="trip?.user?.firstname">{{ edition ? 'Faire une demande à' : 'Modifier ma demande pour' }} {{ trip.user.firstname }}</span>
+       <span *ngIf="trip?.user?.firstname">{{ edition ?  'Modifier ma demande pour' : 'Faire une demande à' }} {{ trip.user.firstname }}</span>
        <span *ngIf="freeRequest || !trip">{{ edition ? 'Modifier' : 'Créer' }} une annonce</span>
     </button>
   </div>

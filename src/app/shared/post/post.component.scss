@@ -87,6 +87,11 @@ $post-height: 100px;
                 margin-bottom: 0;
                 font-weight: 700;
             } 
+
+            &__trips,
+            &__requests {
+                font-size: 10px;
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MatDialog, MatSnackBar, MatStepper } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -18,7 +18,7 @@ import { Luggage } from '@models/luggage.model';
   templateUrl: './trip.component.html',
   styleUrls: ['./trip.component.scss']
 })
-export class TripComponent implements OnInit {
+export class TripComponent implements OnInit, OnDestroy {
 
   fromExtended = true;
   fromFocus = false;
@@ -141,7 +141,16 @@ export class TripComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.saveDraft();
+  }
+
   private saveError() {
+    this.saveDraft();
+    this.openDialog();
+  }
+
+  private saveDraft() {
     this.postService.saveTripDraft({
       departure: this.departureSave,
       arrival: this.arrivalSave,
@@ -149,7 +158,6 @@ export class TripComponent implements OnInit {
       edition: this.edition,
       trip: this.trip || null,
     });
-    this.openDialog();
   }
 
   private openDialog() {

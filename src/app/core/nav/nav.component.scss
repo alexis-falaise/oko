@@ -56,7 +56,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     &-toggler {
         border: none;
         position: absolute;
-        left: 20px;
+        right: 20px;
 
         .mat-icon,
         .material-icon {
@@ -139,8 +139,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 }
 
 @keyframes fullscreenEnter {
-    0% { opacity: 0.5; margin-left: -50%; }
-    100% { opacity: 1; margin-left: 0%; }
+    0% { opacity: 0.25; right: -75%; }
+    100% { opacity: 1; right: 0%; }
 }
 
 .navbar__fullscreen {
@@ -154,7 +154,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     z-index: 101;
     width: 100%;
     height: 100vh;
-    // box-shadow: 5px 3px 7px rgba(0, 0, 0, .05);
+    box-shadow: -5px 3px 7px rgba(0, 0, 0, .05);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

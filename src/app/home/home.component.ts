@@ -51,12 +51,9 @@ export class HomeComponent implements OnInit {
   cities: Array<City> = [];
 
   constructor(
-    private authService: AuthService,
     private postService: PostService,
     private uiService: UiService,
     private geoService: GeoService,
-    private adapter: DateAdapter<any>,
-    private ref: ChangeDetectorRef,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
@@ -121,6 +118,9 @@ export class HomeComponent implements OnInit {
   }
 
   listStatus(length) {
+    if (!length && !this.empty) {
+      this.snack.open('Aucun trajet correspondant', undefined, {duration: 2500});
+    }
     this.empty = length === 0;
   }
 

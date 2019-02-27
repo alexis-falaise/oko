@@ -1,9 +1,14 @@
 <div class="account-request container">
   <small class="text-muted account-request-hint">Swipez vers la gauche pour editer ou supprimer une annonce</small>
   <div class="account-request__new">
-      <button class="btn btn-info btn-new-trip" (click)="newRequest()">
+      <button class="btn btn-info btn-new-trip" *ngIf="!hasDraft; else draft" (click)="newRequest()">
           <mat-icon>new_releases</mat-icon> Déposer une annonce
       </button>
+      <ng-template #draft>
+            <button class="btn btn-warning btn-new-trip" (click)="newRequest()">
+                <mat-icon>edit</mat-icon> Voir mon brouillon
+            </button>
+      </ng-template>
   </div>
   <app-post [post]="request" [editable]="true" (remove)="remove(i)" *ngFor="let request of requests; let i = index;"></app-post>
 </div>

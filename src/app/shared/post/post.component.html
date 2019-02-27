@@ -14,6 +14,9 @@
             <div class="post-info__user-info__trips">
                 {{ post.user.trips || 0 }} voyage{{ post.user?.trips > 1 ? 's': '' }}
             </div>
+            <div class="post-info__user-info__requests" *ngIf="!isTrip">
+                {{ post.user.requests || 0 }} annonce{{ post.user?.requests > 1 ? 's': '' }}
+            </div>
         </div>
     </div>
     <div class="post-general col-9 col-md-10" *ngIf="isTrip; else request">

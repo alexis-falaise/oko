@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { environment } from '@env/environment';
@@ -24,6 +25,7 @@ export class AuthService {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private snack: MatSnackBar,
   ) { }
 
   onUser(): Observable<User> {
@@ -77,6 +79,7 @@ export class AuthService {
     .subscribe((loginInfo: any) => {
       if (loginInfo.status) {
         this.currentUser.next(loginInfo.user);
+        this.snack.open('Vous êtes connecté !', undefined, {duration: 2500});
         this.router.navigate(['/home']);
       }
       this.status.next(loginInfo);

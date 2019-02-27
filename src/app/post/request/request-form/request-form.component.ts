@@ -37,10 +37,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       zip: [''],
       country: ['', Validators.required],
     }),
-    airportPickup: [false],
+    airportPickup: [true],
     urgent: [false],
     urgentDetails: this.fb.group({
-      explaination: ['', Validators.required],
+      explaination: [''],
       date: [null],
     }),
     bonus: ['', Validators.required],
@@ -91,6 +91,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const draft = this.postService.getRequestDraft();
     if (draft) {
       this.setEditableRequest(draft);
+      this.edition = false;
     }
   }
 
@@ -171,14 +172,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   saveRequest() {
-    const meeting = this.meeting.value;
-    delete meeting.city;
-    const saveRequest = new Request({
-      items: this.items,
-      trip: this.trip,
-      id: this.edition ? this.requestId : undefined,
-      ...meeting,
-    });
+    const saveRequest = this.createSaveRequest();
 
     this.userService.getCurrentUser()
     .subscribe(currentUser => {
@@ -203,9 +197,25 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     }, (error) => this.requestError(saveRequest));
   }
 
+  private createSaveRequest() {
+    const meeting = this.meeting.value;
+    delete meeting.city;
+    const saveRequest = new Request({
+      items: this.items,
+      trip: this.trip,
+      id: this.edition ? this.requestId : undefined,
+      ...meeting,
+    });
+    return saveRequest;
+  }
+
   private requestError(draft) {
-    this.postService.saveRequestDraft(draft);
+    this.saveDraft(draft);
     this.dialog.open(NotConnectedComponent);
+  }
+
+  private saveDraft(draft) {
+    this.postService.saveRequestDraft(draft);
   }
 
   private requestServerError(message: string, code: string) {
@@ -214,7 +224,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.geoService.getCities(null);
+    this.geoService.resetCities();
+    const draft = this.createSaveRequest();
+    this.saveDraft(draft);
   }
 
 }

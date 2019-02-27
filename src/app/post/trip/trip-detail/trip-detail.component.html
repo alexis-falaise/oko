@@ -32,7 +32,7 @@
             </div>
             <div class="trip-detail__info__user-detail col-6 col-sm-8 col-md-9">
               <div class="user-name">{{ trip.user.firstname }}</div>
-              <div class="user-trips">{{ trip.user.trips || 0 }} trips</div>
+              <div class="user-trips">{{ trip.user.trips || 0 }} voyage{{ trip.user.trips > 1 ? 's' : '' }}</div>
             </div>
         </div>
       </div>
@@ -78,9 +78,9 @@
                 <li [class.disabled]="trip.airportDrop">
                     <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
                 </li>
-                <li [class.disabled]="!trip.bonus">
+                <!-- <li [class.disabled]="!trip.bonus">
                     <mat-icon>euro_symbol</mat-icon> Bonus voyageur proposé: {{ trip.bonus || 0 }} € 
-                </li>
+                </li> -->
             </ul>
           </div>
       </div>

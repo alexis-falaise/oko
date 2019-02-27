@@ -1,6 +1,6 @@
 <div class="request-detail container-fluid">
   <div class="request-detail__hero row">
-    <h2>Résumé de l'annonce</h2>
+    <h2 class="request-detail__hero-title">Résumé de l'annonce</h2>
     <small class="request-detail__date" *ngIf="request.submitDate">
       Posté {{ moment(request.submitDate).fromNow() }}
     </small>
@@ -23,7 +23,7 @@
     <h4 class="request-detail__location-title request-detail__section-title">
       {{ own ? 'Ma ville' : 'Ville de remise' }}
     </h4>
-    <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country && own; else noCity">
+    <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
       <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
     </div>
     <ng-template #noCity>

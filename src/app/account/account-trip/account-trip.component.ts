@@ -15,6 +15,7 @@ import { UiService } from '@core/ui.service';
 })
 export class AccountTripComponent implements OnInit {
   trips: Array<Trip> = null;
+  hasDraft = false;
 
   constructor(
     private postService: PostService,
@@ -37,6 +38,7 @@ export class AccountTripComponent implements OnInit {
         });
       }
     });
+    this.manageDrafts();
   }
 
   newTrip() {
@@ -45,6 +47,11 @@ export class AccountTripComponent implements OnInit {
 
   remove(index: number) {
     this.trips.splice(index, 1);
+  }
+
+  private manageDrafts() {
+    const draft = this.postService.getTripDraft();
+    this.hasDraft = !!draft;
   }
 
 }

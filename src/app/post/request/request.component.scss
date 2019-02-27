@@ -13,7 +13,8 @@
         background: $heroGradient;
         // background-image: url('/assets/hero-trip-detail.jpg');
         width: 100vw;
-        min-height: 150px;
+        min-height: 125px;
+        position: sticky;
         height: 15vh;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -23,6 +24,10 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+
+        &-title {
+            font-size: 24px;
+        }
     }
 
     &__form {
