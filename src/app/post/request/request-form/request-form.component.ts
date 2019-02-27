@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, DateAdapter } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -47,11 +47,13 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   });
   bonusAgreed = false;
   requestId: string;
+  saved = false;
 
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
     private router: Router,
+    private adapter: DateAdapter<any>,
     private postService: PostService,
     private userService: UserService,
     private geoService: GeoService,
@@ -70,6 +72,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    this.adapter.setLocale('fr');
     this.geoService.onCities()
     .subscribe(cities => this.cities = cities);
     this.meeting.controls.city.valueChanges
@@ -183,6 +186,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         : this.postService.createRequest(saveRequest);
         requestService.subscribe(response => {
           if (response.status) {
+            this.saved = true;
             const responseRequest = new Request(response.data);
             this.snack.open(`Annonce ${this.edition ? 'enregistrée' : 'modifiée'}`, 'Top!', {duration: 3000});
             this.router.navigate([`post/request/${responseRequest.id}`]);
@@ -225,8 +229,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.geoService.resetCities();
-    const draft = this.createSaveRequest();
-    this.saveDraft(draft);
+    if (!this.saved) {
+      const draft = this.createSaveRequest();
+      this.saveDraft(draft);
+    }
   }
 
 }

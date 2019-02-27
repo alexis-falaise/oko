@@ -32,6 +32,7 @@ export class TripComponent implements OnInit, OnDestroy {
   constraintsInfo = null;
   loading = false;
   edition = false;
+  saved = false;
   trip: Trip = null;
 
   constructor(
@@ -104,6 +105,7 @@ export class TripComponent implements OnInit, OnDestroy {
             .subscribe(response => {
             this.loading = false;
               if (response.status) {
+                this.saved = true;
                 this.postService.deleteTripDraft();
                 this.snack.open('Voyage enregistré', 'Top!', {duration: 2000});
                 this.router.navigate(['/home']);
@@ -114,6 +116,7 @@ export class TripComponent implements OnInit, OnDestroy {
             .subscribe(response => {
               this.loading = false;
               if (response.status) {
+                this.saved = true;
                 this.snack.open('Voyage modifié', 'OK', {duration: 2500});
                 this.router.navigate(['/account/trip']);
               }
@@ -142,7 +145,9 @@ export class TripComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.saveDraft();
+    if (!this.saved) {
+      this.saveDraft();
+    }
   }
 
   private saveError() {

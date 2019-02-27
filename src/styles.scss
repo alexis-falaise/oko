@@ -43,7 +43,8 @@ html, body {
     -o-animation: $duration enter;
 }
 
-div {
+.container,
+.post, .item, .avatar, .btn {
     animation: 0.15s appear;
 }
 

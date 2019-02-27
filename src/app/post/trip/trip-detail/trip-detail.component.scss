@@ -66,13 +66,26 @@
             display: block;
         }
 
+        &__location {
+            margin-top: -5px;
+        }
+
         &__airport-code {
             font-size: 30px;
         }
 
         &__airport-label {
-            font-size: 16px;
+            font-size: 10px;
             color: rgba(255, 255, 255, .7);
+        }
+
+        &__city {
+            font-size: 16px;
+        }
+
+        &__country {
+            font-size: 14px;
+            color: rgba(255, 255, 255, .5);
         }
     }
 

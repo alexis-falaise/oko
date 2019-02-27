@@ -8,6 +8,9 @@
             <button class="btn btn-warning btn-new-trip" (click)="newTrip()">
                 <mat-icon>edit</mat-icon> Voir mon brouillon
             </button>
+            <button class="btn btn-danger btn-new-trip" (click)="deleteDraft()">
+                <mat-icon>delete</mat-icon> Supprimer mon brouillon
+            </button>
         </ng-template>
     </div>
     <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of trips; let i = index;"></app-post>

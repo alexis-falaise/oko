@@ -4,6 +4,12 @@
       <span class="trip-detail__hero__airport-code" *ngIf="trip.from">
         {{ trip.from.airport ? trip.from.airport.code : trip.from.label }}
       </span>
+      <div class="trip-detail__hero__location" *ngIf="trip.from?.airport">
+        <span class="trip-detail__hero__city">{{ trip.from.airport.city }}</span>
+        <span class="trip-detail__hero__country">
+            {{ trip.from.airport.country }}
+          </span>
+      </div>
       <span class="trip-detail__hero__airport-label" *ngIf="trip.from && trip.from.airport">
         {{ trip.from.airport.label || trip.from.airport.name }}
       </span>
@@ -15,12 +21,18 @@
       <span class="trip-detail__hero__airport-code" *ngIf="trip.to">
         {{ trip.to.airport ? trip.to.airport.code : trip.to.label }}
       </span>
+      <div class="trip-detail__hero__location" *ngIf="trip.to?.airport">
+          <span class="trip-detail__hero__city">{{ trip.to.airport.city }}</span>
+          <span class="trip-detail__hero__country">
+              {{ trip.to.airport.country }}
+            </span>
+        </div>
       <span class="trip-detail__hero__airport-label" *ngIf="trip.to && trip.to.airport">
         {{ trip.to.airport.label || trip.to.airport.name }}
       </span>
     </div>
     <div class="trip-detail__hero__date col-12" *ngIf="trip && trip.date">
-        {{ trip.date.format('DD MMMM YYYY') }}
+        Arrivée le {{ trip.date.format('DD MMMM YYYY - HH:mm') }}
     </div>
   </div>
   <div class="trip-detail__info container">

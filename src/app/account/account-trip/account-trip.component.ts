@@ -49,6 +49,11 @@ export class AccountTripComponent implements OnInit {
     this.trips.splice(index, 1);
   }
 
+  deleteDraft() {
+    this.postService.deleteTripDraft();
+    this.hasDraft = false;
+  }
+
   private manageDrafts() {
     const draft = this.postService.getTripDraft();
     this.hasDraft = !!draft;

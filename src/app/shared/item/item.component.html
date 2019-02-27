@@ -1,4 +1,4 @@
-<mat-card matRipple [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'" (swipeLeft)="removePanel = true" (swipeRight)="removePanel = false" class="item">
+<mat-card class="item" matRipple [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'" (swipeLeft)="removePanel = true" (swipeRight)="removePanel = false" class="item">
     <div class="close" (click)="removeItem()" *ngIf="removable">
       <mat-icon>clear</mat-icon>
     </div>

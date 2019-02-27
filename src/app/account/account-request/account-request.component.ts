@@ -51,6 +51,11 @@ export class AccountRequestComponent implements OnInit {
     this.requests.splice(index, 1);
   }
 
+  deleteDraft() {
+    this.postService.deleteRequestDraft();
+    this.hasDraft = false;
+  }
+
   private manageDrafts() {
     const draft = this.postService.getRequestDraft();
     this.hasDraft = !!draft;

@@ -5,9 +5,12 @@
           <mat-icon>new_releases</mat-icon> Déposer une annonce
       </button>
       <ng-template #draft>
-            <button class="btn btn-warning btn-new-trip" (click)="newRequest()">
-                <mat-icon>edit</mat-icon> Voir mon brouillon
-            </button>
+        <button class="btn btn-warning btn-new-trip" (click)="newRequest()">
+            <mat-icon>edit</mat-icon> Voir mon brouillon
+        </button>
+        <button class="btn btn-danger btn-new-trip" (click)="deleteDraft()">
+            <mat-icon>delete</mat-icon> Supprimer mon brouillon
+        </button>
       </ng-template>
   </div>
   <app-post [post]="request" [editable]="true" (remove)="remove(i)" *ngFor="let request of requests; let i = index;"></app-post>
