@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpProgressEvent, HttpEventType } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '@models/user.model';
 import { environment } from '@env/environment';
+import { ServerResponse } from '@models/app/server-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,11 @@ export class UserService {
 
   updateUser(user: User): Observable<Object> {
     return this.http.put(`${this.userUrl}/${user.id}`, user, {withCredentials: true});
+  }
+
+  uploadUserAvatar(picture: File, user: User): Observable<ServerResponse> {
+    const formData = new FormData();
+    formData.append('picture', picture);
+    return this.http.post(`${this.userUrl}/${user.id}/avatar`, formData, {withCredentials: true}) as Observable<ServerResponse>;
   }
 }

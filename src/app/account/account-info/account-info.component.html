@@ -1,4 +1,25 @@
 <div class="account-info container">
+  <div class="account-info__address">
+    <h4 class="account-info-title">Informations générales</h4>
+    <form [formGroup]="address" class="needs-validation" novalidate>
+      <div class="form-row">
+        <div class="form-group col-12 col-sm-6">
+          <input type="text" formControlName="address" class="form-control" placeholder="Adresse">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <input type="text" formControlName="city" class="form-control" placeholder="Ville">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <input type="text" formControlName="zip" class="form-control" placeholder="Code postal">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <input type="text" formControlName="country" class="form-control" placeholder="Pays">
+        </div>
+      </div>
+    </form>
+  </div>
+  <hr class="divider">
+  <h4 class="account-info-title">Description</h4>
   <div *ngFor="let item of keys(edit)" class="account-info__item">
     <div *ngIf="isArray(description[item]); else simpleItem">
       <h6>{{ frenchization(item) }}</h6>
@@ -37,7 +58,7 @@
     </ng-template>
   </div>
   <div class="account-info__action">
-  <button class="btn btn-success" [disabled]="!hasEdited()" (click)="save()">
+  <button class="btn btn-success" (click)="save()">
       Enregistrer
     </button>
   </div>

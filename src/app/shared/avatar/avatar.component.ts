@@ -1,4 +1,5 @@
-import { Component, OnChanges, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, Input, SimpleChanges, Sanitizer } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { environment } from '@env/environment';
 @Component({
@@ -10,10 +11,10 @@ export class AvatarComponent implements OnInit, OnChanges {
 
   @Input() image: string;
   @Input() size: number;
-  imageUrl: string = null;
+  imageUrl: SafeUrl = null;
   avatarLocation = environment.avatarLocation;
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.buildUrl(this.image);
@@ -26,7 +27,7 @@ export class AvatarComponent implements OnInit, OnChanges {
   }
 
   buildUrl(image: string) {
-    return `url('${this.avatarLocation}/${image}')`;
+    return this.sanitizer.bypassSecurityTrustUrl(`${this.avatarLocation}/${image}`);
   }
 
 }

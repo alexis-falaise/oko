@@ -4,6 +4,9 @@ import { Description } from '@models/description.model';
 import { keyframes } from '@angular/animations';
 import { UserService } from '@core/user.service';
 import { UiService } from '@core/ui.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MeetingPoint } from '@models/meeting-point.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-account-info',
@@ -12,6 +15,12 @@ import { UiService } from '@core/ui.service';
 })
 export class AccountInfoComponent implements OnInit {
   user: User;
+  address = this.fb.group({
+    address: [''],
+    city: [''],
+    zip: [''],
+    country: [''],
+  });
   description: Description;
   edit: any = {};
   keys = Object.keys;
@@ -32,7 +41,9 @@ export class AccountInfoComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private uiService: UiService
+    private uiService: UiService,
+    private snack: MatSnackBar,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -49,6 +60,9 @@ export class AccountInfoComponent implements OnInit {
   init(user: User) {
     this.user = user;
     this.description = new Description(user.description);
+    if (user.address) {
+      this.address.patchValue(user.address);
+    }
     this.createEditionObject();
   }
 
@@ -73,21 +87,27 @@ export class AccountInfoComponent implements OnInit {
     array.splice(index, 1);
   }
 
-  hasEdited(): boolean {
-    return !!this.keys(this.edit).find(item => this.edit[item]);
-  }
-
   save() {
     this.uiService.setLoading(true);
     this.user.description = new Description(this.description);
+    this.user.address = new MeetingPoint(this.address.value);
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
-       this.uiService.setLoading(false);
       if (res.status) {
+        this.snack.open('Profil mis à jour', 'OK', {duration: 2500});
         this.userService.getCurrentUser();
         this.init(res.data);
+      } else {
+        this.saveError();
       }
-    });
+      this.uiService.setLoading(false);
+    }, () => this.saveError());
+  }
+
+  saveError() {
+    const snackRef = this.snack.open('Erreur lors de la mise à jour de votre profil', 'Réessayer', {duration: 3000});
+    snackRef.onAction().subscribe(() => this.save());
+    this.uiService.setLoading(false);
   }
 
 }

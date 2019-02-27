@@ -1,0 +1,16 @@
+@import "../../../styles/variables.scss";
+
+.account-avatar-upload {
+    &__title {
+        font-weight: 700;
+        color: $cyan-600;
+    }
+    &__image-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+    }
+    &__image {
+        border-radius: 5px;
+    }
+}

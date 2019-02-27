@@ -4,7 +4,7 @@ const privateIp = '10.136.116.76';
 
 export const environment = {
   production: true,
-  avatarLocation: '/assets/avatar',
+  avatarLocation: `http://${publicIp}/api/avatar`,
   serverPort: port,
   serverUrl: `http://${publicIp}/api`,
 };

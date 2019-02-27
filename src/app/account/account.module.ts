@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatChipsModule,
   MatProgressBarModule,
   MatTabsModule,
   MatIconModule,
   MatButtonModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatBottomSheetModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -17,6 +18,7 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { AccountItemComponent } from './account-item/account-item.component';
 import { AccountTripComponent } from './account-trip/account-trip.component';
 import { AccountRequestComponent } from './account-request/account-request.component';
+import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
 import { AccountComponent } from './account.component';
 
 @NgModule({
@@ -26,21 +28,25 @@ import { AccountComponent } from './account.component';
     AccountTripComponent,
     AccountRequestComponent,
     AccountItemComponent,
+    AccountAvatarUploadComponent,
   ],
   entryComponents: [
     AccountComponent,
+    AccountAvatarUploadComponent,
   ],
   imports: [
     RouterModule,
     SharedModule,
     CommonModule,
     FormsModule,
+    MatBottomSheetModule,
     MatButtonModule,
     MatChipsModule,
     MatIconModule,
     MatProgressBarModule,
     MatSnackBarModule,
     MatTabsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     AccountComponent,

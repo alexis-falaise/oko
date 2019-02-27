@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSnackBar, MatBottomSheet } from '@angular/material';
+
 import { UserService } from '@core/user.service';
+
 import { User } from '@models/user.model';
 import { Link } from '@models/link.model';
-import { MatSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
+import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
 
 @Component({
   selector: 'app-account',
@@ -23,6 +26,7 @@ export class AccountComponent implements OnInit {
   constructor(
     private userService: UserService,
     private snack: MatSnackBar,
+    private sheet: MatBottomSheet,
     private router: Router,
   ) { }
 
@@ -32,11 +36,28 @@ export class AccountComponent implements OnInit {
       if (user) {
         this.currentUser = user;
       } else {
-        const snackRef = this.snack.open('Vous avez été déconnecté', 'Reconnexion');
-        snackRef.onAction().subscribe(() => {
-          this.router.navigate(['/login']);
-        });
+        this.connexionError();
       }
+    }, (err) => this.connexionError());
+  }
+
+  openAvatarUpload() {
+    const sheetRef = this.sheet.open(AccountAvatarUploadComponent, {
+      autoFocus: true,
+      closeOnNavigation: true,
+      data: this.currentUser,
+    });
+    sheetRef.afterDismissed().subscribe((user) => {
+      if (user) {
+        this.currentUser = new User(user);
+      }
+    });
+  }
+
+  connexionError() {
+    const snackRef = this.snack.open('Vous avez été déconnecté', 'Reconnexion');
+    snackRef.onAction().subscribe(() => {
+      this.router.navigate(['/login']);
     });
   }
 
