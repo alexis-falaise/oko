@@ -29,6 +29,8 @@ export class PostComponent implements OnInit, OnChanges {
   avatarLocation = environment.avatarLocation;
   panel = false;
   moment = moment;
+  outdated = false;
+  urgent = false;
 
   constructor(
     private router: Router,
@@ -52,10 +54,18 @@ export class PostComponent implements OnInit, OnChanges {
     if (post instanceof Trip && post.luggages) {
       const luggages = post.luggages as any;
       this.weight = luggages.reduce((acc: number, luggage: Luggage) => acc + luggage.weight, 0) as number;
+      this.outdated = moment(post.date).isBefore(moment.now());
     }
     if (post instanceof Request && post.items) {
       const items = post.items as any;
       this.weight = items.reduce((acc: number, item: Item) => acc + item.weight, 0) as number;
+      if (post.urgent && post.urgentDetails) {
+        this.outdated = moment(post.urgentDetails.date).isBefore(moment.now());
+        this.urgent = true;
+      }
+      if (post.closed) {
+        this.outdated = true;
+      }
     }
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
   }

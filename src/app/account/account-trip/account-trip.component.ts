@@ -32,7 +32,7 @@ export class AccountTripComponent implements OnInit {
         this.postService.getTripByAuthor(user.id)
         .subscribe(trips => {
           if (trips) {
-            this.trips = trips.map(trip => new Trip(trip)).sort((a, b) => moment(a.date).isBefore(b.date) ? -1 : 1);
+            this.trips = trips.map(trip => new Trip(trip)).sort((a, b) => moment(b.date).isBefore(a.date) ? -1 : 1);
             this.uiService.setLoading(false);
           }
         });

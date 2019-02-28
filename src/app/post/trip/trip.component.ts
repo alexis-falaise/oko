@@ -156,13 +156,15 @@ export class TripComponent implements OnInit, OnDestroy {
   }
 
   private saveDraft() {
-    this.postService.saveTripDraft({
-      departure: this.departureSave,
-      arrival: this.arrivalSave,
-      constraints: this.constraintsSave,
-      edition: this.edition,
-      trip: this.trip || null,
-    });
+    if (this.departureSave || this.arrivalSave || this.constraintsSave) {
+      this.postService.saveTripDraft({
+        departure: this.departureSave,
+        arrival: this.arrivalSave,
+        constraints: this.constraintsSave,
+        edition: this.edition,
+        trip: this.trip || null,
+      });
+    }
   }
 
   private openDialog() {

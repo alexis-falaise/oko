@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+@import "../../../styles/variables.scss";
 
 $post-height: 100px;
 
@@ -24,6 +25,10 @@ $post-height: 100px;
         margin-left: -2.5vw;
         min-height: 300px;
         display: inline-flex;
+    }
+
+    &.urgent {
+        border-right: thick solid $red-800;
     }
 
     .row {
@@ -57,6 +62,9 @@ $post-height: 100px;
 
     &-general {
         margin-top: -5px;
+        &.outdated {
+            opacity: .5;
+        }
     }
 
     &-info {
@@ -191,6 +199,13 @@ $post-height: 100px;
                 align-items: center;
                 font-size: $propertySize;
                 color: $propertyColor;
+                &.urgent {
+                    font-size: 8px;
+                    color: $red-800 !important;
+                    .material-icons {
+                        color: $red-800 !important;
+                    }
+                }
                 .mat-icon {
                     height: $propertySize;
                     width: $propertySize;

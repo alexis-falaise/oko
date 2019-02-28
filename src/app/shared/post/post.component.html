@@ -1,7 +1,7 @@
 <div matRipple class="post row"
     (click)="toPost()"
     (swipeLeft)="showPanel()" (swipeRight)="hidePanel()"
-    [class.horizontal]="horizontal">
+    [class.horizontal]="horizontal"  [class.urgent]="urgent">
     <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="!horizontal"
     [style.background-image]="'url('+avatarLocation+'/'+post.user.avatar+')'">
         <!-- <div class="post-info__user-avatar">
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="post-general col-9 col-md-10" *ngIf="isTrip; else request">
+    <div class="post-general col-9 col-md-10" [class.outdated]="outdated" *ngIf="isTrip; else request">
         <div class="row">
             <div class="post-trip col-8 col-sm-9 col-md-10">
                 <div class="row" *ngIf="!horizontal; else horizontalTrip">
@@ -82,7 +82,7 @@
         </div>
     </div>
     <ng-template #request>
-        <div class="post-general post-request col-9 col-md-10">
+        <div class="post-general post-request col-9 col-md-10" [class.outdated]="outdated">
             <div class="row">
                 <div class="post-request__content col-6 col-sm-8">
                     <div class="row post-request__content__items h-75">
@@ -125,6 +125,9 @@
                     </ng-template>
                     <div class="post-request__practical__property" *ngIf="weight">
                         <mat-icon>shopping_basket</mat-icon> {{ weight }} kg
+                    </div>
+                    <div class="post-request__practical__property urgent" *ngIf="urgent && post.urgentDetails?.date">
+                        <mat-icon>warning</mat-icon> Avant le {{ moment(post.urgentDetails?.date).format('DD/MM') }}
                     </div>
                     <div class="post-request__practical__property__date" *ngIf="post.submitDate">
                         Posté le {{ moment(post.submitDate).format('DD/MM') }} à {{ moment(post.submitDate).format('HH:mm')}}

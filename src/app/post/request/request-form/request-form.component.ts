@@ -15,6 +15,7 @@ import { Item } from '@models/item.model';
 import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { isFulfilled } from 'q';
 
 @Component({
   selector: 'app-request-form',
@@ -219,7 +220,22 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private saveDraft(draft) {
-    this.postService.saveRequestDraft(draft);
+    const isFilled = (object): boolean => {
+      let filled = false;
+      Object.keys(object).forEach(key => {
+        if (object[key] && object[key] !== '') {
+          filled = true;
+        }
+      });
+      return filled;
+    };
+    if (draft
+        && (isFilled(draft.meetingPoint)
+        || (draft.items && draft.items.length)
+        || isFilled(draft.urgentDetails)
+        || (draft.city && draft.city !== ''))) {
+      this.postService.saveRequestDraft(draft);
+    }
   }
 
   private requestServerError(message: string, code: string) {

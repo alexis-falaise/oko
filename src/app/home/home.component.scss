@@ -183,6 +183,7 @@ $transitionStyle: ease-out;
         }
 
         &__list {
+            min-height: 400px;
             &-wrapper {
                 transition: all $transitionDuration;
                 height: 75vh;

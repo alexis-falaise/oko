@@ -324,7 +324,6 @@ export class PostService {
   private getTripsUserStats(trips: Array<Trip>, observer: Observer<Array<Trip>>) {
     if (trips && !trips.length) {
       observer.next([]);
-      observer.complete();
     } else {
       forkJoin(trips.map(trip => Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))))
       .subscribe((outputTrips: Array<Trip>) => {
@@ -332,7 +331,6 @@ export class PostService {
           return moment(first.date).isBefore(second.date) ? -1 : 1;
         });
         observer.next(resultingTrips);
-        observer.complete();
       });
     }
   }
@@ -356,16 +354,20 @@ export class PostService {
   private getRequestsUserStats(requests: Array<Request>, observer: Observer<Array<Request>>) {
     if (requests && !requests.length) {
       observer.next([]);
-      observer.complete();
     } else {
       forkJoin(requests.map(request => Observable.create(requestObserver => {
         return this.getRequestUserStats(request, requestObserver);
       }))).subscribe((outputRequests) => {
         const resultingRequests = outputRequests.sort((first, second) => {
+          if (second.urgent) {
+            return 1;
+          }
+          if (!second.submitDate) {
+            return -1;
+          }
           return moment(first.submitDate).isAfter(second.submitDate) ? -1 : 1;
         });
         observer.next(resultingRequests);
-        observer.complete();
       });
     }
   }
@@ -385,7 +387,6 @@ export class PostService {
   }
 
   private buildQueryString(filter: Filter) {
-    console.log(filter);
     return Object.keys(filter).reduce((query, key, index) => {
       return `${query}${index ? '&' : ''}${filter[key] ? key + '=' + filter[key] : '' }`;
     }, '?');
