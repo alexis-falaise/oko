@@ -17,7 +17,7 @@ export class AvatarComponent implements OnInit, OnChanges {
   constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.buildUrl(this.image);
+    this.imageUrl = this.buildUrl(this.image);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -26,8 +26,12 @@ export class AvatarComponent implements OnInit, OnChanges {
     }
   }
 
-  buildUrl(image: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(`${this.avatarLocation}/${image}`);
+  buildUrl(image: string): SafeUrl {
+    let url = null;
+    if (image) {
+      url = this.sanitizer.bypassSecurityTrustUrl(`${this.avatarLocation}/${image}`);
+    }
+    return url;
   }
 
 }

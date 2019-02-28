@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((status: any) => {
       if (status) {
+        this.ngUnsubscribe.next();
         this.status = status.status;
         if (status.status) {
           if (this.historyService.hasBack()) {

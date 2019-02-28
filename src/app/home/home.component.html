@@ -1,13 +1,18 @@
-<div class="home" [class.expanded]="expanded" [class.fullscreen]="empty" (panup)="shrink()" (pandown)="expand()">
+<div class="home" (scroll)="onScroll($event)" [class.expanded]="expanded" [class.fullscreen]="empty">
     <div class="home-hero" [class.expanded]="expanded"
+                           [class.content]="displayContent"
                            [class.fullscreen]="empty"
                            (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
-        <div class="home-hero__input" *ngIf="expanded">
+        <div class="home-hero__input" *ngIf="!displayContent">
             Je veux me faire livrer
             <mat-form-field class="input-hero__item" floatLabel="never">
                 <input matInput type="text" name="item"
+                       #itemSelection
                        autocomplete="off"
                        placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
+                <button mat-button *ngIf="itemSelection.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetItem()">
+                    <mat-icon>close</mat-icon>
+                </button>
             </mat-form-field>
             à
             <mat-form-field class="input-hero__location" floatLabel="never">
@@ -17,24 +22,28 @@
                        placeholder="{{swingingLocation}}"
                        [(ngModel)]="city"
                        (ngModelChange)="filterPosts();">
-                <mat-autocomplete #citiesAuto="matAutocomplete" [displayWith]="displayCity">
-                    <mat-option *ngFor="let city of cities" [value]="city">
-                        {{ city.city }} ( {{city.country}} )
-                    </mat-option>
-                </mat-autocomplete>
+                <button mat-button *ngIf="citySelection.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetCity()">
+                    <mat-icon>close</mat-icon>
+                </button>
             </mat-form-field>
+            <mat-autocomplete #citiesAuto="matAutocomplete" [displayWith]="displayCity">
+                <mat-option *ngFor="let city of cities" [value]="city">
+                    {{ city.city }} ( {{city.country}} )
+                </mat-option>
+            </mat-autocomplete>
         </div>
-        <div class="home-hero__action" *ngIf="expanded">
+        <div class="home-hero__action" *ngIf="!displayContent">
             <button class="btn" [class.btn-hero]="empty" (click)="validate(); post()">Faire une demande de livraison</button>
             <!-- <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button> -->
         </div>
-        <div class="home-hero__summary" *ngIf="!expanded">
-            <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item">Trajets à venir</span>
-            <span class="home-hero__summary-location" *ngIf="filter.location" (click)="enter()">{{ filter.location }}</span>
-            <span class="home-hero__summary-item" *ngIf="filter.item" (click)="enter()">{{ filter.item }}</span>
+        <div class="home-hero__summary" *ngIf="displayContent">
+            <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item && !onBoarding">Trajets à venir</span>
+            <span class="home-hero__summary-location" *ngIf="filter.location && !onBoarding" (click)="enter()">{{ filter.location }}</span>
+            <span class="home-hero__summary-item" *ngIf="filter.item && !onBoarding" (click)="enter()">{{ filter.item }}</span>
+            <span class="home-hero__summary-empty" *ngIf="onBoarding">Le service ọkọ</span>
         </div>
     </div>
-    <div class="home-content" [class.expanded]="!expanded" [class.empty]="empty" (scroll)="onScroll($event)">
+    <div class="home-content" [class.expanded]="!expanded && !empty" [class.empty]="empty">
         <!-- <div class="home-content__filters">
             <app-post-filter (filterRefresh)="filterPosts($event)"></app-post-filter>
         </div> -->
@@ -50,6 +59,14 @@
             <div class="row justify-content-center">
                 <button matRipple class="btn btn-primary btn-home-full" [routerLink]="['/post/trip/new']">Proposer un trajet</button>
             </div>
+        </div>
+        <hr class="divider" *ngIf="!empty">
+        <div class="home-content__onboarding container">
+            <section class="home-content__onboarding-service">
+                Oko est une plateforme web qui te permet de faire livrer un article
+                que tu ne trouve pas dans ton pays, par l'intermédiaire d'un voyageur
+                qui visite ta ville.
+            </section>
         </div>
     </div>
     <!-- <div class="home-trip justify-content-center" [class.expanded]="!expanded">

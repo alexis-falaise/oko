@@ -80,6 +80,7 @@ export class AuthService {
       if (loginInfo.status) {
         this.currentUser.next(loginInfo.user);
         this.snack.open('Vous êtes connecté !', undefined, {duration: 2500});
+        this.router.navigate(['/home']);
       }
       this.status.next(loginInfo);
     });

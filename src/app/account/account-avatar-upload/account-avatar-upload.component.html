@@ -1,5 +1,6 @@
 <div class="account-avatar-upload">
   <h4 class="account-avatar-upload__title">Photo de profil</h4>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading | async"></mat-progress-bar>
   <hr class="divider">
   <div class="account-avatar-upload__image-wrapper" *ngIf="user?.avatar && !preview">
     <app-avatar [size]="300" [image]="user?.avatar"></app-avatar>
@@ -14,15 +15,23 @@
 
 <ng-template #confirmUpload>
   <div class="account-avatar-upload__image-wrapper" *ngIf="preview">
-      <img class="account-avatar-upload__image" [src]="preview" width="300px" alt="">
+      <img class="account-avatar-upload__image" [src]="preview" width="300px" height="auto" alt="">
+  </div>
+  <div class="d-flex justify-content-center">
+    <small class="text-muted" *ngIf="uploadedFile && uploadedFileSize < 3">Taille : {{ uploadedFileSize }} Mo</small>
+    <small class="text-danger" *ngIf="uploadedFileSize > 3">La taille maximale autorisée est de 3 Mo</small>
   </div>
   <div class="row">
-    <div class="col-8 d-flex justify-content-center">
-      <button class="btn btn-success btn-icon" (click)="uploadPicture()">
+    <div class="d-flex justify-content-center" [ngClass]="{'col-8': uploadedFileSize < 3, 'col-6': uploadedFileSize > 3}">
+      <button class="btn btn-success btn-icon" [disabled]="loading | async" *ngIf="uploadedFileSize < 3"
+              (click)="uploadPicture()">
         <mat-icon>cloud_upload</mat-icon> Utiliser comme nouvelle photo
       </button>
+      <button class="btn btn-success btn-icon" (click)="addFile()" *ngIf="uploadedFileSize > 3">
+          <mat-icon>cloud_upload</mat-icon> Modifier
+      </button>
     </div>
-    <div class="col-4 d-flex justify-content-center" (click)="resetFile()">
+    <div class="d-flex justify-content-center" [ngClass]="{'col-4': uploadedFileSize < 3, 'col-6': uploadedFileSize > 3}" (click)="resetFile()">
       <button class="btn btn-danger btn-icon">
         <mat-icon>clear</mat-icon> Annuler
       </button>

@@ -1,7 +1,7 @@
 @import "../../styles/variables.scss";
 
 $homeHeroSize: 36px;
-$transitionDuration: 0.2s;
+$transitionDuration: 0.15s;
 $transitionStyle: ease-out;
 
 .home {
@@ -9,7 +9,11 @@ $transitionStyle: ease-out;
     overflow-y: scroll;
     overflow-x: hidden;
 
-    &.expanded,
+    // &.expanded,
+    // &.fullscreen {
+    //     overflow: hidden;
+    // }
+
     &.fullscreen {
         overflow: hidden;
     }
@@ -43,12 +47,18 @@ $transitionStyle: ease-out;
         //     box-shadow: 0 -250px 250px rgba(0, 0, 0, .5) inset;
         // }
 
+        &.content {
+            padding-top: 50vh;
+        }
+
         &.expanded {
             transition: $transitionDuration $transitionStyle all;
             background-size: auto 150%;
             background-position: center;
             height: 60vh;
             min-height: 400px;
+            position: sticky;
+            top: -40vh;
         }
 
         &.fullscreen {
@@ -59,12 +69,14 @@ $transitionStyle: ease-out;
         }
 
         &__input {
+            animation: .5s appear;
             width: 80%;
             margin-left: 10%;
         }
 
         &__summary {
             transition: $transitionDuration $transitionStyle all;
+            animation: $animationDuration appear;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -77,18 +89,21 @@ $transitionStyle: ease-out;
             }
 
             &-location{
+                animation: $animationDuration appear;
                 display: block;
                 font-size: 36px;
                 font-weight: 100;
             }
 
             &-item {
+                animation: $animationDuration appear;
                 margin-top: -10px;
                 font-size: 18px;
                 font-weight: 500;
             }
 
             &-empty {
+                animation: $animationDuration appear;
                 display: block;
                 margin: -25px 0 0 0;
                 font-size: 36px;
@@ -137,7 +152,7 @@ $transitionStyle: ease-out;
     }
 
     &-content {
-        height: 40vh;
+        // height: 40vh;
         min-height: 400px;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -168,11 +183,9 @@ $transitionStyle: ease-out;
         }
 
         &__list {
-            min-height: 50vh;
-
             &-wrapper {
                 transition: all $transitionDuration;
-                height: 100%;
+                height: 75vh;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -187,6 +200,16 @@ $transitionStyle: ease-out;
                 display: block;
                 width: 100%;
                 margin: 10px 0.5% 0 0;
+            }
+        }
+
+        &__onboarding {
+            height: 300vh;
+            &-service {
+                margin-top: 25px;
+                padding: 0 10%;
+                color: rgb(125, 125, 125);
+                text-align: center;
             }
         }
     }

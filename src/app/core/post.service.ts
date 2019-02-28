@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, forkJoin } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, forkJoin, Observer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -92,32 +92,10 @@ export class PostService {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         const trips: Array<Trip> = response.data;
-        forkJoin(trips.map(trip => Observable.create(observer => {
-          if (trip.user && trip.user.id) {
-            this.userService.getUserStatsById(trip.user.id)
-            .subscribe(user => {
-              trip.user = user;
-              observer.next(new Trip(trip));
-              observer.complete();
-            });
-          } else {
-            observer.next(new Trip(trip));
-            observer.complete();
-          }
-        }))).subscribe((outputTrips: Array<Trip>) => {
-          const resultingTrips = outputTrips.sort((first, second) =>  {
-            return moment(first.date).isBefore(second.date) ? -1 : 1;
-          });
-          this.trips.next(resultingTrips);
-          nextQuery.next(true);
-          this.uiService.setLoading(false);
-        });
-        if (trips && !trips.length) {
-          this.trips.next([]);
-          nextQuery.next(true);
-          this.uiService.setLoading(false);
-        }
+        this.getTripsUserStats(trips, this.trips);
       }
+      nextQuery.next(true);
+      this.uiService.setLoading(false);
     });
   }
 
@@ -141,31 +119,8 @@ export class PostService {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         const requests = response.data;
-        forkJoin(requests.map(request => Observable.create(observer => {
-          if (request.user && request.user.id) {
-            this.userService.getUserStatsById(request.user.id)
-            .subscribe(user => {
-              request.user = user;
-              observer.next(new Request(request));
-              observer.complete();
-            });
-          } else {
-            observer.next(new Request(request));
-            observer.complete();
-          }
-        }))).subscribe((outputRequests: Array<Request>) => {
-          const resultingRequests = outputRequests.sort((first, second) => {
-            return moment(first.submitDate).isAfter(second.submitDate) ? -1 : 1;
-          });
-          this.requests.next(resultingRequests);
-          nextQuery.next(true);
-          this.uiService.setLoading(false);
-        });
-        if (requests && !requests.length) {
-          this.requests.next([]);
-          nextQuery.next(true);
-          this.uiService.setLoading(false);
-        }
+        this.getRequestsUserStats(requests, this.requests);
+        nextQuery.next(true);
       }
     });
   }
@@ -185,21 +140,7 @@ export class PostService {
   getTripById(id: string): Observable<Trip> {
     return Observable.create(observer => {
       this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true})
-      .subscribe((trip: Trip) => {
-        if (trip.user && trip.user.id) {
-          this.userService.getUserStatsById(trip.user.id)
-          .subscribe((user: User) => {
-            trip.user = user;
-            const outputTrip = new Trip(trip);
-            observer.next(outputTrip);
-            observer.complete();
-          });
-        } else {
-          const outputTrip = new Trip(trip);
-          observer.next(outputTrip);
-          observer.complete();
-        }
-      });
+      .subscribe((trip: Trip) => this.getTripUserStats(trip, observer));
     });
   }
 
@@ -208,7 +149,19 @@ export class PostService {
    * @param id : User unique identifier
    */
   getTripByAuthor(id: string): Observable<Array<Trip>> {
-    return this.http.get(`${this.tripUrl}/author/${id}`, {withCredentials: true}) as Observable<Array<Trip>>;
+    return Observable.create(observer => {
+      this.http.get(`${this.tripUrl}/author/${id}`, {withCredentials: true})
+      .subscribe((trips: Array<Trip>) => {
+        forkJoin(trips.map(trip => Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))))
+        .subscribe((outputTrips: Array<Trip>) => {
+          const resultingTrips = outputTrips.sort((first, second) =>  {
+            return moment(first.date).isBefore(second.date) ? -1 : 1;
+          });
+          observer.next(resultingTrips);
+          observer.complete();
+        });
+      });
+    });
   }
 
   /**
@@ -216,7 +169,10 @@ export class PostService {
    * @param id : Request unique identifier
    */
   getRequestById(id: string): Observable<Request> {
-    return this.http.get(`${this.requestUrl}/${id}`, {withCredentials: true}) as Observable<Request>;
+    return Observable.create(observer => {
+      this.http.get(`${this.requestUrl}/${id}`, {withCredentials: true})
+      .subscribe((request: Request) => this.getRequestUserStats(request, observer));
+    });
   }
 
   /**
@@ -224,7 +180,10 @@ export class PostService {
    * @param id : User that authored the request unique identifier
    */
   getRequestByAuthor(id: string): Observable<Array<Request>> {
-    return this.http.get(`${this.requestUrl}/author/${id}`, {withCredentials: true}) as Observable<Array<Request>>;
+    return Observable.create(observer => {
+      this.http.get(`${this.requestUrl}/author/${id}`, {withCredentials: true})
+      .subscribe((requests: Array<Request>) => this.getRequestsUserStats(requests, observer));
+    });
   }
 
   /**
@@ -233,7 +192,10 @@ export class PostService {
    * @param tripId : Trip unique identifier
    */
   getRequestByTrip(authorId: string, tripId: string): Observable<Array<Request>> {
-    return this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true}) as Observable<Array<Request>>;
+    return Observable.create(observer => {
+      this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true})
+      .subscribe((requests: Array<Request>) => this.getRequestsUserStats(requests, observer));
+    });
   }
 
   /**
@@ -359,7 +321,71 @@ export class PostService {
     this.http.get(`${this.requestUrl}/delete`, {withCredentials: true});
   }
 
+  private getTripsUserStats(trips: Array<Trip>, observer: Observer<Array<Trip>>) {
+    if (trips && !trips.length) {
+      observer.next([]);
+      observer.complete();
+    } else {
+      forkJoin(trips.map(trip => Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))))
+      .subscribe((outputTrips: Array<Trip>) => {
+        const resultingTrips = outputTrips.sort((first, second) =>  {
+          return moment(first.date).isBefore(second.date) ? -1 : 1;
+        });
+        observer.next(resultingTrips);
+        observer.complete();
+      });
+    }
+  }
+
+  private getTripUserStats(trip: Trip, observer: Observer<Trip>) {
+      if (trip.user && trip.user.id) {
+        this.userService.getUserStatsById(trip.user.id)
+        .subscribe((user: User) => {
+          trip.user = user;
+          const outputTrip = new Trip(trip);
+          observer.next(outputTrip);
+          observer.complete();
+        });
+      } else {
+        const outputTrip = new Trip(trip);
+        observer.next(outputTrip);
+        observer.complete();
+      }
+  }
+
+  private getRequestsUserStats(requests: Array<Request>, observer: Observer<Array<Request>>) {
+    if (requests && !requests.length) {
+      observer.next([]);
+      observer.complete();
+    } else {
+      forkJoin(requests.map(request => Observable.create(requestObserver => {
+        return this.getRequestUserStats(request, requestObserver);
+      }))).subscribe((outputRequests) => {
+        const resultingRequests = outputRequests.sort((first, second) => {
+          return moment(first.submitDate).isAfter(second.submitDate) ? -1 : 1;
+        });
+        observer.next(resultingRequests);
+        observer.complete();
+      });
+    }
+  }
+
+  private getRequestUserStats(request: Request, observer: Observer<Request>) {
+    if (request.user && request.user.id) {
+      this.userService.getUserStatsById(request.user.id)
+      .subscribe(user => {
+        request.user = user;
+        observer.next(new Request(request));
+        observer.complete();
+      });
+    } else {
+      observer.next(new Request(request));
+      observer.complete();
+    }
+  }
+
   private buildQueryString(filter: Filter) {
+    console.log(filter);
     return Object.keys(filter).reduce((query, key, index) => {
       return `${query}${index ? '&' : ''}${filter[key] ? key + '=' + filter[key] : '' }`;
     }, '?');

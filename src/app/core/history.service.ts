@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class HistoryService {
 
   history = new BehaviorSubject([]);
+  forbiddenRoutes = ['/login', '/signin', '/logout'];
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events.subscribe(event => {
@@ -29,10 +30,17 @@ export class HistoryService {
     }
   }
 
+  findLastRoute(history): string {
+    return history.pop();
+  }
+
   back() {
     const history = this.history.getValue();
     history.pop();
-    const route = history.pop();
+    let route;
+    do {
+      route = this.findLastRoute(history);
+    } while (this.forbiddenRoutes.includes(route));
     this.history.next(history);
     this.router.navigate([route]);
   }

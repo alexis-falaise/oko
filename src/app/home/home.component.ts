@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material';
@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit {
   swingingItem = this.itemSamples[0];
   posts: Array<Post> = null;
   filter = new Filter({});
+  displayContent = false;
+  onBoarding = false;
   expanded = true;
   empty = false;
   validated = false;
@@ -54,9 +56,20 @@ export class HomeComponent implements OnInit {
     private postService: PostService,
     private uiService: UiService,
     private geoService: GeoService,
+    private homeElement: ElementRef,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
+
+  onScroll(event) {
+    const children = this.homeElement.nativeElement.children[0].children;
+    const heightUnit = children[0].clientHeight / 40;
+    const content = children[1];
+    const onboarding = content.children[1];
+    const scrollTop = event.target.scrollTop;
+    this.displayContent = scrollTop > (content.offsetTop - 20 * heightUnit);
+    this.onBoarding = scrollTop > (onboarding.offsetTop - 25 * heightUnit);
+  }
 
   ngOnInit() {
     this.geoService.onCities().subscribe(cities => {
@@ -108,13 +121,26 @@ export class HomeComponent implements OnInit {
   filterPosts() {
     this.uiService.setLoading(true);
     const searchValue = typeof this.city === 'string' ? this.city : this.city.city;
-    this.filter = new Filter({location: searchValue, item: this.filter.item});
+    const filter = new Filter();
+    if (searchValue && searchValue !== '') {
+      filter.location = searchValue;
+    }
+    if (this.filter.item) {
+      filter.item = this.filter.item;
+    }
+    this.filter = filter;
     this.postService.getTrips(this.filter);
     this.geoService.getCities(searchValue);
   }
 
-  onScroll(event) {
-    this.expanded = false;
+  resetCity() {
+    this.city = '';
+    this.filterPosts();
+  }
+
+  resetItem() {
+    this.filter.item = null;
+    this.filterPosts();
   }
 
   listStatus(length) {

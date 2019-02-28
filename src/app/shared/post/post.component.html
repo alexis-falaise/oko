@@ -2,12 +2,26 @@
     (click)="toPost()"
     (swipeLeft)="showPanel()" (swipeRight)="hidePanel()"
     [class.horizontal]="horizontal">
-    <div class="post-info col-3 col-md-2 justify-content-center"
+    <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="!horizontal"
     [style.background-image]="'url('+avatarLocation+'/'+post.user.avatar+')'">
         <!-- <div class="post-info__user-avatar">
             <app-avatar [image]="post.user.avatar"></app-avatar>
         </div> -->
         <div class="post-info__user-info">
+            <div class="post-info__user-info__firstname">
+                {{ post.user.firstname || 'Oko user' }}
+            </div>
+            <div class="post-info__user-info__trips">
+                {{ post.user.trips || 0 }} voyage{{ post.user?.trips > 1 ? 's': '' }}
+            </div>
+            <div class="post-info__user-info__requests" *ngIf="!isTrip">
+                {{ post.user.requests || 0 }} annonce{{ post.user?.requests > 1 ? 's': '' }}
+            </div>
+        </div>
+    </div>
+    <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="horizontal">
+        <div class="post-info__user-info">
+            <app-avatar [size]="75" [image]="post.user.avatar" *ngIf="post.user.avatar"></app-avatar>
             <div class="post-info__user-info__firstname">
                 {{ post.user.firstname || 'Oko user' }}
             </div>

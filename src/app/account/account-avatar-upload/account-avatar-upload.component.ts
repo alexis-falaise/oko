@@ -1,21 +1,26 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
 import { MatSnackBar, MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 
 import { UserService } from '@core/user.service';
 import { UiService } from '@core/ui.service';
 
 import { User } from '@models/user.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-account-avatar-upload',
   templateUrl: './account-avatar-upload.component.html',
   styleUrls: ['./account-avatar-upload.component.scss']
 })
-export class AccountAvatarUploadComponent implements OnInit {
+export class AccountAvatarUploadComponent implements OnInit, OnDestroy {
   @ViewChild('file') file;
   uploadedFile: File;
+  uploadedFileSize: number;
   preview: ArrayBuffer | string = '';
   user: User;
+  loading;
+  stopUpload = new Subject();
 
   constructor(
     private snack: MatSnackBar,
@@ -28,6 +33,7 @@ export class AccountAvatarUploadComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.data;
+    this.loading = this.uiService.onLoading();
   }
 
   addFile() {
@@ -44,6 +50,7 @@ export class AccountAvatarUploadComponent implements OnInit {
         this.ref.detectChanges();
       };
       this.uploadedFile = file;
+      this.uploadedFileSize = Math.round(file.size / 1048576 * 100) / 100;
     } else {
       this.snack.open('Veuillez utiliser une image', 'OK', {duration: 2500});
     }
@@ -52,6 +59,7 @@ export class AccountAvatarUploadComponent implements OnInit {
   uploadPicture() {
     this.uiService.setLoading(true);
     this.userService.uploadUserAvatar(this.uploadedFile, this.user)
+    .pipe(takeUntil(this.stopUpload))
     .subscribe(response => {
       if (response.status) {
         this.snack.open('Votre photo de profil a été enregistrée', 'OK', {duration: 3000});
@@ -66,12 +74,19 @@ export class AccountAvatarUploadComponent implements OnInit {
   uploadError() {
     const snackRef = this.snack.open('Erreur lors de l\'enregistrement de votre photo de profil', 'Réessayer', {duration: 3000});
     snackRef.onAction().subscribe(() => this.uploadPicture());
-    this.uiService.setLoading(true);
+    this.uiService.setLoading(false);
   }
 
   resetFile() {
     this.preview = null;
     this.uploadedFile = null;
+    this.stopUpload.next(true);
+    this.uiService.setLoading(false);
+  }
+
+  ngOnDestroy() {
+    this.stopUpload.next(true);
+    this.stopUpload.complete();
   }
 
 }
