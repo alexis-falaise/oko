@@ -12,7 +12,7 @@ export class User {
     rating?: number;
     address?: MeetingPoint;
     id?: string;
-
+    _id: string;
     constructor(user: Partial<User> = {}) {
         Object.assign(this, user);
         if (user.description) {
@@ -20,6 +20,9 @@ export class User {
         }
         if (!user.trips) {
             this.trips = 0;
+        }
+        if (user._id) {
+            this.id = user._id;
         }
     }
 }

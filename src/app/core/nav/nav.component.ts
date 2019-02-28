@@ -18,22 +18,23 @@ export class NavComponent implements OnInit, OnChanges {
   menuDisplay = false;
   previousAvailable = false;
   guestAccountMenuItems: Array<MenuItem> = [
+    { label: 'Aide', path: '/help', icon: 'help' },
     { label: 'Connexion', path: '/login', icon: 'power_settings_new' },
   ];
   accountMenuItems: Array<MenuItem> = [
+    { label: 'Aide', path: '/help', icon: 'help' },
     { label: 'Mon compte', path: '/account/info', icon: 'account_circle' },
-    { label: 'Mes trajets', path: '/account/trip', icon: 'explore' },
-    { label: 'Mes demandes', path: '/account/request', icon: 'new_releases' },
     { label: 'Déconnexion', path: '/logout', icon: 'power_settings_new' }
   ];
   menuItems: Array<MenuItem> = [
     { label: 'Accueil', path: '/home', icon: 'home' },
-    { label: 'Faire une demande', path: '/post/request/new', icon: 'new_releases' },
-    { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
     { label: 'Trajets disponibles', path: '/post/trip', icon: 'map'},
-    { label: 'Annonces', path: '/post/request/', icon: 'view_day'},
+    { label: 'Créer une annonce', path: '/post/request/new', icon: 'new_releases' },
     { label: 'Messages', path: '/messages', icon: 'email' },
-    { label: 'Aide', path: '/help', icon: 'help' },
+  ];
+  travelerMenuItems: Array<MenuItem> = [
+    { label: 'Proposer un trajet', path: '/post/trip/new', icon: 'flight_takeoff' },
+    { label: 'Annonces', path: '/post/request/', icon: 'view_day'},
   ];
   displayAccountMenuItems: Array<MenuItem> = null;
   secondaryMenuItems: Array<MenuItem> = [];

@@ -153,11 +153,10 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     top: $navbarHeight;
     z-index: 101;
     width: 100%;
-    height: 100vh;
+    height: 95vh;
     box-shadow: -5px 3px 7px rgba(0, 0, 0, .05);
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     background-color: $expanded-menu-color;
 
     &-item {
@@ -169,7 +168,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         width: 100%;
         padding-left: 10%;
         text-align: left;
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
 
         &:hover {
@@ -190,6 +189,11 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
             color: rgb(80, 80, 80);
             text-decoration: none;
         }
+    }
+
+    &-title {
+        display: block;
+        margin-left: 10%;
     }
 
     .divider {
