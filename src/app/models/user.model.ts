@@ -9,7 +9,7 @@ export class User {
     description?: Description;
     trips?: number;
     requests?: number;
-    rating?: number;
+    ratings?: [number];
     address?: MeetingPoint;
     id?: string;
     _id: string;
@@ -20,6 +20,9 @@ export class User {
         }
         if (!user.trips) {
             this.trips = 0;
+        }
+        if (!user.ratings || user.ratings && !user.ratings.length) {
+            this.ratings = [5];
         }
         if (user._id) {
             this.id = user._id;

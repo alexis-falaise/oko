@@ -55,7 +55,7 @@
             [date]="departureSave?.date || arrivalInfo?.date"
             [time]="arrivalInfo?.time"
             [airport]="arrivalInfo?.airport"
-            [minDate]="edition ? arrivalInfo?.date : departureSave?.date"
+            [minDate]="departureSave?.date"
             [edition]="edition"
             (valid)="arrival($event, stepper)">
             </app-trip-location>

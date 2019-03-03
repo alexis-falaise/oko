@@ -7,6 +7,7 @@ import { Trip } from '@models/post/trip.model';
 import { DateAdapter, MatSnackBar } from '@angular/material';
 import { UserService } from '@core/user.service';
 import { Request } from '@models/post/request.model';
+import { Proposal } from '@models/post/proposal.model';
 
 @Component({
   selector: 'app-trip-detail',
@@ -17,6 +18,7 @@ export class TripDetailComponent implements OnInit {
   trip: Trip = null;
   requests: Array<Request> = null;
   currentRequest: Request = null;
+  proposals: Array<Proposal> = null;
   engagement = false;
   own = false;
 
@@ -50,6 +52,9 @@ export class TripDetailComponent implements OnInit {
         this.userService.getCurrentUser()
         .subscribe(user => {
           this.own = user.id === trip.user.id;
+          if (this.own) {
+            this.fetchProposals();
+          }
         }, (err) => {});
         this.getUserRequests();
       }
@@ -57,6 +62,11 @@ export class TripDetailComponent implements OnInit {
       const snackRef = this.snack.open('Erreur lors du chargement du voyage', 'Réessayer', {duration: 3000});
       snackRef.onAction().subscribe(() => this.fetchTrip(id));
     });
+  }
+
+  fetchProposals() {
+    this.postService.getReceivedProposals(this.trip)
+    .subscribe(proposals => this.proposals = proposals);
   }
 
   getUserRequests() {

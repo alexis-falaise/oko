@@ -20,6 +20,7 @@ import { AccountTripComponent } from './account-trip/account-trip.component';
 import { AccountRequestComponent } from './account-request/account-request.component';
 import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
 import { AccountComponent } from './account.component';
+import { AccountProposalComponent } from './account-proposal/account-proposal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AccountComponent } from './account.component';
     AccountRequestComponent,
     AccountItemComponent,
     AccountAvatarUploadComponent,
+    AccountProposalComponent,
   ],
   entryComponents: [
     AccountComponent,

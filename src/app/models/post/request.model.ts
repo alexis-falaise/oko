@@ -24,6 +24,9 @@ export class Request extends Post {
     closed?: boolean;
     accepted?: boolean;
     validated?: boolean;
+    outdated?: boolean;
+    own?: boolean;
+    handlerView: boolean;
     paid?: boolean;
 
     constructor(request: Partial<Request> = {}) {
@@ -40,6 +43,10 @@ export class Request extends Post {
         }
         if (request.urgentDetails && request.urgentDetails.date) {
             this.urgentDetails.date = moment(request.urgentDetails.date);
+            this.outdated = moment(request.urgentDetails.date).isBefore(moment.now());
+        }
+        if (request.trip) {
+            this.trip = new Trip(request.trip);
         }
         this.cabinOnly = this.isCabinOnly();
     }
@@ -54,5 +61,26 @@ export class Request extends Post {
             });
         }
         return fitsCabin;
+    }
+
+    isOwn(user: User): boolean {
+        if (user.id === this.user.id) {
+            this.own = true;
+            return true;
+        } else {
+            this.own = false;
+            return false;
+        }
+    }
+
+    isHandledBy(user: User): boolean {
+        if ((this.handler && this.handler.id === user.id)
+            || (this.trip.user.id === user.id)) {
+            this.handlerView = true;
+            return true;
+        } else {
+            this.handlerView = false;
+            return false;
+        }
     }
 }

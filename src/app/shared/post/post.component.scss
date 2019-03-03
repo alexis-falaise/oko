@@ -72,8 +72,8 @@ $post-height: 100px;
         width: 100%;
         margin: -5px 0 -5px -5px;
         background-color: rgba(0, 0, 0, .2);
-        background-size: auto 150%;
-        background-position: center;
+        background-size: auto ($post-height * 2);
+        background-position: 50% 35%;
         box-shadow: -2px 0 5px rgba(0, 0, 0, .1) inset;
         overflow: hidden;
 

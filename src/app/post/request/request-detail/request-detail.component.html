@@ -1,27 +1,34 @@
 <div class="request-detail container-fluid">
   <div class="request-detail__hero row">
-    <h2 class="request-detail__hero-title">Résumé de l'annonce</h2>
+    <h2 class="request-detail__hero-title" *ngIf="request.user">
+        <app-avatar class="request-detail__hero-avatar" [size]="75" [image]="request.user?.avatar" *ngIf="request.user?.avatar"></app-avatar>
+        {{ request.own ? 'Mon annonce' : 'Annonce de ' + request.user?.firstname }}
+    </h2>
     <small class="request-detail__date" *ngIf="request.submitDate">
       Posté {{ moment(request.submitDate).fromNow() }}
     </small>
+    <mat-progress-spinner color="accent" class="request-detail__hero-loading" mode="indeterminate" *ngIf="!request.user"></mat-progress-spinner>
   </div>
   <div class="container">
     <div class="request-detail__status"
     [class.good]="request.accepted || request.validated"
-    [class.bad]="request.closed"
+    [class.bad]="request.closed || request.outdated"
     *ngIf="request.closed || request.accepted || request.validated">
       <span *ngIf="request.closed">L'annonce a été annulée</span>
-      <span *ngIf="request.accepted">L'annonce a été acceptée {{ request.handler ? 'par ' + request.handler.firstname : '' }}</span>
+      <span *ngIf="request.accepted && !request.validated">L'annonce a été acceptée {{ request.handler ? 'par ' + request.handler.firstname : '' }}</span>
       <span *ngIf="request.validated">Cette annonce a été validée</span>
+      <span *ngIf="request.outdated && !request.closed">Annonce expirée le {{ request.urgentDetails.date.format('MM/DD/YYYY') }}</span>
     </div>
-  <div class="request-detail__actions justify-content-around" *ngIf="own">
+  <div class="request-detail__actions justify-content-around" *ngIf="request.own">
     <button class="btn btn-warning" disabled *ngIf="!request.accepted && !request.closed">En attente</button>
-    <button class="btn btn-success" [disabled]="request.validated" *ngIf="request.accepted" (click)="validate()">Valider la réception</button>
+    <button class="btn btn-success" [disabled]="request.validated" *ngIf="request.accepted" (click)="validate()">
+        {{ request.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
+    </button>
     <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler l'annonce</button>
   </div>
   <div class="request-detail__location">
     <h4 class="request-detail__location-title request-detail__section-title">
-      {{ own ? 'Ma ville' : 'Ville de remise' }}
+      {{ request.own ? 'Ma ville' : 'Ville de remise' }}
     </h4>
     <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
       <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
@@ -30,7 +37,7 @@
       <small class="text-muted">
         Aucune ville d'arrivée définie pour cette annonce.
       </small>
-      <button class="btn btn-info btn-icon" *ngIf="own" [routerLink]="['/post/request', request.id, 'edit']">
+      <button class="btn btn-info btn-icon" *ngIf="request.own" [routerLink]="['/post/request', request.id, 'edit']">
         <mat-icon>edit</mat-icon> Modifier l'annonce
       </button>
     </ng-template>
@@ -42,8 +49,8 @@
       <app-item [item]="item" [removable]="false"></app-item>
     </div>
   </div>
-  <hr class="divider" *ngIf="request?.trip && own">
-  <div class="request-detail__trip" matRipple (click)="openTrip()" *ngIf="request?.trip && own">
+  <hr class="divider" *ngIf="request?.trip && request.own">
+  <div class="request-detail__trip" matRipple (click)="openTrip()" *ngIf="request?.trip && request.own">
     <h4 class="request-detail__trip-title request-detail__section-title">Voyage</h4>
     <div class="request-detail__trip-date">
       <div class="arrival">
@@ -121,16 +128,23 @@
       </div>
     </div>
     <hr class="divider">
-    <div class="request-detail__contact" *ngIf="request?.trip?.user && own">
+    <div class="request-detail__contact" *ngIf="request.handlerView">
       <button class="btn btn-info btn-contact" [disabled]="request.closed">
         <mat-icon>mail</mat-icon>
         Contacter {{ request.trip.user.firstname }}
       </button>
     </div>
-    <div class="request-detail__modify" *ngIf="own">
+    <div class="request-detail__modify" *ngIf="request.own">
         <button class="btn btn-info btn-icon" [routerLink]="['/post/request', request.id, 'edit']">
           <mat-icon>edit</mat-icon> Modifier l'annonce
         </button>
+    </div>
+    <div class="request-detail__proposal" *ngIf="!request.own && !request.handlerView">
+      <button class="btn btn-info btn-icon"
+              [disabled]="request.closed || request.outdated || request.accepted || request.validated"
+              (click)="proposeTrip()">
+        <mat-icon>flight_takeoff</mat-icon> Proposer un trajet
+      </button>
     </div>
   </div>
 </div>

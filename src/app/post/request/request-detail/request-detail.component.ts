@@ -9,6 +9,8 @@ import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { UiService } from '@core/ui.service';
 import { UserService } from '@core/user.service';
+import { User } from '@models/user.model';
+import { Proposal } from '@models/post/proposal.model';
 
 @Component({
   selector: 'app-request-detail',
@@ -17,8 +19,9 @@ import { UserService } from '@core/user.service';
 })
 export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
+  receivedProposals: Array<Proposal>;
+  currentUserProposals: Array<Proposal>;
   moment = moment;
-  own = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,9 +44,11 @@ export class RequestDetailComponent implements OnInit {
             this.userService.getCurrentUser()
             .subscribe(user => {
               if (user) {
-                this.own = user.id === request.user.id;
+                this.setRequest(request, user);
+                this.getProposals(request, user);
+              } else {
+                this.setRequest(request);
               }
-              this.setRequest(request);
             }, (err) => this.setRequest(request));
           }
         });
@@ -51,11 +56,11 @@ export class RequestDetailComponent implements OnInit {
     });
   }
 
-  setRequest(request: Request) {
-    if (request.trip) {
-      request.trip = new Trip(request.trip);
-    }
+  setRequest(request: Request, user?: User) {
     this.request = new Request(request);
+    if (user) {
+      this.request.isOwn(user);
+    }
     this.uiService.setLoading(false);
   }
 
@@ -83,6 +88,28 @@ export class RequestDetailComponent implements OnInit {
 
   openTrip() {
     this.router.navigate([`/post/trip/${this.request.trip.id}`]);
+  }
+
+  proposeTrip() {
+    this.router.navigate([`/post/trip/propose/${this.request.id}`]);
+  }
+
+  getProposals(request: Request, user: User) {
+    console.log('Get proposals', request);
+    if (request.own) {
+      this.postService.getReceivedProposals(request)
+      .subscribe((proposals: Array<Proposal>) => {
+        this.receivedProposals = proposals;
+        console.log('Received proposals', proposals);
+      });
+    } else {
+      console.log('Current user', user);
+      this.postService.getReceivedProposalsByAuthor(request, user)
+      .subscribe((proposals: Array<Proposal>) => {
+        this.currentUserProposals = proposals;
+        console.log('Current user proposals', proposals);
+      });
+    }
   }
 
 }

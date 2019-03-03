@@ -15,8 +15,8 @@
         width: 100vw;
         position: sticky;
         z-index: 10;
-        top: 0;
-        height: 15vh;
+        top: -5vh;
+        height: 20vh;
         min-height: 160px;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -28,6 +28,20 @@
 
         &-title {
             font-size: 24px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        &-avatar {
+            display: inline-flex;
+            margin-right: 5px;
+        }
+
+        &-loading {
+            height: 10px;
+            display: flex;
         }
     }
 
@@ -145,7 +159,8 @@
     }
 
     &__contact,
-    &__modify {
+    &__modify,
+    &__proposal {
         display: flex;
         justify-content: center;
         margin-bottom: 25px;

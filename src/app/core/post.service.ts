@@ -15,6 +15,7 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { Item } from '@models/item.model';
 import { UiService } from './ui.service';
 import { User } from '@models/user.model';
+import { Proposal } from '@models/post/proposal.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class PostService {
   private postUrl = `${environment.serverUrl}/post`;
   private tripUrl = `${environment.serverUrl}/trip`;
   private requestUrl = `${environment.serverUrl}/request`;
+  private proposalUrl = `${environment.serverUrl}/proposal`;
   private trips = new BehaviorSubject<Array<Trip>>(null);
   private requests = new BehaviorSubject<Array<Request>>(null);
 
@@ -206,6 +208,44 @@ export class PostService {
     return this.http.get(`${this.requestUrl}/author/${id}/item`, {withCredentials: true}) as Observable<Array<Item>>;
   }
 
+  getSentProposals(senderPost: Trip | Request): Observable<Array<Proposal>> {
+    return Observable.create(observer => {
+      this.http.get(`${this.proposalUrl}/from/${senderPost.id}`, {withCredentials: true})
+      .subscribe((proposals: Array<any>) => {
+        this.getProposalsSubPosts(senderPost, proposals, observer, false);
+      });
+    });
+  }
+
+  getSentProposalsByAuthor(senderPost: Trip | Request, author: User): Observable<Array<Proposal>> {
+    return Observable.create(observer => {
+      this.http.get(`${this.proposalUrl}/author/${author.id}/from/${senderPost.id}`, {withCredentials: true})
+      .subscribe((proposals: Array<any>) => {
+        this.getProposalsSubPosts(senderPost, proposals, observer, false);
+      });
+    });
+  }
+
+  getReceivedProposals(receptorPost: Trip | Request): Observable<Array<Proposal>> {
+    return Observable.create(observer => {
+      this.http.get(`${this.proposalUrl}/to/${receptorPost.id}`, {withCredentials: true})
+      .subscribe((proposals: Array<any>) => {
+        this.getProposalsSubPosts(receptorPost, proposals, observer, true);
+      });
+    });
+  }
+
+  getReceivedProposalsByAuthor(receptorPost: Trip | Request, author: User): Observable<Array<Proposal>> {
+    return Observable.create(observer => {
+      console.log(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}`);
+      this.http.get(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}`, {withCredentials: true})
+      .subscribe((proposals: Array<any>) => {
+        console.log('Server proposals', proposals);
+        this.getProposalsSubPosts(receptorPost, proposals, observer, true);
+      });
+    });
+  }
+
   // Creators
 
   createPost(post: Post | Array<Post>): Observable<ServerResponse> {
@@ -215,6 +255,58 @@ export class PostService {
   createTrip(trip: Trip | Array<Trip>): Observable<ServerResponse> {
     this.deleteTripDraft();
     return this.http.post(this.tripUrl, trip, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  /**
+   * Create a proposal from a trip to a request
+   * @param proposal: Proposal object
+   * It should contain the full trip in the from property (type Trip)
+   * and only a reference (id: string) to the request property
+   */
+  createTripForRequest(proposal: Proposal | any): Observable<ServerResponse> {
+    return Observable.create(observer => {
+      const trip = new Trip(proposal.from);
+      this.createTrip(trip).subscribe((serverResponse: ServerResponse) => {
+        if (serverResponse.status) {
+          const createdTrip = new Trip(serverResponse.data);
+          proposal.from = createdTrip.id;
+          this.http.post(`${this.proposalUrl}`, proposal, {withCredentials: true})
+          .subscribe((response: ServerResponse) => {
+              observer.next(response);
+              observer.complete();
+          });
+        } else {
+          observer.next(serverResponse);
+          observer.complete();
+        }
+      });
+    });
+  }
+
+  /**
+   * Create a proposal from a request to a trip
+   * @param proposal: Proposal object
+   * It should contain the full request in the from property (type Request)
+   * and only a reference (id: string) to the trip property
+   */
+  createRequestForTrip(proposal: Proposal | any): Observable<ServerResponse> {
+    return Observable.create(observer => {
+      const request = new Request(proposal.from);
+      this.createRequest(request).subscribe((serverResponse: ServerResponse) => {
+        if (serverResponse.status) {
+          const createdRequest = new Request(serverResponse.data);
+          proposal.from = createdRequest.id;
+          this.http.post(`${this.proposalUrl}`, proposal, {withCredentials: true})
+          .subscribe((response: ServerResponse) => {
+            observer.next(response);
+            observer.complete();
+          });
+        } else {
+          observer.next(serverResponse);
+          observer.complete();
+        }
+      });
+    });
   }
 
   createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
@@ -244,6 +336,30 @@ export class PostService {
 
   validateRequest(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  acceptProposal(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/accept`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  refuseProposal(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/refuse`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  validateProposal(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  closeProposal(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/close`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  payProposal(id: string): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/pay`, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/bonus`, bonus, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Deleters
@@ -384,6 +500,37 @@ export class PostService {
       observer.next(new Request(request));
       observer.complete();
     }
+  }
+
+  private getProposalsSubPosts(post: Trip | Request, proposals: Array<any>, observer: Observer<Array<Proposal>>, postIsReceiver: boolean) {
+    forkJoin(proposals.map(proposal => Observable.create(postObserver => {
+      if (post instanceof Trip) {
+        this.getRequestById(postIsReceiver ? proposal.from : proposal.to).subscribe((request: Request) => {
+          const outputProposal = new Proposal(proposal);
+          postIsReceiver ?
+          outputProposal.from = new Request(request)
+          : outputProposal.to = new Request(request);
+          postObserver.next(outputProposal);
+          postObserver.complete();
+        });
+      }
+      if (post instanceof Request) {
+        this.getTripById(postIsReceiver ? proposal.from : proposal.to).subscribe((trip: Trip) => {
+          const outputProposal = new Proposal(proposal);
+          postIsReceiver ?
+          outputProposal.from = new Trip(trip)
+          : outputProposal.to = new Trip(trip);
+          postObserver.next(outputProposal);
+          postObserver.complete();
+        });
+      }
+    }))).subscribe(outputProposals => {
+      const resultingProposals = outputProposals.sort((a, b) => {
+        return moment(a.date).isBefore(b.date) ? -1 : 1;
+      });
+      observer.next(resultingProposals);
+      observer.complete();
+    });
   }
 
   private buildQueryString(filter: Filter) {

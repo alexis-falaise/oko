@@ -6,6 +6,7 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { AccountRequestComponent } from './account-request/account-request.component';
 import { AccountTripComponent } from './account-trip/account-trip.component';
 import { AccountItemComponent } from './account-item/account-item.component';
+import { AccountProposalComponent } from './account-proposal/account-proposal.component';
 
 const routes: Routes = [
     { path: 'account', component: AccountComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
     { path: 'request', component: AccountRequestComponent },
     { path: 'trip', component: AccountTripComponent },
     { path: 'item', component: AccountItemComponent },
+    { path: 'proposal', component: AccountProposalComponent },
 ];
 @NgModule({
     imports: [RouterModule.forChild(routes)],

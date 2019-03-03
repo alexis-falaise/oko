@@ -13,6 +13,10 @@ import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Airport } from '@models/airport.model';
 import { Luggage } from '@models/luggage.model';
+import { Request } from '@models/post/request.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ServerResponse } from '@models/app/server-response.model';
+import { Proposal } from '@models/post/proposal.model';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -33,6 +37,7 @@ export class TripComponent implements OnInit, OnDestroy {
   loading = false;
   edition = false;
   saved = false;
+  proposeTo: string;
   trip: Trip = null;
 
   constructor(
@@ -47,25 +52,30 @@ export class TripComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.uiService.setLoading(true);
     this.route.url.subscribe(segments => {
       const editionSegment = segments.find(segment => segment.path === 'edit');
-      this.loading = true;
-      if (editionSegment) {
-        this.edition = true;
-        this.route.params.subscribe(param => {
-          const id = param.id;
+      const proposition = segments.find(segment => segment.path === 'propose');
+      this.route.params.subscribe(param => {
+        const id = param.id;
+        if (proposition) {
+          this.proposeTo = id;
+          this.uiService.setLoading(false);
+        } else {
           this.postService.getTripById(id)
           .subscribe(trip => {
-            const formattedTrip = new Trip(trip);
-            this.trip = formattedTrip;
-            this.setDataFromTrip(formattedTrip);
-            this.loading = false;
-            this.ref.detectChanges();
+            if (editionSegment) {
+              this.edition = true;
+              const formattedTrip = new Trip(trip);
+              this.trip = formattedTrip;
+              this.setDataFromTrip(formattedTrip);
+              this.ref.detectChanges();
+            }
+            this.uiService.setLoading(false);
           });
-        });
-      } else {
-        this.loading = false;
-      }
+        }
+      });
+      this.uiService.setLoading(false);
     });
     this.manageDrafts();
   }
@@ -94,33 +104,20 @@ export class TripComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.loading = true;
+    this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(
       (user) => {
         if (user) {
           const trip = this.generateTrip(user);
           if (!this.edition) {
-            this.postService.createTrip(trip)
-            .subscribe(response => {
-            this.loading = false;
-              if (response.status) {
-                this.saved = true;
-                this.postService.deleteTripDraft();
-                this.snack.open('Voyage enregistré', 'Top!', {duration: 2000});
-                this.router.navigate(['/home']);
-              }
-            });
+            if (this.proposeTo) {
+              this.makeProposition(trip, user);
+            } else {
+              this.createTrip(trip);
+            }
           } else {
-            this.postService.updateTrip(trip)
-            .subscribe(response => {
-              this.loading = false;
-              if (response.status) {
-                this.saved = true;
-                this.snack.open('Voyage modifié', 'OK', {duration: 2500});
-                this.router.navigate(['/account/trip']);
-              }
-            });
+            this.editTrip(trip);
           }
         } else {
           this.saveError();
@@ -155,6 +152,13 @@ export class TripComponent implements OnInit, OnDestroy {
     this.openDialog();
   }
 
+  private serverError(error: HttpErrorResponse | ServerResponse) {
+    this.uiService.setLoading(false);
+    const snackRef = this.snack.open(`Une erreur est survenue (${error instanceof HttpErrorResponse ? error.status : error.message})`,
+    'Réessayer', {duration: 5000});
+    snackRef.onAction().subscribe(() => this.save());
+  }
+
   private saveDraft() {
     if (this.departureSave || this.arrivalSave || this.constraintsSave) {
       this.postService.saveTripDraft({
@@ -162,6 +166,7 @@ export class TripComponent implements OnInit, OnDestroy {
         arrival: this.arrivalSave,
         constraints: this.constraintsSave,
         edition: this.edition,
+        proposeTo: this.proposeTo,
         trip: this.trip || null,
       });
     }
@@ -177,6 +182,54 @@ export class TripComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => {
       this.loading = false;
     });
+  }
+
+  private makeProposition(trip: Trip, user: User) {
+    const proposal = {
+      from: trip,
+      to: this.proposeTo,
+      author: user,
+      date: moment(),
+    };
+    this.postService.createTripForRequest(proposal)
+    .subscribe(response => {
+      this.uiService.setLoading(false);
+      if (response.status) {
+        this.snack.open('Voyage proposé !', 'Parfait!', {duration: 2000});
+        this.router.navigate([`/post/request/${this.proposeTo}`]);
+      } else {
+        this.serverError(response);
+      }
+    }, (error) => this.serverError(error));
+  }
+
+  private createTrip(trip: Trip) {
+    this.postService.createTrip(trip)
+    .subscribe(response => {
+      this.uiService.setLoading(false);
+      if (response.status) {
+        this.saved = true;
+        this.postService.deleteTripDraft();
+        this.snack.open('Voyage enregistré', 'Top!', {duration: 2000});
+        this.router.navigate(['/home']);
+      } else {
+        this.serverError(response);
+      }
+    }, (error) => this.serverError(error));
+  }
+
+  private editTrip(trip: Trip) {
+    this.postService.updateTrip(trip)
+    .subscribe(response => {
+      this.uiService.setLoading(false);
+      if (response.status) {
+        this.saved = true;
+        this.snack.open('Voyage modifié', 'OK', {duration: 2500});
+        this.router.navigate(['/account/trip']);
+      } else {
+        this.serverError(response);
+      }
+    }, (error) => this.serverError(error));
   }
 
   private generateTripBatch(user: User) {
@@ -250,9 +303,13 @@ export class TripComponent implements OnInit, OnDestroy {
       this.constraintsInfo = draft.constraints;
       this.constraintsSave = draft.constraints;
       this.edition = draft.edition;
+      this.proposeTo = draft.proposeTo;
       this.trip = draft.trip;
       if (this.edition) {
         this.router.navigate(['post', 'trip', draft.trip.id, 'edit']);
+      }
+      if (this.proposeTo) {
+        this.router.navigate(['post', 'trip', 'propose', draft.proposeTo]);
       }
     }
   }

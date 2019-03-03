@@ -17,6 +17,7 @@ const routes: Routes = [
     { path: 'request/:id/edit', component: RequestComponent },
     { path: 'trip', component: TripListComponent },
     { path: 'trip/new', component: TripComponent },
+    { path: 'trip/propose/:id', component: TripComponent },
     { path: 'trip/:id', component: TripDetailComponent },
     { path: 'trip/:id/edit', component: TripComponent },
 ];
