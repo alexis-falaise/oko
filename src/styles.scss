@@ -166,3 +166,13 @@ html, body {
 .clock-face__number > span.active {
     background-color: #00bcd4 !important;
 }
+
+.mat-expansion-panel {
+    box-shadow: none !important;
+    border-bottom: thin solid rgb(240, 240, 240);
+}
+
+.mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel-header.mat-expanded:focus {
+    background-color: rgb(250, 250, 250);
+}

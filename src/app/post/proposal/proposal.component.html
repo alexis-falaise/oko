@@ -1,0 +1,51 @@
+<div class="proposal">
+    <div class="row justify-content-around proposal__actions">
+        <button class="btn btn-danger btn-icon" [disabled]="proposal.closed" *ngIf="proposal.authorView" (click)="closeProposal()">
+          <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
+        </button>
+        <button class="btn btn-warning btn-icon" *ngIf="proposal.authorView && !proposal.closed" (click)="modifyProposal()">
+          <mat-icon>edit</mat-icon> Modifier
+        </button>
+        <button class="btn btn-success btn-icon" [disabled]="proposal.accepted" *ngIf="receiver" (click)="acceptProposal()">
+          <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
+        </button>
+        <button class="btn btn-success btn-icon" [disabled]="proposal.validated" *ngIf="receiver && proposal.accepted && proposal.paid" (click)="validateProposal()">
+          <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
+        </button>
+        <button class="btn btn-danger btn-icon" [disabled]="proposal.refused" *ngIf="receiver && !proposal.accepted && !proposal.closed" (click)="refuseProposal()">
+          <mat-icon>clear</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
+        </button>
+    </div>
+    <div class="proposal__trip" *ngIf="fromTrip; else fromRequest" (click)="openTrip(proposal.from)">
+        <div class="proposal__trip-date">
+            <div class="arrival">
+                <mat-icon>today</mat-icon> Arrivée
+            </div>
+            <div class="arrival-time">
+                {{ proposal.from?.date?.format('DD/MM HH:mm') }}
+            </div>
+        </div>
+        <div class="row proposal__trip-info">
+          <div class="col-5 location">
+            <div class="city-name">{{ proposal.from?.from?.label }} </div>
+            <div class="airport-name" *ngIf="proposal.from?.from?.airport">
+                {{ proposal.from?.from?.airport?.name }}
+            </div>
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            <mat-icon>chevron_right</mat-icon>
+          </div>
+          <div class="col-5 location">
+            <div class="city-name">{{ proposal.from?.to.label }}</div>
+            <div class="airport-name" *ngIf="proposal.from?.to.airport">
+              {{ proposal.from?.to.airport.name }}
+            </div>
+          </div>
+        </div>
+    </div>
+    <ng-template #fromRequest>
+      <div class="proposal__request" (click)="openRequest(proposal.from)">
+    
+      </div>
+    </ng-template>
+</div>

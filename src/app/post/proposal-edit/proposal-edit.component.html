@@ -1,0 +1,23 @@
+<div class="proposal-edit">
+    <h2 class="proposal-edit-title">
+       Editer une proposition
+    </h2>
+    <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+    <hr class="divider">
+    <div class="proposal-edit__content">
+      <h6 class="text-muted">Bonus voyageur</h6>
+      <mat-slider class="proposal-edit__content__slider"
+                  min="0" max="1000" [(ngModel)]="bonus"
+                  thumbLabel [displayWith]="formatLabel">
+      </mat-slider>
+      <h2 class="proposal-edit__content__bonus">{{ bonus }} €</h2>
+    </div>
+    <div class="proposal-edit__validation d-flex justify-content-between">
+      <button class="btn btn-success" (click)="modifyProposal()">
+        Modifier
+      </button>
+      <button class="btn btn-light" (click)="close()">
+        Annuler
+      </button>
+    </div>
+</div>

@@ -21,7 +21,23 @@ export class Proposal {
     closed: boolean;
     bonus: number;
     updates: [Update];
+    authorView?: boolean;
+    id?: string;
+    _id: string;
     constructor(proposal: Partial<Proposal>) {
         Object.assign(this, proposal);
+        if (proposal._id) {
+            this.id = proposal._id;
+        }
     }
+
+    isAuthor(user: User) {
+        if (this.author) {
+            this.authorView = this.author.id === user.id;
+            return this.author.id === user.id;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -208,6 +208,10 @@ export class PostService {
     return this.http.get(`${this.requestUrl}/author/${id}/item`, {withCredentials: true}) as Observable<Array<Item>>;
   }
 
+  /**
+   * Get all proposals sent about a given post
+   * @param senderPost : Post used to send the proposal (full object)
+   */
   getSentProposals(senderPost: Trip | Request): Observable<Array<Proposal>> {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/from/${senderPost.id}`, {withCredentials: true})
@@ -217,6 +221,13 @@ export class PostService {
     });
   }
 
+  /**
+   * Get all proposals sent about a given post by a specific author
+   * Note: this case is trivial, the author of a post is always the sender of the
+   * proposal
+   * @param senderPost : Post used to send the proposal (full object)
+   * @param author : Author of the proposal (full object)
+   */
   getSentProposalsByAuthor(senderPost: Trip | Request, author: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/author/${author.id}/from/${senderPost.id}`, {withCredentials: true})
@@ -226,6 +237,10 @@ export class PostService {
     });
   }
 
+  /**
+   * Get all received proposal for a given post
+   * @param receptorPost : Post receiving the proposal (full Object)
+   */
   getReceivedProposals(receptorPost: Trip | Request): Observable<Array<Proposal>> {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/to/${receptorPost.id}`, {withCredentials: true})
@@ -235,12 +250,15 @@ export class PostService {
     });
   }
 
+  /**
+   * Get all received proposals for a given post from a specific author
+   * @param receptorPost : Post receiving the proposal (full Object)
+   * @param author : Author of the proposal
+   */
   getReceivedProposalsByAuthor(receptorPost: Trip | Request, author: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      console.log(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}`);
       this.http.get(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}`, {withCredentials: true})
       .subscribe((proposals: Array<any>) => {
-        console.log('Server proposals', proposals);
         this.getProposalsSubPosts(receptorPost, proposals, observer, true);
       });
     });
@@ -359,7 +377,7 @@ export class PostService {
   }
 
   updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/bonus`, bonus, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Deleters

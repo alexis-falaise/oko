@@ -26,6 +26,34 @@
     </button>
     <button class="btn btn-danger" [disabled]="request.closed" (click)="cancel()">Annuler l'annonce</button>
   </div>
+  <div class="request-detail__proposal" *ngIf="displayedProposals?.length">
+    <h4>
+      <mat-icon>notification_alert</mat-icon>
+      Propositions
+      <span *ngIf="request.own && receivedProposals?.length"> reçues</span>
+      <span *ngIf="currentUserProposals?.length"> envoyées</span>
+    </h4>
+    <small class="text-muted" *ngIf="currentUserProposals?.length">
+      Status des propositions de voyage faites à {{ request.user.firstname }}
+    </small>
+    <small class="text-muted" *ngIf="request.own && receivedProposals?.length">
+      Status des propositions de voyage reçues pour votre annonce
+    </small>
+    <mat-accordion class="request-detail__proposal-list">
+      <mat-expansion-panel *ngFor="let proposal of displayedProposals">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="request-detail__proposal-title">
+              <mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} <br>
+              <mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}
+          </mat-panel-title>
+          <mat-panel-description>
+            <mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-proposal [proposal]="proposal" [receiver]="request.own"></app-proposal>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
   <div class="request-detail__location">
     <h4 class="request-detail__location-title request-detail__section-title">
       {{ request.own ? 'Ma ville' : 'Ville de remise' }}
@@ -140,6 +168,9 @@
         </button>
     </div>
     <div class="request-detail__proposal" *ngIf="!request.own && !request.handlerView">
+      <small class="text-muted" *ngIf="currentUserProposals?.length">
+        Vous avez proposé {{ currentUserProposals.length }} trajet{{ currentUserProposals.length !== 1 ? 's' : ''}} pour cette annonce
+      </small>
       <button class="btn btn-info btn-icon"
               [disabled]="request.closed || request.outdated || request.accepted || request.validated"
               (click)="proposeTrip()">

@@ -21,6 +21,7 @@ export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
   receivedProposals: Array<Proposal>;
   currentUserProposals: Array<Proposal>;
+  displayedProposals: Array<Proposal>;
   moment = moment;
 
   constructor(
@@ -86,8 +87,8 @@ export class RequestDetailComponent implements OnInit {
     });
   }
 
-  openTrip() {
-    this.router.navigate([`/post/trip/${this.request.trip.id}`]);
+  openTrip(trip?: Trip) {
+    this.router.navigate([`/post/trip/${trip ? trip.id : this.request.trip.id}`]);
   }
 
   proposeTrip() {
@@ -95,19 +96,20 @@ export class RequestDetailComponent implements OnInit {
   }
 
   getProposals(request: Request, user: User) {
-    console.log('Get proposals', request);
     if (request.own) {
       this.postService.getReceivedProposals(request)
       .subscribe((proposals: Array<Proposal>) => {
         this.receivedProposals = proposals;
-        console.log('Received proposals', proposals);
+        this.displayedProposals = proposals;
       });
     } else {
-      console.log('Current user', user);
       this.postService.getReceivedProposalsByAuthor(request, user)
       .subscribe((proposals: Array<Proposal>) => {
         this.currentUserProposals = proposals;
-        console.log('Current user proposals', proposals);
+        this.displayedProposals = proposals.map(proposal => {
+          proposal.isAuthor(user);
+          return proposal;
+        });
       });
     }
   }

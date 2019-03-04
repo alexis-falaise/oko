@@ -177,19 +177,30 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   saveRequest() {
     const saveRequest = this.createSaveRequest();
+    let proposal;
 
     this.userService.getCurrentUser()
     .subscribe(currentUser => {
       saveRequest.user = currentUser;
       if (currentUser) {
+        if (saveRequest.trip) {
+          proposal = {
+            from: saveRequest,
+            to: saveRequest.trip.id,
+            date: moment(),
+            author: currentUser
+          };
+        }
         const requestService = this.edition
         ? this.postService.updateRequest(saveRequest)
-        : this.postService.createRequest(saveRequest);
+        : (saveRequest.trip
+        ? this.postService.createRequestForTrip(proposal)
+        : this.postService.createRequest(saveRequest));
         requestService.subscribe(response => {
           if (response.status) {
             this.saved = true;
             const responseRequest = new Request(response.data);
-            this.snack.open(`Annonce ${this.edition ? 'enregistrée' : 'modifiée'}`, 'Top!', {duration: 3000});
+            this.snack.open(`Annonce ${this.edition ? 'modifiée' : 'enregistrée'}`, 'Top!', {duration: 3000});
             this.router.navigate([`post/request/${responseRequest.id}`]);
           } else {
             this.requestServerError(response.message, response.code);

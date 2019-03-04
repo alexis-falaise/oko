@@ -16,7 +16,7 @@
         position: sticky;
         z-index: 10;
         top: -5vh;
-        height: 20vh;
+        height: 25vh;
         min-height: 160px;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -29,7 +29,7 @@
         &-title {
             font-size: 24px;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
         }
@@ -169,6 +169,18 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+        }
+    }
+
+    &__proposal {
+        margin-top: 15px;
+        flex-direction: column;
+        align-items: center;
+        &-title {
+            color: rgb(75, 75, 75);
+        }
+        &-list {
+            margin-top: 25px;
         }
     }
 

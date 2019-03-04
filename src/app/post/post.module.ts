@@ -18,6 +18,7 @@ import {
   MatDialogModule,
   MatRippleModule,
   MatSlideToggleModule,
+  MatSliderModule,
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -39,6 +40,8 @@ import { TripListComponent } from './trip/trip-list/trip-list.component';
 import { TripSizingComponent } from './trip/trip-sizing/trip-sizing.component';
 import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component';
 import { RequestItemSelectionComponent } from './request/request-item-selection/request-item-selection.component';
+import { ProposalComponent } from './proposal/proposal.component';
+import { ProposalEditComponent } from './proposal-edit/proposal-edit.component';
 
 @NgModule({
   declarations: [
@@ -54,12 +57,15 @@ import { RequestItemSelectionComponent } from './request/request-item-selection/
     TripSizingComponent,
     TripLuggageComponent,
     RequestItemComponent,
-    RequestItemSelectionComponent
+    RequestItemSelectionComponent,
+    ProposalComponent,
+    ProposalEditComponent
   ],
   entryComponents: [
     TripLuggageComponent,
     RequestItemComponent,
     RequestItemSelectionComponent,
+    ProposalEditComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +87,7 @@ import { RequestItemSelectionComponent } from './request/request-item-selection/
     MatSlideToggleModule,
     MatRippleModule,
     MatSnackBarModule,
+    MatSliderModule,
     MatStepperModule,
     NgxMaterialTimepickerModule.forRoot(),
     ReactiveFormsModule,
