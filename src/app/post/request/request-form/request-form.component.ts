@@ -17,6 +17,7 @@ import { Trip } from '@models/post/trip.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { isFulfilled } from 'q';
 import { Proposal } from '@models/post/proposal.model';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-request-form',
@@ -57,6 +58,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private adapter: DateAdapter<any>,
     private postService: PostService,
+    private uiService: UiService,
     private userService: UserService,
     private geoService: GeoService,
     private snack: MatSnackBar,
@@ -177,6 +179,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   saveRequest() {
+    this.uiService.setLoading(true);
     const saveRequest = this.createSaveRequest();
     let proposal;
 
@@ -208,6 +211,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
             } else {
               responseRequest = new Request(response.data);
             }
+            this.uiService.setLoading(false);
             this.snack.open(`Annonce ${this.edition ? 'modifiée' : 'enregistrée'}`, 'Top!', {duration: 3000});
             this.router.navigate([`post/request/${saveRequest.trip ? responseProposal.from : responseRequest.id}`]);
           } else {
@@ -237,6 +241,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   private requestError(draft) {
     this.saveDraft(draft);
     this.dialog.open(NotConnectedComponent);
+    this.uiService.setLoading(false);
   }
 
   private saveDraft(draft) {

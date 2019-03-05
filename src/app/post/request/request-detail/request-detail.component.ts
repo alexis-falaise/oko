@@ -53,7 +53,7 @@ export class RequestDetailComponent implements OnInit {
               }
             }, (err) => this.setRequest(request));
           }
-        });
+        }, (err) => this.serverError(err));
       }
     });
   }

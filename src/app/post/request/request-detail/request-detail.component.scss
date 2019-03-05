@@ -14,7 +14,7 @@
         position: sticky;
         z-index: 10;
         top: -5vh;
-        height: 25vh;
+        height: 30vh;
         min-height: 160px;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -53,7 +53,7 @@
 
     &__date {
         display: inline-flex;
-        margin-top: -10px;
+        margin-top: -20px;
         color: rgba(255, 255, 255, .6);
     }
 
