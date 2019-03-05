@@ -7,17 +7,51 @@
     <div class="proposal-edit__content">
       <h6 class="text-muted">Bonus voyageur</h6>
       <mat-slider class="proposal-edit__content__slider"
+                  [disabled]="proposal.accepted || proposal.closed || proposal.refused"
                   min="0" max="1000" [(ngModel)]="bonus"
                   thumbLabel [displayWith]="formatLabel">
       </mat-slider>
       <h2 class="proposal-edit__content__bonus">{{ bonus }} €</h2>
+      <hr class="divider">
+      <h6 class="text-muted">Lieu de rendez-vous</h6>
+      <div>
+        <mat-slide-toggle [(ngModel)]="airportPickup"
+                          [disabled]="proposal.accepted || proposal.closed || proposal.refused">
+        </mat-slide-toggle> Remise à l'aéroport <br>
+      </div>
+      <form [formGroup]="meeting" *ngIf="!airportPickup">
+        <div class="form-row">
+          <div class="form-group col-12">
+            <input type="text" class="form-control" placeholder="Adresse"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="address" required>
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <input type="text" class="form-control" placeholder="Ville"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="city" required>
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <input type="text" class="form-control" placeholder="Code postal"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="zip" required>
+          </div>
+          <div class="form-group col-12">
+            <input type="text" class="form-control" placeholder="Pays"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="country" required>
+          </div>
+        </div>
+      </form>
     </div>
     <div class="proposal-edit__validation d-flex justify-content-between">
-      <button class="btn btn-success" (click)="modifyProposal()">
+      <button class="btn btn-success" 
+              [disabled]="proposal.accepted || proposal.closed || proposal.refused"
+              (click)="modifyProposal()">
         Modifier
       </button>
       <button class="btn btn-light" (click)="close()">
-        Annuler
+        {{ proposal.accepted || proposal.closed || proposal.refused ? 'Fermer' : 'Annuler' }}
       </button>
     </div>
 </div>

@@ -205,12 +205,94 @@ $transitionStyle: ease-out;
         }
 
         &__onboarding {
-            height: 300vh;
             &-service {
                 margin-top: 25px;
+                margin-bottom: 50px;
                 padding: 0 10%;
                 color: rgb(125, 125, 125);
                 text-align: center;
+                &__title {
+                    font-size: 24px;
+                    color: rgb(150, 150, 150);
+                }
+                &__steps {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    text-align: center;
+                    height: 350px;
+                    color: rgb(75, 75, 75);
+                    $iconSize: 72px;
+                    .mat-icon {
+                        width: $iconSize;
+                        height: $iconSize;
+                    }
+                    .material-icons {
+                        font-size: $iconSize;
+                        color: rgb(150, 150, 150);
+                    }
+                }
+            }
+            &-advertising {
+                height: 400px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                &__icon {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    align-items: center;
+                    height: 50%;
+                    $iconSize: 136px;
+                    .mat-icon {
+                        width: $iconSize;
+                        height: $iconSize;
+                    }
+                    .material-icons {
+                        font-size: $iconSize;
+                        color: rgb(150, 150, 150);
+                    }
+                }
+                &__title {
+                    font-size: 24px;
+                    color: rgb(150, 150, 150);
+                }
+                &__text {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    height: 50%;
+                    text-align: center;
+                }
+            }
+        }
+
+        &__footer {
+            height: 100vh;
+            position: relative;
+            bottom: 0;
+            z-index: 51;
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgb(50, 50, 50);
+            color: rgb(125, 125, 125);
+            text-align: center;
+            &-list {
+                margin-top: 25px;
+                li {
+                    list-style: none;
+                }
+                a {
+                    text-decoration: none;
+                    cursor: pointer;
+                    color: rgb(100, 100, 100);
+                    &:hover {
+                        color: rgb(135, 135, 135);
+                    }
+                }
             }
         }
     }

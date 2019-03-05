@@ -1,5 +1,6 @@
 import { Post } from '@models/post/post.model';
 import { User } from '@models/user.model';
+import { MeetingPoint } from '@models/meeting-point.model';
 
 import { Moment } from 'moment';
 
@@ -21,6 +22,8 @@ export class Proposal {
     paid: boolean;
     closed: boolean;
     bonus: number;
+    airportPickup: boolean;
+    meetingPoint: MeetingPoint;
     updates: [Update];
     authorView?: boolean;
     lastUpdate?: Update;

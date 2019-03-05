@@ -12,6 +12,8 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UiService } from '@core/ui.service';
 import { ProposalEditComponent } from '../proposal-edit/proposal-edit.component';
+import { UserService } from '@core/user.service';
+import { User } from '@models/user.model';
 
 @Component({
   selector: 'app-proposal',
@@ -21,11 +23,13 @@ import { ProposalEditComponent } from '../proposal-edit/proposal-edit.component'
 export class ProposalComponent implements OnInit, OnChanges {
   @Input() proposal: Proposal;
   @Input() receiver: boolean;
+  currentUser: User;
   fromTrip: boolean;
   moment = moment;
 
   constructor(
     private postService: PostService,
+    private userService: UserService,
     private uiService: UiService,
     private dialog: MatDialog,
     private router: Router,
@@ -40,13 +44,22 @@ export class ProposalComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.initProposal();
+    this.userService.getCurrentUser()
+    .subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+        this.initProposal();
+      }
+    });
   }
 
   initProposal() {
     const origin = this.proposal.from;
     if (origin instanceof Trip) {
       this.fromTrip = true;
+    }
+    if (this.currentUser) {
+      this.proposal.isAuthor(this.currentUser);
     }
   }
 
@@ -68,6 +81,7 @@ export class ProposalComponent implements OnInit, OnChanges {
       } else {
         this.serverError(response);
       }
+    this.uiService.setLoading(false);
     }, (err) => this.serverError(err));
   }
 
@@ -81,6 +95,7 @@ export class ProposalComponent implements OnInit, OnChanges {
       } else {
         this.serverError(response);
       }
+    this.uiService.setLoading(false);
     }, (err) => this.serverError(err));
   }
 
@@ -94,6 +109,7 @@ export class ProposalComponent implements OnInit, OnChanges {
       } else {
         this.serverError(response);
       }
+    this.uiService.setLoading(false);
     }, (err) => this.serverError(err));
   }
 
@@ -107,12 +123,13 @@ export class ProposalComponent implements OnInit, OnChanges {
       } else {
         this.serverError(response);
       }
+    this.uiService.setLoading(false);
     }, (err) => this.serverError(err));
   }
 
   modifyProposal() {
     const dialogRef = this.dialog.open(ProposalEditComponent, {
-      height: '60vh',
+      height: '95vh',
       width: '80vw',
       data: this.proposal,
     });

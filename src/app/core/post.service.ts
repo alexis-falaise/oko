@@ -217,6 +217,9 @@ export class PostService {
       this.http.get(`${this.proposalUrl}/from/${senderPost.id}`, {withCredentials: true})
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(senderPost, proposals, observer, false);
+      }, (err) => {
+        observer.next([]);
+        observer.complete();
       });
     });
   }
@@ -231,6 +234,9 @@ export class PostService {
       this.http.get(`${this.proposalUrl}/author/${author.id}/from/${senderPost.id}`, {withCredentials: true})
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(senderPost, proposals, observer, false);
+      }, (err) => {
+        observer.next([]);
+        observer.complete();
       });
     });
   }
@@ -244,6 +250,9 @@ export class PostService {
       this.http.get(`${this.proposalUrl}/to/${receptorPost.id}`, {withCredentials: true})
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(receptorPost, proposals, observer, true);
+      }, (err) => {
+        observer.next([]);
+        observer.complete();
       });
     });
   }
@@ -258,6 +267,9 @@ export class PostService {
       this.http.get(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}`, {withCredentials: true})
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(receptorPost, proposals, observer, true);
+      }, (err) => {
+        observer.next([]);
+        observer.complete();
       });
     });
   }
@@ -371,7 +383,7 @@ export class PostService {
    * @param id : Proposal id
    */
   acceptProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/accept`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/accept`, {accepted: true}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -379,7 +391,7 @@ export class PostService {
    * @param id : Proposal id
    */
   refuseProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/refuse`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/refuse`, {refused: true}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -387,7 +399,7 @@ export class PostService {
    * @param id : Proposal id
    */
   validateProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/validate`, {validated: true}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -395,7 +407,7 @@ export class PostService {
    * @param id : Proposal id
    */
   closeProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/close`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/close`, {closed: true}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -403,7 +415,7 @@ export class PostService {
    * @param id : Proposal id
    */
   payProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/pay`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/pay`, {paid: true}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -413,6 +425,14 @@ export class PostService {
    */
   updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus}, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  /**
+   * Update a proposal
+   * @param proposal : Proposal object
+   */
+  updateProposal(proposal: Proposal): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${proposal.id}`, proposal, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Deleters

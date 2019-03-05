@@ -3,11 +3,14 @@
         <button class="btn btn-danger btn-icon" [disabled]="proposal.closed" *ngIf="proposal.authorView" (click)="closeProposal()">
           <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
         </button>
-        <button class="btn btn-warning btn-icon" *ngIf="proposal.authorView && !proposal.closed" (click)="modifyProposal()">
+        <button class="btn btn-light btn-icon" *ngIf="proposal.authorView && !proposal.closed" (click)="modifyProposal()">
           <mat-icon>edit</mat-icon> Modifier
         </button>
-        <button class="btn btn-success btn-icon" [disabled]="proposal.accepted" *ngIf="receiver" (click)="acceptProposal()">
+        <button class="btn btn-success btn-icon" [disabled]="!proposal.authorView && proposal.accepted || proposal.refused" *ngIf="receiver" (click)="acceptProposal()">
           <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
+        </button>
+        <button class="btn btn-success btn-icon" [disabled]="proposal.paid" *ngIf="proposal.authorView && proposal.accepted">
+          <mat-icon>credit_card</mat-icon> {{ proposal.paid ? 'Payée' : 'Payer' }}
         </button>
         <button class="btn btn-success btn-icon" [disabled]="proposal.validated" *ngIf="receiver && proposal.accepted && proposal.paid" (click)="validateProposal()">
           <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
@@ -22,7 +25,9 @@
         <small class="text-muted" *ngIf="proposal.lastUpdate">
           Dernière modification {{ moment(proposal.lastUpdate.date).fromNow() }} par {{ proposal.lastUpdate.author?.firstname || 'Oko user' }}
         </small>
-        <button class="btn btn-light btn-icon" *ngIf="!proposal.closed" (click)="modifyProposal()">
+        <button class="btn btn-light btn-icon"
+                *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
+                (click)="modifyProposal()">
           <mat-icon>edit</mat-icon> Contre proposition
         </button>
     </div>
@@ -56,7 +61,35 @@
     </div>
     <ng-template #fromRequest>
       <div class="proposal__request" (click)="openRequest(proposal.from)">
-    
+        <h6 class="text-muted">Articles</h6>
+        <mat-card class="proposal__request__item" matRipple *ngFor="let item of proposal.from?.items" (click)="openRequest()">
+          <mat-card-title>{{ item.label }}</mat-card-title>
+        </mat-card>
+        <hr class="divider">
+        <div class="row">
+          <div [ngClass]="{'col-6': proposal.from?.urgent, 'col-12': !proposal.from?.urgent}">
+            <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
+              <mat-icon>flight</mat-icon> Remise à l'aéroport
+            </div>
+            <ng-template #location>
+              <div class="proposal__request__city">
+                  <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint?.city }} ({{ proposal.meetingPoint?.country }})
+                  {{ ', ' + proposal.meetingPoint?.address }}
+              </div>
+            </ng-template>            
+          </div>
+          <div class="col-6" *ngIf="proposal.from?.urgent">
+            <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('MM/DD/YYYY') }}
+            <p *ngIf="!proposal.authorView">
+              " {{ proposal.from?.urgentDetails?.explaination }} "
+            </p>
+          </div>
+        </div>
+        <button class="btn btn-light btn-icon"
+                *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
+                (click)="modifyProposal()">
+          <mat-icon>my_location</mat-icon> Proposer un autre lieu
+        </button>
       </div>
     </ng-template>
 </div>

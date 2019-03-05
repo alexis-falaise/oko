@@ -55,6 +55,35 @@
       </div>
     </div>
   </div>
+  <div class="trip-detail__proposal-wrapper" *ngIf="proposals?.length">
+    <h4 class="trip-detail__proposal-title">Proposition {{ own ? 'reçues' : 'envoyées' }}</h4>
+    <mat-accordion>
+      <mat-expansion-panel class="trip-detail__proposal"
+                           [class.closed]="proposal.closed"
+                           [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+                           [class.accepted]="proposal.accepted && !proposal.closed"
+                           [class.refused]="proposal.refused && !proposal.closed"
+                           *ngFor="let proposal of proposals">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="trip-detail__proposal__title">
+            <span class="trip-detail__proposal__date">{{ moment(proposal.date).format('DD/MM/YYYY') }} </span>
+            {{ proposal.author.id === currentUser.id ? ' Demande' : ' ' + proposal.author?.firstname }}
+            <span class="trip-detail__proposal__status" *ngIf="proposal.closed"> - Annulée</span>
+            <span class="trip-detail__proposal__status" *ngIf="own && proposal.accepted && !proposal.validated"> - A livrer</span>
+            <span class="trip-detail__proposal__status" *ngIf="proposal.refused && !proposal.closed"> - Refusée</span>
+            <span class="trip-detail__proposal__status" *ngIf="!own && proposal.accepted && !proposal.validated"> - Acceptée</span>
+            <span class="trip-detail__proposal__status" *ngIf="proposal.validated"> - Livrée</span>
+            <span class="trip-detail__proposal__info" *ngIf="proposal.bonus && !proposal.closed"> - {{ proposal.bonus }} €</span><br>
+            <span class="trip-detail__proposal__info" *ngIf="proposal?.from?.urgent && !proposal.closed">
+              - avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}
+            </span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-proposal [proposal]="proposal" [receiver]="own"></app-proposal>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <hr class="divider" *ngIf="proposals?.length">
   <div class="trip-detail__engagement container" *ngIf="trip">
     <div class="trip-detail__engagement__constraints">
       <h4 class="trip-detail__engagement__constraints-title">Espace disponible</h4>
@@ -126,10 +155,10 @@
       *ngIf="requests && requests.length && !own">
     <h5 class="trip-detail__pending-title">
       <mat-icon>add_alert</mat-icon>
-      Vous avez {{ requests.length !== 1 ? request.length : 'une'}} demande{{requests.length !== 1 ? 's' : ''}} en attente
+      Vous avez {{ requests.length !== 1 ? requests.length : 'une'}} demande{{requests.length !== 1 ? 's' : ''}} en attente
     </h5>
     <small class="text-muted">
-      Vous recevrez une notification si {{ trip.user.firstname }} accepte votre demande de transport
+      Vous recevrez une notification si {{ trip?.user?.firstname }} accepte votre demande de transport
     </small>
     <mat-card class="trip-detail__pending-item" matRipple *ngFor="let item of items" (click)="openRequest()">
       <mat-card-title>{{ item.label }}</mat-card-title>

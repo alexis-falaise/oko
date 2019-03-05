@@ -18,6 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { isFulfilled } from 'q';
 import { Proposal } from '@models/post/proposal.model';
 import { UiService } from '@core/ui.service';
+import { MeetingPoint } from '@models/meeting-point.model';
 
 @Component({
   selector: 'app-request-form',
@@ -194,6 +195,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
             date: moment(),
             author: currentUser,
             receiver: saveRequest.trip.user,
+            bonus: saveRequest.bonus,
+            airportPickup: this.trip.airportDrop || saveRequest.airportPickup,
+            meetingPoint: (this.trip.airportDrop || saveRequest.airportPickup) ? new MeetingPoint({
+              city: this.trip.to.airport.city,
+              country: this.trip.to.airport.country
+            }) : saveRequest.meetingPoint,
           };
         }
         const requestService = this.edition
@@ -226,7 +233,16 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private createSaveRequest() {
-    const meeting = this.meeting.value;
+    let meeting;
+    if (this.meeting.value) {
+      meeting = this.meeting.value;
+    }
+    if (this.trip) {
+      meeting.meetingPoint = {
+        city: this.trip.to.airport.city,
+        country: this.trip.to.airport.country,
+      };
+    }
     delete meeting.city;
     const saveRequest = new Request({
       items: this.items,
@@ -234,7 +250,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       id: this.edition ? this.requestId : undefined,
       ...meeting,
     });
-    console.log(saveRequest);
     return saveRequest;
   }
 

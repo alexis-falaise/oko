@@ -134,6 +134,42 @@
         }
     }
 
+    &__proposal {
+        &__title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        &-wrapper {
+            margin-top: 25px;
+        }
+        &__date {
+            color: rgba(0, 0, 0, .5);
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        &__status {
+            color: rgba(0, 0, 0, .4);
+            font-size: 10px;
+        }
+        &__info {
+            color: rgba(0, 0, 0, .4);
+            font-size: 10px;
+        }
+        &.closed {
+            opacity: .5;
+        }
+        &.pending {
+            background-color: $amber-100;
+        }
+        &.accepted {
+            background-color: $light-green-200;
+        }
+        &.refused {
+            background-color: $red-100;
+        }
+    }
+
     &__engagement {
         padding: 25px 0;
 
