@@ -49,10 +49,10 @@
         <mat-step>
           <ng-template matStepLabel>Dimensions</ng-template>
           <div class="request-item__step-content">
-            <div class="form-group">
-            <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
-            </div>
             <div class="form-row">
+              <div class="form-group col-12">
+                <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
+              </div>
               <div class="form-group col-12 col-sm-6 col-md-4">
                   <div class="input-group">
                       <input type="number" class="form-control" min="0" required formControlName="weight">

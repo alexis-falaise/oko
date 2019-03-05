@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { DateAdapter, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 import { PostService } from '@core/post.service';
-
-import { Trip } from '@models/post/trip.model';
-import { DateAdapter, MatSnackBar } from '@angular/material';
 import { UserService } from '@core/user.service';
-import { Request } from '@models/post/request.model';
+
+import { Item } from '@models/item.model';
 import { Proposal } from '@models/post/proposal.model';
+import { Request } from '@models/post/request.model';
+import { Trip } from '@models/post/trip.model';
 
 @Component({
   selector: 'app-trip-detail',
@@ -17,6 +19,7 @@ import { Proposal } from '@models/post/proposal.model';
 export class TripDetailComponent implements OnInit {
   trip: Trip = null;
   requests: Array<Request> = null;
+  items: Array<Item> = null;
   currentRequest: Request = null;
   proposals: Array<Proposal> = null;
   engagement = false;
@@ -55,7 +58,7 @@ export class TripDetailComponent implements OnInit {
           if (this.own) {
             this.fetchProposals();
           }
-        }, (err) => {});
+        });
         this.getUserRequests();
       }
     }, (err) => {
@@ -72,29 +75,33 @@ export class TripDetailComponent implements OnInit {
   getUserRequests() {
     this.userService.getCurrentUser()
     .subscribe(user => {
-      this.postService.getRequestByTrip(user.id, this.trip.id)
-      .subscribe((requests) => {
-        if (requests) {
-          this.requests = requests.map(request => new Request(request));
-          this.currentRequest = this.requests.find(request => !request.closed && !request.validated);
-        }
+      this.postService.getReceivedProposalsByAuthor(this.trip, user)
+      .subscribe((proposals: Array<Proposal>) => {
+        this.proposals = proposals;
+        this.requests = proposals
+        .filter(proposal => !proposal.closed && !proposal.accepted && !proposal.refused)
+        .map(proposal => proposal.from) as Array<Request>;
+        this.items = this.requests.reduce((acc, request) => acc.concat(request.items), []);
       }, (err) => this.snack.open('Erreur lors du chargement des annonces', 'OK', {duration: 3000}));
-    }, (err) => {});
+    });
   }
 
   openRequest() {
-    this.router.navigate([`/post/request/${this.currentRequest.id}`]);
+    this.router.navigate([`/account/request`]);
   }
 
   closeRequest() {
-    this.postService.closeRequest(this.currentRequest.id)
-    .subscribe((response) => {
-      if (response.status) {
-        const request = new Request(response.data);
-        if (request.id === this.currentRequest.id && request.closed) {
-          this.snack.open('La demande a été annulée', 'OK', {duration: 3000});
-          this.currentRequest = null;
-        }
+    forkJoin(this.requests.map((request, index) => {
+      const relatedProposal = this.proposals[index];
+      return this.postService.closeProposal(relatedProposal.id);
+    })).subscribe((responses) => {
+      this.getUserRequests();
+      const hasFailed = responses.find(response => !response.status);
+      if (hasFailed) {
+        const snackRef = this.snack.open('Une ou plusieurs demandes n\'ont pas été annulées', 'Réessayer', {duration: 5000});
+        snackRef.onAction().subscribe(() => this.closeRequest());
+      } else {
+        this.snack.open('Les propositions ont été annulées', 'OK', {duration: 2500});
       }
     });
   }

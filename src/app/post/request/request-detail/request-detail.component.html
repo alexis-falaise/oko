@@ -1,7 +1,7 @@
-<div class="request-detail container-fluid">
+<div class="request-detail container-fluid" >
   <div class="request-detail__hero row">
     <h2 class="request-detail__hero-title" *ngIf="request.user">
-        <app-avatar class="request-detail__hero-avatar" [size]="75" [image]="request.user?.avatar" *ngIf="request.user?.avatar"></app-avatar>
+        <app-avatar class="request-detail__hero-avatar" [size]="75" [image]="request.user?.avatar" *ngIf="request.user?.avatar && !request.own"></app-avatar>
         {{ request.own ? 'Mon annonce' : 'Annonce de ' + request.user?.firstname }}
     </h2>
     <small class="request-detail__date" *ngIf="request.submitDate">
@@ -9,7 +9,7 @@
     </small>
     <mat-progress-spinner color="accent" class="request-detail__hero-loading" mode="indeterminate" *ngIf="!request.user"></mat-progress-spinner>
   </div>
-  <div class="container">
+  <div class="request-detail__content container" [class.loading]="!request.user">
     <div class="request-detail__status"
     [class.good]="request.accepted || request.validated"
     [class.bad]="request.closed || request.outdated"
@@ -28,7 +28,6 @@
   </div>
   <div class="request-detail__proposal" *ngIf="displayedProposals?.length">
     <h4>
-      <mat-icon>notification_alert</mat-icon>
       Propositions
       <span *ngIf="request.own && receivedProposals?.length"> reçues</span>
       <span *ngIf="currentUserProposals?.length"> envoyées</span>

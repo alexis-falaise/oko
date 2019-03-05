@@ -1,6 +1,7 @@
 import { Post } from '@models/post/post.model';
-import { Moment } from 'moment';
 import { User } from '@models/user.model';
+
+import { Moment } from 'moment';
 
 export class Update {
     date: Moment;
@@ -22,12 +23,16 @@ export class Proposal {
     bonus: number;
     updates: [Update];
     authorView?: boolean;
+    lastUpdate?: Update;
     id?: string;
     _id: string;
     constructor(proposal: Partial<Proposal>) {
         Object.assign(this, proposal);
         if (proposal._id) {
             this.id = proposal._id;
+        }
+        if (proposal.updates && proposal.updates.length) {
+            this.lastUpdate = proposal.updates[proposal.updates.length - 1];
         }
     }
 

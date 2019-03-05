@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
 
@@ -21,6 +22,7 @@ export class ProposalComponent implements OnInit, OnChanges {
   @Input() proposal: Proposal;
   @Input() receiver: boolean;
   fromTrip: boolean;
+  moment = moment;
 
   constructor(
     private postService: PostService,
@@ -62,7 +64,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
-        this.proposal = new Proposal(response.data);
+        this.proposal.accepted = response.data.accepted;
       } else {
         this.serverError(response);
       }
@@ -75,7 +77,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.snack.open('La proposition a été annulée', 'OK', {duration: 3000});
-        this.proposal = new Proposal(response.data);
+        this.proposal.closed = response.data.closed;
       } else {
         this.serverError(response);
       }
@@ -88,7 +90,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.snack.open('La proposition a été refusée', 'OK', {duration: 3000});
-        this.proposal = new Proposal(response.data);
+        this.proposal.refused = response.data.refused;
       } else {
         this.serverError(response);
       }
@@ -101,7 +103,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.snack.open('La réception a bien été confirmée', 'Parfait', {duration: 3000});
-        this.proposal = new Proposal(response.data);
+        this.proposal.validated = response.data.validated;
       } else {
         this.serverError(response);
       }
@@ -113,6 +115,13 @@ export class ProposalComponent implements OnInit, OnChanges {
       height: '60vh',
       width: '80vw',
       data: this.proposal,
+    });
+    dialogRef.afterClosed().subscribe(proposal => {
+      if (proposal) {
+        this.proposal.bonus = proposal.bonus;
+        this.proposal.updates = proposal.updates;
+        this.proposal = new Proposal(this.proposal);
+      }
     });
   }
 

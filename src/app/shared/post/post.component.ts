@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { PostService } from '@core/post.service';
 import { MatSnackBar } from '@angular/material';
 import { Item } from '@models/item.model';
+import { ServerResponse } from '@models/app/server-response.model';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -90,20 +92,52 @@ export class PostComponent implements OnInit, OnChanges {
     : this.postService.removeRequest(this.post as Request);
     removalService.subscribe((serverResponse) => {
       if (serverResponse.status) {
-        this.snack.open(`${this.isTrip ? 'Le trajet' : 'L\'annonce'} a bien été supprimé ${this.isTrip ? '' : 'e'}`,
+        this.snack.open(`${this.isTrip ? 'Le trajet' : 'L\'annonce'} a bien été supprimé${this.isTrip ? '' : 'e'}`,
                         'OK', {duration: 3000});
         this.remove.emit();
       } else {
         const snackRef = this.snack.open('Erreur lors de la suppression', 'Réessayer', {duration: 3000});
         snackRef.onAction().subscribe(() => this.removePost());
       }
-    });
+    }, (error: HttpErrorResponse) => this.serverError(error.status));
   }
 
   toPost() {
     if (!this.panel) {
       this.router.navigate(['post', this.isTrip ? 'trip' : 'request', this.post.id]);
     }
+  }
+
+  private serverError(status: number) {
+    let message: string;
+    let action: string;
+    let duration: number;
+    switch (status) {
+      case 500:
+        message = 'Une erreur a eu lieu';
+        action = 'Réessayer';
+        duration = 5000;
+        break;
+      case 404:
+        message = 'Le post n\'a pas été trouvé';
+        action = 'OK';
+        duration = 3000;
+        break;
+      case 401:
+        message = 'Vous n\'êtes pas connecté';
+        action = 'Connexion';
+        duration = 5000;
+        break;
+    }
+    const snackRef = this.snack.open(message, action, {duration: duration});
+    snackRef.onAction().subscribe(() => {
+      if (status === 500) {
+        this.removePost();
+      }
+      if (status === 401) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
 }

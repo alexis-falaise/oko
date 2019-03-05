@@ -11,6 +11,7 @@ import { UiService } from '@core/ui.service';
 import { UserService } from '@core/user.service';
 import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-request-detail',
@@ -96,12 +97,14 @@ export class RequestDetailComponent implements OnInit {
   }
 
   getProposals(request: Request, user: User) {
-    if (request.own) {
+    this.uiService.setLoading(true);
+    if (this.request.own) {
       this.postService.getReceivedProposals(request)
       .subscribe((proposals: Array<Proposal>) => {
         this.receivedProposals = proposals;
         this.displayedProposals = proposals;
-      });
+        this.uiService.setLoading(false);
+      }, (err: HttpErrorResponse) => this.serverError(err));
     } else {
       this.postService.getReceivedProposalsByAuthor(request, user)
       .subscribe((proposals: Array<Proposal>) => {
@@ -110,8 +113,14 @@ export class RequestDetailComponent implements OnInit {
           proposal.isAuthor(user);
           return proposal;
         });
-      });
+        this.uiService.setLoading(false);
+      }, (err: HttpErrorResponse) => this.serverError(err));
     }
+  }
+
+  private serverError(error: HttpErrorResponse) {
+    this.uiService.setLoading(false);
+    this.snack.open(`Erreur lors de la récupération des propositions (${error.message})`, undefined, {duration: 2500});
   }
 
 }

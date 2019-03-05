@@ -34,7 +34,20 @@ export class AccountRequestComponent implements OnInit {
           if (requests) {
             this.requests = requests
             .map(request => new Request(request))
-            .sort((a, b) => moment(a.submitDate).isBefore(b.submitDate) ? -1 : 1);
+            .sort((a, b) => {
+              if (a.submitDate && !b.submitDate) {
+                return -1;
+              }
+              if (!a.submitDate && b.submitDate) {
+                return 1;
+              }
+              if (!a.submitDate && !b.submitDate) {
+                return -1;
+              }
+              if (a.submitDate && b.submitDate) {
+                return moment(a.submitDate).isBefore(b.submitDate) ? 1 : -1;
+              }
+            });
           }
           this.uiService.setLoading(false);
         });

@@ -36,9 +36,13 @@ export class TripComponent implements OnInit, OnDestroy {
   constraintsInfo = null;
   loading = false;
   edition = false;
+  draft = false;
+  doNotSaveDraft = false;
   saved = false;
   proposeTo: string;
   trip: Trip = null;
+  request: Request = null;
+  bonus: number;
 
   constructor(
     private postService: PostService,
@@ -59,20 +63,12 @@ export class TripComponent implements OnInit, OnDestroy {
       this.route.params.subscribe(param => {
         const id = param.id;
         if (proposition) {
-          this.proposeTo = id;
+          this.setPropositionData(id);
           this.uiService.setLoading(false);
         } else {
-          this.postService.getTripById(id)
-          .subscribe(trip => {
-            if (editionSegment) {
-              this.edition = true;
-              const formattedTrip = new Trip(trip);
-              this.trip = formattedTrip;
-              this.setDataFromTrip(formattedTrip);
-              this.ref.detectChanges();
-            }
-            this.uiService.setLoading(false);
-          });
+          if (id) {
+            this.setTripData(id, !!editionSegment);
+          }
         }
       });
       this.uiService.setLoading(false);
@@ -141,8 +137,16 @@ export class TripComponent implements OnInit, OnDestroy {
     });
   }
 
+  removeDraft() {
+    this.postService.deleteTripDraft();
+    this.doNotSaveDraft = true;
+    const snackRef = this.snack.open('Brouillon supprimé', 'OK', {duration: 3000});
+    snackRef.onAction().subscribe(() => snackRef.dismiss());
+    window.history.go(-2);
+  }
+
   ngOnDestroy() {
-    if (!this.saved) {
+    if (!this.saved && !this.doNotSaveDraft) {
       this.saveDraft();
     }
   }
@@ -184,23 +188,50 @@ export class TripComponent implements OnInit, OnDestroy {
     });
   }
 
-  private makeProposition(trip: Trip, user: User) {
-    const proposal = {
-      from: trip,
-      to: this.proposeTo,
-      author: user,
-      date: moment(),
-    };
-    this.postService.createTripForRequest(proposal)
-    .subscribe(response => {
-      this.uiService.setLoading(false);
-      if (response.status) {
-        this.snack.open('Voyage proposé !', 'Parfait!', {duration: 2000});
-        this.router.navigate([`/post/request/${this.proposeTo}`]);
-      } else {
-        this.serverError(response);
+  private setTripData(id: string, edition: boolean) {
+    this.postService.getTripById(id)
+    .subscribe(trip => {
+      if (edition) {
+        this.edition = true;
+        const formattedTrip = new Trip(trip);
+        this.trip = formattedTrip;
+        this.setDataFromTrip(formattedTrip);
+        this.ref.detectChanges();
       }
-    }, (error) => this.serverError(error));
+      this.uiService.setLoading(false);
+    });
+  }
+
+  private setPropositionData(id: string) {
+    this.proposeTo = id;
+    this.postService.getRequestById(id)
+    .subscribe(request => {
+      this.request = request;
+      this.bonus = request.bonus;
+    });
+  }
+
+  private makeProposition(trip: Trip, user: User) {
+    if (this.request) {
+      const proposal = {
+        from: trip,
+        to: this.proposeTo,
+        author: user,
+        date: moment(),
+        receiver: this.request.user,
+        bonus: this.bonus,
+      };
+      this.postService.createTripForRequest(proposal)
+      .subscribe(response => {
+        this.uiService.setLoading(false);
+        if (response.status) {
+          this.snack.open('Voyage proposé !', 'Parfait!', {duration: 2000});
+          this.router.navigate([`/post/request/${this.proposeTo}`]);
+        } else {
+          this.serverError(response);
+        }
+      }, (error) => this.serverError(error));
+    }
   }
 
   private createTrip(trip: Trip) {
@@ -296,6 +327,7 @@ export class TripComponent implements OnInit, OnDestroy {
   private manageDrafts() {
     const draft = this.postService.getTripDraft();
     if (draft) {
+      this.draft = true;
       this.departureInfo = draft.departure;
       this.departureSave = draft.departure;
       this.arrivalInfo = draft.arrival;

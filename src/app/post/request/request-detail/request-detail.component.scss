@@ -3,12 +3,10 @@
 .request-detail {
     height: 100vh;
     overflow-y: scroll;
+    overflow-x: hidden;
 
     &__hero {
         animation: $animationDuration openHero;
-        -webkit-animation: $animationDuration openHero;
-        -moz-animation: $animationDuration openHero;
-        -o-animation: $animationDuration openHero;
 
         background: $heroGradient;
         // background-image: url('/assets/hero-trip-detail.jpg');
@@ -42,6 +40,14 @@
         &-loading {
             height: 10px;
             display: flex;
+        }
+    }
+
+    &__content {
+        transition: all $transitionDuration;
+        &.loading {
+            transition: all $transitionDuration;
+            opacity: .25;
         }
     }
 

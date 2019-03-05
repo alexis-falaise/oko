@@ -3,6 +3,9 @@
 .item {
     max-height: 300px;
     width: 300px;
+    &:hover {
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, .1) !important;
+    }
 
     &__title {
         font-size: 18px;

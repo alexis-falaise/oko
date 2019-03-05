@@ -14,6 +14,7 @@ import {
   MatRippleModule,
   MatAutocompleteModule,
   MatButtonModule,
+  GestureConfig,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -33,7 +34,7 @@ import { HomeComponent } from './home/home.component';
 
 declare var Hammer: any;
 
-export class MyHammerConfig extends HammerGestureConfig  {
+export class MyHammerConfig extends GestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, {
       touchAction: 'pan-y'

@@ -26,7 +26,8 @@
         &.selected {
             transition: all $transitionDuration;
             margin: 5px 15px;
-            box-shadow: 0 0 15px 10px $cyan-200-light;
+            border-radius: 5px;
+            border: thick solid $cyan-300;
         }
     }
 

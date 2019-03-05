@@ -223,8 +223,6 @@ export class PostService {
 
   /**
    * Get all proposals sent about a given post by a specific author
-   * Note: this case is trivial, the author of a post is always the sender of the
-   * proposal
    * @param senderPost : Post used to send the proposal (full object)
    * @param author : Author of the proposal (full object)
    */
@@ -270,18 +268,23 @@ export class PostService {
     return this.http.post(this.postUrl, post, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Creates a trip
+   * @param trip : Trip to be created (full object)
+   */
   createTrip(trip: Trip | Array<Trip>): Observable<ServerResponse> {
     this.deleteTripDraft();
     return this.http.post(this.tripUrl, trip, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
-   * Create a proposal from a trip to a request
+   * Creates a proposal from a trip to a request
    * @param proposal: Proposal object
    * It should contain the full trip in the from property (type Trip)
    * and only a reference (id: string) to the request property
    */
   createTripForRequest(proposal: Proposal | any): Observable<ServerResponse> {
+    this.deleteTripDraft();
     return Observable.create(observer => {
       const trip = new Trip(proposal.from);
       this.createTrip(trip).subscribe((serverResponse: ServerResponse) => {
@@ -302,12 +305,22 @@ export class PostService {
   }
 
   /**
-   * Create a proposal from a request to a trip
+   * Creates a request
+   * @param request : Request to be created (full object)
+   */
+  createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
+    this.deleteRequestDraft();
+    return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  /**
+   * Creates a proposal from a request to a trip
    * @param proposal: Proposal object
    * It should contain the full request in the from property (type Request)
    * and only a reference (id: string) to the trip property
    */
   createRequestForTrip(proposal: Proposal | any): Observable<ServerResponse> {
+    this.deleteRequestDraft();
     return Observable.create(observer => {
       const request = new Request(proposal.from);
       this.createRequest(request).subscribe((serverResponse: ServerResponse) => {
@@ -325,11 +338,6 @@ export class PostService {
         }
       });
     });
-  }
-
-  createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
-    this.deleteRequestDraft();
-    return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Modifiers
@@ -356,66 +364,125 @@ export class PostService {
     return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  // Proposal management
+
+  /**
+   * Accept a proposal
+   * @param id : Proposal id
+   */
   acceptProposal(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/accept`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Refuse a proposal
+   * @param id : Proposal id
+   */
   refuseProposal(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/refuse`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Validate a proposal
+   * @param id : Proposal id
+   */
   validateProposal(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Close a proposal (cancellation)
+   * @param id : Proposal id
+   */
   closeProposal(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/close`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Set a proposal as paid
+   * @param id : Proposal id
+   */
   payProposal(id: string): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/pay`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Update the bonus of a proposal
+   * @param id : Proposal id
+   * @param bonus : new bonus value
+   */
   updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
     return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // Deleters
 
+  /**
+   * Removes a post
+   * @param post : Post to be removed (full object)
+   */
   removePost(post: Post): Observable<ServerResponse> {
     return this.http.delete(`${this.postUrl}/${post.id}`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Removes a trip
+   * @param trip : Trip to be removed (full object)
+   */
   removeTrip(trip: Trip): Observable<ServerResponse> {
     return this.http.delete(`${this.tripUrl}/${trip.id}`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Removes a request
+   * @param request : Request to be removed (full object)
+   */
   removeRequest(request: Request): Observable<ServerResponse> {
     return this.http.delete(`${this.requestUrl}/${request.id}`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   // In app functions
 
+  /**
+   * Saves a draft in memory (no cache)
+   * @param tripDraft : Draft object representing the trip
+   */
   saveTripDraft(tripDraft) {
     this.tripDraft = tripDraft;
   }
 
+  /**
+   * Getter for trip draft
+   */
   getTripDraft() {
     return this.tripDraft;
   }
 
+  /**
+   * Removes the trip draft from memory
+   */
   deleteTripDraft() {
     this.tripDraft = null;
   }
 
+  /**
+   * Saves a draft in memory (no cache)
+   * @param requestDraft : Draft object representing the request
+   */
   saveRequestDraft(requestDraft) {
     this.requestDraft = requestDraft;
   }
 
+  /**
+  * Getter for request draft
+  */
   getRequestDraft() {
     return this.requestDraft;
   }
 
+  /**
+   * Removes the request draft from memory
+   */
   deleteRequestDraft() {
     this.requestDraft = null;
   }
@@ -449,6 +516,10 @@ export class PostService {
 
   // TESTING PURPOSES
 
+  /**
+   * DELETES ALL POSTS, TRIPS, AND REQUESTS FROM SERVER
+   * Please, think twice or three times before using.
+   */
   deleteAllPosts() {
     this.http.get(`${this.postUrl}/delete`, {withCredentials: true});
     this.http.get(`${this.tripUrl}/delete`, {withCredentials: true});
@@ -521,34 +592,39 @@ export class PostService {
   }
 
   private getProposalsSubPosts(post: Trip | Request, proposals: Array<any>, observer: Observer<Array<Proposal>>, postIsReceiver: boolean) {
-    forkJoin(proposals.map(proposal => Observable.create(postObserver => {
-      if (post instanceof Trip) {
-        this.getRequestById(postIsReceiver ? proposal.from : proposal.to).subscribe((request: Request) => {
-          const outputProposal = new Proposal(proposal);
-          postIsReceiver ?
-          outputProposal.from = new Request(request)
-          : outputProposal.to = new Request(request);
-          postObserver.next(outputProposal);
-          postObserver.complete();
+    if (proposals && proposals.length) {
+      forkJoin(proposals.map(proposal => Observable.create(postObserver => {
+        if (post instanceof Trip) {
+          this.getRequestById(postIsReceiver ? proposal.from : proposal.to).subscribe((request: Request) => {
+            const outputProposal = new Proposal(proposal);
+            postIsReceiver ?
+            outputProposal.from = new Request(request)
+            : outputProposal.to = new Request(request);
+            postObserver.next(outputProposal);
+            postObserver.complete();
+          });
+        }
+        if (post instanceof Request) {
+          this.getTripById(postIsReceiver ? proposal.from : proposal.to).subscribe((trip: Trip) => {
+            const outputProposal = new Proposal(proposal);
+            postIsReceiver ?
+            outputProposal.from = new Trip(trip)
+            : outputProposal.to = new Trip(trip);
+            postObserver.next(outputProposal);
+            postObserver.complete();
+          });
+        }
+      }))).subscribe(outputProposals => {
+        const resultingProposals = outputProposals.sort((a, b) => {
+          return moment(a.date).isBefore(b.date) ? -1 : 1;
         });
-      }
-      if (post instanceof Request) {
-        this.getTripById(postIsReceiver ? proposal.from : proposal.to).subscribe((trip: Trip) => {
-          const outputProposal = new Proposal(proposal);
-          postIsReceiver ?
-          outputProposal.from = new Trip(trip)
-          : outputProposal.to = new Trip(trip);
-          postObserver.next(outputProposal);
-          postObserver.complete();
-        });
-      }
-    }))).subscribe(outputProposals => {
-      const resultingProposals = outputProposals.sort((a, b) => {
-        return moment(a.date).isBefore(b.date) ? -1 : 1;
+        observer.next(resultingProposals);
+        observer.complete();
       });
-      observer.next(resultingProposals);
+    } else {
+      observer.next([]);
       observer.complete();
-    });
+    }
   }
 
   private buildQueryString(filter: Filter) {

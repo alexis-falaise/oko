@@ -160,16 +160,22 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     background-color: $expanded-menu-color;
 
     &-item {
+        $itemSize: 3.5vh;
         animation: fullscreenItemsEnter $animationDuration;
-        -webkit-animation: fullscreenItemsEnter $animationDuration;
-        -moz-animation: fullscreenItemsEnter $animationDuration;
-        -o-animation: fullscreenItemsEnter $animationDuration;
         transition: all $transitionDuration;
         width: 100%;
         padding-left: 10%;
         text-align: left;
-        font-size: 3.5vh;
+        font-size: $itemSize;
         font-weight: 700;
+
+        .mat-icon {
+            height: $itemSize;
+            width: $itemSize;
+        }
+        .material-icons {
+            font-size: $itemSize;
+        }
 
         &:hover {
             transition: all $transitionDuration;

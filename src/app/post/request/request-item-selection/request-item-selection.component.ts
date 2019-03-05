@@ -20,7 +20,7 @@ export class DisplayItem extends Item {
   styleUrls: ['./request-item-selection.component.scss'],
 })
 export class RequestItemSelectionComponent implements OnInit {
-  selectableItems: Array<DisplayItem>;
+  selectableItems: Array<DisplayItem> = [];
   selectedItems: Array<Item> = [];
   loading: boolean;
 

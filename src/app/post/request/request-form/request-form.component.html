@@ -100,13 +100,13 @@
       </div>
       <h5 class="form-title">Bonus voyageur</h5>
       <small class="text-muted">
-        Faites une <span *ngIf="trip">contre</span> proposition concernant le bonus voyageur.
+        Faites une proposition concernant le bonus voyageur.
         Tenez compte du prix du produit que vous souhaitez faire transporter et de son encombrement
         pour estimer une compensation juste.
       </small>
-      <div class="form-group" *ngIf="trip">
+      <!-- <div class="form-group" *ngIf="trip">
         <mat-slide-toggle (change)="bonusAgreement($event)">J'accepte la proposition voyageur</mat-slide-toggle>
-      </div>
+      </div> -->
       <div class="form-group">
         <div class="input-group">
           <input type="number" min="0" class="form-control" placeholder="Bonus voyageur" formControlName="bonus" [required]="bonusAgreed">

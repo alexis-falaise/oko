@@ -16,6 +16,17 @@
           <mat-icon>clear</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
         </button>
     </div>
+    <hr class="divider">
+    <div class="proposal__summary">
+        <h6 class="text-muted" *ngIf="proposal.bonus">Bonus voyageur: {{ proposal.bonus }} €</h6>
+        <small class="text-muted" *ngIf="proposal.lastUpdate">
+          Dernière modification {{ moment(proposal.lastUpdate.date).fromNow() }} par {{ proposal.lastUpdate.author?.firstname || 'Oko user' }}
+        </small>
+        <button class="btn btn-light btn-icon" *ngIf="!proposal.closed" (click)="modifyProposal()">
+          <mat-icon>edit</mat-icon> Contre proposition
+        </button>
+    </div>
+    <hr class="divider">
     <div class="proposal__trip" *ngIf="fromTrip; else fromRequest" (click)="openTrip(proposal.from)">
         <div class="proposal__trip-date">
             <div class="arrival">

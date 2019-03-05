@@ -176,3 +176,8 @@ html, body {
 .mat-expansion-panel-header.mat-expanded:focus {
     background-color: rgb(250, 250, 250);
 }
+
+.mat-card {
+    box-shadow: none !important;
+    border: thin solid rgb(245, 245, 245);
+}

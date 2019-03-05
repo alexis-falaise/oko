@@ -19,6 +19,21 @@
     </form>
   </div>
   <hr class="divider">
+  <h4 class="account-info-title">Informations de compte</h4>
+  <form [formGroup]="account" class="needs-validation">
+    <div class="form-row">
+      <div class="form-group col-12 col-sm-6">
+        <input type="text" formControlName="firstname" class="form-control" placeholder="Prénom" readonly>
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <input type="text" formControlName="lastname" class="form-control" placeholder="Nom" readonly>
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <input type="email" formControlName="email" class="form-control" placeholder="Email">
+      </div>
+    </div>
+  </form>
+  <hr class="divider">
   <h4 class="account-info-title">Description</h4>
   <div *ngFor="let item of keys(edit)" class="account-info__item">
     <div *ngIf="isArray(description[item]); else simpleItem">
@@ -28,10 +43,10 @@
           {{ element }} x
         </mat-chip>
       </mat-chip-list><br>
-      <div class="row">
+      <div class="form-row">
         <div class="form-group col-10">
           <input type="text" #addElement placeholder="Ajouter"
-                 class="form-control form-control-sm"
+                 class="form-control"
                  (keyup.enter)="
                  addToArray(addElement.value, description[item], item);
                  addElement.value = '';
@@ -53,7 +68,7 @@
         <label [for]="item">{{ frenchization(item) }}</label>
         <input [name]="item" [(ngModel)]="description[item]"
                [readonly]="!edit[item]" type="text"
-               class="form-control form-control-sm">
+               class="form-control">
       </div>
     </ng-template>
   </div>

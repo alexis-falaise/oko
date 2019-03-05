@@ -38,6 +38,7 @@ export class NavComponent implements OnInit, OnChanges {
   ];
   displayAccountMenuItems: Array<MenuItem> = null;
   secondaryMenuItems: Array<MenuItem> = [];
+  randomWelcome: string;
   logged = false;
 
   constructor(
@@ -57,11 +58,12 @@ export class NavComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.authService.onStatus()
-    .subscribe(status => {
-      if (status && status.status) {
+    this.authService.onUser()
+    .subscribe(user => {
+      if (user) {
         this.displayAccountMenuItems = this.accountMenuItems;
-      } else {
+        this.generateRandomWelcome(user.firstname);
+    } else {
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
     });
@@ -89,6 +91,23 @@ export class NavComponent implements OnInit, OnChanges {
   hide() {
     this.menuDisplay = false;
     this.drawerChanges.emit(this.menuDisplay);
+  }
+
+  generateRandomWelcome(name: string) {
+    const randomWelcomes = [
+      `Hello ${name}`,
+      `Content de te revoir ${name}`,
+      `Bonjour ${name}`,
+      `Salut ${name}`,
+      `On part où ${name} ?`,
+      `On fait quoi ${name} ?`,
+      `Hey ${name} !`,
+      `On commence par quoi ${name} ?`,
+      `${name}, tu voulais faire quelquechose ?`,
+      `Je te suis ${name} !`
+    ];
+    const rand = Math.floor(Math.random() * randomWelcomes.length);
+    this.randomWelcome = randomWelcomes[rand];
   }
 
 }

@@ -39,7 +39,7 @@ export class ProposalEditComponent implements OnInit {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.snack.open('La proposition a bien été modifiée', 'Top', {duration: 3000});
-        this.dialogRef.close();
+        this.dialogRef.close(response.data);
       } else {
         this.serverError();
       }

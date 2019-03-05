@@ -16,6 +16,7 @@ import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { isFulfilled } from 'q';
+import { Proposal } from '@models/post/proposal.model';
 
 @Component({
   selector: 'app-request-form',
@@ -188,7 +189,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
             from: saveRequest,
             to: saveRequest.trip.id,
             date: moment(),
-            author: currentUser
+            author: currentUser,
+            receiver: saveRequest.trip.user,
           };
         }
         const requestService = this.edition
@@ -199,9 +201,15 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         requestService.subscribe(response => {
           if (response.status) {
             this.saved = true;
-            const responseRequest = new Request(response.data);
+            let responseProposal;
+            let responseRequest;
+            if (saveRequest.trip) {
+              responseProposal = new Proposal(response.data);
+            } else {
+              responseRequest = new Request(response.data);
+            }
             this.snack.open(`Annonce ${this.edition ? 'modifiée' : 'enregistrée'}`, 'Top!', {duration: 3000});
-            this.router.navigate([`post/request/${responseRequest.id}`]);
+            this.router.navigate([`post/request/${saveRequest.trip ? responseProposal.from : responseRequest.id}`]);
           } else {
             this.requestServerError(response.message, response.code);
           }
@@ -222,6 +230,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       id: this.edition ? this.requestId : undefined,
       ...meeting,
     });
+    console.log(saveRequest);
     return saveRequest;
   }
 

@@ -21,6 +21,11 @@ export class AccountInfoComponent implements OnInit {
     zip: [''],
     country: [''],
   });
+  account = this.fb.group({
+    firstname: [''],
+    lastname: [''],
+    email: ['', Validators.email]
+  });
   description: Description;
   edit: any = {};
   keys = Object.keys;
@@ -63,6 +68,11 @@ export class AccountInfoComponent implements OnInit {
     if (user.address) {
       this.address.patchValue(user.address);
     }
+    this.account.patchValue({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email
+    });
     this.createEditionObject();
   }
 
@@ -91,6 +101,7 @@ export class AccountInfoComponent implements OnInit {
     this.uiService.setLoading(true);
     this.user.description = new Description(this.description);
     this.user.address = new MeetingPoint(this.address.value);
+    this.user.email = this.account.value.email;
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
       if (res.status) {
