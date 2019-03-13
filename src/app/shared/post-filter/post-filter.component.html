@@ -1,8 +1,14 @@
 <mat-expansion-panel class="post-filter">
     <mat-expansion-panel-header class="post-filter__header">
         <mat-panel-title>
-            <mat-icon class="post-filter__reset" (click)="reset()">highlight_off</mat-icon>
-            Filtres
+            <div class="d-flex align-items-center" *ngIf="!isFilled">
+                <mat-icon class="post-filter__reset">tune</mat-icon>
+                Filtres
+            </div>
+            <div class="d-flex align-items-center" *ngIf="isFilled" (click)="reset()">
+                <mat-icon class="post-filter__reset">highlight_off</mat-icon>
+                Réinitialiser
+            </div>
         </mat-panel-title>
         <mat-panel-description>
             <span *ngIf="filter.beforeDate">Avant le {{ filter.beforeDate.format('DD MMMM') }}</span>
@@ -41,6 +47,16 @@
                     <mat-datepicker touchUi #picker></mat-datepicker>
                 </div>
             </div>
+        </div>
+        <div class="form-group col-6" *ngIf="options.airportPickup">
+            <mat-checkbox [(ngModel)]="filter.airportPickup" (ngModelChange)="emitFilter()">
+                <small class="text-muted">Remise à l'aéroport</small>
+            </mat-checkbox>
+        </div>
+        <div class="form-group col-6" *ngIf="options.urgent">
+            <mat-checkbox [(ngModel)]="filter.urgent" (ngModelChange)="emitFilter()">
+                <small class="text-muted">Demande urgente</small>
+            </mat-checkbox>
         </div>
     </div>
 </mat-expansion-panel>

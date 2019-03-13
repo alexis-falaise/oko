@@ -8,7 +8,7 @@
       <h6 class="text-muted">Bonus voyageur</h6>
       <mat-slider class="proposal-edit__content__slider"
                   [disabled]="proposal.accepted || proposal.closed || proposal.refused"
-                  min="0" max="1000" [(ngModel)]="bonus"
+                  min="0" max="250" [(ngModel)]="bonus"
                   thumbLabel [displayWith]="formatLabel">
       </mat-slider>
       <h2 class="proposal-edit__content__bonus">{{ bonus }} €</h2>
@@ -22,22 +22,22 @@
       <form [formGroup]="meeting" *ngIf="!airportPickup">
         <div class="form-row">
           <div class="form-group col-12">
-            <input type="text" class="form-control" placeholder="Adresse"
+            <input type="text" class="form-control form-control-sm" placeholder="Adresse"
                    [readonly]="proposal.accepted || proposal.closed || proposal.refused"
                    formControlName="address" required>
           </div>
           <div class="form-group col-12 col-sm-6">
-            <input type="text" class="form-control" placeholder="Ville"
+            <input type="text" class="form-control form-control-sm" placeholder="Ville"
                    [readonly]="proposal.accepted || proposal.closed || proposal.refused"
                    formControlName="city" required>
           </div>
           <div class="form-group col-12 col-sm-6">
-            <input type="text" class="form-control" placeholder="Code postal"
+            <input type="text" class="form-control form-control-sm" placeholder="Code postal"
                    [readonly]="proposal.accepted || proposal.closed || proposal.refused"
                    formControlName="zip" required>
           </div>
           <div class="form-group col-12">
-            <input type="text" class="form-control" placeholder="Pays"
+            <input type="text" class="form-control form-control-sm" placeholder="Pays"
                    [readonly]="proposal.accepted || proposal.closed || proposal.refused"
                    formControlName="country" required>
           </div>

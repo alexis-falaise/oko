@@ -13,6 +13,7 @@ import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-trip-detail',
@@ -35,6 +36,7 @@ export class TripDetailComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>,
     private route: ActivatedRoute,
     private userService: UserService,
+    private uiService: UiService,
     private postService: PostService,
     private snack: MatSnackBar,
   ) { }
@@ -49,6 +51,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   fetchTrip(id: string) {
+    this.uiService.setLoading(true);
     this.postService.getTripById(id)
     .subscribe(trip => {
       if (trip) {
@@ -62,10 +65,12 @@ export class TripDetailComponent implements OnInit {
           this.own = user.id === trip.user.id;
           this.currentUser = user;
           if (this.own) {
+            this.proposals = [];
             this.fetchProposals();
           } else {
             this.getUserRequests();
           }
+         this.uiService.setLoading(false);
         }, (error) => this.serverError(error, id));
       }
     }, (error) => this.serverError(error, id));
@@ -100,6 +105,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   closeRequest() {
+    this.uiService.setLoading(true);
     forkJoin(this.requests.map((request, index) => {
       const relatedProposal = this.proposals.find(proposal => proposal.from.id === request.id);
       return this.postService.closeProposal(relatedProposal.id);
@@ -112,6 +118,7 @@ export class TripDetailComponent implements OnInit {
       } else {
         this.snack.open('Les propositions ont été annulées', 'OK', {duration: 2500});
       }
+      this.uiService.setLoading(false);
     });
   }
 
@@ -120,6 +127,7 @@ export class TripDetailComponent implements OnInit {
       const snackRef = this.snack.open('Erreur lors du chargement du voyage', 'Réessayer', {duration: 3000});
       snackRef.onAction().subscribe(() => this.fetchTrip(id));
     }
+    this.uiService.setLoading(false);
   }
 
 }

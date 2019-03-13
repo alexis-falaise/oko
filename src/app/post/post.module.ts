@@ -42,6 +42,8 @@ import { TripLuggageComponent } from './trip/trip-luggage/trip-luggage.component
 import { RequestItemSelectionComponent } from './request/request-item-selection/request-item-selection.component';
 import { ProposalComponent } from './proposal/proposal.component';
 import { ProposalEditComponent } from './proposal-edit/proposal-edit.component';
+import { ProposalEditMeetingComponent } from './proposal/proposal-edit-meeting/proposal-edit-meeting.component';
+import { ProposalEditBonusComponent } from './proposal/proposal-edit-bonus/proposal-edit-bonus.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { ProposalEditComponent } from './proposal-edit/proposal-edit.component';
     RequestItemComponent,
     RequestItemSelectionComponent,
     ProposalComponent,
-    ProposalEditComponent
+    ProposalEditComponent,
+    ProposalEditMeetingComponent,
+    ProposalEditBonusComponent
   ],
   entryComponents: [
     TripLuggageComponent,

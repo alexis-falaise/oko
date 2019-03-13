@@ -20,6 +20,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
+  currentUser: User;
   receivedProposals: Array<Proposal>;
   currentUserProposals: Array<Proposal>;
   displayedProposals: Array<Proposal>;
@@ -46,8 +47,9 @@ export class RequestDetailComponent implements OnInit {
             this.userService.getCurrentUser()
             .subscribe(user => {
               if (user) {
-                this.setRequest(request, user);
-                this.getProposals(request, user);
+                this.currentUser = user;
+                this.setRequest(request);
+                this.getProposals(request);
               } else {
                 this.setRequest(request);
               }
@@ -58,10 +60,10 @@ export class RequestDetailComponent implements OnInit {
     });
   }
 
-  setRequest(request: Request, user?: User) {
+  setRequest(request: Request) {
     this.request = new Request(request);
-    if (user) {
-      this.request.isOwn(user);
+    if (this.currentUser) {
+      this.request.isOwn(this.currentUser);
     }
     this.uiService.setLoading(false);
   }
@@ -96,26 +98,34 @@ export class RequestDetailComponent implements OnInit {
     this.router.navigate([`/post/trip/propose/${this.request.id}`]);
   }
 
-  getProposals(request: Request, user: User) {
+  getProposals(request: Request) {
     this.uiService.setLoading(true);
     if (this.request.own) {
-      this.postService.getReceivedProposals(request)
-      .subscribe((proposals: Array<Proposal>) => {
-        this.receivedProposals = proposals;
-        this.displayedProposals = proposals;
-        this.uiService.setLoading(false);
-      }, (err: HttpErrorResponse) => this.serverError(err));
+      this.getReceivedProposals(request);
     } else {
-      this.postService.getReceivedProposalsByAuthor(request, user)
-      .subscribe((proposals: Array<Proposal>) => {
-        this.currentUserProposals = proposals;
-        this.displayedProposals = proposals.map(proposal => {
-          proposal.isAuthor(user);
-          return proposal;
-        });
-        this.uiService.setLoading(false);
-      }, (err: HttpErrorResponse) => this.serverError(err));
+      this.getReceivedProposalsByAuthor(request);
     }
+  }
+
+  getReceivedProposals(request: Request) {
+    this.postService.getReceivedProposals(request)
+    .subscribe((proposals: Array<Proposal>) => {
+      this.receivedProposals = proposals;
+      this.displayedProposals = proposals;
+      this.uiService.setLoading(false);
+    }, (err: HttpErrorResponse) => this.serverError(err));
+  }
+
+  getReceivedProposalsByAuthor(request: Request) {
+    this.postService.getReceivedProposalsByAuthor(request, this.currentUser)
+    .subscribe((proposals: Array<Proposal>) => {
+      this.currentUserProposals = proposals;
+      this.displayedProposals = proposals.map(proposal => {
+        proposal.isAuthor(this.currentUser);
+        return proposal;
+      });
+      this.uiService.setLoading(false);
+    }, (err: HttpErrorResponse) => this.serverError(err));
   }
 
   private serverError(error: HttpErrorResponse) {

@@ -10,8 +10,15 @@ import { User } from '@models/user.model';
 
 export class DisplayItem extends Item {
   selected: boolean;
-  constructor(item: Item) {
+  _id?: string;
+  constructor(item: any) {
     super(item);
+    if (item.id) {
+      delete this.id;
+    }
+    if (item._id) {
+      delete this._id;
+    }
   }
 }
 @Component({
@@ -41,7 +48,11 @@ export class RequestItemSelectionComponent implements OnInit {
         this.postService.getItemByAuthor(user.id)
         .subscribe(items => {
           this.uiService.setLoading(false);
-          this.selectableItems = items.map(item => new DisplayItem(item));
+          const uniqueFilter = (value, index, self) => self.indexOf(value) === index;
+          const distinctItems = items.map(item => item.label).filter(uniqueFilter);
+          this.selectableItems = distinctItems.map(itemLabel => {
+            return items.map(item => new DisplayItem(item)).find(item => item.label === itemLabel);
+          });
         });
       } else {
         this.notConnected();

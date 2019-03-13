@@ -58,20 +58,18 @@ export class TripComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.uiService.setLoading(true);
     this.route.url.subscribe(segments => {
-      const editionSegment = segments.find(segment => segment.path === 'edit');
-      const proposition = segments.find(segment => segment.path === 'propose');
+      const edition = !!segments.find(segment => segment.path === 'edit');
+      const proposition = !!segments.find(segment => segment.path === 'propose');
       this.route.params.subscribe(param => {
         const id = param.id;
         if (proposition) {
           this.setPropositionData(id);
-          this.uiService.setLoading(false);
         } else {
           if (id) {
-            this.setTripData(id, !!editionSegment);
+            this.setTripData(id, edition);
           }
         }
       });
-      this.uiService.setLoading(false);
     });
     this.manageDrafts();
   }
@@ -189,6 +187,7 @@ export class TripComponent implements OnInit, OnDestroy {
   }
 
   private setTripData(id: string, edition: boolean) {
+    this.uiService.setLoading(true);
     this.postService.getTripById(id)
     .subscribe(trip => {
       if (edition) {
@@ -204,10 +203,17 @@ export class TripComponent implements OnInit, OnDestroy {
 
   private setPropositionData(id: string) {
     this.proposeTo = id;
+    this.uiService.setLoading(true);
     this.postService.getRequestById(id)
     .subscribe(request => {
       this.request = request;
       this.bonus = request.bonus;
+      this.constraintsInfo = {
+        luggages: [],
+        airportDrop: request.airportPickup,
+        bonus: request.bonus
+      };
+      this.uiService.setLoading(false);
     });
   }
 

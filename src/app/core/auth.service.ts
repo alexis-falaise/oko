@@ -103,10 +103,9 @@ export class AuthService {
 
   /**
    * Register a user into oko database
-   * @param userForm: User data from signin form
+   * @param user: User data from signin form
    */
-  signin(userForm) {
-    delete userForm.passwordConfirm;
-    return this.http.post(`${this.authUrl}/signin`, userForm, { withCredentials: true });
+  signin(user: User) {
+    return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true });
   }
 }

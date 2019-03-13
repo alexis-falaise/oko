@@ -35,7 +35,7 @@
         Arrivée le {{ trip.date.format('DD MMMM YYYY - HH:mm') }}
     </div>
   </div>
-  <div class="trip-detail__info container">
+  <div class="trip-detail__info container" *ngIf="!own">
     <div class="row h-100">
       <div class="trip-detail__info__user col-6 col-sm-4" *ngIf="trip && trip.user">
         <div class="trip-detail__info__user-row row">
@@ -49,14 +49,14 @@
         </div>
       </div>
       <div class="trip-detail__info__route col-4 offset-2" *ngIf="trip && trip.user">
-        <button class="btn btn-light btn-icon btn-route">
+        <button class="btn btn-outline-link text-muted btn-sm btn-icon btn-route">
           <mat-icon>timeline</mat-icon> Parcours de {{ trip.user.firstname }}
         </button>
       </div>
     </div>
   </div>
   <div class="trip-detail__proposal-wrapper" *ngIf="proposals?.length">
-    <h4 class="trip-detail__proposal-title">Proposition {{ own ? 'reçues' : 'envoyées' }}</h4>
+    <h4 class="trip-detail__proposal-title">Propositions {{ own ? 'reçues' : 'envoyées' }}</h4>
     <mat-accordion>
       <mat-expansion-panel class="trip-detail__proposal"
                            [class.closed]="proposal.closed"
@@ -113,10 +113,10 @@
           </div>
           <div class="trip-detail__engagement__constraints-info col-12 col-sm-6">
             <ul class="constraints">
-                <li [class.disabled]="!trip.airportDrop">
+                <li *ngIf="trip.airportDrop">
                     <mat-icon>local_airport</mat-icon> Remise à l'aéroport
                 </li>
-                <li [class.disabled]="trip.airportDrop">
+                <li *ngIf="!trip.airportDrop">
                     <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
                 </li>
                 <!-- <li [class.disabled]="!trip.bonus">

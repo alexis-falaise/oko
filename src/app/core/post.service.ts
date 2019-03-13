@@ -292,8 +292,8 @@ export class PostService {
   /**
    * Creates a proposal from a trip to a request
    * @param proposal: Proposal object
-   * It should contain the full trip in the from property (type Trip)
-   * and only a reference (id: string) to the request property
+   * It should contain the full trip in the 'from' property (type Trip)
+   * and only a reference (id: string) to the request in the 'to' property
    */
   createTripForRequest(proposal: Proposal | any): Observable<ServerResponse> {
     this.deleteTripDraft();
@@ -328,8 +328,8 @@ export class PostService {
   /**
    * Creates a proposal from a request to a trip
    * @param proposal: Proposal object
-   * It should contain the full request in the from property (type Request)
-   * and only a reference (id: string) to the trip property
+   * It should contain the full request in the 'from' property (type Request)
+   * and only a reference (id: string) to the trip in the 'to' property
    */
   createRequestForTrip(proposal: Proposal | any): Observable<ServerResponse> {
     this.deleteRequestDraft();

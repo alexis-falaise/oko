@@ -129,7 +129,7 @@ export class ProposalComponent implements OnInit, OnChanges {
 
   modifyProposal() {
     const dialogRef = this.dialog.open(ProposalEditComponent, {
-      height: '95vh',
+      height: '85vh',
       width: '80vw',
       data: this.proposal,
     });

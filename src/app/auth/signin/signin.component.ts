@@ -49,7 +49,9 @@ export class SigninComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     this.signinError = false;
-    this.authService.signin(this.signinForm.value)
+    const signinForm = this.signinForm.value;
+    delete signinForm.passwordConfirm;
+    this.authService.signin(signinForm)
     .subscribe((signInfo: any) => {
       this.loading = false;
       this.signinError = signInfo.code === 'BODY_ERROR';

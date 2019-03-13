@@ -168,10 +168,15 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         text-align: left;
         font-size: $itemSize;
         font-weight: 700;
-
+        a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
         .mat-icon {
             height: $itemSize;
             width: $itemSize;
+            margin-right: 5px;
         }
         .material-icons {
             font-size: $itemSize;

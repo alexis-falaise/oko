@@ -17,8 +17,8 @@
         width: 100vw;
         position: sticky;
         z-index: 10;
-        top: -15vh;
-        height: 40vh;
+        top: -22.5vh;
+        height: 47.5vh;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
@@ -119,12 +119,12 @@
         .user {
             &-name {
                 display: block;
-                font-size: 24px;
+                font-size: 18px;
             }
             &-trips {
                 display: block;
                 color: rgb(175, 175, 175);
-                font-size: 12px;
+                font-size: 10px;
             }
         }
 
@@ -135,6 +135,8 @@
     }
 
     &__proposal {
+        animation: appear $animationDuration;
+        
         &__title {
             display: flex;
             flex-direction: row;
@@ -142,6 +144,7 @@
         }
         &-wrapper {
             margin-top: 25px;
+            animation: appear $animationDuration;
         }
         &__date {
             color: rgba(0, 0, 0, .5);
@@ -189,15 +192,12 @@
                 li {
                     display: flex;
                     flex-direction: row;
-                    align-items: flex-start;
-                    color: map-get($okoColors, green);
+                    align-items: center;
+                    justify-content: center;
+                    color: rgba(0, 0, 0, .4);
                     .mat-icon {
                         margin-right: 10px;
                     }
-                }
-
-                li.disabled {
-                    color: rgba(0, 0, 0, .4);
                 }
             }
             

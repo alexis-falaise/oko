@@ -21,6 +21,14 @@
     <button class="btn btn-danger btn-remove-trip" (click)="removeTrip()" *ngIf="edition">
       <mat-icon>delete</mat-icon> Supprimer ce trajet
     </button>
+    <div class="trip__request-summary" *ngIf="proposeTo && request">
+      <div class="trip__request-summary__location" *ngIf="request.meetingPoint">
+        Lieu de remise: {{ request.meetingPoint?.city }} ({{ request.meetingPoint?.country}})
+      </div>
+      <div class="trip__request-summary__urgent" *ngIf="request?.urgent">
+        <mat-icon>warning</mat-icon> Remise souhaitée avant le {{ request.urgentDetails.date.format('DD/MM') }}
+      </div>
+    </div>
     <mat-vertical-stepper #stepper>
       <mat-step>
         <ng-template matStepLabel>

@@ -100,10 +100,12 @@
       </div>
       <h5 class="form-title">Bonus voyageur</h5>
       <small class="text-muted">
-          Bonus : proposer une rémunération au voyageur en tenant compte
-          - du lieu de remise
-          - de la taille de l'objet à transporter
-          - de la valeur de l'objet à transporter
+          Proposez une rémunération au voyageur en tenant compte
+          <ul class="bonus-list">
+              <li>Du lieu de remise (aéroport ou point de rendez-vous)</li>
+              <li>De la taille de l'article à transporter</li>
+              <li>De la valeur de l'article à transporter</li>
+          </ul>
       </small>
       <!-- <div class="form-group" *ngIf="trip">
         <mat-slide-toggle (change)="bonusAgreement($event)">J'accepte la proposition voyageur</mat-slide-toggle>
@@ -116,6 +118,8 @@
           </div>
         </div>
       </div>
+      <h5 class="form-title" *ngIf="meeting.controls.bonus.value">Prix total: {{ totalPrice }} €</h5>
+      <small class="text-muted" *ngIf="meeting.controls.bonus.value">Frais de service inclus</small>
     </form>
   </div>
   <div class="request-form__validation row">

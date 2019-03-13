@@ -8,7 +8,8 @@ import {
   MatDatepickerModule,
   MatRippleModule,
   MatCardModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -34,6 +35,7 @@ import { ItemComponent } from './item/item.component';
     FormsModule,
     MatIconModule,
     MatCardModule,
+    MatCheckboxModule,
     MatExpansionModule,
     MatDatepickerModule,
     MatMomentDateModule,

@@ -6,6 +6,8 @@ export class Filter {
     beforeDate?: Moment;
     afterDate?: Moment;
     closed?: boolean;
+    airportPickup?: boolean;
+    urgent?: boolean;
     open?: boolean;
     accepted?: boolean;
     validated?: boolean;

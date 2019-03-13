@@ -6,8 +6,8 @@
   <hr class="divider">
   <div class="request-item__content">
     <form [formGroup]="item" novalidate>
-      <mat-horizontal-stepper labelPosition="bottom">
-        <mat-step>
+      <mat-horizontal-stepper labelPosition="bottom" [linear]="true">
+        <mat-step [stepControl]="item.controls.label">
           <ng-template matStepLabel>Infos</ng-template>
             <div class="request-item__step-content">
               <div class="form-group">
@@ -24,10 +24,14 @@
               </div>
             </div>
             <div class="request-item__step-validation">
-                <button class="btn btn-success" matStepperNext>Valider</button>
+                <button class="btn btn-success"
+                        type="button"
+                        [disabled]="item.controls.label.value.length < 1" matStepperNext>
+                    Valider
+                </button>
             </div>
         </mat-step>
-        <mat-step>
+        <mat-step [stepControl]="item.controls.price">
           <ng-template matStepLabel>Achat</ng-template>
           <div class="request-item__step-content">
             <small class="text-muted">
@@ -46,7 +50,12 @@
             </div>
           </div>
           <div class="request-item__step-validation">
-              <button class="btn btn-success" matStepperNext>Valider</button>
+              <button class="btn btn-success"
+                      type="button"
+                      [disabled]="!item.controls.price.value"
+                      matStepperNext>
+                Valider
+              </button>
           </div>
         </mat-step>
         <mat-step>
@@ -115,7 +124,7 @@
             </div>
           </div>
           <div class="request-item__step-validation">
-            <button class="btn btn-success" (click)="save()">Enregistrer</button>
+            <button class="btn btn-success" type="button" (click)="save()">Enregistrer</button>
           </div>
         </mat-step>
       </mat-horizontal-stepper>

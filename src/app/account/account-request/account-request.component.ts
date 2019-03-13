@@ -35,6 +35,9 @@ export class AccountRequestComponent implements OnInit {
             this.requests = requests
             .map(request => new Request(request))
             .sort((a, b) => {
+              if (a.closed) {
+                return 1;
+              }
               if (a.submitDate && !b.submitDate) {
                 return -1;
               }

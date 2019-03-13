@@ -32,6 +32,13 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() edition = false;
   today = moment();
   items: Array<Item> = [];
+  itemsPrice: number;
+  staticBonus = 10;
+  bonusPercentage = 0.15;
+  feesPercentage = 0.01;
+  staticFees = 0.5;
+  fees: number;
+  totalPrice: number;
   cities: Array<string> = [];
   meeting = this.fb.group({
     city: [],
@@ -84,6 +91,11 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(city => {
       this.meeting.controls.meetingPoint.patchValue({city: city.city, country: city.country});
     });
+    this.meeting.controls.bonus.valueChanges.subscribe(() => this.computeTotalPrice());
+    if (this.items && this.items.length) {
+      this.computeBonus();
+      this.computeTotalPrice();
+    }
     this.checkDraft();
   }
 
@@ -148,14 +160,17 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   addItem(item) {
     this.items.push(item);
+    this.computeBonus();
   }
 
   editItem(item, index) {
     this.items[index] = item;
+    this.computeBonus();
   }
 
   removeItem(index) {
     this.items.splice(index, 1);
+    this.computeBonus();
   }
 
   bonusAgreement(agreement) {
@@ -253,6 +268,19 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     return saveRequest;
   }
 
+  private computeBonus() {
+    this.itemsPrice = this.items.reduce((sum, item) => sum + item.price, 0);
+    const calculatedBonus = this.itemsPrice * this.bonusPercentage + this.staticBonus;
+    this.meeting.controls.bonus.patchValue(Math.ceil(calculatedBonus));
+  }
+
+  private computeTotalPrice() {
+    const bonus = this.meeting.controls.bonus.value;
+    const preFeesPrice = this.itemsPrice + bonus;
+    this.fees = preFeesPrice * this.feesPercentage + this.staticFees;
+    this.totalPrice = this.round(this.fees + preFeesPrice, 2);
+  }
+
   private requestError(draft) {
     this.saveDraft(draft);
     this.dialog.open(NotConnectedComponent);
@@ -281,6 +309,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   private requestServerError(message: string, code: string) {
     const snackRef = this.snack.open(`Un problème a eu lieu. (${message} - ${code})`, 'Réessayer', {duration: 5000});
     snackRef.onAction().subscribe(() => this.saveRequest());
+  }
+
+  private round(number: number, decimals: number) {
+    return Math.round(number * 10 ** decimals) / 10 ** decimals;
   }
 
   ngOnDestroy() {

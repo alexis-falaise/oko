@@ -22,6 +22,7 @@ export class PostFilterComponent implements OnInit, OnChanges {
   @Input() options = new FilterOptions({location: true});
   @Output() filterRefresh = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
+  isFilled = false;
   today = moment();
 
   constructor(private dateAdapter: DateAdapter<Date>) { }
@@ -40,10 +41,21 @@ export class PostFilterComponent implements OnInit, OnChanges {
   }
 
   emitFilter() {
+    this.checkFilter();
     this.filterRefresh.emit(this.filter);
   }
 
+  checkFilter() {
+    this.isFilled = false;
+    Object.keys(this.filter).forEach(filterLabel => {
+      if (this.filter[filterLabel] && this.filter[filterLabel] !== '') {
+        this.isFilled = true;
+      }
+    });
+  }
+
   reset() {
+    this.isFilled = false;
     this.resetFilter.emit();
   }
 

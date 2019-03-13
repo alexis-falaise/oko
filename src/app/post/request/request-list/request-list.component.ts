@@ -16,6 +16,8 @@ export class RequestListComponent implements OnInit {
     country: true,
     city: true,
     beforeDate: true,
+    airportPickup: true,
+    urgent: true,
   };
 
   constructor(

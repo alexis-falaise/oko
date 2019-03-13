@@ -1,9 +1,11 @@
 import { Description } from '@models/description.model';
 import { MeetingPoint } from './meeting-point.model';
+import { Moment } from 'moment';
 export class User {
     firstname: string;
     lastname: string;
     email: string;
+    birthdate?: Moment;
     password: string;
     avatar?: string;
     description?: Description;

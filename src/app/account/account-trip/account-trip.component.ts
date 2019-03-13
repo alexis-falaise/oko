@@ -25,6 +25,13 @@ export class AccountTripComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const sortTrips = (a, b) => {
+      if (moment(a.date).isBefore(moment())) {
+        return 1;
+      } else {
+        return moment(a.date).isBefore(b.date) ? -1 : 1;
+      }
+    };
     this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
@@ -32,12 +39,13 @@ export class AccountTripComponent implements OnInit {
         this.postService.getTripByAuthor(user.id)
         .subscribe(trips => {
           if (trips) {
-            this.trips = trips.map(trip => new Trip(trip)).sort((a, b) => moment(b.date).isBefore(a.date) ? -1 : 1);
+            this.trips = trips.map(trip => new Trip(trip)).sort(sortTrips);
             this.uiService.setLoading(false);
           }
         });
       }
-    });
+      this.uiService.setLoading(false);
+    }, (error) => this.uiService.serverError(error));
     this.manageDrafts();
   }
 

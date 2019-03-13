@@ -1,13 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { Validators, FormBuilder } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
 import { PostService } from '@core/post.service';
 
 import { Proposal } from '@models/post/proposal.model';
-import { ServerResponse } from '@models/app/server-response.model';
-import { Validators, FormBuilder } from '@angular/forms';
-import { forkJoin } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-proposal-edit',
@@ -52,7 +51,6 @@ export class ProposalEditComponent implements OnInit {
   modifyProposal() {
     this.proposal.airportPickup = this.airportPickup;
     this.proposal.meetingPoint = this.meeting.value;
-    console.log(this.proposal);
     forkJoin([
       this.postService.updateProposalBonus(this.proposal.id, this.bonus),
       this.postService.updateProposal(this.proposal)
