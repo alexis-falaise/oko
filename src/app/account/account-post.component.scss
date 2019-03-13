@@ -35,3 +35,31 @@
         }
     }
 }
+
+.account-trip {
+    &-title{
+        position: sticky;
+        top: 49px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        height: 30px;
+        margin: 0 -15px;
+        padding: 0 15px;
+        border-bottom: 1px solid rgb(245, 245, 245);
+        color: rgb(175, 175, 175);
+        font-size: 18px;
+        background-color: white;
+    }
+    &__notrips {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        color: rgba(0, 0, 0, .4);
+        .mat-icon {
+            margin-right: 5px;
+        }
+    }
+}

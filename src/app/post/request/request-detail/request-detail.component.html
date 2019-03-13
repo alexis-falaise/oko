@@ -18,7 +18,7 @@
       <span *ngIf="request.outdated && !request.closed">Annonce expirée le {{ request.urgentDetails.date.format('MM/DD/YYYY') }}</span>
   </div>
   <div class="request-detail__modify mt-2" *ngIf="request.own">
-      <button class="btn btn-info btn-icon" [routerLink]="['/post/request', request.id, 'edit']">
+      <button class="btn btn-info btn-icon" [disabled]="request.outdated || request.closed" [routerLink]="['/post/request', request.id, 'edit']">
         <mat-icon>edit</mat-icon> Modifier l'annonce
       </button>
   </div>
@@ -92,7 +92,7 @@
       <div class="col-4 location">
         <div class="city-name">{{ request?.trip?.from?.label }} </div>
         <div class="airport-name" *ngIf="request?.trip?.from?.airport">
-            {{ request?.trip?.from?.airport?.name }}
+            {{ request.trip.from.airport.code }}
         </div>
       </div>
       <div class="col-2 d-flex align-items-center">
@@ -100,8 +100,8 @@
       </div>
       <div class="col-4 location">
         <div class="city-name">{{ request.trip.to.label }}</div>
-        <div class="airport-name" *ngIf="request.trip.to.airport">
-          {{ request.trip.to.airport.name }}
+        <div class="airport-name" *ngIf="request?.trip?.to?.airport">
+          {{ request.trip.to.airport.code }}
         </div>
       </div>
       <div class="col-1 d-flex align-items-center">

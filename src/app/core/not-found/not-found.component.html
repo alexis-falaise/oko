@@ -1,0 +1,19 @@
+<div class="not-found">
+  <div class="not-found__illustration">
+      <mat-icon>directions</mat-icon>
+  </div>
+  <h2 class="not-found__title">Mauvaise direction</h2>
+  <small class="not-found__subtitle">
+    Oko n'a pas trouvé ce que vous cherchiez...
+  </small>
+  <div class="not-found__actions mt-5">
+    <button class="btn btn-hero btn-icon" matRipple [routerLink]="['/home']">
+      <mat-icon>home</mat-icon>
+      Accueil
+    </button>
+    <button class="btn btn-hero btn-icon" (click)="back()">
+      <mat-icon>arrow_back_ios</mat-icon>
+      Retour
+    </button>
+  </div>
+</div>

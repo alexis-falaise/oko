@@ -60,6 +60,9 @@ export class UiService {
       message = `Une erreur est survenue (${error.message})`;
     }
     const snackRef = this.snack.open(customMessage || message, action, {duration: duration});
+    if (status === 404 || status === 403) {
+      this.router.navigate([`/${status}`]);
+    }
     snackRef.onAction().subscribe(() => {
       if (status === 401) {
         this.router.navigate(['/login']);

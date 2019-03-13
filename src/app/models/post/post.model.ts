@@ -6,6 +6,7 @@ export class Post {
     user?: User;
     submitDate?: Moment;
     expirationDate?: Moment;
+    homeDelivery?: boolean;
 
     /* Meta information */
     clicks?: number;

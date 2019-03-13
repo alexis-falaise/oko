@@ -92,10 +92,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       this.meeting.controls.meetingPoint.patchValue({city: city.city, country: city.country});
     });
     this.meeting.controls.bonus.valueChanges.subscribe(() => this.computeTotalPrice());
-    if (this.items && this.items.length) {
-      this.computeBonus();
-      this.computeTotalPrice();
-    }
     this.checkDraft();
   }
 
@@ -189,6 +185,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (request.items) {
       this.items = request.items;
+      this.computeBonus();
+      this.computeTotalPrice();
     }
     this.requestId = request.id;
     this.edition = true;
@@ -270,13 +268,15 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   private computeBonus() {
     this.itemsPrice = this.items.reduce((sum, item) => sum + item.price, 0);
-    const calculatedBonus = this.itemsPrice * this.bonusPercentage + this.staticBonus;
+    let calculatedBonus = this.itemsPrice * this.bonusPercentage;
+    calculatedBonus = calculatedBonus > this.staticBonus ? calculatedBonus : this.staticBonus;
     this.meeting.controls.bonus.patchValue(Math.ceil(calculatedBonus));
   }
 
   private computeTotalPrice() {
     const bonus = this.meeting.controls.bonus.value;
-    const preFeesPrice = this.itemsPrice + bonus;
+    const itemsPrice = this.itemsPrice || 0;
+    const preFeesPrice = itemsPrice + bonus;
     this.fees = preFeesPrice * this.feesPercentage + this.staticFees;
     this.totalPrice = this.round(this.fees + preFeesPrice, 2);
   }

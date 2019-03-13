@@ -60,6 +60,7 @@ export class TripComponent implements OnInit, OnDestroy {
     this.route.url.subscribe(segments => {
       const edition = !!segments.find(segment => segment.path === 'edit');
       const proposition = !!segments.find(segment => segment.path === 'propose');
+      const newTrip = !edition && !proposition;
       this.route.params.subscribe(param => {
         const id = param.id;
         if (proposition) {
@@ -68,6 +69,9 @@ export class TripComponent implements OnInit, OnDestroy {
           if (id) {
             this.setTripData(id, edition);
           }
+        }
+        if (newTrip) {
+          this.uiService.setLoading(false);
         }
       });
     });

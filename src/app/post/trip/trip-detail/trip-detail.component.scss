@@ -41,14 +41,22 @@
             top: 0;
         }
 
-        &__date {
+        &__date,
+        &__views {
             height: 17.5%;
             text-align: center;
             color: rgba(255, 255, 255, .5);
             position: sticky;
+        }
+
+        &__date {
             top: 25vh;
         }
 
+        &__views {
+            top: 27.5vh;
+        }
+        
         &__link {
             $heroIconSize: 64px;
             align-items: center;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, forkJoin, Observer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -142,7 +142,9 @@ export class PostService {
   getTripById(id: string): Observable<Trip> {
     return Observable.create(observer => {
       this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true})
-      .subscribe((trip: Trip) => this.getTripUserStats(trip, observer));
+      .subscribe(
+        (trip: Trip) => this.getTripUserStats(trip, observer),
+        (error: HttpErrorResponse) => this.uiService.serverError(error));
     });
   }
 

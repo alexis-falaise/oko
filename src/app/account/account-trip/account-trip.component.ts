@@ -15,6 +15,7 @@ import { UiService } from '@core/ui.service';
 })
 export class AccountTripComponent implements OnInit {
   trips: Array<Trip> = null;
+  expiredTrips: Array<Trip> = null;
   hasDraft = false;
 
   constructor(
@@ -25,13 +26,9 @@ export class AccountTripComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const sortTrips = (a, b) => {
-      if (moment(a.date).isBefore(moment())) {
-        return 1;
-      } else {
-        return moment(a.date).isBefore(b.date) ? -1 : 1;
-      }
-    };
+    const sortTrips = (a, b) =>  moment(a.date).isBefore(b.date) ? -1 : 1;
+    const sortExpiredTrips = (a, b) => moment(a.date).isBefore(b.date) ? 1 : -1;
+    const isExpired = (trip) => moment(trip.date).isBefore();
     this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
@@ -39,7 +36,8 @@ export class AccountTripComponent implements OnInit {
         this.postService.getTripByAuthor(user.id)
         .subscribe(trips => {
           if (trips) {
-            this.trips = trips.map(trip => new Trip(trip)).sort(sortTrips);
+            this.trips = trips.map(trip => new Trip(trip)).filter(trip => !isExpired(trip)).sort(sortTrips);
+            this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => isExpired(trip)).sort(sortExpiredTrips);
             this.uiService.setLoading(false);
           }
         });
