@@ -13,10 +13,12 @@ export class User {
     requests?: number;
     ratings?: [number];
     address?: MeetingPoint;
-    // Landing page variables
+    // Landing page properties
     comment?: string;
     guest?: boolean;
     tester?: boolean;
+    // App properties
+    secure: boolean;
     // Database id
     id?: string;
     _id: string;

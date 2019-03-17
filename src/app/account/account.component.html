@@ -9,8 +9,8 @@
       <h1 *ngIf="currentUser">{{ currentUser.firstname }}</h1>
     </div>
   </div>
-  <div class="account-detail">
-    <nav mat-tab-nav-bar>
+  <div class="account-detail container">
+    <nav class="account-detail__nav" mat-tab-nav-bar>
       <a mat-tab-link *ngFor="let category of categories"
          class="account-link"
          [routerLink]="category.path"

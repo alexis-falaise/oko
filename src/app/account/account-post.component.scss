@@ -4,9 +4,13 @@
     overflow-y: scroll;
     overflow-x: hidden;
 
-    .account-trip-hint {
+    .account-trip-hint,
+    .account-request-hint {
         display: flex;
         justify-content: center;
+        margin-left: -5%;
+        width: 110%;
+        background-color: white;
     }
 
     &__new {
@@ -50,6 +54,7 @@
         color: rgb(175, 175, 175);
         font-size: 18px;
         background-color: white;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, .1);
     }
     &__notrips {
         height: 100%;

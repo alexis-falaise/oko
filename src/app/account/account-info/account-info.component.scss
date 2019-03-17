@@ -1,8 +1,9 @@
 .account-info {
-    margin-top: 25px;
     overflow: scroll;
     height: 60vh;
-    padding-bottom: 25px;
+    padding: 25px 15px;
+    background-color: white;
+    border-radius: 3px;
 
     &__item {
         width: 100%;
