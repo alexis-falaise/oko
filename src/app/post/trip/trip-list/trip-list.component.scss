@@ -3,23 +3,17 @@
 
 .trip-list {
     height: 100vh;
-
+    background: $heroGradient;
+    animation: slideInRight .15s;
     &__hero {
-        animation: $animationDuration openHero;
-        -webkit-animation: $animationDuration openHero;
-        -moz-animation: $animationDuration openHero;
-        -o-animation: $animationDuration openHero;
-
-        background-image: url('/assets/hero-trip-detail.jpg'), $heroGradient;
-        background-size: 100% auto;
-        background-position: center;
+        background: $heroGradient;
+        background-size: 100vw 100vh;
         width: 100vw;
         height: 15vh;
-        min-height: 125px;
-        padding-top: $navbarHeight;
+        min-height: 100px;
         align-items: center;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
-        color: white;
+        color: $white-alpha-8;
     }
 
     &__loading {
@@ -32,9 +26,10 @@
     }
 
     &__filters {
-        position: sticky;
-        top: 0;
+        position: relative;
+        top: -25px;
         z-index: 11;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
     }
 
     &__list {

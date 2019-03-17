@@ -1,45 +1,43 @@
 <div matRipple class="post row"
     (click)="toPost()"
     (swipeLeft)="showPanel()" (swipeRight)="hidePanel()"
+    [class.loading]="!post.user"
     [class.horizontal]="horizontal"  [class.urgent]="urgent">
     <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="!horizontal"
-    [style.background-image]="'url('+avatarLocation+'/'+post.user.avatar+')'">
-        <!-- <div class="post-info__user-avatar d-none d-md-block">
-            <app-avatar [size]="75" [image]="post.user.avatar"></app-avatar>
-        </div> -->
-        <div class="post-info__user-info">
+         [style.background-image]="'url('+avatarLocation+'/'+post.user?.avatar+')'">
+        <div class="post-info__user-info" *ngIf="post.user">
             <div class="post-info__user-info__firstname">
-                {{ post.user.firstname || 'Oko user' }}
+                {{ post.user?.firstname || 'Oko user' }}
             </div>
             <div class="post-info__user-info__trips">
-                {{ post.user.trips || 0 }} voyage{{ post.user?.trips > 1 ? 's': '' }}
+                {{ post.user?.trips || 0 }} voyage{{ post.user?.trips > 1 ? 's': '' }}
             </div>
             <div class="post-info__user-info__requests" *ngIf="!isTrip">
-                {{ post.user.requests || 0 }} annonce{{ post.user?.requests > 1 ? 's': '' }}
+                {{ post.user?.requests || 0 }} annonce{{ post.user?.requests > 1 ? 's': '' }}
             </div>
         </div>
     </div>
     <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="horizontal">
-        <div class="post-info__user-info">
-            <app-avatar [size]="75" [image]="post.user.avatar" *ngIf="post.user.avatar"></app-avatar>
+        <div class="post-info__user-info" *ngIf="post.user">
+            <app-avatar [size]="60" [image]="post.user?.avatar" *ngIf="post.user?.avatar"></app-avatar>
             <div class="post-info__user-info__firstname">
-                {{ post.user.firstname || 'Oko user' }}
+                {{ post.user?.firstname || 'Oko user' }}
             </div>
             <div class="post-info__user-info__trips">
-                {{ post.user.trips || 0 }} voyage{{ post.user?.trips > 1 ? 's': '' }}
+                {{ post.user?.trips || 0 }} voyage{{ post.user?.trips !== 1 ? 's': '' }}
             </div>
-            <div class="post-info__user-info__requests" *ngIf="!isTrip">
-                {{ post.user.requests || 0 }} annonce{{ post.user?.requests > 1 ? 's': '' }}
+            <div class="post-info__user-info__requests">
+                {{ post.user?.requests || 0 }} annonce{{ post.user?.requests !== 1 ? 's': '' }}
             </div>
         </div>
     </div>
     <div class="post-general col-9 col-md-10" [class.outdated]="outdated" *ngIf="isTrip; else request">
-        <div class="row">
+        <div class="row" *ngIf="!horizontal; else horizontalTrip">
             <div class="post-trip col-8 col-sm-9 col-md-10">
-                <div class="row" *ngIf="!horizontal; else horizontalTrip">
+                <div class="row" *ngIf="!horizontal">
                     <div class="post-trip__from col-12 col-sm-5 justify-content-center">
-                            {{ post.from.label }}<br>
-                            <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from.airport">
+                            {{ post.from?.label }}<br>
+                            <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from?.airport">
                                 {{ post.from.airport.label  || post.from.airport.name }}
                             </span>
                         </div>
@@ -47,98 +45,107 @@
                         <mat-icon>chevron_right</mat-icon>
                     </div>
                     <div class="post-trip__to col-12 col-sm-5 justify-content-center">
-                        {{ post.to.label }}
-                        <span class="post-trip__to-details d-none d-sm-inline" *ngIf="post.to.airport">
+                        {{ post.to?.label }}
+                        <span class="post-trip__to-details d-none d-sm-inline" *ngIf="post.to?.airport">
                             {{ post.to.airport.label || post.to.airport.name }}
                         </span>
                     </div>
                 </div>
-                <ng-template #horizontalTrip>
-                    <div class="row">
-                        <div class="post-trip__from col-12 justify-content-center">
-                                {{ post.from.label }}<br>
-                                <span class="post-trip__from-details" *ngIf="post.from.airport">
-                                    {{ post.from.airport.label  || post.from.airport.name }}
-                                </span>
-                            </div>
-                        <div class="post-trip__link col-12 d-flex justify-content-center">
-                            <mat-icon>arrow_downward</mat-icon>
-                        </div>
-                        <div class="post-trip__to col-12 justify-content-center">
-                            {{ post.to.label }}
-                            <span class="post-trip__to-details" *ngIf="post.to.airport">
-                                {{ post.to.airport.label || post.to.airport.name }}
-                            </span>
-                        </div>
-                    </div>
-                </ng-template>
             </div>
             <div class="post-practical col-4 col-sm-3 col-md-2">
-                <div class="post-date ">{{ post.date.format('DD/MM') }}</div>
+                <div class="post-date ">{{ post.date?.format('DD/MM') }}</div>
                 <div class="post-weight" *ngIf="weight || post.weight">
                     <mat-icon>shopping_basket</mat-icon> {{ weight || post.weight }} kg
                 </div>
             </div>
         </div>
     </div>
-    <ng-template #request>
-        <div class="post-general post-request col-9 col-md-10" [class.outdated]="outdated">
-            <div class="row">
-                <div class="post-request__content col-6 col-sm-8">
-                    <div class="row post-request__content__items h-75">
-                        <ul>
-                            <li class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</li>
-                        </ul>
-                    </div>
-                    <div class="row post-request__content__location h-25" *ngIf="post?.meetingPoint">
-                        <mat-icon>place</mat-icon>{{ post.meetingPoint.city }} 
-                         <span class="post-request__content__location__country" *ngIf="post.meetingPoint?.country">
-                            {{ post.meetingPoint.country }}
-                        </span>
-                        <span *ngIf="!post.meetingPoint?.city && !post.meetingPoint.country">Non renseigné</span>
-                    </div>
-                </div>
-                <div class="post-request__practical col-6 col-sm-4">
-                    <div class="post-request__practical__property" *ngIf="post.cabinOnly; else cargo">
-                        <mat-icon>work</mat-icon> En cabine
-                    </div>
-                    <ng-template #cargo>
-                        <div class="post-request__practical__property">
-                            <mat-icon>flight</mat-icon> En soute
-                        </div>
-                    </ng-template>
-                    <div class="post-request__practical__property" *ngIf="post.airportPickup; else meetingPoint">
-                        <mat-icon>flight</mat-icon> A l'aéroport
-                    </div>
-                    <ng-template #meetingPoint>
-                        <div class="post-request__practical__property">
-                            <mat-icon>my_location</mat-icon> Rendez-vous
-                        </div>
-                    </ng-template>
-                    <div class="post-request__practical__property" *ngIf="post.trip; else freeRequest">
-                        <mat-icon>map</mat-icon> Voyage sélectionné
-                    </div>
-                    <ng-template #freeRequest>
-                        <div class="post-request__practical__property">
-                            <mat-icon>info</mat-icon> En attente
-                        </div>
-                    </ng-template>
-                    <div class="post-request__practical__property" *ngIf="weight">
-                        <mat-icon>shopping_basket</mat-icon> {{ weight }} kg
-                    </div>
-                    <div class="post-request__practical__property urgent" *ngIf="urgent && post.urgentDetails?.date">
-                        <mat-icon>warning</mat-icon> Avant le {{ moment(post.urgentDetails?.date).format('DD/MM') }}
-                    </div>
-                    <div class="post-request__practical__property__date" *ngIf="post.submitDate">
-                        Posté le {{ moment(post.submitDate).format('DD/MM') }} à {{ moment(post.submitDate).format('HH:mm')}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng-template>
     <app-remove-panel [editable]="editable"
                       (edit)="editPost()"
                       (remove)="removePost()"
                       *ngIf="panel && editable">
     </app-remove-panel>
 </div>
+
+<ng-template #horizontalTrip>
+    <div class="post-practical row h-25" [class.horizontal]="horizontal">
+        <div class="post-date col-6">{{ post.date?.format('DD/MM') }}</div>
+        <div class="post-weight col-6" *ngIf="weight || post.weight">
+            <mat-icon>shopping_basket</mat-icon> {{ weight || post.weight }} kg
+            disponible{{ weight !== 1 ? 's' : '' }}
+        </div>
+    </div>
+    <div class="post-trip" [class.horizontal]="horizontal">
+        <div class="post-trip__from h-25 d-flex justify-content-center">
+                {{ post.from?.label }}<br>
+                <span class="post-trip__from-details" *ngIf="post.from?.airport">
+                    {{ post.from.airport.label  || post.from.airport.name }}
+                </span>
+            </div>
+        <div class="post-trip__link h-50 d-flex justify-content-center">
+            <mat-icon>arrow_downward</mat-icon>
+        </div>
+        <div class="post-trip__to h-25 d-flex justify-content-center">
+            {{ post.to?.label }}
+            <span class="post-trip__to-details" *ngIf="post.to?.airport">
+                {{ post.to.airport.label || post.to.airport.name }}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #request>
+    <div class="post-general post-request col-9 col-md-10" [class.outdated]="outdated">
+        <div class="row">
+            <div class="post-request__content col-6 col-sm-8">
+                <div class="row post-request__content__items h-75">
+                    <ul>
+                        <li class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</li>
+                    </ul>
+                </div>
+                <div class="row post-request__content__location h-25" *ngIf="post?.meetingPoint">
+                    <mat-icon>place</mat-icon>{{ post.meetingPoint.city }} 
+                        <span class="post-request__content__location__country" *ngIf="post.meetingPoint?.country">
+                        {{ post.meetingPoint.country }}
+                    </span>
+                    <span *ngIf="!post.meetingPoint?.city && !post.meetingPoint.country">Non renseigné</span>
+                </div>
+            </div>
+            <div class="post-request__practical col-6 col-sm-4">
+                <div class="post-request__practical__property" *ngIf="post.cabinOnly; else cargo">
+                    <mat-icon>work</mat-icon> En cabine
+                </div>
+                <ng-template #cargo>
+                    <div class="post-request__practical__property">
+                        <mat-icon>flight</mat-icon> En soute
+                    </div>
+                </ng-template>
+                <div class="post-request__practical__property" *ngIf="post.airportPickup; else meetingPoint">
+                    <mat-icon>flight</mat-icon> A l'aéroport
+                </div>
+                <ng-template #meetingPoint>
+                    <div class="post-request__practical__property">
+                        <mat-icon>my_location</mat-icon> Rendez-vous
+                    </div>
+                </ng-template>
+                <div class="post-request__practical__property" *ngIf="post.trip; else freeRequest">
+                    <mat-icon>map</mat-icon> Voyage sélectionné
+                </div>
+                <ng-template #freeRequest>
+                    <div class="post-request__practical__property">
+                        <mat-icon>info</mat-icon> En attente
+                    </div>
+                </ng-template>
+                <div class="post-request__practical__property" *ngIf="weight">
+                    <mat-icon>shopping_basket</mat-icon> {{ weight }} kg
+                </div>
+                <div class="post-request__practical__property urgent" *ngIf="urgent && post.urgentDetails?.date">
+                    <mat-icon>warning</mat-icon> Avant le {{ moment(post.urgentDetails?.date).format('DD/MM') }}
+                </div>
+                <div class="post-request__practical__property__date" *ngIf="post.submitDate">
+                    Posté le {{ moment(post.submitDate).format('DD/MM') }} à {{ moment(post.submitDate).format('HH:mm')}}
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

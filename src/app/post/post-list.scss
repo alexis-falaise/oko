@@ -1,22 +1,22 @@
-@import "../../../../styles/variables.scss";
+@import "../../styles/variables.scss";
+@import "../../styles/animations.scss";
 
-.request-list {
+.request-list,
+.trip-list {
     height: 100vh;
     background: $heroGradient;
     animation: slideInRight .15s;
-
     &__hero {
         background: $heroGradient;
         background-size: 100vw 100vh;
         width: 100vw;
         height: 15vh;
-        min-height: 125px;
-        padding-top: $navbarHeight;
+        min-height: 100px;
         align-items: center;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: $white-alpha-8;
     }
-
+    
     &__filters {
         position: relative;
         top: -25px;

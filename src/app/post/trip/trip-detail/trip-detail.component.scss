@@ -5,14 +5,15 @@
 .trip-detail {
     height: 100vh;
     overflow-y: scroll;
+    background: $heroGradient;
+    $box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+    $border-radius: 3px;
+    animation: zoomIn .15s;
 
     &__hero {
-        animation: $animationDuration openHero;
-        -webkit-animation: $animationDuration openHero;
-        -moz-animation: $animationDuration openHero;
-        -o-animation: $animationDuration openHero;
-
         background: $heroGradient;
+        background-size: 100vw 100vh;
+
         // background-image: url('/assets/hero-trip-detail.jpg');
         width: 100vw;
         position: sticky;
@@ -99,9 +100,15 @@
 
     &__info {
         height: 15vh;
+        min-height: 100px;
+        width: 90vw;
         padding: 0 5%;
         border-bottom: thin solid rgb(215, 215, 215);
         color: rgb(75, 75, 75);
+        border-radius: $border-radius;
+        background-color: white;
+        box-shadow: $box-shadow;
+        position: relative;
 
         &__user {
             &-row {
@@ -139,6 +146,13 @@
         &__route {
             display: flex;
             padding: 15px 0;
+        }
+    }
+
+    @media screen and (max-width: 380px) {
+        &__info {
+            width: 100vw;
+            margin-left: -15px;
         }
     }
 
@@ -183,13 +197,19 @@
 
     &__engagement {
         padding: 25px 0;
+        color: $white-alpha-8;
 
         &__constraints {
             margin-bottom: 25px;
+            padding: 15px;
+            background-color: white;
+            border-radius: $border-radius;
+            box-shadow: $box-shadow;
 
             &-title {
                 display: flex;
                 justify-content: center;
+                color: rgba(0, 0, 0, .6);
             }
 
             .constraints {
@@ -241,9 +261,19 @@
         }
 
         &__form {
+            color: rgba(0, 0, 0, .8);
+            &.engagement {
+                transition: all $transitionDuration;
+                border-radius: $border-radius;
+                background-color: white;
+                box-shadow: $box-shadow;
+                padding: 15px 0;
+            }
             &-title {
+                color: rgba(0, 0, 0, .6);
                 display: flex;
                 justify-content: center;
+                text-align: center;
             }
         }
 

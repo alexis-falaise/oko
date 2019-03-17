@@ -35,7 +35,7 @@ export class TripConstraintsComponent implements OnInit, OnChanges {
   openLuggageDialog(luggage?: Luggage, index?: number) {
     const dialogRef = this.dialog.open(TripLuggageComponent, {
       width: '98vw',
-      height: '75vh',
+      height: '85vh',
       data: luggage ? {luggage: luggage, index: index} : null
     });
     dialogRef.afterClosed().subscribe(savingData => {

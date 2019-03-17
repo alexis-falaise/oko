@@ -8,6 +8,10 @@ export class Post {
     expirationDate?: Moment;
     homeDelivery?: boolean;
 
+    /* App Management (Moderation) */
+    approved: boolean;
+    dismissed: boolean;
+
     /* Meta information */
     clicks?: number;
     views?: number;

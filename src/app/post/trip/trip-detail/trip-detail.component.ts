@@ -100,6 +100,12 @@ export class TripDetailComponent implements OnInit {
     : proposals;
   }
 
+  makeRequest() {
+    this.engagement = true;
+    const requestEl = document.getElementById('request');
+    requestEl.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
+
   openRequest() {
     this.router.navigate([`/account/request`]);
   }

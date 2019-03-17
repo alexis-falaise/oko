@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="trip-detail__info__route col-4 offset-2" *ngIf="trip && trip.user">
-        <button class="btn btn-outline-link text-muted btn-sm btn-icon btn-route">
+        <button class="btn btn-outline-link text-muted btn-sm btn-icon btn-route" [routerLink]="['/soon']">
           <mat-icon>timeline</mat-icon> Parcours de {{ trip.user.firstname }}
         </button>
       </div>
@@ -91,7 +91,7 @@
     <div class="trip-detail__engagement__constraints">
       <h4 class="trip-detail__engagement__constraints-title">Espace disponible</h4>
       <div class="row">
-          <div class="trip-detail__engagement__constraints-luggages col-12 col-sm-6" *ngIf="trip.luggages && trip.luggages.length">
+          <div class="trip-detail__engagement__constraints-luggages col-12 col-md-6" *ngIf="trip.luggages && trip.luggages.length">
               <div class="row justify-content-center">
                 <mat-card class="trip-detail__engagement__constraints-luggage col-6 col-sm-12 col-md-6"
                   *ngFor="let luggage of trip.luggages" matRipple>
@@ -114,7 +114,7 @@
                 </mat-card>
               </div>
           </div>
-          <div class="trip-detail__engagement__constraints-info col-12 col-sm-6">
+          <div class="trip-detail__engagement__constraints-info col-12 col-md-6">
             <ul class="constraints">
                 <li *ngIf="trip.airportDrop">
                     <mat-icon>local_airport</mat-icon> Remise à l'aéroport
@@ -122,9 +122,6 @@
                 <li *ngIf="!trip.airportDrop">
                     <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
                 </li>
-                <!-- <li [class.disabled]="!trip.bonus">
-                    <mat-icon>euro_symbol</mat-icon> Bonus voyageur proposé: {{ trip.bonus || 0 }} € 
-                </li> -->
             </ul>
           </div>
       </div>
@@ -135,17 +132,18 @@
       </small>
     </div>
     <div class="trip-detail__edition" *ngIf="own">
-      <button class="btn btn-info btn-icon" [routerLink]="['/post/trip', trip.id, 'edit']">
+      <button class="btn btn-hero btn-icon" [routerLink]="['/post/trip', trip.id, 'edit']">
         <mat-icon>edit</mat-icon> Modifier
       </button>
     </div>
     <div *ngIf="!own">
-      <div class="trip-detail__engagement__form d-flex justify-content-center" *ngIf="!requests?.length; else pending">
-        <button class="btn btn-info btn-engagement" (click)="engagement = true" *ngIf="!engagement">
+      <div class="trip-detail__engagement__form d-flex justify-content-center" [class.engagement]="engagement"
+           *ngIf="!requests?.length; else pending">
+        <button class="btn btn-hero btn-engagement" (click)="makeRequest()" *ngIf="!engagement">
           <mat-icon>shop</mat-icon> Faire une demande
         </button>
-        <div *ngIf="engagement">
-          <h4 class="trip-detail__engagement__form-title">Faire une demande de transport</h4>
+        <div [class.d-none]="!engagement">
+          <h4 class="trip-detail__engagement__form-title" id="request">Faire une demande de transport</h4>
           <app-request-form [trip]="trip"></app-request-form>
         </div>
       </div>

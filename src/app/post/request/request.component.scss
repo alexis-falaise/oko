@@ -3,22 +3,17 @@
 
 .request {
     height: 100vh;
+    background: $heroGradient;
 
     &__hero {
-        animation: $animationDuration openHero;
-        -webkit-animation: $animationDuration openHero;
-        -moz-animation: $animationDuration openHero;
-        -o-animation: $animationDuration openHero;
-
         background: $heroGradient;
-        // background-image: url('/assets/hero-trip-detail.jpg');
+        background-size: 100vw 100vh;
         width: 100vw;
         min-height: 125px;
         position: sticky;
         height: 15vh;
-        padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
-        color: white;
+        color: $white-alpha-8;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -31,11 +26,17 @@
     }
 
     &__form {
-        height: 80vh;
+        animation: appear $animationDuration;        
+        max-height: 85vh;
         padding-top: 15px;
         padding-bottom: 25px;
         overflow-y: scroll;
         overflow-x: hidden;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+        position: relative;
+        top: -25px;
 
         &-hint {
             text-align: center;

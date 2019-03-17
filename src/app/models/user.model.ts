@@ -13,6 +13,11 @@ export class User {
     requests?: number;
     ratings?: [number];
     address?: MeetingPoint;
+    // Landing page variables
+    comment?: string;
+    guest?: boolean;
+    tester?: boolean;
+    // Database id
     id?: string;
     _id: string;
     constructor(user: Partial<User> = {}) {

@@ -6,21 +6,25 @@
   <hr class="divider">
   <div class="request-item__content">
     <form [formGroup]="item" novalidate>
-      <mat-horizontal-stepper labelPosition="bottom" [linear]="true">
+      <mat-horizontal-stepper #stepper labelPosition="bottom" [linear]="true">
         <mat-step [stepControl]="item.controls.label">
           <ng-template matStepLabel>Infos</ng-template>
-            <div class="request-item__step-content">
+            <div class="request-item__step-content"
+                 (swipeLeft)="next(!!item.controls.label.value.length)">
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article" required>
+                <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article"
+                       (keyup.enter)="next(!!item.controls.label.value.length)" required>
               </div>
               <div class="form-group">
                 <textarea rows="5" class="form-control" formControlName="description"
+                          (keyup.enter)="next(!!item.controls.label.value.length)"
                           placeholder="Description (edition d'un livre, taille d'un vêtement, couleur, fournisseur, boutique, année, modèle...)" required>
                    
                 </textarea>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="photo" placeholder="Photo (lien)">
+                <input type="text" class="form-control" formControlName="photo"
+                       (keyup.enter)="next(!!item.controls.label.value.length)" placeholder="Photo (lien)">
               </div>
             </div>
             <div class="request-item__step-validation">
@@ -33,16 +37,18 @@
         </mat-step>
         <mat-step [stepControl]="item.controls.price">
           <ng-template matStepLabel>Achat</ng-template>
-          <div class="request-item__step-content">
+          <div class="request-item__step-content" (swipeRight)="previous()" (swipeLeft)="next(item.controls.price.value)">
             <small class="text-muted">
                 Achat : votre voyageur achète votre article en boutique, où se le fait livrer via un site de e-commerce, indiquez lui une estimation du prix de l'article.
             </small>
             <div class="form-group">
-              <input type="text" class="form-control" formControlName="link" placeholder="Lien e-commerce">
+              <input type="text" class="form-control" formControlName="link"
+                     (keyup.enter)="next(item.controls.price.value)" placeholder="Lien e-commerce">
             </div>
             <div class="form-group">
               <div class="input-group">
-                <input type="number" min="0" class="form-control" formControlName="price" placeholder="Prix estimé">
+                <input type="number" min="0" class="form-control" formControlName="price"
+                       (keyup.enter)="next(item.controls.price.value)" placeholder="Prix estimé">
                 <div class="input-group-append">
                   <span class="input-group-text">€</span>
                 </div>
@@ -60,12 +66,12 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Dimensions</ng-template>
-          <div class="request-item__step-content">
+          <div class="request-item__step-content" (swipeRight)="previous()">
             <div class="form-row">
               <div class="form-group col-12">
                 <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
               </div>
-              <div class="form-group col-12 col-sm-6 col-md-4">
+              <div class="form-group col-12">
                   <div class="input-group">
                       <input type="number" class="form-control" min="0" required formControlName="weight">
                       <div class="input-group-append">
@@ -75,50 +81,22 @@
                   <div class="input-label">
                     <span class="label text-muted">
                       <mat-icon>shopping_basket</mat-icon>
-                      Poids
+                      Poids estimé
                     </span>
                   </div>
               </div>
-              <div class="form-group col-12 col-sm-6 col-md-4">
-                <div class="input-group">
-                    <input type="number" class="form-control" min="0" required formControlName="height">
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div><br>
+            </div>
+            <div class="row">
+              <div class="request-item__item-size col-6 col-sm-3"
+                  (click)="selectSize(i)"
+                  [class.selected]="size.selected"
+                   *ngFor="let size of itemSizes; let i = index;">
+                <div class="request-item__item-size__icon">
+                    <mat-icon>{{ size.icon }}</mat-icon>
                 </div>
-                <div class="input-label">
-                  <span class="label text-muted">
-                    <mat-icon>swap_vert</mat-icon>
-                    Hauteur
-                  </span>
-                </div>
-              </div>
-              <div class="form-group col-12 col-sm-6 col-md-4">
-                <div class="input-group">
-                    <input type="number" class="form-control" min="0" required formControlName="width">
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div><br>
-                </div>
-                <div class="input-label">
-                  <span class="label text-muted">
-                    <mat-icon>swap_horiz</mat-icon>
-                    Largeur
-                  </span>
-                </div>
-              </div>
-              <div class="form-group col-12 col-sm-6 col-md-4">
-                <div class="input-group">
-                    <input type="number" class="form-control" min="0" required formControlName="depth">
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div><br>
-                </div>
-                <div class="input-label">
-                  <span class="label text-muted">
-                    <mat-icon>compare_arrows</mat-icon>
-                    Profondeur
-                  </span>
+                <div class="request-item__item-size__description">
+                    <div>{{ size.label }}</div>
+                    <small class="text-muted">{{ size.description }}</small>
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@
     
     &__content {
         height: 68vh;
+
     }
 
     &__step {
@@ -19,7 +20,7 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: baseline;
+            justify-content: center;
         }
 
         &-validation {
@@ -28,5 +29,35 @@
             margin-top: 15px;
         }
 
-    } 
+    }
+
+    &__item-size {
+        transition: all $transitionDuration;
+        border-radius: 2px;
+        padding-left: 5%;
+        &.selected {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .1);
+        }
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .05);
+        }
+        &__icon {
+            $iconSize: 36px;
+            display: flex;
+            justify-content: center;
+            .mat-icon {
+                height: $iconSize;
+                width: $iconSize;
+            }
+            .material-icons {
+                font-size: $iconSize;
+                color: rgb(175, 175, 175);
+            }
+        }
+        &__description {
+
+        }
+    }
 }

@@ -5,21 +5,23 @@
   <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
   <hr class="divider">
   <div class="trip-luggage__content">
-    <mat-horizontal-stepper [linear]="!modifying" labelPosition="bottom">
+    <mat-horizontal-stepper #stepper [linear]="!modifying" labelPosition="bottom">
       <mat-step>
         <ng-template matStepLabel>
           Type <br> {{ cabin ? 'Cabine' : 'Soute' }}
         </ng-template>
-        <small class="text-muted">Je transporte mon bagage en soute ou en cabine</small>
-        <div class="luggage-type">
-          <button class="btn btn-toggle btn-luggage-type" (click)="inCargo()" [class.active]="!cabin">
-            <mat-icon>flight</mat-icon>
-            Soute
-          </button>
-          <button class="btn btn-toggle btn-luggage-type" (click)="inCabin()" [class.active]="cabin">
-            <mat-icon>work</mat-icon>
-            Cabine
-          </button>
+        <div class="step-wrapper" (keyup.enter)="next()" (swipeLeft)="next()">
+          <small class="text-muted">Je transporte mon bagage en soute ou en cabine</small>
+          <div class="luggage-type">
+            <button class="btn btn-toggle btn-luggage-type" (click)="inCargo()" [class.active]="!cabin">
+              <mat-icon>flight</mat-icon>
+              Soute
+            </button>
+            <button class="btn btn-toggle btn-luggage-type" (click)="inCabin()" [class.active]="cabin">
+              <mat-icon>work</mat-icon>
+              Cabine
+            </button>
+          </div>
         </div>
         <div class="luggage-validation">
           <button class="btn btn-success" matStepperNext>Valider</button>
@@ -30,14 +32,17 @@
           Poids<br>
           <span *ngIf="weight">{{ weight }} kg</span>
         </ng-template>
-        <small class="text-muted">J'estime le poids de l'article que je peux transporter</small>
-        <div class="luggage-weight">
-          <div class="form-group">
-            <div class="input-group">
-                <input type="number" class="form-control" min="0" required [(ngModel)]="weight">
-                <div class="input-group-append">
-                  <span class="input-group-text">kg</span>
-                </div>
+        <div class="step-wrapper" (keyup.enter)="next()" (swipeLeft)="next()" (swipeRight)="previous()">
+          <small class="text-muted">J'estime le poids 
+            {{ large ? 'que je suis prêt à emporter' : 'qu\'il me reste à prendre dans mon bagage' }}</small>
+          <div class="luggage-weight">
+            <div class="form-group">
+              <div class="input-group">
+                  <input type="number" class="form-control" min="0" required [(ngModel)]="weight">
+                  <div class="input-group-append">
+                    <span class="input-group-text">kg</span>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
@@ -46,58 +51,51 @@
         </div>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Espace</ng-template>
-        <div class="step-wrapper luggage-space-wrapper">
-            <small class="text-muted">L'espace qu'il me reste dans mon bagage pour transporter un article</small>
+        <ng-template matStepLabel>Espace disponible</ng-template>
+        <div class="step-wrapper luggage-space-wrapper" (swipeRight)="previous()">
+            <div class="form-group luggage-large">
+              <mat-slide-toggle [(ngModel)]="large">
+                <mat-icon>kitchen</mat-icon>
+                Article volumineux
+              </mat-slide-toggle>
+            </div>
+            <small class="text-muted">Indiquez si vous pouvez prendre un article volumineux</small>
             <div class="luggage-space">
-              <div class="form-row">
-                <div class="form-group col-12 col-md-4">
-                  <div class="input-group">
-                      <input type="number" class="form-control" min="0" required [(ngModel)]="height">
-                      <div class="input-group-append">
-                        <span class="input-group-text">cm</span>
-                      </div><br>
-                  </div>
-                  <div class="input-label">
-                    <span class="label text-muted">
-                      <mat-icon>swap_vert</mat-icon>
-                      Hauteur
-                    </span>
-                  </div>
-                </div>
-                <div class="form-group col-12 col-md-4">
-                    <div class="input-group">
-                        <input type="number" class="form-control" min="0" required [(ngModel)]="width">
-                        <div class="input-group-append">
-                          <span class="input-group-text">cm</span>
-                        </div>
-                    </div>
-                    <div class="input-label">
-                      <span class="label text-muted">
-                        <mat-icon>swap_horiz</mat-icon>
-                        Largeur
-                      </span>
-                    </div>
-                </div>
-                <div class="form-group col-12 col-md-4">
-                  <div class="input-group">
-                      <input type="number" class="form-control" min="0" required [(ngModel)]="depth">
-                      <div class="input-group-append">
-                        <span class="input-group-text">cm</span>
-                      </div>
-                  </div>
-                  <div class="input-label">
-                    <span class="label text-muted">
-                      <mat-icon>compare_arrows</mat-icon>
-                      Profondeur
-                    </span>
-                  </div>
-                </div>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn" [disabled]="large" 
+                        [ngClass]="{
+                        'btn-light': !(freeSpace > 3),
+                        'btn-success': freeSpace > 3 }" 
+                        (click)="freeSpace = 4">
+                        Bagage Complet
+                </button>
+                <button class="btn" [disabled]="large" 
+                        [ngClass]="{
+                        'btn-light': !(freeSpace > 2),
+                        'btn-success': freeSpace > 2 }" 
+                        (click)="freeSpace = 3">
+                        3/4
+                </button>
+                <button class="btn" [disabled]="large" 
+                        [ngClass]="{
+                        'btn-light': !(freeSpace > 1),
+                        'btn-success': freeSpace > 1 }" 
+                        (click)="freeSpace = 2">
+                        2/4
+                </button>
+                <button class="btn" [disabled]="large" 
+                        [ngClass]="{
+                        'btn-light': !(freeSpace > 0),
+                        'btn-success': freeSpace > 0 }" 
+                        (click)="freeSpace = 1">
+                        1/4
+                </button>
               </div>
             </div>
         </div>
         <div class="luggage-validation">
-          <button class="btn btn-success" (click)="save()">Enregistrer</button>
+          <small class="text-danger" *ngIf="error">Indiquez le poids de l'article que vous pouvez transporter</small>
+          <button class="btn btn-success"  [disabled]="!weight && error" (click)="save()">Enregistrer</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

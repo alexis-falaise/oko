@@ -6,7 +6,7 @@ import { Filter } from '@models/app/filter.model';
 @Component({
   selector: 'app-request-list',
   templateUrl: './request-list.component.html',
-  styleUrls: ['./request-list.component.scss']
+  styleUrls: ['../../post-list.scss']
 })
 export class RequestListComponent implements OnInit {
 

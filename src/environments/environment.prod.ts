@@ -1,5 +1,6 @@
 const port = 3000;
-const publicIp = '204.48.21.183';
+const publicIp = 'dev.meetoko.com';
+const ip = '204.48.21.183';
 const privateIp = '10.136.116.76';
 
 export const environment = {

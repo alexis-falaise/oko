@@ -1,5 +1,5 @@
 <div class="post-list" *ngIf="!horizontal; else carousel">
-    <app-post [post]="post" *ngFor="let post of posts"></app-post>
+    <app-post [post]="post" *ngFor="let post of posts" [hidden]="empty"></app-post>
     <div class="post-list__empty d-flex justify-content-center" *ngIf="empty">
         <mat-icon class="list-empty">flight</mat-icon><br>
         <div>Aucun résultat</div>

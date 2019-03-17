@@ -1,3 +1,5 @@
+@import "../../../styles/variables.scss";
+
 .post-list {
     &.horizontal {
         overflow-x: scroll;
@@ -11,11 +13,11 @@
 
     .prev-icon,
     .next-icon {
-        color: rgb(80, 80, 80);
+        color: $white-alpha-8;
     }
 
     &__empty {
-        $emptyColor: rgb(175, 175, 175);
+        $emptyColor: $white-alpha-4;
         color: $emptyColor;
         $iconSize: 64px;
         height: 30vh;

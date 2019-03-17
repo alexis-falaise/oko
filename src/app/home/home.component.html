@@ -1,6 +1,7 @@
 <div class="home" (scroll)="onScroll($event)" [class.expanded]="expanded" [class.fullscreen]="empty">
     <div class="home-hero" [class.expanded]="expanded"
                            [class.content]="displayContent"
+                           [class.onboarding]="onBoarding"
                            [class.fullscreen]="empty"
                            (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
         <div class="home-hero__input" *ngIf="!displayContent">
@@ -44,84 +45,97 @@
         </div>
     </div>
     <div class="home-content" [class.expanded]="!expanded && !empty" [class.empty]="empty">
-        <!-- <div class="home-content__filters">
-            <app-post-filter (filterRefresh)="filterPosts($event)"></app-post-filter>
-        </div> -->
-        <!-- <div class="home-content__departures" *ngIf="!empty">Départs disponibles</div> -->
-        <div class="home-content__list-wrapper" [class.expanded]="!expanded">
-            <div class="home-content__list-buttons row">
-                <!-- <button matRipple class="btn btn-info btn-outline" [routerLink]="['/post/request/new']">Créer une annonce</button> -->
-                <button matRipple class="btn btn-info btn-outline btn-home-full" [routerLink]="['/post/trip']">Afficher tous les trajets</button>
+        <div class="container">
+            <div class="home-content__list-wrapper" [class.expanded]="!expanded">
+                <div class="home-content__list" [hidden]="empty">
+                    <app-post-list [trip]="true" [horizontal]="true"></app-post-list>
+                </div>
             </div>
-            <div class="home-content__list" [hidden]="empty">
-                <app-post-list [trip]="true" (listRefresh)="listStatus($event)" [horizontal]="true"></app-post-list>
-            </div>
-            <div class="row justify-content-center">
-                <button matRipple class="btn btn-primary btn-home-full" [routerLink]="['/post/trip/new']">Proposer un trajet</button>
+            <div class="home-content__list-buttons row mb-3">
+                <button matRipple class="btn btn-hero w-100 justify-content-center btn-icon"
+                        [routerLink]="['/post/trip']">
+                    <mat-icon>flight</mat-icon>
+                    Afficher tous les trajets
+                </button>
             </div>
         </div>
-        <hr class="divider" *ngIf="!empty">
-        <div class="home-content__onboarding container">
-            <section class="home-content__onboarding-service">
-                Oko est une plateforme web qui te permet de faire livrer un article
-                que tu ne trouve pas dans ton pays, par l'intermédiaire d'un voyageur
-                qui visite ta ville.
-            </section>
-            <hr class="divider">
-            <section class="home-content__onboarding-service__steps">
-                <div class="row h-100">
-                    <div class="col-3 col-sm-4 col-md-6 d-flex justify-content-center align-items-center">
-                        <mat-icon>
-                            person_add
-                        </mat-icon>
-                    </div>
-                    <div class="col-9 col-sm-8 col-md-6 d-flex flex-column justify-content-center">
-                        <h4 class="home-content__onboarding-service__title">1. Choisis ton voyageur</h4>
-                        <p>oko te mets en relation avec un particulier qui se déplace dans ta ville, afin
-                            qu'il te ramène un article. Le service est rendu en échange d'un montant que tu lui proposes.
-                        </p>
-                    </div>
+        <section class="home-content__onboarding-service">
+            Oko est une plateforme web qui te permet de faire livrer un article
+            que tu ne trouve pas dans ton pays, par l'intermédiaire d'un voyageur
+            qui visite ta ville.
+        </section>
+        <div class="home-content__onboarding">
+            <div class="container">
+                <div class="row">
+                    <!-- ONBOARDING STEPS -->
+                    <section class="home-content__onboarding-service__steps col-12 col-md-4">
+                        <div class="step-row row h-100">
+                            <div class="col-3 col-sm-4 col-md-12 d-flex justify-content-center align-items-center">
+                                <mat-icon>
+                                    person_add
+                                </mat-icon>
+                            </div>
+                            <div class="col-9 col-sm-8 col-md-12 d-flex flex-column justify-content-center">
+                                <h4 class="home-content__onboarding-service__title">1. Choisis ton voyageur</h4>
+                                <p>ọkọ te met en relation avec un particulier qui se déplace dans ta ville, afin
+                                    qu'il te ramène un article. Le service est rendu en échange d'un montant que tu lui proposes
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="home-content__onboarding-service__steps col-12 col-md-4">
+                        <div class="step-row row h-100">
+                            <div class="col-9 col-sm-8 d-flex d-md-none flex-column justify-content-center">
+                                <h4 class="home-content__onboarding-service__title">2. Ton article prend l'avion</h4>
+                                <p>Le voyageur achète ton article et prends l'avion en direction de ton pays</p>
+                            </div>
+                            <div class="col-3 col-sm-4 col-md-12 d-flex justify-content-center align-items-center">
+                                <mat-icon class="home-content__onboarding-icon">
+                                    flight
+                                </mat-icon>
+                            </div>
+                            <div class="col-12 d-none d-md-flex flex-column justify-content-center">
+                                <h4 class="home-content__onboarding-service__title">2. Ton article prend l'avion</h4>
+                                <p>Le voyageur achète ton article et prend l'avion en direction de ton pays</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="home-content__onboarding-service__steps col-12 col-md-4">
+                        <div class="step-row row h-100">
+                            <div class="col-3 col-sm-4 col-md-12 d-flex justify-content-center align-items-center">
+                                <mat-icon class="home-content__onboarding-icon">
+                                    offline_pin
+                                </mat-icon>
+                            </div>
+                            <div class="col-9 col-sm-8 col-md-12 d-flex flex-column justify-content-center">
+                                <h4 class="home-content__onboarding-service__title">
+                                    3. Reçois ton article <br> (et fais toi un ami)
+                                </h4>
+                                <p>Ton article t'es livré dans ta ville, directement chez toi, à l'aéroport où arrive ton voyageur
+                                    ou à un point de rendez-vous que vous aurez défini ensemble
+                                </p>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </section>
-            <section class="home-content__onboarding-service__steps">
-                <div class="row h-100">
-                    <div class="col-9 col-sm-8 col-md-6 d-flex flex-column justify-content-center">
-                        <h4 class="home-content__onboarding-service__title">2. Ton article prends l'avion</h4>
-                        <p>Le voyageur achète ton article et prends l'avion (ou autre) en direction de ton pays.</p>
-                    </div>
-                    <div class="col-3 col-sm-4 col-md-6 d-flex justify-content-center align-items-center">
-                        <mat-icon class="home-content__onboarding-icon">
-                            flight
-                        </mat-icon>
-                    </div>
-                </div>
-            </section>
-            <section class="home-content__onboarding-service__steps">
-                <div class="row h-100">
-                    <div class="col-3 col-sm-4 col-md-6 d-flex justify-content-center align-items-center">
-                        <mat-icon class="home-content__onboarding-icon">
-                            offline_pin
-                        </mat-icon>
-                    </div>
-                    <div class="col-9 col-sm-8 col-md-6 d-flex flex-column justify-content-center">
-                        <h4 class="home-content__onboarding-service__title">
-                            3. Reçois ton article (et fait toi un ami)
-                        </h4>
-                        <p>Ton article t'es livré dans ta ville, directement chez toi, à l'aéroport où arrive ton voaygeur où à un point
-                            de rendez-vous que vous aurez défini ensemble.
-                        </p>
-                    </div>
-                </div>
-            </section>
-            <hr class="divider">
+            </div>
+
+            <!-- TRIP PROPOSAL -->
+            <div class="home-content__trip-proposal d-flex justify-content-center mt-5 mb-5">
+                <button matRipple class="btn btn-hero btn-icon w-50 justify-content-center" [routerLink]="['/post/trip/new']">
+                    <mat-icon>flight_takeoff</mat-icon> Je voyage bientôt
+                </button>
+            </div>
+
+            <!-- FOUR STEP ADVERTISING -->
             <section class="home-content__onboarding-advertising">
                 <div class="home-content__onboarding-advertising__icon">
                     <mat-icon>nature_people</mat-icon>
                 </div>
                 <div class="home-content__onboarding-advertising__text">
-                    <h4 class="home-content__onboarding-advertising__title">Ecologique</h4>
+                    <h4 class="home-content__onboarding-advertising__title">Écologique</h4>
                     <p>
-                        Parce qu'on prends soin de notre planète, oko te permet de réduire ton
+                        Parce qu'on prend soin de notre planète, ọkọ te permet de réduire ton
                         empreinte carbone
                     </p>
                 </div>
@@ -133,8 +147,8 @@
                 <div class="home-content__onboarding-advertising__text">
                     <h4 class="home-content__onboarding-advertising__title">Sécurisé</h4>
                     <p>
-                        Parce que la fiabilité de notre service est notre priorité, les paiements sur Oko
-                        s'effectuent par carte bancaire et sont entièrement sécurisés.
+                        Parce que la fiabilité de notre service est notre priorité, les paiements sur ọkọ
+                        s'effectuent par carte bancaire et sont entièrement sécurisés
                     </p>
                 </div>
             </section>
@@ -146,7 +160,7 @@
                     <h4 class="home-content__onboarding-advertising__title">Fiable</h4>
                     <p>
                         Les profils de nos membres sont également vérifiés, et régulièrement évalués par la communauté
-                        oko.
+                        ọkọ
                     </p>
                 </div>
             </section>
@@ -157,7 +171,7 @@
                 <div class="home-content__onboarding-advertising__text">
                 <h4 class="home-content__onboarding-advertising__title">Économique</h4>
                 <p>
-                    Dépensez jusqu'à 70% de moins qu'avec une compagnie de transport aérien
+                    Dépenses jusqu'à 70% de moins qu'avec une compagnie de transport aérien
                 </p>
                 </div>
             </section>

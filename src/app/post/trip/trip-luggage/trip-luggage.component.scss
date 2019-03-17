@@ -1,6 +1,14 @@
 @import "../../../../styles/variables.scss";
 
 .trip-luggage {
+    height: 100%;
+    width: 70vw;
+    overflow: hidden;
+
+    .close {
+        right: 0 !important;
+    }
+
     &-title {
         font-weight: 700;
         font-size: 24px;
@@ -9,13 +17,17 @@
 
     &__content {
         .step-wrapper {
-            height: 39vh;
+            height: 100%;
             overflow-y: scroll;
             overflow-x: hidden;
         }
 
         .luggage-space-wrapper {
-            height: 30vh;
+            height: 35vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .luggage-type {
@@ -28,18 +40,38 @@
 
         .luggage-weight {
             height: 20vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 20%;
         }
 
         .luggage-space {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            height: 50vh;
+            height: 20vh;
+            width: 80vw;
+            max-width: 350px;
+        }
+
+        .luggage-large {
+            color: rgba(0, 0, 0, .7);
+            font-size: 14px;
         }
 
         .luggage-validation {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+        }
+
+        .mat-slide-toggle-content {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .7);
         }
     }
 }

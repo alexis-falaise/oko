@@ -5,6 +5,7 @@ export class Luggage {
     depth?: number;
     cabin: boolean;
     full: boolean;
+    large: boolean;
     id?: string;
     constructor(luggage: Partial<Luggage> = {}) {
         Object.assign(this, luggage);

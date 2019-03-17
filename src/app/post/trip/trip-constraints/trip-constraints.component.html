@@ -11,7 +11,9 @@
                   (swipeleft)="disclose[i] = true"
                   (swiperight)="disclose[i] = false">
           <mat-card-title>
-            <mat-icon>work</mat-icon>
+            <mat-icon>
+              {{ luggage.cabin ? 'work' : luggage.large ? 'kitchen' : 'flight' }}
+            </mat-icon>
             Bagage {{ i + 1 }}
           </mat-card-title>
           <app-remove-panel *ngIf="disclose[i]" (remove)="removeLuggage(i)"></app-remove-panel>
@@ -65,7 +67,9 @@
     <hr class="divider">
     <div class="trip-constraints__airport">
       <h4 class="trip-title">Remise</h4>
-      <small class="text-muted">Indiquez le lieu de remise de l'article</small>
+      <small class="text-muted">
+        Indiquez où vous souhaitez remettre l'article. Le calcul du bonus voyageur tient compte du mode de remise.
+      </small>
       <div class="trip-constraints__airport-actions row">
           <div class="col-12 col-sm-6">
             <button class="btn btn-toggle btn-airport" [class.active]="airportDrop" (click)="inAirport()">
@@ -76,7 +80,7 @@
           <div class="col-12 col-sm-6">
             <button class="btn btn-toggle btn-airport" [class.active]="!airportDrop" (click)="inLocation()">
               <mat-icon>my_location</mat-icon>
-              Remise au lieu de rendez-vous
+              Remise à un autre lieu de rendez-vous
             </button>
           </div>
       </div>

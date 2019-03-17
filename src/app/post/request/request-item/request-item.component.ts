@@ -1,9 +1,22 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { Item } from '@models/item.model';
 import { Link } from '@models/link.model';
+
+class ItemSize {
+  label: string;
+  description: string;
+  icon: string;
+  width?: number;
+  height?: number;
+  depth?: number;
+  selected: boolean;
+  constructor(itemSize: Partial<ItemSize>) {
+    Object.assign(this, itemSize);
+  }
+}
 
 @Component({
   selector: 'app-request-item',
@@ -11,7 +24,7 @@ import { Link } from '@models/link.model';
   styleUrls: ['./request-item.component.scss']
 })
 export class RequestItemComponent implements OnInit {
-
+  @ViewChild('stepper') public stepper;
   item = this.fb.group({
     label: ['', Validators.required],
     description: [''],
@@ -24,6 +37,44 @@ export class RequestItemComponent implements OnInit {
     cabinOnly: [false],
     price: ['', Validators.compose([Validators.min(0), Validators.required])],
   });
+  itemSizes = [
+    new ItemSize({
+      label: 'Petit',
+      description: 'Lettre, Livre, portefeuille...',
+      icon: 'mail_outline',
+      width: 11,
+      height: 16,
+      depth: 1,
+      selected: false,
+    }),
+    new ItemSize({
+      label: 'Moyen',
+      description: 'Vêtements, appareils électroniques...',
+      icon: 'phonelink',
+      width: 24,
+      height: 19,
+      depth: 2,
+      selected: false,
+    }),
+    new ItemSize({
+      label: 'Grand',
+      description: 'Console de jeux...',
+      icon: 'videogame_asset',
+      width: 27,
+      height: 30,
+      depth: 5,
+      selected: false,
+    }),
+    new ItemSize({
+      label: 'Volumineux',
+      description: 'Taille supérieure à un bagage classique',
+      icon: 'tv',
+      width: 68,
+      height: 55,
+      depth: 35,
+      selected: false,
+    })
+  ];
   index: number;
   modifying: boolean;
 
@@ -42,6 +93,30 @@ export class RequestItemComponent implements OnInit {
       this.index = this.data.index;
       this.modifying = this.data.modifying;
     }
+  }
+
+  previous() {
+    this.stepper.previous();
+  }
+
+  next(allowed?: boolean) {
+    if (allowed) {
+      this.stepper.next();
+    }
+  }
+
+  selectSize(index: number) {
+    this.itemSizes.forEach((size, sizeIndex) => {
+        size.selected = sizeIndex === index;
+        if (sizeIndex === index) {
+          this.item.patchValue({
+            height: size.height,
+            width: size.width,
+            depth: size.depth,
+          });
+          console.log(this.item.value);
+        }
+    });
   }
 
   save() {

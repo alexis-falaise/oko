@@ -1,0 +1,22 @@
+.base-brand {
+    // Define a font-size and you're good to go
+    flex-direction: column;
+    justify-content: center;
+    width: auto;
+    padding-top: 0;
+    margin-left: 10px;
+    height: $navbarHeight;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    background: -webkit-linear-gradient(45deg,#69F5FF, #5FE8C9, #75FFB6, #5FE877, #98FF85);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.base-modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: $cyan-600;
+}

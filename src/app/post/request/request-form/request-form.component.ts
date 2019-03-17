@@ -1,12 +1,15 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog, MatSnackBar, DateAdapter } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
 import { UserService } from '@core/user.service';
+import { UiService } from '@core/ui.service';
 import { PostService } from '@core/post.service';
 import { GeoService } from '@core/geo.service';
+
 import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
 import { RequestItemComponent } from '../request-item/request-item.component';
 import { RequestItemSelectionComponent } from '../request-item-selection/request-item-selection.component';
@@ -14,10 +17,7 @@ import { RequestItemSelectionComponent } from '../request-item-selection/request
 import { Item } from '@models/item.model';
 import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { isFulfilled } from 'q';
 import { Proposal } from '@models/post/proposal.model';
-import { UiService } from '@core/ui.service';
 import { MeetingPoint } from '@models/meeting-point.model';
 
 @Component({
@@ -317,10 +317,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.geoService.resetCities();
-    if (!this.saved) {
-      const draft = this.createSaveRequest();
-      this.saveDraft(draft);
-    }
+    // if (!this.saved) {
+    //   const draft = this.createSaveRequest();
+    //   this.saveDraft(draft);
+    // }
   }
 
 }

@@ -1,15 +1,13 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { PostService } from '@core/post.service';
-import { UiService } from '@core/ui.service';
 
 import { Filter } from '@models/app/filter.model';
 @Component({
   selector: 'app-trip-list',
   templateUrl: './trip-list.component.html',
-  styleUrls: ['./trip-list.component.scss']
+  styleUrls: ['../../post-list.scss']
 })
 export class TripListComponent implements OnInit, OnDestroy {
   filter = new Filter();

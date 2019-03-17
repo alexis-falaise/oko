@@ -9,8 +9,8 @@
     </small>
     <mat-progress-spinner color="accent" class="request-detail__hero-loading" mode="indeterminate" *ngIf="!request.user"></mat-progress-spinner>
   </div>
-  <div class="request-detail__content container" [class.loading]="!request.user">
-    <div class="request-detail__status"
+  <div class="request-detail__content container">
+  <div class="request-detail__status"
     [class.good]="request.accepted || request.validated"
     [class.bad]="request.closed || request.outdated"
     *ngIf="request.closed || request.accepted || request.validated">
@@ -116,13 +116,12 @@
     </h4>
     <div class="request-detail__conditions-urgent" *ngIf="request.urgent">
       <div class="row">
-        <mat-icon class="col-3">
+        <mat-icon class="col-3 col-sm-2 col-lg-1">
           announcement
         </mat-icon>
-        <div class="col-9">
+        <div class="col-9 col-sm-10 col-lg-11">
           <h5 class="request-detail__conditions-urgent__title">Demande urgente</h5>
-          <hr class="divider">
-          <small class="text-muted">
+          <small>
             Pour une remise avant le {{ request.urgentDetails.date.format('DD/MM/YYYY') }}
           </small>
           <div *ngIf="request.urgentDetails?.explaination">

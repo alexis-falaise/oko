@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { User } from '@models/user.model';
+import { ServerResponse } from '@models/app/server-response.model';
 
 class Status {
   status: boolean;
@@ -105,7 +106,7 @@ export class AuthService {
    * Register a user into oko database
    * @param user: User data from signin form
    */
-  signin(user: User) {
-    return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true });
+  signin(user: User): Observable<ServerResponse> {
+    return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
   }
 }

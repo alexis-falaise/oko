@@ -1,6 +1,8 @@
 @import "../../styles/variables.scss";
+@import "../../styles/classes.scss";
 
 $homeHeroSize: 36px;
+$onBoardTransitionDuration: 0.35s;
 $transitionDuration: 0.15s;
 $transitionStyle: ease-out;
 
@@ -8,6 +10,7 @@ $transitionStyle: ease-out;
     height: 100vh;
     overflow-y: scroll;
     overflow-x: hidden;
+    background: $heroGradient;
 
     // &.expanded,
     // &.fullscreen {
@@ -19,13 +22,12 @@ $transitionStyle: ease-out;
     }
 
     &-hero {
-        transition: $transitionDuration $transitionStyle all;
+        transition: $onBoardTransitionDuration $transitionStyle all;
         
-        height: 15vh;
+        height: 10vh;
         min-height: 150px;
-        padding-top: $navbarHeight;
-        background-image: url('assets/hero.jpg'), $heroGradient;
-        background-size: auto 200%;
+        background-image: url('assets/hero-landing.jpg'), $heroGradient;
+        background-size: cover;
         background-position: center;
         display: flex;
         flex-direction: column;
@@ -47,25 +49,67 @@ $transitionStyle: ease-out;
         //     box-shadow: 0 -250px 250px rgba(0, 0, 0, .5) inset;
         // }
 
+        $stickyOffset: 62.5vh;
+        $expandedHeroHeight: 75vh;
+
         &.content {
-            padding-top: 50vh;
+            padding-top: $stickyOffset;
+            min-height: 325px !important;
         }
 
         &.expanded {
             transition: $transitionDuration $transitionStyle all;
-            background-size: auto 150%;
+            background-size: cover;
             background-position: center;
-            height: 60vh;
-            min-height: 400px;
+            height: $expandedHeroHeight;
+            min-height: 500px;
             position: sticky;
-            top: -40vh;
+            top: -$stickyOffset;
         }
 
         &.fullscreen {
             transition: $transitionDuration $transitionStyle all;
-            background-size: auto 200%;
+            background-size: cover;
             background-position: center;
             height: 100vh;
+        }
+
+        &.onboarding {
+            transition: $onBoardTransitionDuration $transitionStyle all;
+            opacity: 0;
+            top: -$expandedHeroHeight;
+        }
+
+        &__brand {
+            &-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 25px;
+            }
+            &-tagline {
+                font-size: 16px;
+                color: rgb(255, 255, 255);
+                text-shadow: 0 0 3px rgba(255, 255, 255, .4);
+            }
+            @extend .base-brand;
+            font-size: 96px;
+            height: 112px;
+            text-shadow: none !important;
+            margin-bottom: 0;
+            margin-left: 0;
+        }
+
+        @media screen and (min-width: 960px) {
+            &__brand {
+                &-wrapper {
+                    margin-top: -125px;
+                    margin-bottom: 100px;
+                }
+                font-size: 128px;
+                height: 148px;
+            }
         }
 
         &__input {
@@ -126,7 +170,7 @@ $transitionStyle: ease-out;
 
                 &:hover {
                     transition: all $transitionDuration;
-                    color: rgba(255, 255, 255, .8);
+                    color: $white-alpha-8;
                     background-color: rgba(255, 255, 255, .2);
                 }
             }
@@ -143,11 +187,11 @@ $transitionStyle: ease-out;
 
         &-hero,
         &-hero.expanded {
-            background-size: 150% auto;
+            background-size: cover;
         }
 
         &-hero.fullscreen {
-            background-size: auto 150%;
+            background-size: cover;
         }
     }
 
@@ -183,13 +227,14 @@ $transitionStyle: ease-out;
         }
 
         &__list {
-            min-height: 400px;
+            min-height: 300px;
             &-wrapper {
                 transition: all $transitionDuration;
-                height: 75vh;
+                height: 55vh;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                min-height: 300px;
 
                 &.expanded {
                     transition: all $transitionDuration;
@@ -204,24 +249,51 @@ $transitionStyle: ease-out;
             }
         }
 
+        &__trip-proposal {
+            width: 100vw;
+            padding: 75px 10% 75px;
+            background-image: url('assets/landing-trip-proposal.jpg');
+            background-position: 75% 50%;
+            background-attachment: fixed;
+            background-size: cover;
+            box-shadow: 0 -2.5px 10px rgba(0, 0, 0, .5) inset;            
+        }
+
         &__onboarding {
+            &-pic {
+                width: 125%;
+                &-wrapper {
+                    width: 100%;
+                    height: 150px;
+                    border-radius: 5px;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
             &-service {
-                margin-top: 25px;
-                margin-bottom: 50px;
-                padding: 0 10%;
-                color: rgb(125, 125, 125);
+                width: 100vw;
+                background-image: url('assets/landing-service-1.jpg');
+                background-position: center;
+                background-attachment: fixed;
+                background-size: cover;
+                padding: 75px 10% 75px;
+                color: $white-alpha-8;
+                text-shadow: 0px 0px 15px rgba(0, 0, 0, .4);
                 text-align: center;
+                box-shadow: 0 -2.5px 10px rgba(0, 0, 0, .5) inset;
                 &__title {
                     font-size: 24px;
-                    color: rgb(150, 150, 150);
+                    color: $white-alpha-8;
                 }
                 &__steps {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     text-align: center;
-                    height: 350px;
-                    color: rgb(75, 75, 75);
+                    height: 275px;
+                    color: $white-alpha-6;
                     $iconSize: 72px;
                     .mat-icon {
                         width: $iconSize;
@@ -229,15 +301,27 @@ $transitionStyle: ease-out;
                     }
                     .material-icons {
                         font-size: $iconSize;
-                        color: rgb(150, 150, 150);
+                        color: $white-alpha-8;
                     }
+                }
+                @media screen and (min-width: 768px) {
+                    &__steps {
+                        padding-top: 35px;
+                        height: 375px;
+                        .step-row {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: flex-start;
+                        }
+                    } 
                 }
             }
             &-advertising {
-                height: 400px;
+                height: 300px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                color: $white-alpha-6;
                 &__icon {
                     display: flex;
                     flex-direction: column;
@@ -251,12 +335,12 @@ $transitionStyle: ease-out;
                     }
                     .material-icons {
                         font-size: $iconSize;
-                        color: rgb(150, 150, 150);
+                        color: $white-alpha-8;
                     }
                 }
                 &__title {
                     font-size: 24px;
-                    color: rgb(150, 150, 150);
+                    color: $white-alpha-8;
                 }
                 &__text {
                     display: flex;
@@ -266,10 +350,53 @@ $transitionStyle: ease-out;
                     text-align: center;
                 }
             }
+            @media screen and (min-width: 768px) {
+                &-advertising {
+                    height: 250px;
+                }
+            }
+        }
+
+        &__signin {
+            &.closed {
+                transition: all 0.35s;
+                height: 0;
+                opacity: 0;
+            }
+            transition: all 0.35s;
+            box-shadow: 0px -1px 5px rgba(0, 0, 0, .2) inset;
+            background-color: rgba(255, 255, 255, .1);
+            border-radius: 5px;
+            padding: 15px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            &__engagement {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                margin: 25px 0;
+            }
+            &__hint {
+                color: $white-alpha-8;
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            @keyframes expand-768 {
+                0%{ height: 0; opacity: 0.5s;}
+                100%{ height: 440px; opacity: 1;}
+            }
+            &__signin {
+                transition: all $transitionDuration;
+                animation: expand-768 0.35s;
+                height: 440px;
+            }
         }
 
         &__footer {
-            height: 100vh;
+            height: 35vh;
             position: relative;
             bottom: 0;
             z-index: 51;
@@ -346,4 +473,12 @@ $transitionStyle: ease-out;
 .btn-home-full {
     width: 95vw;
     margin-left: 2.5vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.divider {
+    border-color: $white-alpha-6;
 }

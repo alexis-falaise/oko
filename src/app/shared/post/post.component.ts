@@ -25,7 +25,7 @@ export class PostComponent implements OnInit, OnChanges {
   @Output() edit = new EventEmitter();
   @Output() remove = new EventEmitter();
   weight: number;
-  isTrip = false;
+  isTrip = true;
   isRequest = false;
   postPath = ['/post'];
   avatarLocation = environment.avatarLocation;

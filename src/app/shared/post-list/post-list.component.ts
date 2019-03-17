@@ -1,9 +1,11 @@
-import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 
 import { Post } from '@models/post/post.model';
+import { Trip } from '@models/post/trip.model';
 
 import { PostService } from '@core/post.service';
 import { UiService } from '@core/ui.service';
+import { Request } from '@models/post/request.model';
 
 @Component({
   selector: 'app-post-list',
@@ -11,7 +13,7 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit, AfterViewInit {
-  posts: Array<Post> = [];
+  posts: Array<Post> = [new Trip({}), new Trip({}), new Trip({})];
   carousel: any;
   empty = false;
   @Output() listRefresh = new EventEmitter();
@@ -48,6 +50,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
         this.postService.getRequests();
       }
     }
+    this.uiService.onLoading().subscribe(loading => this.loadingDisplay(loading));
   }
 
   ngAfterViewInit() {
@@ -61,6 +64,20 @@ export class PostListComponent implements OnInit, AfterViewInit {
 
   next() {
     this.carousel.carousel('next');
+  }
+
+  loadingDisplay(loading: boolean) {
+    if (loading) {
+      this.posts = this.generatePlaceholder(5);
+    }
+  }
+
+  generatePlaceholder(items: number): Array<Post | Trip | Request> {
+    const array = [];
+    for (let i = 0; i < items; i++) {
+      array.push(this.trip ? new Trip({}) : new Request({}));
+    }
+    return array;
   }
 
   setPosts(posts) {
