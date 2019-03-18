@@ -9,6 +9,7 @@ export const environment = {
   avatarLocation: `http://localhost:${port}/avatar`,
   serverPort: port,
   serverUrl: `http://localhost:${port}/api`,
+  ioUrl: `http://localhost:${port}`,
 };
 
 /*

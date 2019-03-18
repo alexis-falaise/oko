@@ -14,13 +14,22 @@
         flex-direction: row;
         justify-content: center;
         margin-bottom: 50px;
-        color: map-get($okoColors, blue);
+        color: $white-alpha-8
     }
 
     &-form {
+        transition: all $transitionDuration;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 15px;
+        border-radius: 3px;
+        background-color: rgba(255, 255, 255, .2);
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(255, 255, 255, .25);
+        }
     }
 
     &-content {

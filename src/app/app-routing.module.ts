@@ -12,6 +12,9 @@ import { AccountInfoComponent } from './account/account-info/account-info.compon
 import { AccountRequestComponent } from './account/account-request/account-request.component';
 import { AccountTripComponent } from './account/account-trip/account-trip.component';
 import { AccountItemComponent } from './account/account-item/account-item.component';
+import { MessengerComponent } from './messenger/messenger.component';
+import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
+import { ThreadComponent } from './messenger/thread/thread.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +30,12 @@ const routes: Routes = [
       { path: 'item', component: AccountItemComponent },
     ] },
   { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
+  { path: 'messages', component: MessengerComponent, canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ThreadListComponent },
+      { path: 'thread', component: ThreadListComponent },
+      { path: 'thread/:id', component: ThreadComponent },
+    ]},
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404', pathMatch: 'full'},
 ];

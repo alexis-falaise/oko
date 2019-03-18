@@ -8,4 +8,5 @@ export const environment = {
   avatarLocation: `https://${publicIp}/public/avatar`,
   serverPort: port,
   serverUrl: `https://${publicIp}/api`,
+  ioUrl: `https://${publicIp}/api`,
 };

@@ -1,0 +1,30 @@
+<div class="thread-list container">
+  <div class="thread-list__actions">
+    <button class="btn btn-info btn-icon">
+        <mat-icon>add</mat-icon> Nouvelle discussion
+    </button>
+  </div>
+  <div class="thread-list__content">
+      <div class="row">
+          <div class="col-12 col-md-3">
+              <div class="thread-list__content__contacts d-flex flex-row flex-sm-column">
+                  <div class="contact" *ngFor="let contact of contacts" (click)="getContactThread(contact)">
+                    <app-avatar [size]="75" [image]="contact?.avatar"></app-avatar>
+                    {{ contact?.firstname }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-12 col-md-9">
+            <div class="thread-list__content__list">
+                <div class="thread-list__thread" *ngFor="let thread of threads">
+                    <div class="row">
+                        <div class="col-3">
+                            <app-avatar [size]="75" [image]="thread.contact?.avatar"></app-avatar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>

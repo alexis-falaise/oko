@@ -61,7 +61,8 @@ html, body {
     cursor: pointer;
 }
 
-.logo-brand {
+.logo-brand,
+.logo-brand-loading {
     &-wrapper {
         display: flex;
         flex-direction: row;

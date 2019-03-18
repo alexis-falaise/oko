@@ -17,6 +17,8 @@ import {
   GestureConfig,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { environment } from '@env/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AccountModule } from './account/account.module';
@@ -31,6 +33,7 @@ import { UserService } from '@core/user.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { MessengerModule } from './messenger/messenger.module';
 
 declare var Hammer: any;
 
@@ -42,6 +45,8 @@ export class MyHammerConfig extends GestureConfig {
     return mc;
   }
 }
+
+const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
 
 @NgModule({
   declarations: [
@@ -69,6 +74,8 @@ export class MyHammerConfig extends GestureConfig {
     MatTabsModule,
     MatRippleModule,
     MatSnackBarModule,
+    MessengerModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [
     AuthService,

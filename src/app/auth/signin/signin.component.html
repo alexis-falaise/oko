@@ -88,13 +88,13 @@
             </div>
           </div>
           <div class="btn-signin">
-            <button class="btn signin-button" [ngClass]="{'btn-primary': !signinError, 'btn-warning': signinError }"
+            <button class="btn signin-button" [ngClass]="{'btn-hero': !signinError, 'btn-warning': signinError }"
                     [disabled]="signinForm.invalid
                     || signinForm.controls.password.value !== signinForm.controls.passwordConfirm.value"
                     type="submit">
                   Inscription
             </button>
-            <button class="btn btn-light signin-button" (click)="login()">J'ai déjà un compte</button>
+            <button class="btn btn-hero signin-button" (click)="login()">J'ai déjà un compte</button>
           </div>
       </form>
     </div>

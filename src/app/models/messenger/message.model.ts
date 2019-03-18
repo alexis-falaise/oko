@@ -1,15 +1,15 @@
 import { User } from '@models/user.model';
 import { Moment } from 'moment';
-
+import * as moment from 'moment';
 export class Message {
     author: User;
     content: string;
-    sendDate?: Moment;
-    receptionDate?: Moment;
-    openingDate?: Moment;
     sent?: boolean;
+    sendDate?: Moment;
     received?: boolean;
-    opened?: boolean;
+    receptionDate?: Moment;
+    sightDate?: Moment;
+    seen?: boolean;
     id?: string;
     _id?: string;
     constructor(message: Partial<Message>) {
@@ -17,5 +17,10 @@ export class Message {
         if (message._id) {
             this.id = message._id;
         }
+    }
+
+    send() {
+        this.sent = true;
+        this.sendDate = moment();
     }
 }

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
 import { HistoryService } from '@core/history.service';
+import { NotificationService } from '@core/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +20,12 @@ export class AppComponent implements OnInit {
   drawerExpanded = false;
   loading: boolean;
   hideNavOn = ['/login', '/logout', '/signin'];
-  lightNavOn = ['/post', '/account'];
+  lightNavOn = ['/post', '/account', '/messages'];
 
   constructor(
     private authService: AuthService,
     private historyService: HistoryService,
+    private notificationService: NotificationService,
     private uiService: UiService,
     private ref: ChangeDetectorRef,
     private router: Router

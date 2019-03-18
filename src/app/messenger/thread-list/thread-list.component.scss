@@ -1,0 +1,42 @@
+@import "../../../styles/variables.scss";
+
+.thread-list {
+    &__actions {
+        height: 10vh;
+        min-height: 75px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__content {
+        height: 65vh;
+        &__contacts {
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        &__list {
+            height: 65%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    }
+
+    .contact {
+        transition: all $transitionDuration;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: rgba(0, 0, 0, 8);
+        margin-bottom: 5px;
+        border-radius: 3px;
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .1);
+        }
+    }
+}

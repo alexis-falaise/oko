@@ -3,5 +3,6 @@
             [class.faded]="!star.plain"
             [class.light]="light"
             [style.font-size]="size"
+            [style.flex-wrap]="wrap ? 'wrap' : 'nowrap'"
             *ngFor="let star of ratingStars">star_rate</mat-icon>
 </div>

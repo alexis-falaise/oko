@@ -16,6 +16,7 @@ export class RatingComponent implements OnInit, OnChanges {
   @Input() rating: number;
   @Input() light: boolean;
   @Input() size: number;
+  @Input() wrap = false;
   ratingStars: Array<RatingStar> = [];
   constructor() { }
 
