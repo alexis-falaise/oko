@@ -80,7 +80,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         outline: none;
         box-shadow: none;
 
-        opacity: .2;
+        opacity: 1;
         .material-icons {
             color: white;
         }
@@ -90,14 +90,6 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
             .material-icons {
                 color: white;
             }
-        }
-        &.available {
-            transition: all 0.5s;
-            -webkit-transition: all 0.5s;
-            -moz-transition: all 0.5s;
-            -o-transition: all 0.5s;
-
-            opacity: 1;
         }
     }
 

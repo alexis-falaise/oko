@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   MatCardModule,
@@ -97,6 +98,7 @@ import { ProposalEditBonusComponent } from './proposal/proposal-edit-bonus/propo
     ReactiveFormsModule,
     PostRoutingModule,
     SharedModule,
+    ScrollDispatchModule,
   ]
 })
 export class PostModule { }

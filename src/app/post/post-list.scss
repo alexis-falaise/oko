@@ -6,6 +6,7 @@
     height: 100vh;
     background: $heroGradient;
     animation: slideInRight .15s;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, .3);
     &__hero {
         background: $heroGradient;
         background-size: 100vw 100vh;
@@ -25,8 +26,9 @@
     }
 
     &__list {
-        height: 75vh;
+        height: 80vh;
         overflow-y: scroll;
         padding-bottom: 25px;
+        margin-top: -25px;
     }
 }

@@ -15,6 +15,7 @@ class RatingStar {
 export class RatingComponent implements OnInit, OnChanges {
   @Input() rating: number;
   @Input() light: boolean;
+  @Input() size: number;
   ratingStars: Array<RatingStar> = [];
   constructor() { }
 
@@ -24,7 +25,11 @@ export class RatingComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.rating) {
-      this.rating = changes.rating.currentValue;
+      if (changes.rating.currentValue === undefined || changes.rating.currentValue === null) {
+        this.rating = 5;
+      } else {
+        this.rating = changes.rating.currentValue;
+      }
       this.generateRatingDisplay();
     }
   }
@@ -34,7 +39,6 @@ export class RatingComponent implements OnInit, OnChanges {
     for (let i = 0; i < 5; i++) {
         this.ratingStars.push(new RatingStar({plain: i < this.rating}));
     }
-    console.log(this.ratingStars);
   }
 
 }

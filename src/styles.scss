@@ -43,11 +43,9 @@ html, body {
     height: 100vh;
 
     $duration: 0.25s;
+    background: $heroGradient;
 
     animation: $duration enter;
-    -webkit-animation: $duration enter;
-    -moz-animation: $duration enter;
-    -o-animation: $duration enter;
 }
 
 .container,

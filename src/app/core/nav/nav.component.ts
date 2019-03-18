@@ -16,7 +16,6 @@ export class NavComponent implements OnInit, OnChanges {
   @Input() light = false;
   @Output() drawerChanges = new EventEmitter();
   menuDisplay = false;
-  previousAvailable = false;
   guestAccountMenuItems: Array<MenuItem> = [
     { label: 'Aide', path: '/help', icon: 'help' },
     { label: 'Connexion', path: '/login', icon: 'power_settings_new' },
@@ -66,10 +65,6 @@ export class NavComponent implements OnInit, OnChanges {
     } else {
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
-    });
-    this.historyService.onHistory()
-    .subscribe(history => {
-      this.previousAvailable = history.length > 1;
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

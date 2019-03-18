@@ -1,9 +1,10 @@
 @import "../../../styles/variables.scss";
 
-$iconSize: 16px;
+$iconSize: .75rem;
 .rating {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     &-star {
         &.mat-icon {

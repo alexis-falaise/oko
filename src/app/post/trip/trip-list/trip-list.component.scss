@@ -33,8 +33,9 @@
     }
 
     &__list {
-        height: 75vh;
+        height: 80vh;
         overflow-y: scroll;
         padding-bottom: 25px;
+        margin-top: -25px;
     }
 }

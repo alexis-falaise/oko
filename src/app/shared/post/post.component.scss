@@ -8,9 +8,6 @@ $post-height: 100px;
     $transitionStyle: ease-out;
 
     transition: $transitionDuration $transitionStyle all;
-    -webkit-transition: $transitionDuration $transitionStyle all;
-    -moz-transition: $transitionDuration $transitionStyle all;
-    -o-transition: $transitionDuration $transitionStyle all;
     height: $post-height;
     background-color: rgba(255, 255, 255, .1);
     border: 1px solid rgba(255, 255, 255, .15);
@@ -48,9 +45,6 @@ $post-height: 100px;
 
     &:hover {
         transition: $transitionDuration $transitionStyle all;
-        -webkit-transition: $transitionDuration $transitionStyle all;
-        -moz-transition: $transitionDuration $transitionStyle all;
-        -o-transition: $transitionDuration $transitionStyle all;
         background-color: rgba(255, 255, 255, .2);
         box-shadow: 1px 2px 15px rgba(0, 0, 0, .1);
         cursor: pointer;
@@ -175,14 +169,14 @@ $post-height: 100px;
     }
 
     &-date {
-        font-size: 30px;
+        font-size: 1.5rem;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     &-weight {
-        $weightSize: 16px;
+        $weightSize: .9rem;
         display: flex;
         flex-direction: row;
         justify-content: center;

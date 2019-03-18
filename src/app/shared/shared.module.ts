@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
@@ -43,6 +44,7 @@ import { RatingComponent } from './rating/rating.component';
     MatMomentDateModule,
     MatRippleModule,
     MatSnackBarModule,
+    ScrollDispatchModule,
     RouterModule,
   ],
   exports: [

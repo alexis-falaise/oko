@@ -36,12 +36,16 @@ export class HistoryService {
 
   back() {
     const history = this.history.getValue();
-    history.pop();
     let route;
-    do {
-      route = this.findLastRoute(history);
-    } while (this.forbiddenRoutes.includes(route));
-    this.history.next(history);
+    if (history.length > 1) {
+      history.pop();
+      do {
+        route = this.findLastRoute(history);
+      } while (this.forbiddenRoutes.includes(route));
+      this.history.next(history);
+    } else {
+      route = '/home';
+    }
     this.router.navigate([route]);
   }
 

@@ -30,6 +30,7 @@ export class PostFilterComponent implements OnInit, OnChanges {
   ngOnChanges(change: SimpleChanges) {
     if (change.filter) {
       this.filter = change.filter.currentValue;
+      this.checkFilter();
     }
     if (change.options) {
       this.options = new FilterOptions(change.options.currentValue);
@@ -48,7 +49,7 @@ export class PostFilterComponent implements OnInit, OnChanges {
   checkFilter() {
     this.isFilled = false;
     Object.keys(this.filter).forEach(filterLabel => {
-      if (this.filter[filterLabel] && this.filter[filterLabel] !== '') {
+      if (this.filter[filterLabel] && this.filter[filterLabel] !== '' && filterLabel !== 'open') {
         this.isFilled = true;
       }
     });
