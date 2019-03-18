@@ -47,6 +47,6 @@ export class HistoryService {
 
   hasBack(): boolean {
     const history = this.history.getValue();
-    return history.length > 1 && history[history.length - 2];
+    return history.length && history[history.length - 1];
   }
 }

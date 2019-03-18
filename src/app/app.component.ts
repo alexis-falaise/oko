@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   drawerExpanded = false;
   loading: boolean;
   hideNavOn = ['/login', '/logout', '/signin'];
-  lightNavOn = ['/post'];
+  lightNavOn = ['/post', '/account'];
 
   constructor(
     private authService: AuthService,

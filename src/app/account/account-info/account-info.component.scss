@@ -3,7 +3,8 @@
     height: 60vh;
     padding: 25px 15px;
     background-color: white;
-    border-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 
     &__item {
         width: 100%;
@@ -11,14 +12,12 @@
     }
 
     &__action {
-        width: 100vw;
-        position: fixed;
+        width: 100%;
+        margin-top: 5px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        left: 0;
-        bottom: 0;
         height: 50px;
     }
 

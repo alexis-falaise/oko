@@ -45,7 +45,7 @@ export class RequestItemComponent implements OnInit {
       width: 11,
       height: 16,
       depth: 1,
-      selected: false,
+      selected: true,
     }),
     new ItemSize({
       label: 'Moyen',
@@ -92,6 +92,7 @@ export class RequestItemComponent implements OnInit {
       }
       this.index = this.data.index;
       this.modifying = this.data.modifying;
+      this.initSize();
     }
   }
 
@@ -105,6 +106,13 @@ export class RequestItemComponent implements OnInit {
     }
   }
 
+  initSize() {
+    if (this.modifying) {
+      const sizeIndex = this.itemSizes.findIndex(size => size.height = this.item.controls.height.value);
+      this.selectSize(sizeIndex);
+    }
+  }
+
   selectSize(index: number) {
     this.itemSizes.forEach((size, sizeIndex) => {
         size.selected = sizeIndex === index;
@@ -114,7 +122,6 @@ export class RequestItemComponent implements OnInit {
             width: size.width,
             depth: size.depth,
           });
-          console.log(this.item.value);
         }
     });
   }

@@ -20,7 +20,7 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         &-validation {
@@ -34,7 +34,6 @@
     &__item-size {
         transition: all $transitionDuration;
         border-radius: 2px;
-        padding-left: 5%;
         &.selected {
             transition: all $transitionDuration;
             background-color: rgba(0, 0, 0, .1);

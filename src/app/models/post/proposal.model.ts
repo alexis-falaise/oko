@@ -3,12 +3,15 @@ import { User } from '@models/user.model';
 import { MeetingPoint } from '@models/meeting-point.model';
 
 import { Moment } from 'moment';
+import { Trip } from './trip.model';
 
 export class Update {
     date: Moment;
     author: User;
     type: string;
     bonusDelta: number;
+    seen: boolean;
+    sightDate: Moment;
 }
 
 export class Proposal {
@@ -25,6 +28,8 @@ export class Proposal {
     airportPickup: boolean;
     meetingPoint: MeetingPoint;
     updates: [Update];
+    seen: boolean;
+    sightDate: Moment;
     authorView?: boolean;
     lastUpdate?: Update;
     id?: string;
@@ -46,6 +51,10 @@ export class Proposal {
         } else {
             return false;
         }
+    }
+
+    isFromTrip() {
+        return this.from instanceof Trip;
     }
 
 }

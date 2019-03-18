@@ -14,7 +14,7 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['../account-post.component.scss']
 })
 export class AccountRequestComponent implements OnInit {
-  requests: Array<Request> = null;
+  requests: Array<Request> = [new Request({}), new Request({}), new Request({})];
   hasDraft = false;
 
   constructor(

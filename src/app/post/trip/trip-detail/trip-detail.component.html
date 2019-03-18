@@ -48,6 +48,7 @@
             <div class="trip-detail__info__user-detail col-6 col-sm-8 col-md-9">
               <div class="user-name">{{ trip.user.firstname }}</div>
               <div class="user-trips">{{ trip.user.trips || 0 }} voyage{{ trip.user.trips > 1 ? 's' : '' }}</div>
+              <app-rating [rating]="trip.user.rating"></app-rating>
             </div>
         </div>
       </div>
@@ -58,7 +59,7 @@
       </div>
     </div>
   </div>
-  <div class="trip-detail__proposal-wrapper" *ngIf="proposals?.length">
+  <div class="trip-detail__proposal-wrapper container" *ngIf="proposals?.length">
     <h4 class="trip-detail__proposal-title">Propositions {{ own ? 'reçues' : 'envoyées' }}</h4>
     <mat-accordion>
       <mat-expansion-panel class="trip-detail__proposal"
@@ -86,14 +87,13 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-  <hr class="divider" *ngIf="proposals?.length">
   <div class="trip-detail__engagement container" *ngIf="trip">
     <div class="trip-detail__engagement__constraints">
       <h4 class="trip-detail__engagement__constraints-title">Espace disponible</h4>
       <div class="row">
           <div class="trip-detail__engagement__constraints-luggages col-12 col-md-6" *ngIf="trip.luggages && trip.luggages.length">
               <div class="row justify-content-center">
-                <mat-card class="trip-detail__engagement__constraints-luggage col-6 col-sm-12 col-md-6"
+                <mat-card class="trip-detail__engagement__constraints-luggage col-12 col-md-6"
                   *ngFor="let luggage of trip.luggages" matRipple>
                   <mat-icon class="luggage-backdrop">{{ luggage.cabin ? 'work' : 'flight' }}</mat-icon>
                   <mat-card-title>Bagage {{ luggage.cabin ? ' cabine' : ' en soute'}}</mat-card-title>
@@ -127,7 +127,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-center" *ngIf="requests && requests.length">
-      <small class="text-muted">
+      <small class="text-muted light">
           Vous avez effectué {{ requests.length }} demande{{ requests.length > 1 ? 's' : '' }} pour ce trajet
       </small>
     </div>

@@ -4,8 +4,7 @@
     height: 100vh;
     background: $heroGradient;
     animation: zoomIn $animationDuration;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &__hero {
         background: $heroGradient;
@@ -16,7 +15,6 @@
         top: -5vh;
         height: 30vh;
         min-height: 160px;
-        padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
         display: flex;
@@ -53,6 +51,9 @@
         position: relative;
         top: -25px;
         z-index: 11;
+        height: 70vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     &__date {
@@ -76,6 +77,49 @@
         &.bad {
             background-color: #ffcdd2;
             color: #cb9ca1;
+        }
+    }
+
+    &__proposal {
+        animation: appear $animationDuration;
+        
+        &__title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        &-wrapper {
+            margin-top: 25px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 3px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+            animation: appear $animationDuration;
+        }
+        &__date {
+            color: rgba(0, 0, 0, .5);
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        &__status {
+            color: rgba(0, 0, 0, .4);
+            font-size: 10px;
+        }
+        &__info {
+            color: rgba(0, 0, 0, .4);
+            font-size: 10px;
+        }
+        &.closed {
+            opacity: .5;
+        }
+        &.pending {
+            background-color: $amber-100;
+        }
+        &.accepted {
+            background-color: $light-green-200;
+        }
+        &.refused {
+            background-color: $red-100;
         }
     }
 
@@ -191,6 +235,7 @@
         }
         &-list {
             margin-top: 25px;
+            width: 100%;
         }
     }
 

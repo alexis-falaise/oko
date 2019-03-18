@@ -22,8 +22,9 @@ export class RequestDetailComponent implements OnInit {
   request: Request = new Request();
   currentUser: User;
   receivedProposals: Array<Proposal>;
+  sentProposals: Array<Proposal>;
   currentUserProposals: Array<Proposal>;
-  displayedProposals: Array<Proposal>;
+  displayedProposals: Array<Proposal> = [];
   moment = moment;
 
   constructor(
@@ -102,26 +103,53 @@ export class RequestDetailComponent implements OnInit {
     this.uiService.setLoading(true);
     if (this.request.own) {
       this.getReceivedProposals(request);
+      this.getSentProposals(request);
     } else {
       this.getReceivedProposalsByAuthor(request);
     }
   }
 
+  /**
+   * Display the proposals received for this request
+   * @param request : Current request
+   */
   getReceivedProposals(request: Request) {
     this.postService.getReceivedProposals(request)
     .subscribe((proposals: Array<Proposal>) => {
-      this.receivedProposals = proposals;
-      this.displayedProposals = proposals;
+      this.receivedProposals = proposals.map(proposal => {
+        proposal.isAuthor(this.currentUser);
+        this.displayedProposals.push(proposal);
+        return proposal;
+      });
       this.uiService.setLoading(false);
     }, (err: HttpErrorResponse) => this.serverError(err));
   }
 
+  /**
+   * Display the proposals sent from this request
+   * @param request : Current request
+   */
+  getSentProposals(request: Request) {
+    this.postService.getSentProposals(request)
+    .subscribe((proposals: Array<Proposal>) => {
+      this.sentProposals = proposals.map(proposal => {
+        proposal.isAuthor(this.currentUser);
+        this.displayedProposals.push(proposal);
+        return proposal;
+      });
+    }, (err: HttpErrorResponse) => this.serverError(err));
+  }
+
+  /**
+   * Get received proposals concerning this request, if the current user is author of the proposal
+   * @param request : Current request
+   */
   getReceivedProposalsByAuthor(request: Request) {
     this.postService.getReceivedProposalsByAuthor(request, this.currentUser)
     .subscribe((proposals: Array<Proposal>) => {
-      this.currentUserProposals = proposals;
-      this.displayedProposals = proposals.map(proposal => {
+      this.currentUserProposals = proposals.map(proposal => {
         proposal.isAuthor(this.currentUser);
+        this.displayedProposals.push(proposal);
         return proposal;
       });
       this.uiService.setLoading(false);

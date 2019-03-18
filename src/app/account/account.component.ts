@@ -4,9 +4,10 @@ import { MatSnackBar, MatBottomSheet } from '@angular/material';
 
 import { UserService } from '@core/user.service';
 
+import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
+
 import { User } from '@models/user.model';
 import { Link } from '@models/link.model';
-import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
 
 @Component({
   selector: 'app-account',
@@ -17,9 +18,9 @@ export class AccountComponent implements OnInit {
 
   currentUser: User = null;
   categories: Array<Link> = [
-    { label: 'Infos', path: '/account/info', icon: 'account_box' },
     { label: 'Trajets', path: '/account/trip', icon: 'explore' },
     { label: 'Demandes', path: '/account/request', icon: 'new_releases' },
+    { label: 'Infos', path: '/account/info', icon: 'account_box' },
     // { label: 'Articles', path: '/account/item', icon: 'shopping_cart' },
   ];
 

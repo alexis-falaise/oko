@@ -11,8 +11,8 @@
             </div>
         </mat-panel-title>
         <mat-panel-description>
-            <span *ngIf="filter.beforeDate">Avant le {{ filter.beforeDate.format('DD MMMM') }}</span>
-            <span *ngIf="filter.location">À {{ filter.location }}</span>
+            <span class="white-spaced" *ngIf="filter.beforeDate">Avant le {{ filter.beforeDate.format('DD MMMM') }} </span>
+            <span class="white-spaced" *ngIf="filter.location"> À {{ filter.location }}</span>
         </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="row" *ngIf="options.location || options.country || options.city || options.beforeDate">

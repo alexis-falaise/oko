@@ -1,6 +1,6 @@
 <div class="proposal">
     <div class="row justify-content-around proposal__actions">
-        <button class="btn btn-light btn-icon" *ngIf="proposal.authorView && !proposal.closed" (click)="modifyProposal()">
+        <button class="btn btn-light btn-icon" *ngIf="proposal.authorView && !proposal.closed && !proposal.accepted && !proposal.refused" (click)="modifyProposal()">
           <mat-icon>edit</mat-icon> Modifier
         </button>
         <button class="btn btn-success btn-icon" [disabled]="!proposal.authorView && proposal.accepted || proposal.refused" *ngIf="receiver" (click)="acceptProposal()">

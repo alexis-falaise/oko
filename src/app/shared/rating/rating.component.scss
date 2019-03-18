@@ -1,0 +1,31 @@
+@import "../../../styles/variables.scss";
+
+$iconSize: 16px;
+.rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &-star {
+        &.mat-icon {
+            height: $iconSize;
+            width: $iconSize;
+        }
+        &.material-icons {
+            font-size: $iconSize;
+            color: rgba(0, 0, 0, .6);
+        }
+        &.light {
+            color: rgba(255, 255, 255, .8) !important;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+        }
+    }
+    &-star.faded {
+        &.material-icons {
+            color: rgba(0, 0, 0, .2);
+        }
+        &.light {
+            color: rgba(255, 255, 255, .4) !important;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+        }
+    }
+}

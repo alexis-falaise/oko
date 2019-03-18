@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/Alexis/Documents/2.PRO/oko-back"
+		},
+		{
+			"path": "/Users/Alexis/Documents/2.PRO/DIMOBA/dev"
+		},
+		{
+			"path": "/Users/Alexis/Documents/2.PRO/oko-landing"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

@@ -20,6 +20,7 @@ import { PostFilterComponent } from './post-filter/post-filter.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RemovePanelComponent } from './remove-panel/remove-panel.component';
 import { ItemComponent } from './item/item.component';
+import { RatingComponent } from './rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ItemComponent } from './item/item.component';
     PostFilterComponent,
     RemovePanelComponent,
     ItemComponent,
+    RatingComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +52,7 @@ import { ItemComponent } from './item/item.component';
     PostFilterComponent,
     RemovePanelComponent,
     ItemComponent,
+    RatingComponent,
   ],
 })
 export class SharedModule { }

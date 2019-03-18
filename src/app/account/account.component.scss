@@ -4,12 +4,13 @@
 .account {
     background: $heroGradient;
     height: 100vh;
+    overflow-y: scroll;
 
     &-hero {
         width: 100vw;
-        height: 20vh;
-        min-height: 175px;
-        padding-top: 50px;
+        height: 15vh;
+        min-height: 150px;
+        padding-top: 25px;
         background: $heroGradient;
         background-size: 100vw 100vh;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;

@@ -14,7 +14,7 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['../account-post.component.scss']
 })
 export class AccountTripComponent implements OnInit {
-  trips: Array<Trip> = null;
+  trips: Array<Trip> = [new Trip({}), new Trip({}), new Trip({})];
   expiredTrips: Array<Trip> = null;
   hasDraft = false;
 

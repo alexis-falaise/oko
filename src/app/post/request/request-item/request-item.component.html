@@ -67,7 +67,7 @@
         <mat-step>
           <ng-template matStepLabel>Dimensions</ng-template>
           <div class="request-item__step-content" (swipeRight)="previous()">
-            <div class="form-row">
+            <div class="form-row mb-5">
               <div class="form-group col-12">
                 <mat-checkbox formControlName="cabinOnly">Article admis en cabine</mat-checkbox>
               </div>
@@ -86,8 +86,8 @@
                   </div>
               </div>
             </div>
-            <div class="row">
-              <div class="request-item__item-size col-6 col-sm-3"
+            <div class="row mt-5">
+              <div class="request-item__item-size col-12 col-sm-6 col-md-3"
                   (click)="selectSize(i)"
                   [class.selected]="size.selected"
                    *ngFor="let size of itemSizes; let i = index;">
@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="request-item__step-validation">
-            <button class="btn btn-success" type="button" (click)="save()">Enregistrer</button>
+            <button class="btn btn-success" [disabled]="!item.controls.weight.value" type="button" (click)="save()">Enregistrer</button>
           </div>
         </mat-step>
       </mat-horizontal-stepper>

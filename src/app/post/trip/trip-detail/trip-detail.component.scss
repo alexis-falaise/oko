@@ -20,6 +20,7 @@
         z-index: 10;
         top: -22.5vh;
         height: 47.5vh;
+        min-height: 350px;
         padding-top: $navbarHeight;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         color: white;
@@ -51,11 +52,13 @@
         }
 
         &__date {
-            top: 25vh;
+            top: 16vh;
         }
 
         &__views {
             top: 27.5vh;
+            color: $white-alpha-4;
+            font-size: 12px;
         }
         
         &__link {
@@ -166,6 +169,10 @@
         }
         &-wrapper {
             margin-top: 25px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 3px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .3);
             animation: appear $animationDuration;
         }
         &__date {
@@ -233,8 +240,8 @@
                 color: rgba(0, 0, 0, .6);
                 height: 150px;
                 overflow: hidden;
-                max-width: 47.5%;
-                margin-right: 5px;
+                max-width: 90%;
+                margin: 0 5px 5px 0;
                 .luggage-backdrop {
                     font-size: 128px;
                     color: rgba(0, 0, 0, .1);
@@ -290,7 +297,9 @@
         animation: 0.5s appear;
         transition: all $transitionDuration;
         border-radius: 5px;
+        border: 3px solid white;
         background-color: $amber-100;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
         padding: 10px;
         cursor: pointer;
         

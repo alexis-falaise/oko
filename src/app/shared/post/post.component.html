@@ -15,6 +15,9 @@
             <div class="post-info__user-info__requests" *ngIf="!isTrip">
                 {{ post.user?.requests || 0 }} annonce{{ post.user?.requests > 1 ? 's': '' }}
             </div>
+            <div class="post-info__user-rating">
+                <app-rating [rating]="post.user?.rating" [light]="true"></app-rating>
+            </div>
         </div>
     </div>
     <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="horizontal">
@@ -29,6 +32,9 @@
             <div class="post-info__user-info__requests">
                 {{ post.user?.requests || 0 }} annonce{{ post.user?.requests !== 1 ? 's': '' }}
             </div>
+            <div class="post-info__user-rating">
+                <app-rating [rating]="post.user?.rating" [light]="true"></app-rating>
+            </div>
         </div>
     </div>
     <div class="post-general col-9 col-md-10" [class.outdated]="outdated" *ngIf="isTrip; else request">
@@ -38,7 +44,7 @@
                     <div class="post-trip__from col-12 col-sm-5 justify-content-center">
                             {{ post.from?.label }}<br>
                             <span class="post-trip__from-details d-none d-sm-inline" *ngIf="post.from?.airport">
-                                {{ post.from.airport.label  || post.from.airport.name }}
+                                {{ post.from.airport.code  || post.from.airport.name }}
                             </span>
                         </div>
                     <div class="post-trip__link d-none d-sm-flex col-12 col-sm-2 justify-content-center">
@@ -47,7 +53,7 @@
                     <div class="post-trip__to col-12 col-sm-5 justify-content-center">
                         {{ post.to?.label }}
                         <span class="post-trip__to-details d-none d-sm-inline" *ngIf="post.to?.airport">
-                            {{ post.to.airport.label || post.to.airport.name }}
+                            {{ post.to.airport.code || post.to.airport.name }}
                         </span>
                     </div>
                 </div>

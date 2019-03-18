@@ -22,11 +22,12 @@
         <mat-icon>edit</mat-icon> Modifier l'annonce
       </button>
   </div>
-  <div class="request-detail__proposal" *ngIf="displayedProposals?.length">
+  <div class="request-detail__proposal"
+       *ngIf="receivedProposals?.length || currentUserProposals?.length || sentProposals?.length">
     <h4>
       Propositions
       <span *ngIf="request.own && receivedProposals?.length"> reçues</span>
-      <span *ngIf="currentUserProposals?.length"> envoyées</span>
+      <span *ngIf="currentUserProposals?.length || sentProposals?.length"> envoyées</span>
     </h4>
     <small class="text-muted" *ngIf="currentUserProposals?.length">
       Status des propositions de voyage faites à {{ request.user.firstname }}
@@ -34,18 +35,39 @@
     <small class="text-muted" *ngIf="request.own && receivedProposals?.length">
       Status des propositions de voyage reçues pour votre annonce
     </small>
+    <small class="text-muted" *ngIf="request.own && sentProposals?.length">
+      Status des demandes
+    </small>
     <mat-accordion class="request-detail__proposal-list">
-      <mat-expansion-panel *ngFor="let proposal of displayedProposals">
+      <mat-expansion-panel *ngFor="let proposal of displayedProposals" class="request-detail__proposal"
+                          [class.closed]="proposal.closed"
+                          [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+                          [class.accepted]="proposal.accepted && !proposal.closed"
+                          [class.refused]="proposal.refused && !proposal.closed">
         <mat-expansion-panel-header>
-          <mat-panel-title class="request-detail__proposal-title">
+          <!-- Proposal is  a trip-->
+          <mat-panel-title class="request-detail__proposal-title" *ngIf="proposal.isFromTrip()">
               <mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} <br>
               <mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-title class="request-detail__proposal__title" *ngIf="!proposal.isFromTrip()">
+              <span class="request-detail__proposal__date">{{ moment(proposal.date).format('DD/MM/YYYY') }} </span>
+              {{ proposal.author.id === currentUser.id ? ' Demande' : ' ' + proposal.author?.firstname }}
+              <span class="request-detail__proposal__status" *ngIf="proposal.closed"> - Annulée</span>
+              <span class="request-detail__proposal__status" *ngIf="own && proposal.accepted && !proposal.validated"> - A livrer</span>
+              <span class="request-detail__proposal__status" *ngIf="proposal.refused && !proposal.closed"> - Refusée</span>
+              <span class="request-detail__proposal__status" *ngIf="!own && proposal.accepted && !proposal.validated"> - Acceptée</span>
+              <span class="request-detail__proposal__status" *ngIf="proposal.validated"> - Livrée</span>
+              <span class="request-detail__proposal__info" *ngIf="proposal.bonus && !proposal.closed"> - {{ proposal.bonus }} €</span><br>
+              <span class="request-detail__proposal__info" *ngIf="proposal?.from?.urgent && !proposal.closed">
+                - avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}
+              </span>
+            </mat-panel-title>
+          <mat-panel-description *ngIf="proposal.isFromTrip()">
             <mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <app-proposal [proposal]="proposal" [receiver]="request.own"></app-proposal>
+        <app-proposal [proposal]="proposal" [receiver]="!proposal.isAuthor && request.own"></app-proposal>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
