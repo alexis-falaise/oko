@@ -3,8 +3,10 @@
                            [class.content]="displayContent"
                            [class.onboarding]="onBoarding"
                            [class.fullscreen]="empty"
-                           (mouseleave)="leave()" (keyup.enter)="validate()" (click)="enter()">
-        <div class="home-hero__input" *ngIf="!displayContent">
+                           (keyup.enter)="validate()"
+                           id="hero"
+                           (click)="edit()">
+        <div class="home-hero__input" [class.d-none]="displayContent">
             Je veux me faire livrer
             <mat-form-field class="input-hero__item" floatLabel="never">
                 <input matInput type="text" name="item"
@@ -38,20 +40,22 @@
             <!-- <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button> -->
         </div>
         <div class="home-hero__summary" *ngIf="displayContent">
-            <span class="home-hero__summary-empty" *ngIf="!filter.location && !filter.item && !onBoarding">Trajets à venir</span>
-            <span class="home-hero__summary-location" *ngIf="filter.location && !onBoarding" (click)="enter()">{{ filter.location }}</span>
-            <span class="home-hero__summary-item" *ngIf="filter.item && !onBoarding" (click)="enter()">{{ filter.item }}</span>
+            <span class="home-hero__summary-empty" *ngIf="!filter?.location && !filter?.item && !onBoarding">Trajets à venir</span>
+            <span class="home-hero__summary-location" *ngIf="filter?.location && !onBoarding" (click)="edit()">{{ filter.location }}</span>
+            <span class="home-hero__summary-item" *ngIf="filter?.item && !onBoarding" (click)="edit()">{{ filter.item }}</span>
             <span class="home-hero__summary-empty" *ngIf="onBoarding">Le service ọkọ</span>
         </div>
     </div>
-    <div class="home-content" [class.expanded]="!expanded && !empty" [class.empty]="empty">
+    <div class="home-content" [class.expanded]="!expanded && !empty" [class.empty]="empty" id="content">
         <div class="container">
-            <div class="home-content__list-wrapper" [class.expanded]="!expanded">
+            <div class="home-content__list-wrapper" [class.expanded]="!expanded" id="trip-list">
                 <div class="home-content__list" [hidden]="empty">
-                    <app-post-list [trip]="true" [horizontal]="true"></app-post-list>
+                    <app-post-list [trip]="true" [horizontal]="true"
+                                   (listRefresh)="listStatus($event)">
+                    </app-post-list>
                 </div>
             </div>
-            <div class="home-content__list-buttons row mb-3">
+            <div class="home-content__list-buttons row mb-3" id="all-trips">
                 <button matRipple class="btn btn-hero w-100 justify-content-center btn-icon"
                         [routerLink]="['/post/trip']">
                     <mat-icon>flight</mat-icon>
@@ -59,12 +63,12 @@
                 </button>
             </div>
         </div>
-        <section class="home-content__onboarding-service">
+        <section class="home-content__onboarding-service" id="service">
             Oko est une plateforme web qui te permet de faire livrer un article
             que tu ne trouve pas dans ton pays, par l'intermédiaire d'un voyageur
             qui visite ta ville.
         </section>
-        <div class="home-content__onboarding">
+        <div class="home-content__onboarding" id="onboarding">
             <div class="container">
                 <div class="row">
                     <!-- ONBOARDING STEPS -->
@@ -121,7 +125,7 @@
             </div>
 
             <!-- TRIP PROPOSAL -->
-            <div class="home-content__trip-proposal d-flex justify-content-center mt-5 mb-5">
+            <div class="home-content__trip-proposal d-flex justify-content-center mt-5 mb-5" id="trip-proposal">
                 <button matRipple class="btn btn-hero btn-icon w-50 justify-content-center" [routerLink]="['/post/trip/new']">
                     <mat-icon>flight_takeoff</mat-icon> Je voyage bientôt
                 </button>

@@ -10,7 +10,12 @@ $post-height: 100px;
     transition: $transitionDuration $transitionStyle all;
     height: $post-height;
     background-color: rgba(255, 255, 255, .1);
+    background-size: cover;
+    background-position: center;
     border: 1px solid rgba(255, 255, 255, .15);
+    &.hasBackground {
+        border: none;
+    }
     border-radius: 5px;
     width: 90%;
     margin: 15px 5%;
@@ -33,6 +38,7 @@ $post-height: 100px;
         margin-left: 0;
         min-height: 300px;
         display: inline-flex;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
     }
 
     &.urgent {
@@ -73,9 +79,14 @@ $post-height: 100px;
     }
 
     &-info {
-        height: 107%;
+        height: 150%;
         width: 100%;
-        margin: -5px 0 -5px -5px;
+        margin: -10px 0px -5px -5px;
+        &.horizontal {
+            height: 114%;
+            margin: -15px 0 -5px -5px;
+            padding-top: 10px;
+        }
         background-color: rgba(0, 0, 0, .015);
         background-size: cover;
         background-position: center;
@@ -118,6 +129,15 @@ $post-height: 100px;
 
         &.horizontal {
             height: 70%;
+
+            .post-trip {
+                &__from,
+                &__to {
+                    &-details {
+                        color: rgba(255, 255, 255, .7);
+                    }
+                }
+            }
         }
 
         &__from,
@@ -164,7 +184,7 @@ $post-height: 100px;
         padding-left: 0;
         &.horizontal {
             flex-direction: row;
-            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            border-bottom: 1px solid rgba(255, 255, 255, .2);
         }
     }
 
@@ -266,6 +286,19 @@ $post-height: 100px;
                     font-size: 8px;
                 }
             }
+        }
+    }
+
+    &-backdrop {
+        transition: all $transitionDuration;
+        background-color: rgba(0, 0, 0, 0);
+        width: 110%;
+        height: 105% !important;
+        padding: 15px;
+        margin-top: -10px;
+        &.hasBackground {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .5);
         }
     }
 }

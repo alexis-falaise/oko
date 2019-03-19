@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { DateAdapter, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -14,6 +14,7 @@ import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UiService } from '@core/ui.service';
+import { PexelsService } from '@core/pexels.service';
 
 @Component({
   selector: 'app-trip-detail',
@@ -30,8 +31,11 @@ export class TripDetailComponent implements OnInit {
   engagement = false;
   own = false;
   moment = moment;
+  background: string;
+  fadeInfo: boolean;
 
   constructor(
+    private element: ElementRef,
     private router: Router,
     private dateAdapter: DateAdapter<Date>,
     private route: ActivatedRoute,
@@ -39,6 +43,7 @@ export class TripDetailComponent implements OnInit {
     private uiService: UiService,
     private postService: PostService,
     private snack: MatSnackBar,
+    private pexels: PexelsService,
   ) { }
 
   ngOnInit() {
@@ -56,6 +61,7 @@ export class TripDetailComponent implements OnInit {
     .subscribe(trip => {
       if (trip) {
         this.trip = new Trip(trip);
+        this.setBackgroundPicture();
         const requestDraft = this.postService.getRequestDraft();
         if (requestDraft && requestDraft.trip.id === this.trip.id) {
           this.engagement = true;
@@ -126,6 +132,19 @@ export class TripDetailComponent implements OnInit {
       }
       this.uiService.setLoading(false);
     });
+  }
+
+  onScroll(event) {
+    const children = this.element.nativeElement.children[0].children;
+    const heightUnit = children[0].clientHeight / 47.5;
+    const info = children[1];
+    const scrollTop = event.target.scrollTop;
+    this.fadeInfo = scrollTop > (info.offsetTop - 20 * heightUnit);
+  }
+
+  private setBackgroundPicture() {
+    this.pexels.getBackgroundPicture(this.trip.to.airport.country)
+    .subscribe(picture => this.background = picture);
   }
 
   private serverError(error: HttpErrorResponse, id: string) {

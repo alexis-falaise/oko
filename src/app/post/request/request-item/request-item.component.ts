@@ -108,7 +108,7 @@ export class RequestItemComponent implements OnInit {
 
   initSize() {
     if (this.modifying) {
-      const sizeIndex = this.itemSizes.findIndex(size => size.height = this.item.controls.height.value);
+      const sizeIndex = this.itemSizes.findIndex(size => size.height === this.item.controls.height.value);
       this.selectSize(sizeIndex);
     }
   }

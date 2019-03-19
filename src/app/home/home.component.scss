@@ -50,10 +50,10 @@ $transitionStyle: ease-out;
         // }
 
         $stickyOffset: 62.5vh;
-        $expandedHeroHeight: 75vh;
+        $expandedHeroHeight: 85vh;
 
         &.content {
-            padding-top: $stickyOffset;
+            padding-top: $stickyOffset + 8.5vh;
             min-height: 325px !important;
         }
 

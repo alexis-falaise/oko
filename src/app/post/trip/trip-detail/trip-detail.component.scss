@@ -5,12 +5,35 @@
 .trip-detail {
     height: 100vh;
     overflow-y: scroll;
+    overflow-x: hidden;
     background: $heroGradient;
     $box-shadow: 0 0 15px rgba(0, 0, 0, .3);
     $border-radius: 3px;
     animation: zoomIn .15s;
 
+    &__backdrop {
+        margin-top: -$navbarHeight;
+        padding-top: $navbarHeight;
+        transition: all .5s;
+        height: 47.5vh;
+        min-height: 350px;
+        width: 105%;
+        z-index: 11;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
+        &.hasBackground {
+          transition: all .5s;
+          background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .7));
+        }
+    }
+
     &__hero {
+        transition: all .5s;
+        &.hasBackground {
+            transition: all .5s;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
         background: $heroGradient;
         background-size: 100vw 100vh;
         width: 100vw;
@@ -100,6 +123,11 @@
     }
 
     &__info {
+        transition: all .25s;
+        &.faded {
+            transition: all .25s;
+            opacity: 0;
+        }
         height: 15vh;
         min-height: 100px;
         width: 90vw;
@@ -110,7 +138,8 @@
         background-color: white;
         box-shadow: $box-shadow;
         position: relative;
-
+        z-index: 12;
+        opacity: 1;
         &__user {
             &-row {
                 // width: 100%;
@@ -172,6 +201,8 @@
             border-radius: 3px;
             box-shadow: 0 0 15px rgba(0, 0, 0, .3);
             animation: appear $animationDuration;
+            position: relative;
+            z-index: 9;
         }
         &__date {
             color: rgba(0, 0, 0, .5);
@@ -203,6 +234,8 @@
     &__engagement {
         padding: 25px 0;
         color: $white-alpha-8;
+        position: relative;
+        z-index: 9;
 
         &__constraints {
             margin-bottom: 25px;

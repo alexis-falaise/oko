@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material';
 import { Item } from '@models/item.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PexelsService } from '@core/pexels.service';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -33,11 +34,13 @@ export class PostComponent implements OnInit, OnChanges {
   moment = moment;
   outdated = false;
   urgent = false;
+  backgroundPicture: string;
 
   constructor(
     private router: Router,
     private postService: PostService,
     private snack: MatSnackBar,
+    private pexels: PexelsService,
   ) { }
 
   ngOnInit() {
@@ -70,6 +73,12 @@ export class PostComponent implements OnInit, OnChanges {
       }
     }
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
+    if (post instanceof Trip && this.horizontal) {
+      if (post.to && post.to.airport) {
+        this.pexels.getBackgroundPicture(post.to.airport.country)
+        .subscribe(picture => this.backgroundPicture = picture);
+      }
+    }
   }
 
   showPanel() {

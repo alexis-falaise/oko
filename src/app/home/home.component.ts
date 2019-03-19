@@ -1,5 +1,6 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, Inject } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DOCUMENT } from '@angular/platform-browser';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -35,8 +36,12 @@ class City {
 })
 export class HomeComponent implements OnInit {
 
-  private locationSamples = ['Paris', 'Santa Cruz', 'Dakar', 'Bògota', 'Lille', 'Shenzen', 'Madrid', 'Sacramento'];
-  private itemSamples = ['un parfum', 'une liseuse', 'un iPhone', 'un camembert', 'des chaussures', 'du vin', 'une guitare'];
+  private locationSamples = ['Paris', 'Santa Cruz', 'Dakar', 'Bògota',
+  'Lille', 'Shenzen', 'Madrid', 'Sacramento', 'Zagreb', 'Abidjan',
+  'Lome', 'Rome', 'New York', 'Montréal', 'Tokyo', 'Manille', 'Phnom Penh', 'Riyad'];
+  private itemSamples = ['un parfum', 'une liseuse', 'un iPhone', 'un camembert', 'des chaussures',
+  'du vin', 'une guitare', 'une montre', 'des baskets', 'un livre', 'de la charcuterie',
+  'une chemise'];
   public prod = environment.production;
   backgroundImage = 'assets/hero.jpg';
   swingingLocation = this.locationSamples[0];
@@ -53,6 +58,7 @@ export class HomeComponent implements OnInit {
   cities: Array<City> = [];
 
   constructor(
+    @Inject(DOCUMENT) public document: Document,
     private postService: PostService,
     private uiService: UiService,
     private geoService: GeoService,
@@ -62,13 +68,13 @@ export class HomeComponent implements OnInit {
   ) { }
 
   onScroll(event) {
-    const children = this.homeElement.nativeElement.children[0].children;
-    const heightUnit = children[0].clientHeight / 40;
-    const content = children[1];
-    const onboarding = content.children[1];
-    const scrollTop = event.target.scrollTop;
-    this.displayContent = scrollTop > (content.offsetTop - 20 * heightUnit);
-    this.onBoarding = scrollTop > (onboarding.offsetTop - 25 * heightUnit);
+      const children = this.homeElement.nativeElement.children[0].children;
+      const heightUnit = children[0].clientHeight / 40;
+      const content = children[1];
+      const onboarding = content.children[1];
+      const scrollTop = event.target.scrollTop;
+      this.displayContent = scrollTop > (content.offsetTop - 20 * heightUnit);
+      this.onBoarding = scrollTop > (onboarding.offsetTop - 25 * heightUnit);
   }
 
   ngOnInit() {
@@ -89,33 +95,25 @@ export class HomeComponent implements OnInit {
     this.postService.getTrips();
   }
 
-  expand() {
+  edit() {
     this.expanded = true;
-  }
-
-  shrink() {
-    this.expanded = false;
-  }
-
-  enter() {
-    this.expanded = true;
+    this.displayContent = false;
     this.validated = false;
-  }
-
-  leave() {
-    if (this.validated) {
-      this.expanded = false;
-    }
+    const hero = this.document.getElementById('hero');
+    hero.scrollIntoView({behavior: 'smooth'});
+    console.log('Entered', this.validated, this.displayContent, this.expanded);
+    console.log('Filter', this.filter, 'City', this.city);
   }
 
   validate() {
     if (this.filter.location && this.filter.location !== '') {
-      this.validated = true;
-      this.expanded = false;
+      const tripList = this.document.getElementById('trip-list');
+      tripList.scrollIntoView({behavior: 'smooth'});
     }
     if (this.empty) {
       this.post();
     }
+    console.log('Validated', this.filter, this.city);
   }
 
   filterPosts() {
@@ -129,6 +127,7 @@ export class HomeComponent implements OnInit {
       filter.item = this.filter.item;
     }
     this.filter = filter;
+    console.log('Filter posts', this.filter);
     this.postService.getTrips(this.filter);
     this.geoService.getCities(searchValue);
   }
@@ -157,13 +156,14 @@ export class HomeComponent implements OnInit {
   post() {
     this.uiService.setLoading(true);
     if (this.empty && this.city) {
-      const isCity = typeof this.city !== 'string';
+      const isCompleteCity = typeof this.city !== 'string';
       const requestDraft = new Request({
         meetingPoint: {
-          city: isCity ? this.city['city'] : undefined,
-          country: isCity ? this.city['country'] : undefined
+          city: isCompleteCity ? this.city['city'] : this.city,
+          country: isCompleteCity ? this.city['country'] : undefined
         }
       });
+      console.log('Making request', requestDraft, this.city);
       if (this.filter.item) {
         requestDraft.items = [{label: this.filter.item}];
       }

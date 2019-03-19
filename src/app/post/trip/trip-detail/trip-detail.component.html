@@ -1,44 +1,46 @@
-<div class="trip-detail container-fluid">
-  <div class="trip-detail__hero row">
-    <div class="trip-detail__hero__from col-6 col-sm-5 col-md-4 offset-md-1 col-lg-3 offset-lg-2" *ngIf="trip">
-      <span class="trip-detail__hero__airport-code" *ngIf="trip.from">
-        {{ trip.from.airport ? trip.from.airport.code : trip.from.label }}
-      </span>
-      <div class="trip-detail__hero__location" *ngIf="trip.from?.airport">
-        <span class="trip-detail__hero__city">{{ trip.from.airport.city }}</span>
-        <span class="trip-detail__hero__country">
-            {{ trip.from.airport.country }}
-          </span>
-      </div>
-      <span class="trip-detail__hero__airport-label" *ngIf="trip.from && trip.from.airport">
-        {{ trip.from.airport.label || trip.from.airport.name }}
-      </span>
-    </div>
-    <div class="trip-detail__hero__link col-2 d-none d-sm-flex" *ngIf="trip">
-      <mat-icon>chevron_right</mat-icon>
-    </div>
-    <div class="trip-detail__hero__to col-6 col-sm-5 col-md-4 col-lg-3" *ngIf="trip">
-      <span class="trip-detail__hero__airport-code" *ngIf="trip.to">
-        {{ trip.to.airport ? trip.to.airport.code : trip.to.label }}
-      </span>
-      <div class="trip-detail__hero__location" *ngIf="trip.to?.airport">
-          <span class="trip-detail__hero__city">{{ trip.to.airport.city }}</span>
-          <span class="trip-detail__hero__country">
-              {{ trip.to.airport.country }}
+<div class="trip-detail container-fluid" (scroll)="onScroll($event)">
+  <div class="trip-detail__hero row" [style.background-image]="'url('+background+')'" [class.hasBackground]="!!background">
+    <div class="trip-detail__backdrop row" [class.hasBackground]="!!background">
+        <div class="trip-detail__hero__from col-6 col-sm-5 col-md-4 offset-md-1 col-lg-3 offset-lg-2" *ngIf="trip">
+            <span class="trip-detail__hero__airport-code" *ngIf="trip.from">
+              {{ trip.from.airport ? trip.from.airport.code : trip.from.label }}
             </span>
-        </div>
-      <span class="trip-detail__hero__airport-label" *ngIf="trip.to && trip.to.airport">
-        {{ trip.to.airport.label || trip.to.airport.name }}
-      </span>
-    </div>
-    <div class="trip-detail__hero__date col-12" *ngIf="trip && trip.date">
-        Arrivée le {{ trip.date.format('DD MMMM YYYY - HH:mm') }}
-    </div>
-    <div class="trip-detail__hero__views col-12" *ngIf="own && trip.views">
-        Ce voyage a été vu {{ trip.views }} fois
+            <div class="trip-detail__hero__location" *ngIf="trip.from?.airport">
+              <span class="trip-detail__hero__city">{{ trip.from.airport.city }}</span>
+              <span class="trip-detail__hero__country">
+                  {{ trip.from.airport.country }}
+                </span>
+            </div>
+            <span class="trip-detail__hero__airport-label" *ngIf="trip.from && trip.from.airport">
+              {{ trip.from.airport.label || trip.from.airport.name }}
+            </span>
+          </div>
+          <div class="trip-detail__hero__link col-2 d-none d-sm-flex" *ngIf="trip">
+            <mat-icon>chevron_right</mat-icon>
+          </div>
+          <div class="trip-detail__hero__to col-6 col-sm-5 col-md-4 col-lg-3" *ngIf="trip">
+            <span class="trip-detail__hero__airport-code" *ngIf="trip.to">
+              {{ trip.to.airport ? trip.to.airport.code : trip.to.label }}
+            </span>
+            <div class="trip-detail__hero__location" *ngIf="trip.to?.airport">
+                <span class="trip-detail__hero__city">{{ trip.to.airport.city }}</span>
+                <span class="trip-detail__hero__country">
+                    {{ trip.to.airport.country }}
+                  </span>
+              </div>
+            <span class="trip-detail__hero__airport-label" *ngIf="trip.to && trip.to.airport">
+              {{ trip.to.airport.label || trip.to.airport.name }}
+            </span>
+          </div>
+          <div class="trip-detail__hero__date col-12" *ngIf="trip && trip.date">
+              Arrivée le {{ trip.date.format('DD MMMM YYYY - HH:mm') }}
+          </div>
+          <div class="trip-detail__hero__views col-12" *ngIf="own && trip.views">
+              Ce voyage a été vu {{ trip.views }} fois
+          </div>
     </div>
   </div>
-  <div class="trip-detail__info container" *ngIf="!own">
+  <div class="trip-detail__info container" [class.faded]="fadeInfo" *ngIf="!own" id="info">
     <div class="row h-100">
       <div class="trip-detail__info__user col-6 col-sm-4" *ngIf="trip && trip.user">
         <div class="trip-detail__info__user-row row">
