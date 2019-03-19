@@ -1,18 +1,19 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
+import { UiService } from '@core/ui.service';
+import { UserService } from '@core/user.service';
+
+import { ProposalEditComponent } from '../proposal-edit/proposal-edit.component';
 
 import { Proposal } from '@models/post/proposal.model';
-import { Trip } from '@models/post/trip.model';
 import { Request } from '@models/post/request.model';
 import { ServerResponse } from '@models/app/server-response.model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UiService } from '@core/ui.service';
-import { ProposalEditComponent } from '../proposal-edit/proposal-edit.component';
-import { UserService } from '@core/user.service';
+import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 
 @Component({
@@ -25,6 +26,7 @@ export class ProposalComponent implements OnInit, OnChanges {
   @Input() receiver: boolean;
   currentUser: User;
   fromTrip: boolean;
+  standalone: boolean;
   moment = moment;
 
   constructor(
@@ -33,6 +35,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     private uiService: UiService,
     private dialog: MatDialog,
     private router: Router,
+    private route: ActivatedRoute,
     private snack: MatSnackBar
   ) { }
 
@@ -50,6 +53,17 @@ export class ProposalComponent implements OnInit, OnChanges {
         this.currentUser = user;
         this.initProposal();
       }
+    });
+    this.route.url.subscribe(segments => {
+      this.standalone = !!segments.find(segment => segment.path === 'proposal');
+      if (this.standalone) {
+        this.route.params.subscribe(param => {
+          if (param && param.id) {
+            this.postService.getProposalById(param.id)
+            .subscribe(proposal => this.proposal = proposal);
+          }
+        });
+      } 
     });
   }
 

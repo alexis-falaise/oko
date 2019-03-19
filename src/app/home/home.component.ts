@@ -101,19 +101,16 @@ export class HomeComponent implements OnInit {
     this.validated = false;
     const hero = this.document.getElementById('hero');
     hero.scrollIntoView({behavior: 'smooth'});
-    console.log('Entered', this.validated, this.displayContent, this.expanded);
-    console.log('Filter', this.filter, 'City', this.city);
   }
 
   validate() {
     if (this.filter.location && this.filter.location !== '') {
-      const tripList = this.document.getElementById('trip-list');
-      tripList.scrollIntoView({behavior: 'smooth'});
+      const element = this.document.getElementById('trip-list');
+      element.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
     if (this.empty) {
       this.post();
     }
-    console.log('Validated', this.filter, this.city);
   }
 
   filterPosts() {
@@ -127,7 +124,6 @@ export class HomeComponent implements OnInit {
       filter.item = this.filter.item;
     }
     this.filter = filter;
-    console.log('Filter posts', this.filter);
     this.postService.getTrips(this.filter);
     this.geoService.getCities(searchValue);
   }
@@ -163,7 +159,6 @@ export class HomeComponent implements OnInit {
           country: isCompleteCity ? this.city['country'] : undefined
         }
       });
-      console.log('Making request', requestDraft, this.city);
       if (this.filter.item) {
         requestDraft.items = [{label: this.filter.item}];
       }
@@ -202,17 +197,18 @@ export class HomeComponent implements OnInit {
   }
 
   private swingLocation() {
-    const currentLocationIndex = this.locationSamples.findIndex(sample => sample === this.swingingLocation);
-    const nextLocationIndex = (currentLocationIndex + 1 < this.locationSamples.length)
-    ? currentLocationIndex + 1 : 0;
-    this.swingingLocation = this.locationSamples[nextLocationIndex];
+    this.swingingLocation = this.swing(this.locationSamples, this.swingingLocation);
   }
 
   private swingItem() {
-    const currentItemIndex = this.itemSamples.findIndex(sample => sample === this.swingingItem);
-    const nextItemIndex = (currentItemIndex + 1 < this.itemSamples.length)
-    ? currentItemIndex + 1 : 0;
-    this.swingingItem = this.itemSamples[nextItemIndex];
+    this.swingingItem = this.swing(this.itemSamples, this.swingingItem);
+  }
+
+  private swing(array: Array<string>, item: string): string {
+    const index = array.findIndex(sample => sample === item);
+    const nextIndex = (index + 1 < array.length)
+    ? index + 1 : 0;
+    return array[nextIndex];
   }
 
 }

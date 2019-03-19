@@ -118,6 +118,10 @@ $transitionStyle: ease-out;
             margin-left: 10%;
         }
 
+        .mat-form-field {
+            width: 40vw;
+        }
+
         &__summary {
             transition: $transitionDuration $transitionStyle all;
             animation: $animationDuration appear;

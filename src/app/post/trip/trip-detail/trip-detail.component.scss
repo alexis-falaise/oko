@@ -125,7 +125,7 @@
     &__info {
         transition: all .25s;
         &.faded {
-            transition: all .25s;
+            transition: all .1s;
             opacity: 0;
         }
         height: 15vh;

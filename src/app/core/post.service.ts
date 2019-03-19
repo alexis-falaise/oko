@@ -211,6 +211,14 @@ export class PostService {
   }
 
   /**
+   * Get a proposal by id
+   * @param id : proposal unique identifier
+   */
+  getProposalById(id: number): Observable<Proposal> {
+    return this.http.get(`${this.proposalUrl}/${id}`, {withCredentials: true}) as Observable<Proposal>;
+  }
+
+  /**
    * Get all proposals sent about a given post
    * @param senderPost : Post used to send the proposal (full object)
    */
@@ -244,6 +252,26 @@ export class PostService {
   }
 
   /**
+   * Get all proposals sent by a given author
+   * @param author : author of the requested proposals
+   */
+  getAllSentProposalsByAuthor(author: User): Observable<Array<Proposal>> {
+    return Observable.create(observer => {
+      this.http.get(`${this.proposalUrl}/author/${author.id}`, {withCredentials: true})
+      .subscribe((proposals: Array<any>) => {
+        forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
+        .subscribe((outputProposals: Array<Proposal>) => {
+          observer.next(outputProposals);
+          observer.complete();
+        });
+      }, (err) => {
+        observer.next([]);
+        observer.complete();
+      });
+    });
+  }
+
+  /**
    * Get all received proposal for a given post
    * @param receptorPost : Post receiving the proposal (full Object)
    */
@@ -262,7 +290,7 @@ export class PostService {
   /**
    * Get all received proposals for a given post from a specific author
    * @param receptorPost : Post receiving the proposal (full Object)
-   * @param author : Author of the proposal
+   * @param author : Author of the proposal (user)
    */
   getReceivedProposalsByAuthor(receptorPost: Trip | Request, author: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
@@ -271,6 +299,64 @@ export class PostService {
         this.getProposalsSubPosts(receptorPost, proposals, observer, true);
       }, (err) => {
         observer.next([]);
+        observer.complete();
+      });
+    });
+  }
+
+  /**
+   * Get all received proposals by a given user
+   * @param receiver : receiver of the proposal (user)
+   */
+  getReceivedProposalsByReceiver(receiver: User): Observable<Array<Proposal>> {
+    return this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true}) as Observable<Array<Proposal>>;
+  }
+
+  /**
+   * Get the sub post of a proposal (fills the unknown only)
+   * @param post : currently viewed post
+   * @param proposal : proposal object
+   * @param observer : observer
+   * @param postIsReceiver : whether the current post is a receiver or sender
+   */
+  getProposalSubPost(post: Trip | Request, proposal: any, observer: Observer<Proposal>, postIsReceiver: boolean) {
+    if (post instanceof Trip) {
+      this.getRequestById(postIsReceiver ? proposal.from : proposal.to).subscribe((request: Request) => {
+        const outputProposal = new Proposal(proposal);
+        postIsReceiver ?
+        outputProposal.from = new Request(request)
+        : outputProposal.to = new Request(request);
+        observer.next(outputProposal);
+        observer.complete();
+      });
+    }
+    if (post instanceof Request) {
+      this.getTripById(postIsReceiver ? proposal.from : proposal.to).subscribe((trip: Trip) => {
+        const outputProposal = new Proposal(proposal);
+        postIsReceiver ?
+        outputProposal.from = new Trip(trip)
+        : outputProposal.to = new Trip(trip);
+        observer.next(outputProposal);
+        observer.complete();
+      });
+    }
+  }
+
+  /**
+   * Get sub posts of a proposal (both from and to)
+   * @param proposal : proposal object
+   * @param observer : call this function from an observable
+   */
+  getAllProposalSubPosts(proposal: any): Observable<Proposal> {
+    return Observable.create(observer => {
+      forkJoin([
+        this.http.get(`${this.postUrl}/${proposal.from}`, {withCredentials: true}) as Observable<Post>,
+        this.http.get(`${this.postUrl}/${proposal.to}`, {withCredentials: true}) as Observable<Post>
+      ]).subscribe((posts: Array<Post>) => {
+        const outputProposal = new Proposal(proposal);
+        outputProposal.from = posts[0];
+        outputProposal.to = posts[1];
+        observer.next(outputProposal);
         observer.complete();
       });
     });
@@ -616,26 +702,7 @@ export class PostService {
   private getProposalsSubPosts(post: Trip | Request, proposals: Array<any>, observer: Observer<Array<Proposal>>, postIsReceiver: boolean) {
     if (proposals && proposals.length) {
       forkJoin(proposals.map(proposal => Observable.create(postObserver => {
-        if (post instanceof Trip) {
-          this.getRequestById(postIsReceiver ? proposal.from : proposal.to).subscribe((request: Request) => {
-            const outputProposal = new Proposal(proposal);
-            postIsReceiver ?
-            outputProposal.from = new Request(request)
-            : outputProposal.to = new Request(request);
-            postObserver.next(outputProposal);
-            postObserver.complete();
-          });
-        }
-        if (post instanceof Request) {
-          this.getTripById(postIsReceiver ? proposal.from : proposal.to).subscribe((trip: Trip) => {
-            const outputProposal = new Proposal(proposal);
-            postIsReceiver ?
-            outputProposal.from = new Trip(trip)
-            : outputProposal.to = new Trip(trip);
-            postObserver.next(outputProposal);
-            postObserver.complete();
-          });
-        }
+        this.getProposalSubPost(post, proposal, postObserver, postIsReceiver);
       }))).subscribe(outputProposals => {
         const resultingProposals = outputProposals.sort((a, b) => {
           return moment(a.date).isBefore(b.date) ? -1 : 1;
