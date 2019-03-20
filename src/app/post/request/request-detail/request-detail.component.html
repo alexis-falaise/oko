@@ -15,7 +15,7 @@
     [class.bad]="request.closed || request.outdated"
     *ngIf="request.closed || request.accepted || request.validated">
       <span *ngIf="request.closed">L'annonce a été annulée</span>
-      <span *ngIf="request.outdated && !request.closed">Annonce expirée le {{ request.urgentDetails.date.format('MM/DD/YYYY') }}</span>
+      <span *ngIf="request.outdated && !request.closed">Annonce expirée le {{ request.urgentDetails.date.format('DD/MM/YYYY') }}</span>
   </div>
   <div class="request-detail__modify mt-2" *ngIf="request.own">
       <button class="btn btn-info btn-icon" [disabled]="request.outdated || request.closed" [routerLink]="['/post/request', request.id, 'edit']">
@@ -23,11 +23,11 @@
       </button>
   </div>
   <div class="request-detail__proposal"
-       *ngIf="receivedProposals?.length || currentUserProposals?.length || sentProposals?.length">
+       *ngIf="receivedProposals?.length || sentProposals?.length">
     <h4>
       Propositions
-      <span *ngIf="request.own && receivedProposals?.length"> reçues</span>
-      <span *ngIf="currentUserProposals?.length || sentProposals?.length"> envoyées</span>
+      <span *ngIf="request.own && receivedProposals?.length && !sentProposals.length"> reçues</span>
+      <span *ngIf="sentProposals?.length && !receivedProposals.length"> envoyées</span>
     </h4>
     <small class="text-muted" *ngIf="currentUserProposals?.length">
       Status des propositions de voyage faites à {{ request.user.firstname }}

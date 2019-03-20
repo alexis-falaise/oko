@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, forkJoin, Observer } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, forkJoin, Observer, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { environment } from '@env/environment';
@@ -309,7 +309,19 @@ export class PostService {
    * @param receiver : receiver of the proposal (user)
    */
   getReceivedProposalsByReceiver(receiver: User): Observable<Array<Proposal>> {
-    return this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true}) as Observable<Array<Proposal>>;
+    return Observable.create(observer => {
+      this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true})
+      .subscribe((proposals: Array<Proposal>) => {
+        forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
+        .subscribe((outputProposals: Array<Proposal>) => {
+          observer.next(outputProposals);
+          observer.complete();
+        });
+      }, () => {
+        observer.next([]);
+        observer.complete();
+      });
+    });
   }
 
   /**
@@ -350,15 +362,18 @@ export class PostService {
   getAllProposalSubPosts(proposal: any): Observable<Proposal> {
     return Observable.create(observer => {
       forkJoin([
-        this.http.get(`${this.postUrl}/${proposal.from}`, {withCredentials: true}) as Observable<Post>,
-        this.http.get(`${this.postUrl}/${proposal.to}`, {withCredentials: true}) as Observable<Post>
-      ]).subscribe((posts: Array<Post>) => {
+        this.http.get(`${this.postUrl}/${proposal.from}`, {withCredentials: true})
+        .pipe(catchError((err, caught) => of(caught))) as Observable<Post>,
+        this.http.get(`${this.postUrl}/${proposal.to}`, {withCredentials: true})
+        .pipe(catchError((err, caught) => of(caught))) as Observable<Post>
+      ])
+      .subscribe((posts: Array<Post>) => {
+        proposal.from = posts[0];
+        proposal.to = posts[1];
         const outputProposal = new Proposal(proposal);
-        outputProposal.from = posts[0];
-        outputProposal.to = posts[1];
         observer.next(outputProposal);
         observer.complete();
-      });
+      }, (error) => console.log('error', error));
     });
   }
 

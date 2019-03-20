@@ -11,10 +11,11 @@ import { AuthGuard } from './guards/auth.guard';
 import { AccountInfoComponent } from './account/account-info/account-info.component';
 import { AccountRequestComponent } from './account/account-request/account-request.component';
 import { AccountTripComponent } from './account/account-trip/account-trip.component';
-import { AccountItemComponent } from './account/account-item/account-item.component';
+import { AccountProposalComponent } from './account/account-proposal/account-proposal.component';
 import { MessengerComponent } from './messenger/messenger.component';
 import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
 import { ThreadComponent } from './messenger/thread/thread.component';
+import { ProposalComponent } from './post/proposal/proposal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +28,7 @@ const routes: Routes = [
       { path: 'info', component: AccountInfoComponent },
       { path: 'request', component: AccountRequestComponent },
       { path: 'trip', component: AccountTripComponent },
-      { path: 'item', component: AccountItemComponent },
+      { path: 'proposal', component: AccountProposalComponent },
     ] },
   { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
   { path: 'messages', component: MessengerComponent, canActivate: [AuthGuard],

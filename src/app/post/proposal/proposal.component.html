@@ -1,9 +1,16 @@
-<div class="proposal">
+<div class="proposal-title-wrapper" *ngIf="standalone">
+  <h2 class="proposal-title">Proposition {{ proposal?.closed ? '(annulée)' : '' }}</h2>
+</div>
+<div class="proposal"
+    [class.standalone]="standalone"
+    [class.container]="standalone"
+    [class.closed]="proposal.closed"
+    *ngIf="proposal">
     <div class="row justify-content-around proposal__actions">
         <button class="btn btn-light btn-icon" *ngIf="proposal.authorView && !proposal.closed && !proposal.accepted && !proposal.refused" (click)="modifyProposal()">
           <mat-icon>edit</mat-icon> Modifier
         </button>
-        <button class="btn btn-success btn-icon" [disabled]="!proposal.authorView && proposal.accepted || proposal.refused" *ngIf="receiver" (click)="acceptProposal()">
+        <button class="btn btn-success btn-icon" [disabled]="!proposal.authorView && proposal.accepted || proposal.refused || proposal.closed" *ngIf="receiver" (click)="acceptProposal()">
           <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
         </button>
         <button class="btn btn-success btn-icon" [disabled]="proposal.paid" *ngIf="proposal.authorView && proposal.accepted">
@@ -19,7 +26,7 @@
           <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
         </button>
     </div>
-    <hr class="divider">
+    <hr class="divider" *ngIf="proposal.bonus">
     <div class="proposal__summary">
         <h6 class="text-muted" *ngIf="proposal.bonus">Bonus voyageur: {{ proposal.bonus }} €</h6>
         <small class="text-muted" *ngIf="proposal.lastUpdate">
@@ -33,7 +40,7 @@
           </button>
         </div>
     </div>
-    <hr class="divider">
+    <hr class="divider" *ngIf="proposal.from">
     <div class="proposal__trip" *ngIf="fromTrip; else fromRequest" (click)="openTrip(proposal.from)">
         <div class="proposal__trip-date">
             <div class="arrival">
@@ -81,9 +88,9 @@
             </ng-template>            
           </div>
           <div class="col-6" *ngIf="proposal.from?.urgent">
-            <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('MM/DD/YYYY') }}
-            <p *ngIf="!proposal.authorView">
-              " {{ proposal.from?.urgentDetails?.explaination }} "
+            <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
+            <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
+              Raison: " {{ proposal.from.urgentDetails.explaination }} "
             </p>
           </div>
         </div>

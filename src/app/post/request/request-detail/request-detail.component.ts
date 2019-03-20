@@ -57,6 +57,8 @@ export class RequestDetailComponent implements OnInit {
             }, (err) => this.setRequest(request));
           }
         }, (err) => this.serverError(err));
+      } else {
+        this.router.navigate(['/404']);
       }
     });
   }

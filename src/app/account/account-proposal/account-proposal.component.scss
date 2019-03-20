@@ -2,6 +2,102 @@
 
 .account-proposal {
     height: 66vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: hidden;
+    background-color: white;
+
+    &__nav {
+        width: 100%;
+        margin: 0 -15px;
+        &-tab {
+            width: 50%;
+        }
+    }
+
+    &__list {
+        &-title {
+            position: sticky;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            top: 0;
+            font-size: 18px;
+            color: rgb(175, 175, 175);
+            background-color: white;
+            width: 100%;
+            height: 25px;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
+            z-index: 5;
+        }
+        &-wrapper {
+            height: 60vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            padding-bottom: 25px;
+        }
+    }
+
+    &__proposal {
+        height: 75px !important;
+        border-bottom: 1px solid rgb(235, 235, 235) !important;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        &:hover {
+            background-color: rgb(250, 250, 250);
+            cursor: pointer;
+        }
+        &__title {
+            font-size: 14px;
+            color: rgb(75, 75, 75);
+            display: flex !important;
+            flex-direction: row;
+            align-items: center;
+            .author,
+            .flight,
+            .date {
+                display: inline-flex;
+                align-items: center
+            }
+            .author {
+                justify-content: flex-tart;
+            }
+            .flight {
+                justify-content: space-around;
+                &-start,
+                &-end {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+            .date {
+                justify-content: flex-end;
+                color: rgb(125, 125, 125);
+            }
+        }
+        &__description {
+            font-size: 12px;
+            color: rgb(150, 150, 150);
+        }
+        &__date {
+            font-size: 10px;
+        }
+        &.closed {
+            opacity: .35;
+        }
+        &.pending,
+        &.accepted,
+        &.refused {
+            border-right: 5px solid;
+        }
+        &.pending {
+            border-color: $amber-800;
+        }
+        &.accepted {
+            border-color: $light-green-600;
+        }
+        &.refused {
+            border-color: $red-800;
+        }
+    }
 }

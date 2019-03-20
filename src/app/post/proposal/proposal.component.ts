@@ -52,37 +52,47 @@ export class ProposalComponent implements OnInit, OnChanges {
       if (user) {
         this.currentUser = user;
         this.initProposal();
-      }
-    });
-    this.route.url.subscribe(segments => {
-      this.standalone = !!segments.find(segment => segment.path === 'proposal');
-      if (this.standalone) {
-        this.route.params.subscribe(param => {
-          if (param && param.id) {
-            this.postService.getProposalById(param.id)
-            .subscribe(proposal => this.proposal = proposal);
+        this.route.url.subscribe(segments => {
+          this.standalone = !!segments.find(segment => segment.path === 'proposal');
+          if (this.standalone) {
+            this.getStandaloneProposal();
           }
         });
-      } 
+      }
     });
   }
 
   initProposal() {
-    const origin = this.proposal.from;
-    if (origin instanceof Trip) {
-      this.fromTrip = true;
+    if (this.proposal) {
+      this.fromTrip = this.proposal.isFromTrip();
+      this.receiver = this.proposal.receiver.id === this.currentUser.id;
+      if (this.currentUser) {
+        this.proposal.isAuthor(this.currentUser);
+      }
     }
-    if (this.currentUser) {
-      this.proposal.isAuthor(this.currentUser);
-    }
+  }
+
+  getStandaloneProposal() {
+    this.route.params.subscribe(param => {
+      if (param && param.id) {
+        this.postService.getProposalById(param.id)
+        .subscribe(proposal => {
+          this.postService.getAllProposalSubPosts(proposal)
+          .subscribe(filledProposal => {
+            this.proposal = new Proposal(filledProposal);
+            this.initProposal();
+          });
+        });
+      }
+    });
   }
 
   openTrip(trip: Trip) {
-    this.router.navigate([`/post/trip/${trip.id}`]);
+    this.router.navigate([`/post/trip/${trip._id}`]);
   }
 
   openRequest(request: Request) {
-    this.router.navigate([`/post/request/${request.id}`]);
+    this.router.navigate([`/post/request/${request._id}`]);
   }
 
   acceptProposal() {

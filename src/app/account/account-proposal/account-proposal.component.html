@@ -1,1 +1,74 @@
-<div class="account-proposal container"></div>
+<div class="account-proposal container">
+    <mat-tab-group class="account-proposal__nav" headerPosition="below" [color]="primary" mat-strech-tabs mat-align-tabs="center">
+        <mat-tab class="account-proposal__nav-tab">
+            <ng-template mat-tab-label>
+                <mat-icon>move_to_inbox</mat-icon> Reçues
+            </ng-template>
+            <div class="account-proposal__list-wrapper">
+                <h6 class="account-proposal__list-title" *ngIf="receivedFromTrip?.length">Propositions de trajet</h6>
+                <mat-list>
+                    <mat-list-item class="account-proposal__proposal"
+                                    *ngFor="let proposal of receivedFromTrip"
+                                    [class.closed]="proposal.closed"
+                                    [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+                                    [class.accepted]="proposal.accepted && !proposal.closed"
+                                    [class.refused]="proposal.refused && !proposal.closed"
+                                    [routerLink]="['/post', 'proposal', proposal.id]">
+                        <h3 class="account-proposal__proposal__title row" matLine>
+                            <div class="author col-3"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
+                            <div class="flight col-6">
+                                <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} </div>
+                                <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
+                            </div>
+                            <div class="date col-3"><mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}</div>
+                        </h3>
+                        <p class="account-proposal__proposal__description" matLine>
+                            <span class="account-proposal__proposal__status" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted">En attente</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.closed">Annulée</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.refused && !proposal.closed">Refusée</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.accepted && !proposal.validated">Acceptée</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.validated">Livrée</span>
+                            <span class="account-proposal__proposal__info" *ngIf="proposal.bonus && !proposal.closed"> - Bonus : {{ proposal.bonus }} €</span> <br>
+                            <span class="account-proposal__proposal__date"> Envoyé le {{ moment(proposal.date).format('DD/MM/YYYY à HH:mm') }} </span>
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+                <h6 class="account-proposal__list-title" *ngIf="receivedFromRequest?.length">Demandes de transport</h6>
+                <mat-list>
+                    <mat-list-item class="account-proposal__proposal"
+                                    *ngFor="let proposal of receivedFromRequest"
+                                    [class.closed]="proposal.closed"
+                                    [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+                                    [class.accepted]="proposal.accepted && !proposal.closed"
+                                    [class.refused]="proposal.refused && !proposal.closed"
+                                    [routerLink]="['/post', 'proposal', proposal.id]">
+                        <h3 class="account-proposal__proposal__title" matLine>
+                            {{ proposal.author.id === currentUser.id ? ' Ma demande' : 'Demande de ' + proposal.author?.firstname }}
+                        </h3>
+                        <p class="account-proposal__proposal__description" matLine>
+                            <span class="account-proposal__proposal__status" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted">En attente</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.closed">Annulée</span>
+                            <span class="account-proposal__proposal__status" *ngIf="own && proposal.accepted && !proposal.validated">A livrer</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.refused && !proposal.closed">Refusée</span>
+                            <span class="account-proposal__proposal__status" *ngIf="!own && proposal.accepted && !proposal.validated">Acceptée</span>
+                            <span class="account-proposal__proposal__status" *ngIf="proposal.validated">Livrée</span>
+                            <span class="account-proposal__proposal__info" *ngIf="proposal?.from?.urgent && !proposal.closed">
+                                - avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}
+                            </span>
+                            <span class="account-proposal__proposal__info" *ngIf="proposal.bonus && !proposal.closed"> - Bonus: {{ proposal.bonus }} €</span><br>
+                            <span class="account-proposal__proposal__date"> Envoyée le {{ moment(proposal.date).format('DD/MM/YYYY à HH:mm') }} </span>
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>send</mat-icon> Envoyées
+            </ng-template>
+            <div class="account-proposal__list-wrapper">
+
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -9,7 +9,8 @@ import {
   MatIconModule,
   MatButtonModule,
   MatSnackBarModule,
-  MatBottomSheetModule
+  MatBottomSheetModule,
+  MatListModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -45,6 +46,7 @@ import { AccountProposalComponent } from './account-proposal/account-proposal.co
     MatButtonModule,
     MatChipsModule,
     MatIconModule,
+    MatListModule,
     MatProgressBarModule,
     MatSnackBarModule,
     MatTabsModule,

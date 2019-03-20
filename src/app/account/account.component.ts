@@ -18,6 +18,7 @@ export class AccountComponent implements OnInit {
 
   currentUser: User = null;
   categories: Array<Link> = [
+    { label: 'Propositions', path: '/account/proposal', icon: 'announcement'},
     { label: 'Trajets', path: '/account/trip', icon: 'explore' },
     { label: 'Demandes', path: '/account/request', icon: 'new_releases' },
     { label: 'Infos', path: '/account/info', icon: 'account_box' },

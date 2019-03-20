@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="account-detail container">
-    <nav class="account-detail__nav" mat-tab-nav-bar>
+    <nav class="account-detail__nav" mat-tab-nav-bar mat-strech-tabs mat-align-tabs="center">
       <a mat-tab-link *ngFor="let category of categories"
          class="account-link"
          [routerLink]="category.path"

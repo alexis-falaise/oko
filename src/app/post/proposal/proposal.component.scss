@@ -1,6 +1,33 @@
 @import "../../../styles/variables.scss";
+@import "../../../styles/animations.scss";
 
 .proposal {
+    &.standalone {
+        animation: zoomIn .15s;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+        border-radius: 3px;
+        height: 80vh;
+        padding: 15px 15%;
+    }
+
+    &.closed {
+        border: 3px solid $red-200;
+    }
+
+    &-title {
+        color: $white-alpha-8;
+        font-size: 24px;
+
+        &-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            height: 15vh;
+        }
+    }
+
     &__actions {
         margin-bottom: 10px;
     }

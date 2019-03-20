@@ -44,11 +44,22 @@
     }
 
     &-link {
+        $linkSize: 12px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         transition: all $transitionDuration;
         text-decoration: none;
+        font-size: $linkSize;
+        min-width: 0 !important;
+        width: 25%;
+        // .mat-icon {
+        //     height: $linkSize;
+        //     width: $linkSize;
+        // }
+        // .material-icons {
+        //     font-size: $linkSize;
+        // }
         &:hover {
             transition: all $transitionDuration;
             color: rgb(105, 105, 105);
