@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Moment } from 'moment';
+import * as moment from 'moment';
 
 import { MessengerService } from '@core/messenger.service';
 
@@ -25,10 +27,7 @@ export class ThreadListComponent implements OnInit {
     this.messengerService.onThreads()
     .subscribe(threads => this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined)));
     this.messengerService.onContacts()
-    .subscribe(contacts => {
-      console.log(contacts);
-      this.contacts = contacts;
-    });
+    .subscribe(contacts => this.contacts = contacts);
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
@@ -43,4 +42,15 @@ export class ThreadListComponent implements OnInit {
     this.messengerService.getContactThread(this.currentUser, contact);
   }
 
+  formatDate(date): string {
+    let dateToFormat;
+    dateToFormat = moment(date);
+    return dateToFormat.isSame(moment(), 'd')
+            ? dateToFormat.format('HH:mm')
+            : dateToFormat.isSame(moment().subtract(1, 'days'), 'd')
+              ? 'Hier'
+              : dateToFormat.isAfter(moment().subtract(7, 'days'))
+                ? dateToFormat.format('ddd')
+                : dateToFormat.format('DD MMMM');
+  }
 }

@@ -78,6 +78,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.uiService.setLoading(true);
     this.geoService.onCities().subscribe(cities => {
       this.uiService.setLoading(false);
       this.cities = cities;

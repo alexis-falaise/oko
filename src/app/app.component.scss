@@ -34,18 +34,23 @@
 
     &-app-loading {
         &-wrapper {
+            animation: appear .25s;
             width: 100vw;
             height: 100vh;
             position: absolute;
             top: 0;
             left: 0;
             z-index: 1000;
-            background-color: rgba(255, 255, 255, .5);
+            background: $heroGradient-alpha-7;
         }
         &-text {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            text-align: center;
             color: white;
-            font-size: 2rem;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, .4);
+            font-size: 1.75rem;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, .6);
         }
     }
 }

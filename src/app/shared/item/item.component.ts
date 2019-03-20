@@ -11,6 +11,7 @@ export class ItemComponent implements OnInit, OnChanges {
   @Input() removable = true;
   @Input() removePanel: boolean;
   @Input() creator = false;
+  @Input() fullWidth = false;
   @Output() remove = new EventEmitter();
 
   constructor() { }

@@ -26,13 +26,14 @@ export class PostListComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.uiService.setLoading(true);
+    this.uiService.setMainLoading(true);
     if (this.trip) {
       this.postService.onTrips()
       .subscribe(trips => {
         if (trips) {
           this.setPosts(trips);
           this.uiService.setLoading(false);
+          this.uiService.setMainLoading(false);
         }
       });
       if (!this.posts) {
@@ -44,6 +45,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
         if (requests) {
           this.setPosts(requests);
           this.uiService.setLoading(false);
+          this.uiService.setMainLoading(false);
         }
       });
       if (!this.posts) {

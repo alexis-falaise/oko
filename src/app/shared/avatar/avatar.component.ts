@@ -11,6 +11,8 @@ export class AvatarComponent implements OnInit, OnChanges {
 
   @Input() image: string;
   @Input() size: number;
+  @Input() shadowed: boolean;
+  @Input() connected: boolean;
   imageUrl: SafeUrl = null;
   avatarLocation = environment.avatarLocation;
 

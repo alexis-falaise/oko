@@ -28,6 +28,7 @@ export class ThreadComponent implements OnInit {
       this.messengerService.onThread()
       .subscribe(thread => {
         if (thread) {
+          console.log('Thread', thread);
           this.thread = new Thread(thread, user);
         }
       });

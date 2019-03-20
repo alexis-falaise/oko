@@ -4,7 +4,7 @@
 <div class="proposal"
     [class.standalone]="standalone"
     [class.container]="standalone"
-    [class.closed]="proposal.closed"
+    [class.closed]="standalone && proposal.closed"
     *ngIf="proposal">
     <div class="row justify-content-around proposal__actions">
         <button class="btn btn-light btn-icon" *ngIf="proposal.authorView && !proposal.closed && !proposal.accepted && !proposal.refused" (click)="modifyProposal()">
@@ -87,40 +87,50 @@
     </div>
     <br>
     <div class="d-flex w-100 justify-content-center">
-      <button class="btn btn-light btn-sm btn-icon"
+      <button class="btn btn-light btn-sm btn-icon mb-5"
               *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
               (click)="modifyProposal()">
         <mat-icon>my_location</mat-icon> {{ proposal.meetingPoint?.city ? 'Proposer un autre lieu' : 'Proposer un lieu de rendez-vous'}}
       </button>
     </div>
-    <ng-template #fromRequest>
-      <div class="proposal__request">
-        <h6 class="text-muted">Articles</h6>
-        <mat-card class="proposal__request__item" matRipple *ngFor="let item of proposal.from?.items" (click)="openRequest(proposal.from)">
+</div>
+
+
+<ng-template #fromRequest>
+    <div class="proposal__request">
+      <h6 class="text-muted">Articles ({{proposal.from?.items?.length || 0}})</h6>
+      <div *ngIf="!standalone; else fullArticles">
+        <mat-card class="proposal__request__item" matRipple *ngFor="let item of proposal.from?.items">
           <mat-card-title>{{ item.label }}</mat-card-title>
         </mat-card>
       </div>
-    </ng-template>
-    <ng-template #requestLocation>
-        <div class="row">
-          <div [ngClass]="{'col-6': proposal.from?.urgent, 'col-12': !proposal.from?.urgent}">
-            <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-              <mat-icon>flight</mat-icon> Remise à l'aéroport
+      <ng-template #fullArticles>
+          <app-item class="proposal__request__item" [item]="item" [fullWidth]="true"
+                    *ngFor="let item of proposal.from?.items"></app-item>
+      </ng-template>
+      <div class="d-flex w-100 justify-content-center mt-5">
+        <button (click)="openRequest(proposal.from)" class="btn btn-info">Voir l'annonce</button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #requestLocation>
+      <div class="row">
+        <div [ngClass]="{'col-6': proposal.from?.urgent, 'col-12': !proposal.from?.urgent}">
+          <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
+            <mat-icon>flight</mat-icon> Remise à l'aéroport
+          </div>
+          <ng-template #location>
+            <div class="proposal__request__city">
+                <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint?.city }} ({{ proposal.meetingPoint?.country }})
+                {{ ', ' + proposal.meetingPoint?.address }}
             </div>
-            <ng-template #location>
-              <div class="proposal__request__city">
-                  <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint?.city }} ({{ proposal.meetingPoint?.country }})
-                  {{ ', ' + proposal.meetingPoint?.address }}
-              </div>
-            </ng-template>            
-          </div>
-          <div class="col-6" *ngIf="proposal.from?.urgent">
-            <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
-            <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
-              Raison: " {{ proposal.from.urgentDetails.explaination }} "
-            </p>
-          </div>
+          </ng-template>            
         </div>
-    </ng-template>
-    
-</div>
+        <div class="col-6" *ngIf="proposal.from?.urgent">
+          <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
+          <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
+            Raison: " {{ proposal.from.urgentDetails.explaination }} "
+          </p>
+        </div>
+      </div>
+  </ng-template>

@@ -14,6 +14,8 @@
     &__backdrop {
         margin-top: -$navbarHeight;
         padding-top: $navbarHeight;
+        background: $heroGradient;
+        background-size: 105vw 100vh;
         transition: all .5s;
         height: 47.5vh;
         min-height: 350px;
@@ -23,6 +25,7 @@
         &.hasBackground {
           transition: all .5s;
           background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .7));
+          background-size: cover;
         }
     }
 
@@ -138,6 +141,7 @@
         background-color: white;
         box-shadow: $box-shadow;
         position: relative;
+        top: -25px;
         z-index: 12;
         opacity: 1;
         &__user {

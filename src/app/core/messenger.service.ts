@@ -106,7 +106,7 @@ export class MessengerService {
     this.http.get(`${this.messengerUrl}/contacts/user/${user.id}`, {withCredentials: true})
     .subscribe((contacts: Array<User>) => {
       if (contacts) {
-        this.contacts.next(contacts);
+        this.contacts.next(contacts.map(contact => new User(contact)));
       } else {
         this.contacts.next([]);
       }

@@ -1,3 +1,5 @@
-<div class="avatar" [style.height]="size+'px'" [style.width]="size+'px'">
+<div class="avatar" [style.height]="size+'px'" [style.width]="size+'px'"
+    [class.shadowed]="shadowed"
+    [class.connected]="connected">
     <img [src]="imageUrl" [width]="size" alt="Avatar" *ngIf="imageUrl">
 </div>

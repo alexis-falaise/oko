@@ -3,6 +3,9 @@
 .item {
     max-height: 300px;
     width: 300px;
+    &.full-width {
+        width: 100%;
+    }
     &:hover {
         box-shadow: 1px 3px 5px rgba(0, 0, 0, .1) !important;
     }
@@ -24,8 +27,14 @@
         align-items: center; 
     }
 
+    &__description {
+        font-size: 10px;
+        color: rgb(125, 125, 125);
+        margin-bottom: 5px;
+    }
+
     &__image {
-        height: 100%;
+        width: 100%;
 
         &:hover {
             transition: all $transitionDuration;
@@ -36,7 +45,7 @@
             max-height: 125px;
             display: flex;
             flex-direction: row;
-            align-items: baseline;
+            align-items: center;
             justify-content: center;
             overflow: hidden;
 

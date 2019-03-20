@@ -93,7 +93,7 @@
   <div class="request-detail__summary">
     <h4 class="request-detail__summary-title request-detail__section-title">Articles</h4>
     <div class="request-detail__summary__item" *ngFor="let item of request.items">
-      <app-item [item]="item" [removable]="false"></app-item>
+      <app-item [item]="item" [removable]="false" [fullWidth]="true"></app-item>
     </div>
   </div>
   <hr class="divider" *ngIf="request?.trip && request.own">

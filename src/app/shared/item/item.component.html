@@ -1,4 +1,6 @@
-<mat-card class="item" matRipple [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'" (swipeLeft)="removePanel = true" (swipeRight)="removePanel = false" class="item">
+<mat-card class="item" matRipple [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'"
+          [class.full-width]="fullWidth"
+          (swipeLeft)="removePanel = true" (swipeRight)="removePanel = false" class="item">
     <div class="close" (click)="removeItem()" *ngIf="removable">
       <mat-icon>clear</mat-icon>
     </div>
@@ -13,6 +15,9 @@
       <img class="item__image" [src]="item.photo[0]" [alt]="item.label">
     </div>
     <mat-card-content class="item__content">
+      <div class="item__description" *ngIf="item.description">
+        {{ item.description }}
+      </div>
       <div class="item__price">
         Prix: {{ item.price }} €
       </div>

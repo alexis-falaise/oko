@@ -38,7 +38,7 @@
 
     &__proposal {
         animation: appear .25s;
-        height: 75px !important;
+        height: 100px !important;
         border-bottom: 1px solid rgb(235, 235, 235) !important;
         border-radius: 3px;
         display: flex;
@@ -69,6 +69,7 @@
                 &-end {
                     display: flex;
                     align-items: center;
+                    margin-right: 10px;
                 }
             }
             .date {

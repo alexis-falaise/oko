@@ -14,6 +14,7 @@ $okoColors: (
 );
 $okoGradient: linear-gradient(45deg,#69F5FF, #5FE8C9, #75FFB6, #5FE877, #98FF85);
 $heroGradient: linear-gradient(45deg,#00aac1, #7CB342);
+$heroGradient-alpha-7: linear-gradient(45deg,rgba(0, 171, 193, 0.7), rgba(124, 179, 66, 0.7));
 
 $white-alpha-2: rgba(255, 255, 255, .2);
 $white-alpha-4: rgba(255, 255, 255, .4);
@@ -26,6 +27,7 @@ $cyan-200-light: #b4ffff;
 $cyan-600: #00acc1;
 
 $light-green-200: #c5e1a5;
+$light-green-400: #9ccc65;
 $light-green-600: #7cb342;
 
 $amber-50: #fff8e1;

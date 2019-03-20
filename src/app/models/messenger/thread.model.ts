@@ -7,6 +7,7 @@ export class Thread {
     /** Front-end properties */
     author: User;
     contact: User;
+    lastMessage: Message;
     /** Common properties */
     users?: Array<User>;
     messages?: Array<Message>;
@@ -19,9 +20,12 @@ export class Thread {
         if (thread._id) {
             this.id = thread._id;
         }
-        if (user && thread.users.length === 2) {
+        if (user && thread.users && thread.users.length === 2) {
             this.author = user;
             this.contact = thread.users.find(contact => contact.id !== user.id);
+        }
+        if (thread.messages && thread.messages.length) {
+            this.lastMessage = thread.messages[thread.messages.length - 1];
         }
     }
 

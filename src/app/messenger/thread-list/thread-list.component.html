@@ -5,14 +5,16 @@
     </button>
   </div>
   <div class="thread-list__content">
-      <div class="row">
-          <div class="col-12 col-md-2">
-              <div class="thread-list__content__contacts d-flex flex-row flex-md-column">
+      <div class="row d-block d-md-flex h-100">
+          <div class="col-12 col-md-2 thread-list__content__contacts-wrapper">
+              <h6 class="thread-list__content__contacts-title d-none d-md-block">Contacts</h6>
+              <div class="thread-list__content__contacts
+                          d-flex flex-row flex-md-column
+                          align-items-center justify-content-start">
                   <div class="contact"
                         *ngFor="let contact of contacts" (click)="getContactThread(contact)">
-                    <app-avatar [size]="75" [image]="contact?.avatar"
-                                matBadge="o" matBadgePosition="below after"
-                                [matBadgeColor]="contact.isConnected ? 'accent' : 'warn'">
+                    <app-avatar [size]="75" [image]="contact?.avatar" [shadowed]="true" [connected]="contact.isConnected"
+                                class="contact-avatar">
                     </app-avatar>
                     {{ contact?.firstname }}
                   </div>
@@ -20,10 +22,22 @@
           </div>
           <div class="col-12 col-md-10">
             <div class="thread-list__content__list">
-                <div class="thread-list__thread" *ngFor="let thread of threads">
-                    <div class="row">
-                        <div class="col-3">
-                            <app-avatar [size]="75" [image]="thread.contact?.avatar"></app-avatar>
+                <h6 class="thread-list__content__list-title">Discussions</h6>
+                <div class="thread-list__thread" *ngFor="let thread of threads" [routerLink]="['/messages', 'thread', thread.id]">
+                    <div class="d-flex w-100 align-items-center">
+                        <app-avatar class="thread-avatar" [size]="75" [image]="thread.contact?.avatar"></app-avatar>
+                        <div class="w-75 d-flex flex-column justify-content-center">
+                            <h6 class="thread-list__thread-title">{{ thread.contact?.firstname }} {{ thread.contact?.lastname }}</h6>
+                            <div class="thread-message">
+                                {{ thread?.lastMessage || 'Pas de messages' }}
+                            </div>
+                            <div class="thread-date">
+                                {{ 
+                                    thread.lastMessage
+                                    ? formatDate(thread.lastMessage.sendDate)
+                                    : formatDate(thread.creationDate) 
+                                }}
+                            </div>
                         </div>
                     </div>
                 </div>

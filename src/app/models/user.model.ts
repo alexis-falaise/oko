@@ -9,8 +9,10 @@ export class Session {
     open: boolean;
     constructor(session: Partial<Session>) {
         Object.assign(this, session);
-        this.start = moment(session.start);
-        this.end = moment(session.end);
+        if (session) {
+            this.start = moment(session.start);
+            this.end = moment(session.end);
+        }
     }
 }
 export class User {

@@ -15,12 +15,12 @@
                                     [class.refused]="proposal.refused && !proposal.closed"
                                     [routerLink]="['/post', 'proposal', proposal.id]">
                         <h3 class="account-proposal__proposal__title row" matLine>
-                            <div class="author col-3"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
+                            <div class="author col-6 col-sm-3"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
                             <div class="flight col-6">
                                 <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} </div>
                                 <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
                             </div>
-                            <div class="date col-3"><mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}</div>
+                            <div class="date col-12 col-sm-3 justify-content-center justify-content-sm-end"><mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}</div>
                         </h3>
                         <p class="account-proposal__proposal__description" matLine>
                             <span class="account-proposal__proposal__status" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted">En attente</span>
