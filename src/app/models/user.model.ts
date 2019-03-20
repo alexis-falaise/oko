@@ -1,6 +1,18 @@
 import { Description } from '@models/description.model';
 import { MeetingPoint } from './meeting-point.model';
 import { Moment } from 'moment';
+import * as moment from 'moment';
+export class Session {
+    userId: string;
+    start: Moment;
+    end: Moment;
+    open: boolean;
+    constructor(session: Partial<Session>) {
+        Object.assign(this, session);
+        this.start = moment(session.start);
+        this.end = moment(session.end);
+    }
+}
 export class User {
     firstname: string;
     lastname: string;
@@ -13,12 +25,20 @@ export class User {
     requests?: number;
     ratings?: [number];
     address?: MeetingPoint;
+
     // Landing page properties
     comment?: string;
     guest?: boolean;
     tester?: boolean;
+
     // App properties
     secure: boolean;
+    sessions: Array<Session>;
+
+    // Front-end helpers
+    lastConnection: Moment;
+    isConnected: boolean;
+
     // Database id
     id?: string;
     _id: string;
@@ -35,6 +55,12 @@ export class User {
         }
         if (user._id) {
             this.id = user._id;
+        }
+        if (user.sessions && user.sessions.length) {
+            this.sessions = user.sessions.map(session => new Session(session));
+            const lastConnection = user.sessions[user.sessions.length - 1];
+            this.lastConnection = lastConnection.end;
+            this.isConnected = lastConnection.open;
         }
     }
 }

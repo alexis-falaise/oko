@@ -6,7 +6,7 @@
     background-color: white;
 
     &__nav {
-        width: 100%;
+        width: 110%;
         margin: 0 -15px;
         &-tab {
             width: 50%;
@@ -37,6 +37,7 @@
     }
 
     &__proposal {
+        animation: appear .25s;
         height: 75px !important;
         border-bottom: 1px solid rgb(235, 235, 235) !important;
         border-radius: 3px;

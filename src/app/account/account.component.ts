@@ -36,6 +36,7 @@ export class AccountComponent implements OnInit {
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
+        console.log(user);
         this.currentUser = user;
       } else {
         this.connexionError();

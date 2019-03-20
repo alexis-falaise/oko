@@ -14,8 +14,14 @@
         height: 65vh;
         &__contacts {
             height: 100%;
-            overflow-y: scroll;
-            overflow-x: hidden;
+            overflow-y: hidden;
+            overflow-x: scroll;
+        }
+        @media screen and (min-width: 768px) {
+            &__contacts {
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
         }
         &__list {
             height: 65%;
@@ -27,12 +33,14 @@
     .contact {
         transition: all $transitionDuration;
         width: 100%;
-        display: flex;
+        display: inline-flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: rgba(0, 0, 0, 8);
-        margin-bottom: 5px;
+        height: 100px;
+        color: rgba(0, 0, 0, 4);
+        font-size: 14px;
+        margin: 0 5px 5px;
         border-radius: 3px;
         &:hover {
             transition: all $transitionDuration;

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatBadgeModule } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
 
@@ -16,6 +16,7 @@ import { ThreadListComponent } from './thread-list/thread-list.component';
     SharedModule,
     RouterModule,
     MatIconModule,
+    MatBadgeModule,
   ]
 })
 export class MessengerModule { }

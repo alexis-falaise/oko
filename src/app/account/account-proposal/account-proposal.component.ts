@@ -8,6 +8,7 @@ import { UiService } from '@core/ui.service';
 
 import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-account-proposal',
@@ -29,6 +30,7 @@ export class AccountProposalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe((user: User) => {
       if (user) {
@@ -42,9 +44,15 @@ export class AccountProposalComponent implements OnInit {
           this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate);
           this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate);
           this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate);
+          this.uiService.setLoading(false);
         });
+      } else {
+        this.uiService.setLoading(false);
       }
-    }, (error) => this.uiService.serverError(error));
+    }, (error) => {
+      this.uiService.serverError(error);
+      this.uiService.setLoading(false);
+    });
   }
 
   private filterFromTrip(proposal: Proposal) {

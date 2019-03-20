@@ -6,6 +6,7 @@ import { AuthService } from '@core/auth.service';
 import { HistoryService } from '@core/history.service';
 
 import { MenuItem } from '@models/app/menu-item.model';
+import { UiService } from '@core/ui.service';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -43,6 +44,7 @@ export class NavComponent implements OnInit, OnChanges {
   constructor(
     private authService: AuthService,
     private historyService: HistoryService,
+    private uiService: UiService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
@@ -61,7 +63,7 @@ export class NavComponent implements OnInit, OnChanges {
     .subscribe(user => {
       if (user) {
         this.displayAccountMenuItems = this.accountMenuItems;
-        this.generateRandomWelcome(user.firstname);
+        this.randomWelcome = this.uiService.generateRandomWelcome(user.firstname);
     } else {
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
@@ -86,23 +88,6 @@ export class NavComponent implements OnInit, OnChanges {
   hide() {
     this.menuDisplay = false;
     this.drawerChanges.emit(this.menuDisplay);
-  }
-
-  generateRandomWelcome(name: string) {
-    const randomWelcomes = [
-      `Hello ${name}`,
-      `Content de te revoir ${name}`,
-      `Bonjour ${name}`,
-      `Salut ${name}`,
-      `On part où ${name} ?`,
-      `On fait quoi ${name} ?`,
-      `Hey ${name} !`,
-      `On commence par quoi ${name} ?`,
-      `${name}, tu voulais faire quelquechose ?`,
-      `Je te suis ${name} !`
-    ];
-    const rand = Math.floor(Math.random() * randomWelcomes.length);
-    this.randomWelcome = randomWelcomes[rand];
   }
 
 }

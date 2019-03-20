@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UiService {
   loading = new BehaviorSubject(false);
+  mainLoading = new BehaviorSubject(false);
   saving = new BehaviorSubject(false);
 
   constructor(
@@ -19,6 +20,10 @@ export class UiService {
 
   onLoading(): Observable<boolean> {
     return this.loading.asObservable();
+  }
+
+  onMainLoading(): Observable<boolean> {
+    return this.mainLoading.asObservable();
   }
 
   onSaving(): Observable<boolean> {
@@ -31,6 +36,28 @@ export class UiService {
 
   setSaving(savingState: boolean) {
     this.saving.next(savingState);
+  }
+
+  setMainLoading(loadingState: boolean) {
+    this.mainLoading.next(loadingState);
+  }
+
+  generateRandomWelcome(name: string) {
+    const randomWelcomes = [
+      `Hello ${name}`,
+      `Content de te revoir ${name}`,
+      `Bonjour ${name}`,
+      `Salut ${name}`,
+      `On part où ${name} ?`,
+      `On fait quoi ${name} ?`,
+      `Hey ${name} !`,
+      `On commence par quoi ${name} ?`,
+      `${name}, tu voulais faire quelquechose ?`,
+      `Je te suis ${name} !`,
+      `T'es dans la bonne direction ${name}`
+    ];
+    const rand = Math.floor(Math.random() * randomWelcomes.length);
+    return randomWelcomes[rand];
   }
 
   serverError(error: HttpErrorResponse | ServerResponse, customMessage?: string) {
