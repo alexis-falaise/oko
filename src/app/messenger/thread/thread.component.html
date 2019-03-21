@@ -1,3 +1,19 @@
-<div class="thread container">
-
+<div class="thread">
+    <div class="thread__header w-100 d-flex align-items-center">
+        <app-avatar class="thread__header-avatar" [image]="thread?.contact?.avatar" [size]="75"></app-avatar>
+        <h6 class="thread__header-name">{{ thread?.contact?.firstname }} {{ thread?.contact?.lastname }}</h6>
+    </div>
+    <div class="thread__content container">
+        <div class="thread__content__message" *ngFor="let message of thread?.messages">
+            {{ message.content }}
+        </div>
+    </div>
+    <div class="thread__actions container">
+        <mat-form-field class="thread__actions-input">
+            <input type="text" placeholder="Message" [(ngModel)]="message.content" (keyup.enter)="sendMessage()" matInput>
+            <button mat-button (click)="sendMessage()" matSuffix>
+                <mat-icon>send</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
 </div>

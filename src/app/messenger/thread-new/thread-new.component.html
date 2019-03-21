@@ -1,0 +1,24 @@
+<div class="thread-new">
+  <h2 class="thread-new__title">
+    Nouvelle discussion
+  </h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="thread-new__search">
+    <mat-form-field class="thread-new__search-input">
+      <input matInput type="text" placeholder="Rechercher un utilisateur"
+             [(ngModel)]="userSearch" (ngModelChange)="search()">
+      <button mat-button *ngIf="userSearch" matSuffix mat-icon-button aria-label="Effacer" (click)="userSearch=''">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-icon matSuffix *ngIf="!userSearch">search</mat-icon>
+    </mat-form-field>
+  </div>
+  <mat-progress-bar class="thread-new__loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <div class="thread-new__list">
+    <app-contact-list [contacts]="users" [currentUser]="currentUser" [column]="true" (click)="close()"></app-contact-list>
+  </div>
+  <div class="thread-new__actions">
+    <button class="btn btn-light" (click)="close()">Annuler</button>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="contact-list d-flex flex-row flex-md-column align-items-center justify-content-start"
+     [class.column]="column">
+  <div class="contact"
+       [class.horizontal]="column"
+       [class.vertical]="!column"
+       *ngFor="let contact of contacts"
+       (click)="getContactThread(contact)">
+      <app-avatar [size]="75" [image]="contact?.avatar"
+                  [shadowed]="true" [connected]="contact.isConnected"
+                  class="contact-avatar">
+      </app-avatar>
+      {{ contact?.firstname }} {{ column ? contact?.lastname : '' }}
+  </div>
+</div>

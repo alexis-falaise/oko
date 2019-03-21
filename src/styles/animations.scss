@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 $animationDuration: 0.15s;
 
 @keyframes openHero {
@@ -53,5 +55,11 @@ $animationDuration: 0.15s;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
     }
+  }
+
+  @keyframes glowOn {
+    0% { box-shadow: 0 0 0px $light-green-400}
+    50% { box-shadow: 0 0 15px $light-green-400}
+    100% { box-shadow: 0 0 0px $light-green-400}
   }
   

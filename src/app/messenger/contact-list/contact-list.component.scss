@@ -1,0 +1,66 @@
+@import "../../../styles/variables.scss";
+
+.contact-list {
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    &-title {
+        font-size: 24px;
+        color: rgb(175, 175, 175);
+    }
+    @media screen and (max-width: 992px) {
+        &-wrapper {
+            max-height: 125px;
+        }
+    }
+    @media screen and (min-width: 992px) {
+        .contact-list {
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    }
+    &.column {
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        overflow-y: scroll !important;
+        overflow-x: hidden;
+        width: 100%;
+    }
+    .contact {
+        transition: all $transitionDuration;
+        width: 100%;
+        color: rgba(0, 0, 0, .5);
+        font-size: 14px;
+        margin: 0 5px 5px;
+        border-radius: 3px;
+        &.horizontal {
+            height: 120px;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .contact-avatar {
+                margin-right: 15px;
+            }
+            &:hover {
+                transition: all $transitionDuration;
+                background-color: rgba(0, 0, 0, .1);
+            }
+        }
+        &.vertical {
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            max-width: 100px;
+        }
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .1);
+        }
+    }
+}
+
+
+

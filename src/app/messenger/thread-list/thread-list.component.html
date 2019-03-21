@@ -1,6 +1,6 @@
 <div class="thread-list container">
   <div class="thread-list__actions">
-    <button class="btn btn-info btn-icon">
+    <button class="btn btn-info btn-icon" (click)="newThread()">
         <mat-icon>add</mat-icon> Nouvelle discussion
     </button>
   </div>
@@ -8,16 +8,9 @@
       <div class="row d-block d-md-flex h-100">
           <div class="col-12 col-md-2 thread-list__content__contacts-wrapper">
               <h6 class="thread-list__content__contacts-title d-none d-md-block">Contacts</h6>
-              <div class="thread-list__content__contacts
-                          d-flex flex-row flex-md-column
-                          align-items-center justify-content-start">
-                  <div class="contact"
-                        *ngFor="let contact of contacts" (click)="getContactThread(contact)">
-                    <app-avatar [size]="75" [image]="contact?.avatar" [shadowed]="true" [connected]="contact.isConnected"
-                                class="contact-avatar">
-                    </app-avatar>
-                    {{ contact?.firstname }}
-                  </div>
+              <div class="thread-list__content__contacts">
+                <app-contact-list [contacts]="contacts" [currentUser]="currentUser">
+                </app-contact-list>
               </div>
           </div>
           <div class="col-12 col-md-10">

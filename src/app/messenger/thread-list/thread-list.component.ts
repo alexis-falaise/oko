@@ -7,6 +7,9 @@ import { MessengerService } from '@core/messenger.service';
 import { Thread } from '@models/messenger/thread.model';
 import { UserService } from '@core/user.service';
 import { User } from '@models/user.model';
+import { Socket } from 'ngx-socket-io';
+import { MatDialog } from '@angular/material';
+import { ThreadNewComponent } from '../thread-new/thread-new.component';
 
 @Component({
   selector: 'app-thread-list',
@@ -21,25 +24,39 @@ export class ThreadListComponent implements OnInit {
   constructor(
     private messengerService: MessengerService,
     private userService: UserService,
+    private dialog: MatDialog,
+    private socket: Socket,
   ) { }
 
   ngOnInit() {
     this.messengerService.onThreads()
     .subscribe(threads => this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined)));
     this.messengerService.onContacts()
-    .subscribe(contacts => this.contacts = contacts);
+    .subscribe(contacts => {
+      this.removeListeners();
+      this.contacts = contacts;
+      this.setListeners();
+    });
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
+        this.removeNewThreadListener();
         this.currentUser = user;
         this.messengerService.getThreads(user);
         this.messengerService.getContacts(user);
+        this.setNewThreadListener();
       }
     });
   }
 
-  getContactThread(contact: User) {
-    this.messengerService.getContactThread(this.currentUser, contact);
+  newThread() {
+    this.dialog.open(ThreadNewComponent, {
+      data: {
+        user: this.currentUser,
+      },
+      height: '80vh',
+      width: '75vw',
+    });
   }
 
   formatDate(date): string {
@@ -52,5 +69,39 @@ export class ThreadListComponent implements OnInit {
               : dateToFormat.isAfter(moment().subtract(7, 'days'))
                 ? dateToFormat.format('ddd')
                 : dateToFormat.format('DD MMMM');
+  }
+
+  private setListeners() {
+    if (this.contacts) {
+      this.contacts.forEach((contact, index) => {
+        this.socket.on(`login/${contact._id}`, () => {
+          this.contacts[index].isConnected = true;
+        });
+        this.socket.on(`logout/${contact._id}`, () => {
+          this.contacts[index].isConnected = false;
+        });
+      });
+    }
+  }
+
+  private removeListeners() {
+    if (this.contacts) {
+      this.contacts.forEach(contact => {
+        this.socket.removeListener(`login/${contact.id}`);
+        this.socket.removeListener(`logout/${contact._id}`);
+      });
+    }
+  }
+
+  private setNewThreadListener() {
+    this.socket.on(`${this.currentUser.id}/thread/new`, () => {
+      this.messengerService.getThreads(this.currentUser);
+    });
+  }
+
+  private removeNewThreadListener() {
+    if (this.currentUser) {
+      this.socket.removeListener(`${this.currentUser.id}/thread/new`);
+    }
   }
 }

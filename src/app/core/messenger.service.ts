@@ -55,7 +55,7 @@ export class MessengerService {
 
   getContactThread(user: User, contact: User) {
     const url = `${this.messengerUrl}/thread/user/${user.id}/contact/${contact.id}`;
-    this.getThreadByUrl(url, true);
+    this.getThreadByUrl(url);
   }
 
   /**
@@ -90,7 +90,9 @@ export class MessengerService {
    * @param message : message object
    */
   createMessage(thread: Thread, message: Message): Observable<ServerResponse> {
-    return this.http.post(`${this.messengerUrl}/thread/${thread.id}`, message, {withCredentials: true}) as Observable<ServerResponse>;
+    console.log('Create a message', thread, message);
+    return this.http.post(`${this.messengerUrl}/thread/${thread.id}/message`,
+                message, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -99,9 +101,15 @@ export class MessengerService {
    * @param user : user object
    */
   addUserToThread(thread: Thread, user: User): Observable<ServerResponse> {
-    return this.http.post(`${this.messengerUrl}/thread/${thread.id}`, user, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(`${this.messengerUrl}/thread/${thread.id}/user`,
+                user, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  /**
+   * Get contacts of a given user
+   * Contacts are oko users that were invovled in a proposal with the given user
+   * @param user : concerned user
+   */
   getContacts(user: User) {
     this.http.get(`${this.messengerUrl}/contacts/user/${user.id}`, {withCredentials: true})
     .subscribe((contacts: Array<User>) => {
@@ -110,6 +118,26 @@ export class MessengerService {
       } else {
         this.contacts.next([]);
       }
+    });
+  }
+
+  /**
+   * Get all oko users
+   */
+  getUsers(name?: string): Observable<Array<User>> {
+    return Observable.create(observer => {
+      const query = name ? `?name=${name}` : '';
+      this.http.get(`${this.messengerUrl}/users${query}`, {withCredentials: true})
+      .subscribe((users: Array<any>) => {
+        if (users) {
+          const curatedUsers = users.map(user => new User(user));
+          observer.next(curatedUsers);
+          observer.complete();
+        } else {
+          observer.next([]);
+          observer.complete();
+        }
+      }, (error) => this.uiService.serverError(error));
     });
   }
 
@@ -132,13 +160,12 @@ export class MessengerService {
    * @param url : Server url for thread search
    * @param creation : Create a thread if not found
    */
-  private getThreadByUrl(url: string, creation?: boolean) {
+  private getThreadByUrl(url: string) {
     this.http.get(url, {withCredentials: true})
     .pipe(takeUntil(this.threadChange))
     .subscribe((thread: Thread) => {
       this.disconnectCurrentThread();
       if (thread) {
-          console.log(thread);
           this.router.navigate(['messages', 'thread', thread.id || thread._id]);
           this.thread.next(new Thread(thread));
           this.socket.on(`message/new/${thread.id}`, (message) => {

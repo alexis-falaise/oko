@@ -2,10 +2,13 @@ import { User } from '@models/user.model';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 export class Message {
-    author: User;
-    content: string;
+    // Properties to be filled client-side
+    content?: string;
     sent?: boolean;
     sendDate?: Moment;
+
+    // Properties to be filled server-side
+    author?: User;
     received?: boolean;
     receptionDate?: Moment;
     sightDate?: Moment;
