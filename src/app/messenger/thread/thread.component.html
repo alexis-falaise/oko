@@ -1,16 +1,20 @@
 <div class="thread">
-    <div class="thread__header w-100 d-flex align-items-center">
+    <div class="thread__header w-100 d-flex align-items-center" (click)="scrollDown()">
         <app-avatar class="thread__header-avatar" [image]="thread?.contact?.avatar" [size]="75"></app-avatar>
         <h6 class="thread__header-name">{{ thread?.contact?.firstname }} {{ thread?.contact?.lastname }}</h6>
     </div>
-    <div class="thread__content container">
-        <div class="thread__content__message" *ngFor="let message of thread?.messages">
-            {{ message.content }}
+    <div class="thread__content container" id="content">
+        <div class="thread__content__message" *ngFor="let message of thread?.messages; let i = index" id="{{'message-' + i}}">
+            <app-message [message]="message"></app-message>
         </div>
     </div>
     <div class="thread__actions container">
         <mat-form-field class="thread__actions-input">
-            <input type="text" placeholder="Message" [(ngModel)]="message.content" (keyup.enter)="sendMessage()" matInput>
+            <textarea type="text" placeholder="Message"
+                      [(ngModel)]="message.content"
+                      [rows]="inputRows"
+                      (keydown)="captureKey($event)" matInput>
+            </textarea>
             <button mat-button (click)="sendMessage()" matSuffix>
                 <mat-icon>send</mat-icon>
             </button>

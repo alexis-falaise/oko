@@ -18,7 +18,10 @@ export class ContactListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.contacts) {
-      this.contacts = changes.contacts.currentValue;
+      const contacts = changes.contacts.currentValue;
+      if (contacts) {
+        this.contacts = contacts.sort(this.sortContacts);
+      }
     }
     if (changes.currentUser) {
       this.currentUser = changes.currentUser.currentValue;
@@ -30,6 +33,12 @@ export class ContactListComponent implements OnInit, OnChanges {
 
   getContactThread(contact: User) {
     this.messengerService.getContactThread(this.currentUser, contact);
+  }
+
+  private sortContacts(a: User, b: User): number {
+    const firstnameCompare = a.firstname.localeCompare(b.firstname);
+    const lastnameCompare = b.lastname.localeCompare(b.lastname);
+    return firstnameCompare || lastnameCompare;
   }
 
 }

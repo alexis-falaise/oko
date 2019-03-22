@@ -15,15 +15,65 @@ export class Message {
     seen?: boolean;
     id?: string;
     _id?: string;
-    constructor(message: Partial<Message>) {
+
+    // Front-end properties
+    authorView?: boolean;
+    formattedSendDate: string;
+    formattedReceptionDate: string;
+    formattedSightDate: string;
+
+    constructor(message: Partial<Message>, user?: User) {
         Object.assign(this, message);
-        if (message._id) {
-            this.id = message._id;
+        if (message) {
+            if (message._id) {
+                this.id = message._id;
+            }
+            if (message.author) {
+                this.author = new User(message.author);
+            }
+            if (message.sendDate) {
+                this.formattedSendDate = this.formatDate(message.sendDate);
+            }
+            if (message.receptionDate) {
+                this.formattedReceptionDate = this.formatDate(message.receptionDate);
+            }
+            if (message.sightDate) {
+                this.formattedSightDate = this.formatDate(message.sightDate);
+            }
+            if (user) {
+                const formattedUser = new User(user);
+                this.authorView = this.isAuthor(formattedUser);
+            }
         }
     }
 
     send() {
         this.sent = true;
         this.sendDate = moment();
+    }
+
+    markAsSeen() {
+        this.seen = true;
+        this.sightDate = moment();
+    }
+
+    isAuthor(user: User): boolean {
+        if (this.author) {
+            return this.author.id === user.id;
+        } else {
+            return false;
+        }
+    }
+
+    formatDate(date): string {
+        let dateToFormat;
+        dateToFormat = moment(date);
+        return dateToFormat.isSame(moment(), 'd')
+                ? dateToFormat.format('HH:mm')
+                : dateToFormat.isSame(moment().subtract(1, 'days'), 'd')
+                  ? dateToFormat.format('Hier - HH:mm')
+                  : dateToFormat.isAfter(moment().subtract(7, 'days'))
+                    ? dateToFormat.format('ddd - HH:mm')
+                    : dateToFormat.format('DD MMMM - HH:mm');
     }
 }

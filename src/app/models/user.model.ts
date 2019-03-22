@@ -39,6 +39,7 @@ export class User {
 
     // Front-end helpers
     lastConnection: Moment;
+    formattedLastConnection: string;
     isConnected: boolean;
 
     // Database id
@@ -62,7 +63,20 @@ export class User {
             this.sessions = user.sessions.map(session => new Session(session));
             const lastConnection = user.sessions[user.sessions.length - 1];
             this.lastConnection = lastConnection.end;
+            this.formattedLastConnection = this.formatDate(lastConnection.end);
             this.isConnected = lastConnection.open;
         }
+    }
+
+    formatDate(date): string {
+        let dateToFormat: Moment;
+        dateToFormat = moment(date);
+        return dateToFormat.isSame(moment(), 'd')
+                ? dateToFormat.fromNow()
+                : dateToFormat.isSame(moment().subtract(1, 'days'), 'd')
+                  ? dateToFormat.format('hier à HH:mm')
+                  : dateToFormat.isAfter(moment().subtract(7, 'days'))
+                    ? dateToFormat.format('ddd à HH:mm')
+                    : dateToFormat.format('le DD MMMM à HH:mm');
     }
 }

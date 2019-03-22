@@ -18,6 +18,9 @@ export class MessengerComponent implements OnInit {
   ngOnInit() {
     this.route.url.subscribe(segments => {
       this.threadDisplay = !!segments.find(segment => segment.path.includes('thread'));
+      if (this.threadDisplay) {
+        this.title = 'Discussion';
+      }
     });
   }
 

@@ -20,12 +20,16 @@ export class Thread {
         if (thread._id) {
             this.id = thread._id;
         }
-        if (user && thread.users && thread.users.length === 2) {
-            this.author = user;
-            this.contact = thread.users.find(contact => contact.id !== user.id);
+        if (thread.users) {
+            this.users = thread.users.map(threadUser => new User(threadUser));
+        }
+        if (user && this.users && this.users.length === 2) {
+            this.author = new User(user);
+            this.contact = this.users.find(contact => contact.id !== user.id);
         }
         if (thread.messages && thread.messages.length) {
-            this.lastMessage = thread.messages[thread.messages.length - 1];
+            this.messages = thread.messages.map(message => new Message(message, user));
+            this.lastMessage = this.messages[thread.messages.length - 1];
         }
     }
 

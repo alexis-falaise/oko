@@ -10,6 +10,7 @@ import { User } from '@models/user.model';
 import { Socket } from 'ngx-socket-io';
 import { MatDialog } from '@angular/material';
 import { ThreadNewComponent } from '../thread-new/thread-new.component';
+import { UiService } from '@core/ui.service';
 
 @Component({
   selector: 'app-thread-list',
@@ -24,13 +25,18 @@ export class ThreadListComponent implements OnInit {
   constructor(
     private messengerService: MessengerService,
     private userService: UserService,
+    private uiService: UiService,
     private dialog: MatDialog,
     private socket: Socket,
   ) { }
 
   ngOnInit() {
+    this.uiService.setMainLoading(true);
     this.messengerService.onThreads()
-    .subscribe(threads => this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined)));
+    .subscribe(threads => {
+      this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined));
+      this.uiService.setMainLoading(false);
+    });
     this.messengerService.onContacts()
     .subscribe(contacts => {
       this.removeListeners();

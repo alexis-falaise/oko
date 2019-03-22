@@ -38,13 +38,12 @@ export class HistoryService {
     const history = this.history.getValue();
     let route;
     if (history.length > 1) {
-      history.pop();
       do {
         route = this.findLastRoute(history);
       } while (this.forbiddenRoutes.includes(route));
       this.history.next(history);
     } else {
-      route = '/home';
+        route = '/home';
     }
     this.router.navigate([route]);
   }

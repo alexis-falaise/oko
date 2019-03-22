@@ -1,0 +1,23 @@
+<div class="message" (click)="toggleInfo()" *ngIf="message">
+  <div class="message__time" *ngIf="showInfo">
+    {{ message?.formattedSendDate }}
+  </div>
+  <div class="message__main" [class.author]="message.authorView">
+      <app-avatar class="message__avatar" [image]="message?.author?.avatar" [size]="avatarSize"
+                  *ngIf="!message.authorView"></app-avatar>
+      <div class="message__content" [class.author]="message?.authorView">
+        {{ message?.content }}
+      </div>
+      <app-avatar class="message__avatar author" [image]="message?.author?.avatar" [size]="avatarSize"
+                  *ngIf="message.authorView"></app-avatar>
+    </div>
+  <div class="message__info d-flex" [class.author]="message.authorView" *ngIf="showInfo">
+    <mat-icon *ngIf="message?.sent && !message?.received">send</mat-icon>
+    <span *ngIf="message?.received && !message.seen && message.authorView">{{ message.formattedReceptionDate }}</span>
+    <mat-icon *ngIf="message?.received && !message?.seen">check</mat-icon>
+    <span *ngIf="message?.received && !message.seen && !message.authorView">{{ message.formattedReceptionDate }}</span>
+    <span *ngIf="message?.seen && message.authorView">{{ message.formattedSightDate }}</span>
+    <mat-icon *ngIf="message?.seen">done_all</mat-icon>
+    <span *ngIf="message?.seen && !message.authorView">{{ message.formattedSightDate }}</span>
+  </div>
+</div>

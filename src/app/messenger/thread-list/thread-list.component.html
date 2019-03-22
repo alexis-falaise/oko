@@ -20,9 +20,15 @@
                     <div class="d-flex w-100 align-items-center">
                         <app-avatar class="thread-avatar" [size]="75" [image]="thread.contact?.avatar"></app-avatar>
                         <div class="w-75 d-flex flex-column justify-content-center">
-                            <h6 class="thread-list__thread-title">{{ thread.contact?.firstname }} {{ thread.contact?.lastname }}</h6>
+                            <h6 class="thread-list__thread-title" *ngIf="thread.contact">
+                                {{ thread.contact?.firstname }} {{ thread.contact?.lastname }}
+                            </h6>
                             <div class="thread-message">
-                                {{ thread?.lastMessage || 'Pas de messages' }}
+                                {{ thread?.lastMessage
+                                   ? thread?.lastMessage?.authorView 
+                                    ? 'Vous: ' + thread.lastMessage.content
+                                    : thread.lastMessage.author.firstname + ': ' + thread.lastMessage.content
+                                   : 'Pas de messages' }}
                             </div>
                             <div class="thread-date">
                                 {{ 

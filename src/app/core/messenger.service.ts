@@ -90,9 +90,10 @@ export class MessengerService {
    * @param message : message object
    */
   createMessage(thread: Thread, message: Message): Observable<ServerResponse> {
-    console.log('Create a message', thread, message);
-    return this.http.post(`${this.messengerUrl}/thread/${thread.id}/message`,
-                message, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(
+                `${this.messengerUrl}/thread/${thread.id}/message`,
+                message,
+                {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**
@@ -141,10 +142,28 @@ export class MessengerService {
     });
   }
 
+  /**
+   * Resets
+   */
+
+  resetThread() {
+    this.thread.next(null);
+  }
+
+  resetThreads() {
+    this.threads.next(null);
+  }
+
+  resetContacts() {
+    this.contacts.next(null);
+  }
+
   private disconnectCurrentThread() {
     const currentThread = this.thread.getValue();
-    this.socket.removeListener(`message/new/${currentThread.id}`);
-    this.threadChange.next();
+    if (currentThread) {
+      this.socket.removeListener(`message/new/${currentThread.id}`);
+      this.threadChange.next();
+    }
   }
 
   private refreshThread(thread: Thread, message: Message) {

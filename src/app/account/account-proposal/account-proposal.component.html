@@ -15,8 +15,8 @@
                                     [class.refused]="proposal.refused && !proposal.closed"
                                     [routerLink]="['/post', 'proposal', proposal.id]">
                         <h3 class="account-proposal__proposal__title row" matLine>
-                            <div class="author col-6 col-sm-3"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
-                            <div class="flight col-6">
+                            <div class="author col-4 col-sm-3"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
+                            <div class="flight col-8">
                                 <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} </div>
                                 <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
                             </div>
