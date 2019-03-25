@@ -312,7 +312,9 @@ export class PostService {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true})
       .subscribe((proposals: Array<Proposal>) => {
-        forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
+        forkJoin(proposals.map(proposal => {
+          return this.getAllProposalSubPosts(proposal).pipe(catchError((err, caught) => of(caught)));
+        }))
         .subscribe((outputProposals: Array<Proposal>) => {
           observer.next(outputProposals);
           observer.complete();

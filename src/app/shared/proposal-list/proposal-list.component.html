@@ -1,0 +1,35 @@
+<mat-list>
+    <mat-list-item class="proposal-list__proposal"
+                    *ngFor="let proposal of proposalList"
+                    [class.closed]="proposal.closed"
+                    [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+                    [class.accepted]="proposal.accepted && !proposal.closed"
+                    [class.refused]="proposal.refused && !proposal.closed"
+                    [routerLink]="['/post', 'proposal', proposal.id]">
+        <h3 class="proposal-list__proposal__title row" *ngIf="aboutTrip; else requestTitle" matLine>
+            <div class="author col-4 col-sm-3" *ngIf="!own"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
+            <div class="flight col-8 col-sm-6">
+                <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} </div>
+                <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
+            </div>
+            <div class="date col-12 col-sm-3 justify-content-center justify-content-sm-end"><mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}</div>
+        </h3>
+        <ng-template #requestTitle>
+            <h3 class="proposal-list__proposal__title" matLine>
+                {{ own ? ' Ma demande' : 'Demande de ' + proposal.author?.firstname }}
+            </h3>
+        </ng-template>
+        <p class="proposal-list__proposal__description" matLine>
+            <span class="proposal-list__proposal__status" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted">En attente</span>
+            <span class="proposal-list__proposal__status" *ngIf="proposal.closed">Annulée</span>
+            <span class="proposal-list__proposal__status" *ngIf="proposal.refused && !proposal.closed">Refusée</span>
+            <span class="proposal-list__proposal__status" *ngIf="proposal.accepted && !proposal.validated">Acceptée</span>
+            <span class="proposal-list__proposal__status" *ngIf="proposal.validated">Livrée</span>
+            <span class="proposal-list__proposal__info" *ngIf="!aboutTrip && proposal?.from?.urgent && !proposal.closed">
+                - avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}
+            </span>
+            <span class="proposal-list__proposal__info" *ngIf="proposal.bonus && !proposal.closed"> - Bonus : {{ proposal.bonus }} €</span> <br>
+            <span class="proposal-list__proposal__date"> Envoyé le {{ moment(proposal.date).format('DD/MM/YYYY à HH:mm') }} </span>
+        </p>
+    </mat-list-item>
+<mat-list>

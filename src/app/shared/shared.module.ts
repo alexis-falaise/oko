@@ -10,7 +10,8 @@ import {
   MatRippleModule,
   MatCardModule,
   MatSnackBarModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatListModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -22,6 +23,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RemovePanelComponent } from './remove-panel/remove-panel.component';
 import { ItemComponent } from './item/item.component';
 import { RatingComponent } from './rating/rating.component';
+import { ProposalListComponent } from './proposal-list/proposal-list.component';
 
 @NgModule({
   declarations: [
@@ -32,15 +34,17 @@ import { RatingComponent } from './rating/rating.component';
     RemovePanelComponent,
     ItemComponent,
     RatingComponent,
+    ProposalListComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    MatIconModule,
     MatCardModule,
     MatCheckboxModule,
-    MatExpansionModule,
     MatDatepickerModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
     MatMomentDateModule,
     MatRippleModule,
     MatSnackBarModule,
@@ -55,6 +59,7 @@ import { RatingComponent } from './rating/rating.component';
     RemovePanelComponent,
     ItemComponent,
     RatingComponent,
+    ProposalListComponent,
   ],
 })
 export class SharedModule { }

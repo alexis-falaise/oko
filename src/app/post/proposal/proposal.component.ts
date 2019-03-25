@@ -51,11 +51,12 @@ export class ProposalComponent implements OnInit, OnChanges {
     .subscribe(user => {
       if (user) {
         this.currentUser = user;
-        this.initProposal();
         this.route.url.subscribe(segments => {
           this.standalone = !!segments.find(segment => segment.path === 'proposal');
           if (this.standalone) {
             this.getStandaloneProposal();
+          } else {
+            this.initProposal();
           }
         });
       }
@@ -63,10 +64,11 @@ export class ProposalComponent implements OnInit, OnChanges {
   }
 
   initProposal() {
+    console.log(this.proposal);
     if (this.proposal) {
       this.fromTrip = this.proposal.isFromTrip();
       if (this.proposal.receiver && this.currentUser) {
-        this.receiver = this.proposal.receiver._id === this.currentUser._id;
+        this.receiver = this.proposal.receiver.id === this.currentUser.id;
       }
       if (this.currentUser) {
         this.proposal.isAuthor(this.currentUser);

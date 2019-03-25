@@ -11,7 +11,7 @@
       <app-avatar class="message__avatar author" [image]="message?.author?.avatar" [size]="avatarSize"
                   *ngIf="message.authorView"></app-avatar>
     </div>
-  <div class="message__info d-flex" [class.author]="message.authorView" *ngIf="showInfo">
+  <div class="message__info d-flex" [class.author]="message.authorView" *ngIf="showInfo && message.authorView">
     <mat-icon *ngIf="message?.sent && !message?.received">send</mat-icon>
     <span *ngIf="message?.received && !message.seen && message.authorView">{{ message.formattedReceptionDate }}</span>
     <mat-icon *ngIf="message?.received && !message?.seen">check</mat-icon>

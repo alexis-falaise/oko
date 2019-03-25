@@ -52,7 +52,6 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       switch (true) {
         case event instanceof NavigationStart:
-          console.log('Navigation start', this.router.url);
           this.uiService.setMainLoading(true);
           this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
           break;

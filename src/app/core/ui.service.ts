@@ -39,7 +39,10 @@ export class UiService {
   }
 
   setMainLoading(loadingState: boolean) {
-    this.mainLoading.next(loadingState);
+    const currentState = this.mainLoading.getValue();
+    if (currentState !== loadingState) {
+      this.mainLoading.next(loadingState);
+    }
   }
 
   generateRandomWelcome(name: string) {

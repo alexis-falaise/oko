@@ -12,6 +12,7 @@ import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'proposal', redirectTo: '/account/proposal', pathMatch: 'full' },
     { path: 'proposal/:id', component: ProposalComponent },
     { path: 'request', component: RequestListComponent },
     { path: 'request/new', component: RequestComponent },

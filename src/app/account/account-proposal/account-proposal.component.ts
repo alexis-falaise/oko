@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '@core/post.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import * as moment from 'moment';
 
 import { UserService } from '@core/user.service';
@@ -9,6 +9,7 @@ import { UiService } from '@core/ui.service';
 import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
 import { MatSnackBar } from '@angular/material';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-proposal',
@@ -36,14 +37,20 @@ export class AccountProposalComponent implements OnInit {
       if (user) {
         this.currentUser = user;
         forkJoin([
-          this.postService.getReceivedProposalsByReceiver(user),
+          this.postService.getReceivedProposalsByReceiver(user)
+          .pipe(catchError((err, caught) => caught)),
           this.postService.getAllSentProposalsByAuthor(user)
+          .pipe(catchError((err, caught) => caught))
         ])
         .subscribe(proposals => {
+          console.log(proposals);
           this.receivedFromTrip = proposals[0].filter(this.filterFromTrip).sort(this.sortByDate);
           this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate);
           this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate);
           this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate);
+          this.uiService.setLoading(false);
+        }, (error) => {
+          this.uiService.serverError(error);
           this.uiService.setLoading(false);
         });
       } else {

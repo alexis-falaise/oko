@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class PexelsService {
     private http: HttpClient,
   ) { }
 
-  getBackgroundPicture(country: string): Observable<string> {
+  getBackgroundPicture(country: string, size: string = 'largex2'): Observable<string> {
     return Observable.create(observer => {
       const headers = new HttpHeaders({
         'Authorization': this.apiKey,
@@ -21,20 +21,28 @@ export class PexelsService {
       const query = `https://api.pexels.com/v1/search?query=${country}&per_page=${this.photosNumber}`;
       this.http.get(query, {headers: headers})
       .subscribe((response: any) => {
-        this.photosCache[country] = response.photos;
-        const number = response.photos.length;
-        const random = Math.floor(Math.random() * number);
-        observer.next(response.photos[random].src.medium);
+        if (response.photos) {
+          this.photosCache[country] = response.photos;
+          const number = response.photos.length;
+          const random = Math.floor(Math.random() * number);
+          observer.next(response.photos[random].src[size]);
+        } else {
+          this.getCachedBackgroundPicture(observer, country, size);
+        }
         observer.complete();
       }, (error) => {
-        if (this.photosCache[country]) {
-          const number = this.photosCache[country].length;
-          const random = Math.floor(Math.random() * number);
-          const photo = this.photosCache[country][random].src.medium;
-          observer.next(photo);
-          observer.complete();
-        }
+        this.getCachedBackgroundPicture(observer, country, size);
       });
     });
+  }
+
+  private getCachedBackgroundPicture(observer: Observer<string>, country: string, size: string) {
+    if (this.photosCache[country]) {
+      const number = this.photosCache[country].length;
+      const random = Math.floor(Math.random() * number);
+      const photo = this.photosCache[country][random].src[size];
+      observer.next(photo);
+      observer.complete();
+    }
   }
 }

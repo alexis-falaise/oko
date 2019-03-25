@@ -23,7 +23,7 @@ export class NavComponent implements OnInit, OnChanges {
   ];
   accountMenuItems: Array<MenuItem> = [
     { label: 'Aide', path: '/help', icon: 'help' },
-    { label: 'Mon compte', path: '/account/info', icon: 'account_circle' },
+    { label: 'Mon compte', path: '/account', icon: 'account_circle' },
     { label: 'Déconnexion', path: '/logout', icon: 'power_settings_new' }
   ];
   menuItems: Array<MenuItem> = [

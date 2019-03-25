@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatRippleModule } from '@angular/material';
 
 import { NavComponent } from '@core/nav/nav.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
   imports: [
     CommonModule,
     MatIconModule,
+    MatRippleModule,
     RouterModule,
     HttpClientModule,
   ],

@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
+import { takeUntil } from 'rxjs/operators';
 import { timer, Subject } from 'rxjs';
 
 import { MessengerService } from '@core/messenger.service';
@@ -11,25 +12,29 @@ import { UiService } from '@core/ui.service';
 import { Thread } from '@models/messenger/thread.model';
 import { User } from '@models/user.model';
 import { Message } from '@models/messenger/message.model';
-import { takeUntil } from 'rxjs/operators';
+import { HistoryService } from '@core/history.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-thread',
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.scss']
 })
-export class ThreadComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ThreadComponent implements OnInit, OnDestroy {
   thread: Thread;
   message = new Message({});
   ngUnsubscribe = new Subject();
   currentUser: User;
   inputRows = 1;
+  uiCoolDown = 150;
   constructor(
     @Inject(DOCUMENT) public document: Document,
     private route: ActivatedRoute,
+    private historyService: HistoryService,
     private messengerService: MessengerService,
     private userService: UserService,
     private uiService: UiService,
+    private snack: MatSnackBar,
     private socket: Socket,
   ) { }
 
@@ -41,10 +46,6 @@ export class ThreadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getThreadFromParams();
       this.subscribeThread();
     });
-  }
-
-  ngAfterViewInit() {
-    this.scrollDown();
   }
 
   sendMessage() {
@@ -83,6 +84,9 @@ export class ThreadComponent implements OnInit, AfterViewInit, OnDestroy {
       if (params && params.id) {
         const threadId = params.id;
         this.messengerService.getThread(threadId);
+      } else {
+        this.snack.open('Cette discussion n\'existe pas...', 'Mince');
+        this.historyService.back();
       }
     });
   }
@@ -95,7 +99,7 @@ export class ThreadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.removeThreadListeners();
         this.thread = new Thread(thread, this.currentUser);
         this.setThreadListeners();
-        timer(500).subscribe(() => this.scrollDown());
+        timer(this.uiCoolDown).subscribe(() => this.scrollDown());
         this.uiService.setMainLoading(false);
       }
     });
@@ -109,16 +113,15 @@ export class ThreadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private setThreadListeners() {
     this.socket.on(`message/new/${this.thread.id}`, (message) => {
-      console.log('Socket: new message', message);
       const receivedMessage = new Message(message, this.currentUser);
       this.thread.messages.push(new Message(receivedMessage));
-      if (!receivedMessage.isAuthor(this.currentUser)) {
+      if (!receivedMessage.isAuthor(this.currentUser) && !receivedMessage.seen) {
         const seenMessage = receivedMessage.markAsSeen();
-        this.socket.emit(`message/sight/${this.thread.id}`, seenMessage);
+        this.socket.emit(`message/clientSight/${this.thread.id}`, seenMessage);
       }
-      timer(100).subscribe(() => this.scrollDown());
+      timer(this.uiCoolDown).subscribe(() => this.scrollDown());
     });
-    this.socket.on(`message/sight/${this.thread.id}`, (message) => {
+    this.socket.on(`message/serverSight/${this.thread.id}`, (message) => {
       const messageIndex = this.thread.messages.findIndex(threadMessage => threadMessage._id === message._id);
       this.thread[messageIndex] = message;
     });
