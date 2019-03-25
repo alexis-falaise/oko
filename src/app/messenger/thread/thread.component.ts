@@ -109,6 +109,7 @@ export class ThreadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private setThreadListeners() {
     this.socket.on(`message/new/${this.thread.id}`, (message) => {
+      console.log('Socket: new message', message);
       const receivedMessage = new Message(message, this.currentUser);
       this.thread.messages.push(new Message(receivedMessage));
       if (!receivedMessage.isAuthor(this.currentUser)) {

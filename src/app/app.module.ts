@@ -45,7 +45,7 @@ export class MyHammerConfig extends GestureConfig {
     return mc;
   }
 }
-
+console.log('Socket io connection url', environment.ioUrl);
 const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
 
 @NgModule({

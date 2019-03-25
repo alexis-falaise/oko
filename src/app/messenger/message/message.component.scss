@@ -6,6 +6,7 @@
     $transition: .25s;
     cursor: pointer;
     margin: 10px 5px;
+    animation: appear $animation;
     &__time {
         animation: slideInUp $animation;
         color: rgb(175, 175, 175);

@@ -65,7 +65,9 @@ export class ProposalComponent implements OnInit, OnChanges {
   initProposal() {
     if (this.proposal) {
       this.fromTrip = this.proposal.isFromTrip();
-      this.receiver = this.proposal.receiver.id === this.currentUser.id;
+      if (this.proposal.receiver && this.currentUser) {
+        this.receiver = this.proposal.receiver._id === this.currentUser._id;
+      }
       if (this.currentUser) {
         this.proposal.isAuthor(this.currentUser);
       }

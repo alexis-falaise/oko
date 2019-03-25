@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, ActivatedRoute, UrlSerializer } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,11 @@ export class HistoryService {
   history = new BehaviorSubject([]);
   forbiddenRoutes = ['/login', '/signin', '/logout'];
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private serializer: UrlSerializer
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.add(event.url);
@@ -34,18 +38,29 @@ export class HistoryService {
     return history.pop();
   }
 
+  getLastRoute(history): string {
+    if (history && history.length) {
+      return history[history.length - 1];
+    } else {
+      return '/home';
+    }
+  }
+
+  getParentRoute(url: string) {
+    const parsed = url.split('/');
+    parsed.pop();
+    return parsed.join('/');
+  }
+
   back() {
     const history = this.history.getValue();
-    let route;
-    if (history.length > 1) {
-      do {
-        route = this.findLastRoute(history);
-      } while (this.forbiddenRoutes.includes(route));
-      this.history.next(history);
+    const lastRoute = this.getLastRoute(history);
+    const parentRoute = this.getParentRoute(lastRoute);
+    if (parentRoute) {
+      this.router.navigate([parentRoute]);
     } else {
-        route = '/home';
+      this.router.navigate(['/home']);
     }
-    this.router.navigate([route]);
   }
 
   hasBack(): boolean {

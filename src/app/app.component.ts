@@ -6,6 +6,7 @@ import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
 import { HistoryService } from '@core/history.service';
 import { NotificationService } from '@core/notification.service';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-root',
@@ -29,12 +30,14 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private historyService: HistoryService,
     private notificationService: NotificationService,
+    private socket: Socket,
     private uiService: UiService,
     private ref: ChangeDetectorRef,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.socket.on('connected', (data) => console.log('IO:', data.message));
     moment.locale('fr');
     this.hideDrawer();
     this.uiService.onLoading().subscribe(loadingState => {
@@ -49,6 +52,7 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       switch (true) {
         case event instanceof NavigationStart:
+          console.log('Navigation start', this.router.url);
           this.uiService.setMainLoading(true);
           this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
           break;

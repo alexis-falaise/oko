@@ -13,7 +13,7 @@
                 </app-contact-list>
               </div>
           </div>
-          <div class="col-12 col-md-10">
+          <div class="col-12 col-md-10 thread-list__content__list-wrapper">
             <div class="thread-list__content__list">
                 <h6 class="thread-list__content__list-title">Discussions</h6>
                 <div class="thread-list__thread" *ngFor="let thread of threads" [routerLink]="['/messages', 'thread', thread.id]">

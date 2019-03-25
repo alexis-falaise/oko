@@ -11,7 +11,7 @@ import { TripListComponent } from './trip/trip-list/trip-list.component';
 import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'request', pathMatch: 'full' },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'proposal/:id', component: ProposalComponent },
     { path: 'request', component: RequestListComponent },
     { path: 'request/new', component: RequestComponent },

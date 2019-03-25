@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'proposal', pathMatch: 'full' },
       { path: 'info', component: AccountInfoComponent },
       { path: 'request', component: AccountRequestComponent },
       { path: 'trip', component: AccountTripComponent },

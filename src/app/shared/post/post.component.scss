@@ -293,6 +293,12 @@ $post-height: 100px;
         transition: all $transitionDuration;
         background-color: rgba(0, 0, 0, 0);
         width: 100%;
+        @media screen and (max-width: $break-sm) {
+            width: 110%
+        } 
+        @media screen and (max-width: 576px) {
+            width: 120%;
+        }
         height: 105% !important;
         padding: 15px;
         margin-top: -10px;

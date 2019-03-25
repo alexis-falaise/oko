@@ -17,4 +17,7 @@
         transition: all .25s;
         border: thick solid $light-green-400;
     }
+    &-image {
+        animation: appear .5s;
+    }
 }

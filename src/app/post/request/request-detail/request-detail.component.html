@@ -22,8 +22,8 @@
         <mat-icon>edit</mat-icon> Modifier l'annonce
       </button>
   </div>
-  <div class="request-detail__proposal"
-       *ngIf="receivedProposals?.length || sentProposals?.length">
+  <div class="request-detail__proposal-wrapper"
+       *ngIf="(request.own && receivedProposals?.length) || sentProposals?.length">
     <h4>
       Propositions
       <span *ngIf="request.own && receivedProposals?.length && !sentProposals.length"> reçues</span>
@@ -50,6 +50,7 @@
               <mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} <br>
               <mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}
           </mat-panel-title>
+          <!-- Proposal is a request -->
           <mat-panel-title class="request-detail__proposal__title" *ngIf="!proposal.isFromTrip()">
               <span class="request-detail__proposal__date">{{ moment(proposal.date).format('DD/MM/YYYY') }} </span>
               {{ proposal.author.id === currentUser.id ? ' Demande' : ' ' + proposal.author?.firstname }}

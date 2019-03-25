@@ -31,11 +31,12 @@ export class ThreadListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.uiService.setMainLoading(true);
+    this.uiService.setLoading(true);
     this.messengerService.onThreads()
     .subscribe(threads => {
-      this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined));
-      this.uiService.setMainLoading(false);
+      this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined))
+      .sort(this.sortThreads);
+      this.uiService.setLoading(false);
     });
     this.messengerService.onContacts()
     .subscribe(contacts => {
@@ -110,4 +111,11 @@ export class ThreadListComponent implements OnInit {
       this.socket.removeListener(`${this.currentUser.id}/thread/new`);
     }
   }
+
+  private sortThreads(a: Thread, b: Thread) {
+    return moment(a.lastMessage
+      ? a.lastMessage.sendDate : a.creationDate)
+      .isAfter(b.lastMessage
+      ? b.lastMessage.sendDate : b.creationDate) ? -1 : 1;
+    }
 }
