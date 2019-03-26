@@ -24,6 +24,7 @@ import { RemovePanelComponent } from './remove-panel/remove-panel.component';
 import { ItemComponent } from './item/item.component';
 import { RatingComponent } from './rating/rating.component';
 import { ProposalListComponent } from './proposal-list/proposal-list.component';
+import { SpaceIndicatorComponent } from './space-indicator/space-indicator.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ProposalListComponent } from './proposal-list/proposal-list.component';
     ItemComponent,
     RatingComponent,
     ProposalListComponent,
+    SpaceIndicatorComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +62,7 @@ import { ProposalListComponent } from './proposal-list/proposal-list.component';
     ItemComponent,
     RatingComponent,
     ProposalListComponent,
+    SpaceIndicatorComponent,
   ],
 })
 export class SharedModule { }

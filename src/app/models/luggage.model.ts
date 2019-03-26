@@ -6,6 +6,7 @@ export class Luggage {
     cabin: boolean;
     full: boolean;
     large: boolean;
+    availableSpace?: number;
     id?: string;
     constructor(luggage: Partial<Luggage> = {}) {
         Object.assign(this, luggage);

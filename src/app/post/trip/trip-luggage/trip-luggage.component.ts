@@ -86,7 +86,7 @@ export class TripLuggageComponent implements OnInit {
 
   save() {
     if (this.weight) {
-      this.calculateDimensions();
+      // this.calculateDimensions();
       this.dialogRef.close({
         luggage: new Luggage({
           height: this.height,
@@ -96,6 +96,7 @@ export class TripLuggageComponent implements OnInit {
           cabin: this.cabin,
           large: this.large,
           full: this.full,
+          availableSpace: this.freeSpace,
         }),
         index: this.index,
         modifying: this.modifying,
@@ -116,7 +117,7 @@ export class TripLuggageComponent implements OnInit {
     this.height = this.data.luggage.height;
     this.width = this.data.luggage.width;
     this.depth = this.data.luggage.depth;
-    this.freeSpace = Math.ceil(this.height / referentialHeight * 4);
+    this.freeSpace = this.data.luggage.availableSpace || Math.ceil(this.height / referentialHeight * 4);
     this.full = this.data.luggage.full;
     this.index = this.data.index;
   }

@@ -28,7 +28,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() airport = null;
   @Input() cityReadonly = false;
   @Input() dateReadonly = false;
-  @Input() timeReadonly = false;
+  @Input() timeReadonly = true;
   @Input() minDate = null;
   @Input() edition = false;
   airports = [];

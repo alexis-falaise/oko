@@ -42,10 +42,11 @@
         </mat-autocomplete>
     </mat-form-field>
     <div class="form-row">
-        <div class="form-group col-10 col-md-7">
+        <div class="form-group col-10 col-md-6">
           <input type="text" name="date" formControlName="date"
                  autocomplete="off"
                  [matDatepicker]="picker"
+                 (click)="picker.open()"
                  [class.is-invalid]="location.controls.date.errors?.invalid
                  || (location.controls.date.errors?.required
                  && location.controls.date.touched)
@@ -65,7 +66,8 @@
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker touchUi #picker></mat-datepicker>
         </div>
-        <div class="form-group col-12 col-md-3">
+        <mat-icon class="d-flex align-items-center d-md-none muted">access_time</mat-icon>
+        <div class="form-group col-10 col-md-4 clickable hoverable">
           <input name="time" formControlName="time"
                 [class.is-invalid]="location.controls.time.errors?.invalid
                 || location.controls.time.errors?.required
