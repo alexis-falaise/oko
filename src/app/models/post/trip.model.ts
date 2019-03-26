@@ -16,6 +16,11 @@ export class Trip extends Post {
     cabinOnly: boolean;
     bonus: number;
 
+    /** Front-end properties */
+    weight: number;
+    availableSpace: number;
+    large: boolean;
+
     constructor(trip: Partial<Trip>) {
         super(trip);
         Object.assign(this, trip);
@@ -31,5 +36,34 @@ export class Trip extends Post {
         if (trip.to) {
             this.to = new Location(trip.to);
         }
+        if (trip.luggages) {
+            this.weight = this.calculateWeight(trip.luggages);
+            this.availableSpace = this.calculateSpace(trip.luggages);
+            this.cabinOnly = this.isCabinOnly(trip.luggages);
+            this.large = this.isLargeItemsReady(trip.luggages);
+        }
+    }
+
+    calculateWeight(luggages: Array<Luggage>): number {
+        return luggages.reduce((acc: number, luggage: Luggage) => acc + luggage.weight, 0) as number;
+    }
+
+    calculateSpace(luggages: Array<Luggage>): number {
+        const average = luggages
+        .reduce((acc: number, luggage: Luggage) => acc + luggage.availableSpace, 0) / luggages.length as number;
+        return Math.floor(average);
+    }
+
+    isCabinOnly(luggages: Array<Luggage>): boolean {
+        return luggages.reduce((acc: boolean, luggage: Luggage) => acc = luggage.cabin, false);
+    }
+
+    isLargeItemsReady(luggages: Array<Luggage>): boolean {
+        return luggages.reduce((acc: boolean, luggage: Luggage) => {
+            if (luggage.large) {
+                acc = true;
+            }
+            return acc;
+        }, false);
     }
 }

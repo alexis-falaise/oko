@@ -143,7 +143,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   private setBackgroundPicture() {
-    this.pexels.getBackgroundPicture(this.trip.to.airport.country)
+    this.pexels.getBackgroundPicture(this.trip.to.airport.country, 'original')
     .subscribe(picture => this.background = picture);
   }
 

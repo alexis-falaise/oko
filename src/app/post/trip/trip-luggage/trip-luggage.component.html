@@ -74,21 +74,21 @@
                         'btn-light': !(freeSpace > 2),
                         'btn-success': freeSpace > 2 }" 
                         (click)="freeSpace = 3">
-                        3/4
+                        Beaucoup d'espace
                 </button>
                 <button class="btn" [disabled]="large" 
                         [ngClass]="{
                         'btn-light': !(freeSpace > 1),
                         'btn-success': freeSpace > 1 }" 
                         (click)="freeSpace = 2">
-                        2/4
+                        Pas mal d'espace
                 </button>
                 <button class="btn" [disabled]="large" 
                         [ngClass]="{
                         'btn-light': !(freeSpace > 0),
                         'btn-success': freeSpace > 0 }" 
                         (click)="freeSpace = 1">
-                        1/4
+                        Peu d'espace
                 </button>
               </div>
             </div>

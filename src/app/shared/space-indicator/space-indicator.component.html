@@ -1,0 +1,3 @@
+<div class="space-indicator" [class.light]="light" [class.absolute]="absolute" [style.width]="size + 'px'">
+  <div class="space-indicator__slot" [class.filled]="slot.filled" [style.width]="size/4 + 'px'" *ngFor="let slot of slots"></div>
+</div>

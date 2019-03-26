@@ -10,7 +10,7 @@
                   (click)="editLuggage(i)"
                   (swipeleft)="disclose[i] = true"
                   (swiperight)="disclose[i] = false">
-          <mat-card-title>
+          <mat-card-title class="d-flex align-items-center">
             <mat-icon>
               {{ luggage.cabin ? 'work' : luggage.large ? 'kitchen' : 'flight' }}
             </mat-icon>
@@ -19,7 +19,7 @@
           <app-remove-panel *ngIf="disclose[i]" (remove)="removeLuggage(i)"></app-remove-panel>
           <mat-icon class="remove-luggage" (click)="removeLuggage(i)">clear</mat-icon>
           <mat-card-subtitle>
-            {{ luggage.cabin ? 'Cabine' :  'Soute' }}
+            {{ luggage.cabin ? 'Cabine' :  luggage.large ? 'Volumineux' : 'Soute' }}
           </mat-card-subtitle>
           <mat-card-content>
               <mat-list dense class="luggage-info">
@@ -31,37 +31,26 @@
                   <mat-list-item>
                     <mat-icon matListIcon>swap_vert</mat-icon>
                     <span matLine>{{ luggage.height }} cm</span>
-                    <small class="text-muted" matLine>Hauteur disponible</small>
+                    <small class="text-muted" matLine>Hauteur</small>
                   </mat-list-item>
                   <mat-list-item>
                     <mat-icon matListIcon>swap_horiz</mat-icon>
                     <span matLine>{{ luggage.width }} cm</span>
-                    <small class="text-muted" matLine>Largeur disponible</small>
+                    <small class="text-muted" matLine>Largeur</small>
                   </mat-list-item>
                   <mat-list-item>
                     <mat-icon matListIcon>compare_arrows</mat-icon>
                     <span matLine>{{ luggage.depth }} cm</span>
-                    <small class="text-muted" matLine>Profondeur disponible</small>
+                    <small class="text-muted" matLine>Profondeur</small>
                   </mat-list-item>
               </mat-list>
+              <app-space-indicator [filling]="luggage.availableSpace"
+                                   [size]="250"
+                                   class="mt-2"
+                                   *ngIf="luggage.availableSpace && !luggage.large">
+              </app-space-indicator>
           </mat-card-content>
         </mat-card>
-        <!-- <mat-accordion>
-          <mat-expansion-panel *ngFor="let luggage of luggages; let i = index">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <button class="btn remove-luggage" (click)="removeLuggage(i)">
-                  <mat-icon>clear</mat-icon>
-                </button>
-                <mat-icon>work</mat-icon>
-                Bagage {{ i + 1 }}
-              </mat-panel-title>
-              <mat-panel-description>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <app-trip-sizing [sizingValues]="luggage" (complete)="sizing($event, i)"></app-trip-sizing>
-          </mat-expansion-panel>
-        </mat-accordion> -->
       </div>
     </div>
     <hr class="divider">
@@ -85,107 +74,4 @@
           </div>
       </div>
     </div>
-    <!-- <hr class="divider">
-     <div class="trip-constraints__bonus">
-      <h4 class="trip-title">Bonus voyageur</h4>
-      <small class="text-muted">Proposez un montant pour votre bonus. Tenez compte de la capacité que vous proposez, et du trajet que vous effectuez.</small>
-      <div class="form-group">
-        <div class="input-group">
-          <input type="number" class="form-control" [(ngModel)]="bonus" (ngModelChange)="emit()">
-          <div class="input-group-append">
-            <span class="input-group-text">€</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    
-    <!-- <form [formGroup]="constraints">
-        <div class="constraints-row form-row">
-          <div class="input-group col-12 col-sm-6 col-md-4">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                  <mat-icon>shopping_basket</mat-icon>
-              </span>
-            </div>
-            <input type="number" class="form-control" formControlName="weight" placeholder="Poids">
-            <div class="input-group-append">
-              <span class="input-group-text">kg</span>
-            </div>
-          </div>
-        </div>
-        <div class="constaints-row form-row">
-          <div class="input-group col-6 col-md-4">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <mat-icon>swap_vert</mat-icon>
-              </span>
-            </div>
-            <input type="number" class="form-control" formControlName="height" placeholder="Hauteur">
-            <div class="input-group-append">
-              <span class="input-group-text">cm</span>
-            </div>
-          </div>
-          <div class="input-group col-6 col-md-4">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <mat-icon>swap_horiz</mat-icon>
-              </span>
-            </div>
-            <input type="number" class="form-control" formControlName="width" placeholder="Largeur">
-            <div class="input-group-append">
-              <span class="input-group-text">cm</span>
-            </div>
-          </div>
-          <div class="input-group col-4 d-none d-md-flex">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <mat-icon>compare_arrows</mat-icon>
-                </span>
-              </div>
-              <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
-              <div class="input-group-append">
-                <span class="input-group-text">cm</span>
-              </div>
-            </div>
-        </div>
-        <div class="constraints-row form-row d-block d-md-none">
-            <div class="input-group col-12 col-sm-6 col-md-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <mat-icon>compare_arrows</mat-icon>
-                </span>
-              </div>
-              <input type="number" class="form-control" formControlName="depth" placeholder="Profondeur">
-              <div class="input-group-append">
-                <span class="input-group-text">cm</span>
-              </div>
-            </div>
-        </div>
-        <div class="constraints-row form-row">
-            <div class="form-group constraint-checkbox" [class.active]="constraints.controls.cabinOnly.value">
-                <div class="btn-group btn-group-toggle">
-                    <label class="btn btn-info" [class.active]="constraints.controls.cabinOnly.value">
-                      <input type="checkbox" formControlName="cabinOnly">
-                      <mat-icon>work</mat-icon>
-                    </label>
-                </div>
-                <div class="constraint-checkbox__details">
-                    <small class="text-muted text-uppercase">Bagage Cabine</small><br>
-                    <small class="text-muted">Je ne prends que des bagages en cabine</small>
-                </div>
-            </div>
-          <div class="form-group constraint-checkbox" [class.active]="constraints.controls.airportDrop.value">
-            <div class="btn-group btn-group-toggle">
-                <label class="btn btn-info" [class.active]="constraints.controls.airportDrop.value">
-                  <input type="checkbox" formControlName="airportDrop">
-                  <mat-icon>flight</mat-icon>
-                </label>
-            </div>
-            <div class="constraint-checkbox__details">
-                <small class="text-muted text-uppercase">Remise à l'aéroport</small><br>
-                <small class="text-muted">Je préfère donner l'article à l'aéroport</small>
-            </div>
-          </div>
-        </div>
-      </form> -->
 </div>

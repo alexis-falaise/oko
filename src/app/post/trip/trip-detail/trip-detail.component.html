@@ -97,20 +97,23 @@
               <div class="row justify-content-center">
                 <mat-card class="trip-detail__engagement__constraints-luggage col-12 col-md-6"
                   *ngFor="let luggage of trip.luggages" matRipple>
-                  <mat-icon class="luggage-backdrop">{{ luggage.cabin ? 'work' : 'flight' }}</mat-icon>
-                  <mat-card-title>Bagage {{ luggage.cabin ? ' cabine' : ' en soute'}}</mat-card-title>
+                  <mat-icon class="luggage-backdrop">{{ luggage.cabin ? 'work' : luggage.large ? 'kitchen' : 'flight' }}</mat-icon>
+                  <mat-card-title>Bagage {{ luggage.cabin ? ' cabine' : luggage.large ? 'volumineux' : ' en soute'}}</mat-card-title>
                   <mat-card-content>
                     <div class="luggage-property">
-                      <mat-icon>shopping_basket</mat-icon> Poids <span *ngIf="luggage.weight">{{ ': ' + luggage.weight + ' kg' }}</span>
+                      <mat-icon>shopping_basket</mat-icon> Poids {{ luggage.large ? 'maximum' : 'disponible' }} <span *ngIf="luggage.weight">{{ ': ' + luggage.weight + ' kg' }}</span>
                     </div>
-                    <div class="luggage-property">
+                    <div class="luggage-property" *ngIf="!luggage.large">
                       <mat-icon>swap_vert</mat-icon> Hauteur <span *ngIf="luggage.height">{{ ': ' + luggage.height + ' cm' }}</span><br>
                     </div>
-                    <div class="luggage-property">
+                    <div class="luggage-property" *ngIf="!luggage.large">
                     <mat-icon>swap_horiz</mat-icon> Largeur <span *ngIf="luggage.width">{{ ': ' + luggage.width + ' cm' }}</span><br>
                     </div>
-                    <div class="luggage-property">
+                    <div class="luggage-property" *ngIf="!luggage.large">
                       <mat-icon>compare_arrows</mat-icon> Profondeur <span *ngIf="luggage.depth">{{ ': ' + luggage.depth + ' cm' }}</span>
+                    </div>
+                    <div class="luggage-property" *ngIf="!luggage.large && luggage.availableSpace">
+                      <app-space-indicator [filling]="luggage.availableSpace" [size]="150"></app-space-indicator>
                     </div>
                   </mat-card-content>
                 </mat-card>

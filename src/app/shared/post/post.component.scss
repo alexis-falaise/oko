@@ -128,7 +128,7 @@ $post-height: 100px;
         justify-content: center;
 
         &.horizontal {
-            height: 70%;
+            height: 50%;
 
             .post-trip {
                 &__from,
@@ -140,6 +140,12 @@ $post-height: 100px;
             }
         }
 
+        @media screen and (min-width: 400px) {
+            &.horizontal {
+                height: 60%;
+            }
+        }
+
         &__from,
         &__to {
             display: flex;
@@ -148,6 +154,7 @@ $post-height: 100px;
             text-align: center;
             font-size: 16px;
             color: rgba(255, 255, 255, .9);
+            height: 33%;
 
             &-details {
                 font-size: 12px;
@@ -164,6 +171,7 @@ $post-height: 100px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            height: 25%;
             $iconSize: 64px;
             .mat-icon {
                 height: $iconSize;
@@ -183,8 +191,15 @@ $post-height: 100px;
         color: rgba(255, 255, 255, .9);
         padding-left: 0;
         &.horizontal {
+            height: 50% !important;
             flex-direction: row;
             border-bottom: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        @media screen and (min-width: 400px) {
+            &.horizontal {
+                height: 33% !important;
+            }
         }
     }
 
@@ -193,14 +208,22 @@ $post-height: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
+        &.horizontal {
+            flex-direction: column;
+        }
+    }
+
+    &-space {
+        font-size: .5rem;
     }
 
     &-weight {
-        $weightSize: .9rem;
+        $weightSize: .6rem;
+
         display: flex;
         flex-direction: row;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         font-size: $weightSize;
         .mat-icon {
             width: $weightSize;
@@ -210,6 +233,23 @@ $post-height: 100px;
         .material-icons {
             font-size: $weightSize;
         }
+
+        &.horizontal {
+            $weightSize: .75rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            font-size: $weightSize;
+            .mat-icon {
+                width: $weightSize;
+                height: $weightSize;
+                margin-right: 5px;
+            }
+            .material-icons {
+                font-size: $weightSize;
+            }
+        }
+
     }
 
     &-request {
@@ -294,10 +334,10 @@ $post-height: 100px;
         background-color: rgba(0, 0, 0, 0);
         width: 100%;
         @media screen and (max-width: $break-sm) {
-            width: 110%
+            width: 100%
         } 
         @media screen and (max-width: 576px) {
-            width: 120%;
+            width: 110%;
         }
         height: 105% !important;
         padding: 15px;
