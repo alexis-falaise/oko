@@ -14,9 +14,10 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['../account-post.component.scss']
 })
 export class AccountTripComponent implements OnInit {
-  trips: Array<Trip> = [new Trip({}), new Trip({}), new Trip({})];
-  expiredTrips: Array<Trip> = null;
+  trips: Array<Trip> = [];
+  expiredTrips: Array<Trip> = [];
   hasDraft = false;
+  loading = false;
 
   constructor(
     private postService: PostService,
@@ -29,6 +30,7 @@ export class AccountTripComponent implements OnInit {
     const sortTrips = (a, b) =>  moment(a.date).isBefore(b.date) ? -1 : 1;
     const sortExpiredTrips = (a, b) => moment(a.date).isBefore(b.date) ? 1 : -1;
     const isExpired = (trip) => moment(trip.date).isBefore();
+    this.uiService.onLoading().subscribe(state => this.setLocalLoading(state));
     this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
@@ -63,6 +65,11 @@ export class AccountTripComponent implements OnInit {
   private manageDrafts() {
     const draft = this.postService.getTripDraft();
     this.hasDraft = !!draft;
+  }
+
+  private setLocalLoading(state: boolean) {
+    this.loading = state;
+    this.trips = state ? [new Trip({}), new Trip({}), new Trip({})] : [];
   }
 
 }

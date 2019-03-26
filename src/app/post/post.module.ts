@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
+  MatButtonModule,
   MatCardModule,
   MatIconModule,
   MatInputModule,
@@ -77,6 +78,7 @@ import { ProposalEditBonusComponent } from './proposal/proposal-edit-bonus/propo
     DialogsModule,
     FormsModule,
     MatAutocompleteModule,
+    MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
     MatDialogModule,

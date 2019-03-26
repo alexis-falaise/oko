@@ -14,4 +14,7 @@
       </ng-template>
   </div>
   <app-post [post]="request" [editable]="true" (remove)="remove(i)" *ngFor="let request of requests; let i = index;"></app-post>
+  <div class="account-request__empty" *ngIf="requests && !requests.length">
+      <mat-icon>error_outline</mat-icon> Aucune annonce déposée
+  </div>
 </div>

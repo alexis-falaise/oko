@@ -101,4 +101,6 @@ export class AppComponent implements OnInit {
   back() {
     window.history.back();
   }
+
+  nope() {}
 }

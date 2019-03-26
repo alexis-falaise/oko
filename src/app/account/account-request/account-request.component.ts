@@ -14,8 +14,9 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['../account-post.component.scss']
 })
 export class AccountRequestComponent implements OnInit {
-  requests: Array<Request> = [new Request({}), new Request({}), new Request({})];
+  requests: Array<Request> = [];
   hasDraft = false;
+  loading = false;
 
   constructor(
     private userService: UserService,
@@ -25,6 +26,7 @@ export class AccountRequestComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.uiService.onLoading().subscribe(state => this.setLocalLoading(state));
     this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
@@ -75,6 +77,11 @@ export class AccountRequestComponent implements OnInit {
   private manageDrafts() {
     const draft = this.postService.getRequestDraft();
     this.hasDraft = !!draft;
+  }
+
+  private setLocalLoading(state: boolean) {
+    this.loading = state;
+    this.requests = state ? [new Request({}), new Request({}), new Request({})] : [];
   }
 
 }

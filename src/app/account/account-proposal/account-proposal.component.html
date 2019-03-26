@@ -9,6 +9,10 @@
                 <app-proposal-list [aboutTrip]="true" [proposalList]="receivedFromTrip" [own]="false"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="receivedFromRequest?.length">Demandes de transport</h6>
                 <app-proposal-list [aboutTrip]="false" [proposalList]="receivedFromRequest" [own]="false"></app-proposal-list>
+                <div class="empty" *ngIf="receivedFromTrip && !receivedFromTrip.length
+                                          && receivedFromRequest && !receivedFromRequest.length">
+                    <mat-icon>chat_bubble_outline</mat-icon> Aucune proposition reçue
+                </div>
             </div>
         </mat-tab>
         <mat-tab>
@@ -20,6 +24,10 @@
                 <app-proposal-list [aboutTrip]="false" [proposalList]="sentAboutRequest" [own]="true"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="sentAboutTrip?.length">Propositions de trajet</h6>
                 <app-proposal-list [aboutTrip]="true" [proposalList]="sentAboutTrip" [own]="true"></app-proposal-list>
+                <div class="empty" *ngIf="sentAboutRequest && !sentAboutRequest.length
+                                          && sentAboutTrip && !sentAboutTrip.length">
+                    <mat-icon>chat_bubble_outline</mat-icon> Aucune proposition envoyée
+                </div>
             </div>
         </mat-tab>
     </mat-tab-group>

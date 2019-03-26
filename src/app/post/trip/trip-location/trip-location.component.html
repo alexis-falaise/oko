@@ -10,6 +10,7 @@
                [class.is-invalid]="location.controls.city.errors?.required
                && location.controls.city.touched
                || (submitted && location.controls.city.invalid)" required>
+        <mat-progress-bar class="trip-location__city-loading" mode="indeterminate" *ngIf="cityLoading"></mat-progress-bar>
         <mat-autocomplete #citiesAuto="matAutocomplete">
             <mat-option *ngFor="let city of cities" [value]="city.city">
                 {{ city.city }} ({{ city.country}} )
@@ -24,11 +25,21 @@
     </div>
     <mat-form-field class="form-group trip-location-hybrid-group">
         <input type="text" placeholder="Aéroport" #airport (click)="fetchMatchingAirports(location.controls.city.value)"
+               [readonly]="airportLoading || !location.controls.city.value"
                [class.is-invalid]="location.controls.airport.errors?.invalid
                || (location.controls.airport.errors?.required
                && location.controls.airport.touched)
                || (submitted && location.controls.airport.invalid)"
                matInput formControlName="airport" [matAutocomplete]="auto">
+        <a mat-button mat-icon-button matSuffix (click)="airport.value = ''">
+            <mat-icon>clear</mat-icon>
+        </a>
+        <mat-progress-bar class="trip-location__airport-loading" [class.invalid]="
+                location.controls.airport.errors?.invalid
+                || (location.controls.airport.errors?.required
+                && location.controls.airport.touched)
+                || (submitted && location.controls.airport.invalid)
+        " mode="indeterminate" *ngIf="airportLoading"></mat-progress-bar>
         <div class="invalid-feedback"
             [class.d-block]="location.controls.airport.errors?.required
             && location.controls.airport.touched">
@@ -62,12 +73,11 @@
                 Sélectionnez une date
             </div>
         </div>
-        <div class="form-group col-2 col-md-2">
+        <div class="form-group col-2">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker touchUi #picker></mat-datepicker>
         </div>
-        <mat-icon class="d-flex align-items-center d-md-none muted">access_time</mat-icon>
-        <div class="form-group col-10 col-md-4 clickable hoverable">
+        <div class="form-group col-10 col-md-4 clickable">
           <input name="time" formControlName="time"
                 [class.is-invalid]="location.controls.time.errors?.invalid
                 || location.controls.time.errors?.required
@@ -78,6 +88,7 @@
                 placeholder="Heure"
                 [format]="24"
                 (keyup.enter)="submit()"
+                (click)="timePicker.open()"
                 [ngxTimepicker]="timePicker">
         <div class="invalid-feedback"
             [class.d-block]="location.controls.time.errors?.required
@@ -85,12 +96,9 @@
             Indiquez une heure
         </div>
           <ngx-material-timepicker #timePicker></ngx-material-timepicker>
-          <!-- <input name="time" formControlName="time"
-                autocomplete="off"
-                [class.is-invalid]="location.controls.time.errors?.invalid"
-                [ngClass]="{'form-control': !timeReadonly, 'form-control-plaintext': timeReadonly}"
-                [readonly]="timeReadonly"
-                placeholder="Heure"> -->
+        </div>
+        <div class="col-2 d-flex d-md-none align-items-center">
+            <mat-icon class="muted">access_time</mat-icon>
         </div>
         <input type="submit" style="position: absolute; left: -9999px" tabindex="-1">
     </div>

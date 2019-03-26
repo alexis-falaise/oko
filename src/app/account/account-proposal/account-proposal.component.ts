@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '@core/post.service';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, timer } from 'rxjs';
 import * as moment from 'moment';
 
 import { UserService } from '@core/user.service';
@@ -35,7 +35,7 @@ export class AccountProposalComponent implements OnInit {
     this.userService.getCurrentUser()
     .subscribe((user: User) => {
       if (user) {
-        this.currentUser = user;
+        this.initLists();
         forkJoin([
           this.postService.getReceivedProposalsByReceiver(user)
           .pipe(catchError((err, caught) => caught)),
@@ -43,7 +43,6 @@ export class AccountProposalComponent implements OnInit {
           .pipe(catchError((err, caught) => caught))
         ])
         .subscribe(proposals => {
-          console.log(proposals);
           this.receivedFromTrip = proposals[0].filter(this.filterFromTrip).sort(this.sortByDate);
           this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate);
           this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate);
@@ -60,6 +59,14 @@ export class AccountProposalComponent implements OnInit {
       this.uiService.serverError(error);
       this.uiService.setLoading(false);
     });
+  }
+
+  private initLists() {
+    this.receivedFromTrip = [];
+    this.receivedFromRequest = [];
+    this.sentAboutTrip = [];
+    this.sentAboutRequest = [];
+    timer(2000).subscribe(() => this.uiService.setLoading(false));
   }
 
   private filterFromTrip(proposal: Proposal) {

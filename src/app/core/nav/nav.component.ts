@@ -64,7 +64,7 @@ export class NavComponent implements OnInit, OnChanges {
       if (user) {
         this.displayAccountMenuItems = this.accountMenuItems;
         this.randomWelcome = this.uiService.generateRandomWelcome(user.firstname);
-    } else {
+      } else {
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
     });

@@ -28,11 +28,13 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() airport = null;
   @Input() cityReadonly = false;
   @Input() dateReadonly = false;
-  @Input() timeReadonly = true;
+  @Input() timeReadonly = false;
   @Input() minDate = null;
   @Input() edition = false;
   airports = [];
+  airportLoading = false;
   cities: Array<string> = [];
+  cityLoading = false;
   filteredAirports: Array<Airport>;
   today = moment();
   cityFocus = false;
@@ -78,6 +80,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
     this.adapter.setLocale('fr');
     this.geoService.onAirports()
     .subscribe(airports => {
+      this.airportLoading = false;
       if (airports) {
         this.setAirportList(airports);
         this.location.controls.airport.enable();
@@ -88,6 +91,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
 
     this.geoService.onCities()
     .subscribe(cities => {
+      this.cityLoading = false;
       if (cities) {
         this.cities = cities;
       } else {
@@ -103,6 +107,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
     this.location.controls.city.statusChanges
     .subscribe(status => {
       if (status === 'VALID') {
+        this.airportLoading = true;
         this.fetchMatchingAirports(this.location.controls.city.value);
       }
     });
@@ -143,6 +148,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   }
 
   fetchCities(city: string) {
+    this.cityLoading = true;
     this.geoService.getCities(city);
   }
 

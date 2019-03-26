@@ -42,8 +42,15 @@
                </div>
            </div>
        </div>
-       <div class="post-general col-8 col-sm-9 col-md-10" [class.outdated]="outdated" *ngIf="isTrip; else request">
-           <div class="row" *ngIf="!horizontal; else horizontalTrip">
+       <div [ngClass]="{
+                'post-general': true,
+                'col-8 col-sm-9 col-md-10': horizontal,
+                'col-9 col-md-10': !horizontal
+            }" [class.outdated]="outdated" *ngIf="isTrip; else request">
+            <app-space-indicator [filling]="post.availableSpace" [absolute]="true" [light]="true"
+                                 *ngIf="post.availableSpace">
+            </app-space-indicator>
+            <div class="row" *ngIf="!horizontal; else horizontalTrip">
                <div class="post-trip col-7 col-sm-9 col-md-10">
                    <div class="row align-items-center" *ngIf="!horizontal">
                        <div class="post-trip__from col-12 col-sm-5 justify-content-center">
@@ -69,11 +76,11 @@
                        <div class="d-flex align-items-center">
                            <mat-icon>{{ post.cabinOnly ? 'work' : 'flight' }}</mat-icon>
                        </div>
-                       <div class="ml-1 d-flex align-items-center" *ngIf="post.large">
+                       <div class="d-flex align-items-center" *ngIf="post.large">
                            <mat-icon>kitchen</mat-icon>
                        </div>
-                       <div class="ml-1 d-flex align-items-center">
-                            <mat-icon>shopping_basket</mat-icon> {{ weight || post.weight }} kg
+                       <div class="d-flex align-items-center">
+                            {{ weight || post.weight }} kg
                        </div>
                    </div>
                </div>
