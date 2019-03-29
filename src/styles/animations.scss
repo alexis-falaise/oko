@@ -2,6 +2,12 @@
 
 $animationDuration: 0.15s;
 
+@keyframes animateBackground {
+  0% { background-position: 0 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @keyframes openHero {
     0% { height: 0vh; margin-top: 25vh; border-top-left-radius: 50%; border-top-right-radius: 50% }
     75% { border-top-left-radius: 25%; border-top-right-radius: 25%; }

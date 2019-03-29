@@ -10,7 +10,8 @@ import {
   MatButtonModule,
   MatSnackBarModule,
   MatBottomSheetModule,
-  MatListModule
+  MatListModule,
+  MatDatepickerModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -22,6 +23,7 @@ import { AccountRequestComponent } from './account-request/account-request.compo
 import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
 import { AccountComponent } from './account.component';
 import { AccountProposalComponent } from './account-proposal/account-proposal.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { AccountProposalComponent } from './account-proposal/account-proposal.co
     FormsModule,
     MatBottomSheetModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
     MatChipsModule,
     MatIconModule,
     MatListModule,

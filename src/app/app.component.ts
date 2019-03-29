@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   randomWelcome: string;
   username: string;
   hideNavOn = ['/login', '/logout', '/signin'];
-  lightNavOn = ['/post', '/account', '/messages'];
+  lightNavOn = ['/post', '/account', '/messages', '/profile'];
 
   constructor(
     private authService: AuthService,

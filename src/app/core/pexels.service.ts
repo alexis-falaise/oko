@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +22,11 @@ export class PexelsService {
       this.http.get(query, {headers: headers})
       .subscribe((response: any) => {
         if (response.photos) {
-          this.photosCache[country] = response.photos;
-          const number = response.photos.length;
-          const random = Math.floor(Math.random() * number);
-          observer.next(response.photos[random].src[size]);
+          const photo = this.getPictureFromPexelsArray(response.photos, size);
+          this.loadImage(observer, photo);
         } else {
           this.getCachedBackgroundPicture(observer, country, size);
         }
-        observer.complete();
       }, (error) => {
         this.getCachedBackgroundPicture(observer, country, size);
       });
@@ -38,11 +35,30 @@ export class PexelsService {
 
   private getCachedBackgroundPicture(observer: Observer<string>, country: string, size: string) {
     if (this.photosCache[country]) {
-      const number = this.photosCache[country].length;
-      const random = Math.floor(Math.random() * number);
-      const photo = this.photosCache[country][random].src[size];
-      observer.next(photo);
+      const photo = this.getPictureFromPexelsArray(this.photosCache[country], size);
+      this.loadImage(observer, photo);
+    } else {
+      observer.next(null);
       observer.complete();
     }
+  }
+
+  private getPictureFromPexelsArray(array: Array<any>, size: string) {
+    const number = array.length;
+    const random = Math.floor(Math.random() * number);
+    if (array[random]) {
+      return array[random].src[size];
+    } else {
+      return null;
+    }
+  }
+
+  private loadImage(observer: Observer<string>, photo: string) {
+    const image = new Image();
+    image.onload = () => {
+      observer.next(photo);
+      observer.complete();
+    };
+    image.src = photo;
   }
 }

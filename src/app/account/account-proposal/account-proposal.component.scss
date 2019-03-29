@@ -27,19 +27,21 @@
             height: 25px;
             box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
             z-index: 5;
+            padding-left: 15px;
         }
         &-wrapper {
             height: 57vh;
             overflow-y: scroll;
             overflow-x: hidden;
             padding-bottom: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: center;
+            // align-items: center;
             .empty {
                 color: rgba(0, 0, 0, .2);
                 display: flex;
+                justify-content: center;
                 align-items: center;
             }
         }

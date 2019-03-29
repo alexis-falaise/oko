@@ -7,8 +7,15 @@
                     [class.refused]="proposal.refused && !proposal.closed"
                     [routerLink]="['/post', 'proposal', proposal.id]">
         <h3 class="proposal-list__proposal__title row" *ngIf="aboutTrip; else requestTitle" matLine>
-            <div class="author col-4 col-sm-3" *ngIf="!own"><mat-icon>account_circle</mat-icon> {{ proposal.author?.firstname }}</div>
-            <div class="flight col-8 col-sm-6">
+            <div class="author col-4 col-sm-3" *ngIf="!own">
+                <app-avatar class="proposal-list__proposal__avatar" *ngIf="proposal.author?.avatar; else iconAvatar"
+                            [image]="proposal.author?.avatar" [size]="24"></app-avatar>
+                <ng-template #iconAvatar>
+                    <mat-icon>account_circle</mat-icon>
+                </ng-template>
+                {{ proposal.author?.firstname }}
+            </div>
+            <div [ngClass]="{'flight col-sm-6': true, 'col-8': !own, 'col-12': own}">
                 <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} </div>
                 <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
             </div>
@@ -16,6 +23,9 @@
         </h3>
         <ng-template #requestTitle>
             <h3 class="proposal-list__proposal__title" matLine>
+                <app-avatar class="proposal-list__proposal__avatar" *ngIf="!own"
+                            [image]="proposal.author?.avatar" [size]="24">
+                </app-avatar>
                 {{ own ? ' Ma demande' : 'Demande de ' + proposal.author?.firstname }}
             </h3>
         </ng-template>

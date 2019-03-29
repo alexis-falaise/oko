@@ -15,7 +15,6 @@ import { AccountProposalComponent } from './account/account-proposal/account-pro
 import { MessengerComponent } from './messenger/messenger.component';
 import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
 import { ThreadComponent } from './messenger/thread/thread.component';
-import { ProposalComponent } from './post/proposal/proposal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -32,6 +31,7 @@ const routes: Routes = [
       { path: 'proposal', component: AccountProposalComponent },
     ] },
   { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
+  { path: 'profile', loadChildren: 'app/profile/profile.module#ProfileModule' },
   { path: 'messages', component: MessengerComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: ThreadListComponent },

@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (status.status) {
           this.ngUnsubscribe.next();
           if (this.historyService.hasBack()) {
-            this.historyService.back();
+            this.historyService.back(1);
           } else {
             this.router.navigate(['/home']);
           }

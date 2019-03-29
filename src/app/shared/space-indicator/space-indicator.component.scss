@@ -41,12 +41,8 @@ $indicatorDuration: .75s;
         position: absolute;
         top: -6px;
         left: 0;
-        width: 220%;
+        width: 105%;
         height: 15px;
-
-        @media screen and (min-width: $break-sm) {
-            width: 210%;
-        }
 
         .space-indicator__slot {
             width: 25% !important;

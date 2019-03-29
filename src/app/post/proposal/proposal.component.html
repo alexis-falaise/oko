@@ -1,11 +1,14 @@
 <div class="proposal-title-wrapper" *ngIf="standalone">
   <h2 class="proposal-title">Proposition {{ proposal?.closed ? '(annulée)' : '' }}</h2>
+  <div class="proposal__author-details" *ngIf="proposal?.author && !proposal.authorView">
+      <app-avatar class="proposal__author-details__avatar" [image]="proposal?.author?.avatar" [size]="36"></app-avatar>
+      <div class="proposal__author-details__personnal">
+          de {{ proposal?.author?.firstname }}
+          <app-rating [rating]="proposal.author.rating" [size]="36" [light]="true"></app-rating>
+      </div>
+  </div>
 </div>
-<div class="proposal"
-    [class.standalone]="standalone"
-    [class.container]="standalone"
-    [class.closed]="standalone && proposal.closed"
-    *ngIf="proposal">
+<div *ngIf="proposal" [ngClass]="{'proposal': true, 'standalone container': standalone, 'closed': standalone && proposal.closed}">
     <div class="row justify-content-around proposal__actions">
         <button class="btn btn-light btn-icon"
                 *ngIf="proposal.authorView && !proposal.closed && !proposal.accepted && !proposal.refused"
@@ -113,7 +116,7 @@
 
 
 <ng-template #fromRequest>
-  <div class="proposal__request">
+  <div class="proposal__request" *ngIf="!self">
     <h6 class="text-muted">Articles ({{proposal.from?.items?.length || 0}})</h6>
     <div *ngIf="!standalone; else fullArticles">
       <mat-card class="proposal__request__item" matRipple *ngFor="let item of proposal.from?.items">

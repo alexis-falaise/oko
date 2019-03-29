@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Item } from '@models/item.model';
+import { ItemSize, itemSizeFit } from '@static/item-sizes.static';
 
 @Component({
   selector: 'app-item',
@@ -12,13 +13,18 @@ export class ItemComponent implements OnInit, OnChanges {
   @Input() removePanel: boolean;
   @Input() creator = false;
   @Input() fullWidth = false;
+  @Input() constantHeight = false;
   @Output() remove = new EventEmitter();
+  itemSize: ItemSize;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.item) {
       this.item  = changes.item.currentValue;
+      console.log('Item', changes.item.currentValue);
+      this.itemSize = itemSizeFit(this.item);
+      console.log('Item size', this.itemSize);
     }
     if (changes.removePanel) {
       this.removePanel = changes.removePanel.currentValue;

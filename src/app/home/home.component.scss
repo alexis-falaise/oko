@@ -242,6 +242,7 @@ $transitionStyle: ease-out;
 
                 &.expanded {
                     transition: all $transitionDuration;
+                    height: 70vh;
                     justify-content: center;
                 }
             }

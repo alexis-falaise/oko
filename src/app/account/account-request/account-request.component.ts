@@ -31,8 +31,10 @@ export class AccountRequestComponent implements OnInit {
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
-        this.postService.getRequestByAuthor(user.id)
+        this.uiService.setLoading(true);
+         this.postService.getRequestByAuthor(user.id)
         .subscribe(requests => {
+          this.uiService.setLoading(false);
           if (requests) {
             this.requests = requests
             .map(request => new Request(request))
@@ -54,7 +56,6 @@ export class AccountRequestComponent implements OnInit {
               }
             });
           }
-          this.uiService.setLoading(false);
         });
       }
     });

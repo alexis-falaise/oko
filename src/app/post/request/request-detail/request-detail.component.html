@@ -2,7 +2,7 @@
   <div class="request-detail__hero row">
     <h2 class="request-detail__hero-title" *ngIf="request.user">
         <app-avatar class="request-detail__hero-avatar" [size]="75" [image]="request.user?.avatar" *ngIf="request.user?.avatar && !request.own"></app-avatar>
-        {{ request.own ? 'Mon annonce' : 'Annonce de ' + request.user?.firstname }}
+        {{ request.own ? 'Mon annonce' : 'Annonce de ' + (request.user?.firstname || 'Oko user') }}
     </h2>
     <small class="request-detail__date" *ngIf="request.submitDate">
       Posté {{ moment(request.submitDate).fromNow() }}
@@ -68,7 +68,7 @@
             <mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <app-proposal [proposal]="proposal" [receiver]="!proposal.isAuthor && request.own"></app-proposal>
+        <app-proposal [proposal]="proposal" [receiver]="!proposal.isAuthor && request.own" [entry]="request"></app-proposal>
       </mat-expansion-panel>
     </mat-accordion>
   </div>

@@ -1,17 +1,26 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { User } from '@models/user.model';
-import { Description } from '@models/description.model';
-import { keyframes } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import * as moment from 'moment';
+
 import { UserService } from '@core/user.service';
 import { UiService } from '@core/ui.service';
-import { FormBuilder, Validators } from '@angular/forms';
+
+import { User } from '@models/user.model';
+import { Description } from '@models/description.model';
 import { MeetingPoint } from '@models/meeting-point.model';
-import { MatSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'app-account-info',
   templateUrl: './account-info.component.html',
-  styleUrls: ['./account-info.component.scss']
+  styleUrls: ['./account-info.component.scss'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class AccountInfoComponent implements OnInit {
   user: User;
@@ -24,6 +33,7 @@ export class AccountInfoComponent implements OnInit {
   account = this.fb.group({
     firstname: [''],
     lastname: [''],
+    birthdate: [''],
     email: ['', Validators.email]
   });
   description: Description;
@@ -37,6 +47,8 @@ export class AccountInfoComponent implements OnInit {
     'visitedCountries': 'Pays visités',
     'livedCountries': 'Pays où j\'ai vécu',
   };
+  today = moment();
+  startDate = moment().subtract(25, 'y');
   isArray = Array.isArray;
   frenchization = (word) => this.french[word];
   camelToTitle = (camelCase) => camelCase
@@ -71,6 +83,7 @@ export class AccountInfoComponent implements OnInit {
     this.account.patchValue({
       firstname: user.firstname,
       lastname: user.lastname,
+      birthdate: user.birthdate,
       email: user.email
     });
     this.createEditionObject();
@@ -102,11 +115,13 @@ export class AccountInfoComponent implements OnInit {
     this.user.description = new Description(this.description);
     this.user.address = new MeetingPoint(this.address.value);
     this.user.email = this.account.value.email;
+    this.user.birthdate = this.account.value.birthdate;
+    console.log(this.user);
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
       if (res.status) {
+        console.log(res.data);
         this.snack.open('Profil mis à jour', 'OK', {duration: 2500});
-        this.userService.getCurrentUser();
         this.init(res.data);
       } else {
         this.saveError();

@@ -82,7 +82,7 @@ export class NavComponent implements OnInit, OnChanges {
   }
 
   back() {
-    this.historyService.back();
+    this.historyService.parent();
   }
 
   hide() {

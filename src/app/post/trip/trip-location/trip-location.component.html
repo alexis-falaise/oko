@@ -97,7 +97,8 @@
         </div>
           <ngx-material-timepicker #timePicker></ngx-material-timepicker>
         </div>
-        <div class="col-2 d-flex d-md-none align-items-center">
+        <div class="form-group col-2 d-flex d-md-none align-items-center justify-content-end"
+             (click)="timePicker.open()">
             <mat-icon class="muted">access_time</mat-icon>
         </div>
         <input type="submit" style="position: absolute; left: -9999px" tabindex="-1">

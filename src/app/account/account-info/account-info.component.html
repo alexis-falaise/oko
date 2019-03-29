@@ -1,4 +1,9 @@
 <div class="account-info container">
+  <div class="d-flex justify-content-center mb-2">
+    <button class="btn btn-info btn-icon" [disabled]="!user" [routerLink]="['/profile', user?.id]">
+      <mat-icon>account_circle</mat-icon> Voir mon profil
+    </button>
+  </div>
   <div class="account-info__address">
     <h4 class="account-info-title">Informations générales</h4>
     <form [formGroup]="address" class="needs-validation" novalidate>
@@ -16,6 +21,10 @@
           <input type="text" formControlName="country" class="form-control" placeholder="Pays">
         </div>
       </div>
+      <small class="text-muted">
+        Votre adresse complète ne sera jamais communiquée sans votre autorisation explicite.
+        Seuls votre ville et votre pays de résidence seront indiqués sur votre profil.
+      </small>
     </form>
   </div>
   <hr class="divider">
@@ -28,7 +37,18 @@
       <div class="form-group col-12 col-sm-6">
         <input type="text" formControlName="lastname" class="form-control" placeholder="Nom" readonly>
       </div>
-      <div class="form-group col-12 col-sm-6">
+      <div class="form-group col-10 col-sm-4">
+        <input type="text" formControlName="birthdate"
+               [matDatepicker]="picker"
+               [max]="today"
+               autocomplete="off" 
+               class="form-control" placeholder="Date de naissance">
+      </div>
+      <div class="form-group col-2">
+          <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker startView="year" [startAt]="account.controls.birthdate.value || startDate" touchUi #picker></mat-datepicker>
+      </div>
+      <div class="form-group col-12">
         <input type="email" formControlName="email" class="form-control" placeholder="Email">
       </div>
     </div>

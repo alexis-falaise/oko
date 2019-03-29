@@ -86,7 +86,6 @@ export class PostService {
     filter = filter || this.currentTripFilter;
     filter.afterDate = moment();
     if (filter) {
-      this.currentTripFilter = filter;
       queryString = this.buildQueryString(filter);
     }
     this.http.get(`${this.tripUrl}${queryString}`, {withCredentials: true})
@@ -94,6 +93,8 @@ export class PostService {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         const trips: Array<Trip> = response.data;
+        delete filter.afterDate;
+        this.currentTripFilter = filter;
         this.getTripsUserStats(trips, this.trips);
       }
       nextQuery.next(true);
@@ -113,7 +114,6 @@ export class PostService {
     filter = filter || this.currentRequestFilter;
     filter.afterDate = moment();
     if (filter) {
-      this.currentRequestFilter = filter;
       queryString = this.buildQueryString(filter);
     }
     this.http.get(`${this.requestUrl}${queryString}`, {withCredentials: true})
@@ -121,6 +121,8 @@ export class PostService {
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         const requests = response.data;
+        delete filter.afterDate;
+        this.currentRequestFilter = filter;
         this.getRequestsUserStats(requests, this.requests);
         nextQuery.next(true);
       }

@@ -6,7 +6,6 @@ import * as moment from 'moment';
 
 import { GeoService } from '@core/geo.service';
 import { Airport } from '@models/airport.model';
-import { Observable } from 'rxjs';
 import { isString } from 'util';
 
 @Component({
@@ -28,7 +27,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() airport = null;
   @Input() cityReadonly = false;
   @Input() dateReadonly = false;
-  @Input() timeReadonly = true;
+  @Input() timeReadonly = false;
   @Input() minDate = null;
   @Input() edition = false;
   airports = [];

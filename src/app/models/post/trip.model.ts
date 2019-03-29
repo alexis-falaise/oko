@@ -49,8 +49,9 @@ export class Trip extends Post {
     }
 
     calculateSpace(luggages: Array<Luggage>): number {
-        const average = luggages
-        .reduce((acc: number, luggage: Luggage) => acc + luggage.availableSpace, 0) / luggages.length as number;
+        const filtered = luggages.filter(luggage => !luggage.large);
+        const average = filtered
+        .reduce((acc: number, luggage: Luggage) => acc + luggage.availableSpace, 0) / filtered.length as number;
         return Math.floor(average);
     }
 
@@ -59,11 +60,6 @@ export class Trip extends Post {
     }
 
     isLargeItemsReady(luggages: Array<Luggage>): boolean {
-        return luggages.reduce((acc: boolean, luggage: Luggage) => {
-            if (luggage.large) {
-                acc = true;
-            }
-            return acc;
-        }, false);
+        return !!luggages.find(luggage => luggage.large);
     }
 }

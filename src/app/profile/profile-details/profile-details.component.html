@@ -1,0 +1,79 @@
+<div class="profile-details">
+  <div class="profile-details__hero">
+    <app-avatar class="profile-details__hero-avatar" [image]="user.avatar"
+                [size]="currentUser?.id === user?.id ? 50 : 100"></app-avatar>
+    <h2 class="profile-details__hero-title">{{ user.firstname }}</h2>
+    <app-rating [rating]="user.rating" [light]="true"></app-rating>
+    <button class="btn btn-hero btn-icon mt-2" *ngIf="currentUser?.id === user?.id" [routerLink]="['/account', 'info']">
+      <mat-icon>edit</mat-icon> Modifier mon profil
+    </button>
+  </div>
+  <div class="profile-details__info container">
+    <div class="row h-100">
+      <div class="col-6 profile-details__info-element">
+        <mat-icon>flight</mat-icon> {{ user.trips }} voyage{{ user.trips === 1 ? '' : 's' }}
+      </div>
+      <div class="col-6 profile-details__info-element">
+        <mat-icon>new_releases</mat-icon> {{ user.requests }} annonce{{ user.requests === 1 ? '': 's' }}
+      </div>
+    </div> 
+  </div>
+  <div class="profile-details__description container" *ngIf="user.description.about">
+    <mat-icon class="profile-details__description-backdrop">chat_bubble_outline</mat-icon>
+    {{ user.description?.about }}
+  </div>
+  <div class="profile-details__summary container">
+    <h4 class="profile-details__summary-title">{{ user.firstname }} en bref</h4>
+    <mat-list>
+      <mat-list-item class="profile-details__summary-item"
+        *ngIf="user.address && user.address.city && user.address.country">
+        <mat-icon matListIcon>home</mat-icon> 
+        <h3 matLine>{{ user.address.city }} {{ '- ' + user.address.country }}</h3>
+        <p class="muted" matLine>Localisation</p>
+      </mat-list-item>
+      <mat-list-item class="profile-details__summary-item" *ngIf="user.description.occupation">
+        <mat-icon matListIcon>work</mat-icon>
+        <h3 matLine>{{ user.description.occupation }}</h3>
+        <p class="muted" matLine>Emploi</p>
+      </mat-list-item>
+      <mat-list-item class="profile-details__summary-item" *ngIf="user.description.originCountry">
+        <mat-icon matListIcon>flag</mat-icon>
+        <h3 matLine>{{ user.description.originCountry }}</h3>
+        <p class="muted" matLine>Pays d'origine</p>
+      </mat-list-item>
+    </mat-list>
+    <h4 class="profile-details__summary-title mt-3" *ngIf="livedCountries?.length">
+      Pays où {{ user.firstname }} a vécu ({{ livedCountries.length }})
+    </h4>
+    <mat-list dense class="profile-details__summary__country-list mb-5" *ngIf="livedCountries?.length">
+      <mat-list-item class="profile-details__summary-item--country"
+                     [class.hasBackground]="!!livedCountry.picture"
+                     [style.background-image]="'url(' + livedCountry.picture + ')'"
+                     *ngFor="let livedCountry of livedCountries">
+        <h3 matLine>{{ livedCountry.label }}</h3>
+      </mat-list-item>
+    </mat-list>
+    <h4 class="profile-details__summary-title" *ngIf="visitedCountries?.length">
+      Pays visités ({{ visitedCountries.length }})
+    </h4>
+    <mat-list dense class="profile-details__summary__country-list mb-5" *ngIf="visitedCountries?.length">
+        <mat-list-item class="profile-details__summary-item--country"
+                      [class.hasBackground]="!!visitedCountry.picture"
+                      [style.background-image]="'url(' + visitedCountry.picture + ')'"
+                      *ngFor="let visitedCountry of visitedCountries">
+          <h3 matLine>{{ visitedCountry.label }}</h3>
+        </mat-list-item>
+    </mat-list>
+    <h4 class="profile-details__summary-title" *ngIf="interests?.length">
+      Interêts
+    </h4>
+    <mat-list dense class="profile-details__summary__country-list" *ngIf="interests?.length">
+      <mat-list-item class="profile-details__summary-item--country"
+                     [class.hasBackground]="!!interest.picture"
+                     [style.background-image]="'url('+ interest.picture + ')'"
+                     *ngFor="let interest of interests">
+          <h3 matLine>{{ interest.label }}</h3>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

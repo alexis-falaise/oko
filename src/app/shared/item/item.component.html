@@ -1,5 +1,6 @@
 <mat-card class="item" matRipple [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'"
           [class.full-width]="fullWidth"
+          [class.constantHeight]="constantHeight"
           (swipeLeft)="removePanel = true" (swipeRight)="removePanel = false" class="item">
     <div class="close" (click)="removeItem()" *ngIf="removable">
       <mat-icon>clear</mat-icon>
@@ -24,18 +25,12 @@
       <div class="item__cabin">
         <mat-icon>{{ item.cabinOnly ? 'work' : 'flight '}}</mat-icon>
         {{ item.cabinOnly ? 'En cabine' : 'En soute' }}
+        <div class="item__dimensions__size ml-2 d-flex align-items-center">
+          <mat-icon>{{ itemSize.icon }}</mat-icon> {{ itemSize.label }}
+        </div>
       </div>
       <div class="item__dimensions">
         <span *ngIf="item.weight">Poids: {{ item.weight }} kg</span>
-        <span *ngIf="item.weight && item.height || item.width || item.depth">
-          - Dimensions:
-        </span>
-        <span *ngIf="item.height">{{ item.height }}</span>
-        <span *ngIf="item.height && (item.width || item.depth)">x</span>
-        <span *ngIf="item.width">{{ item.width }}</span>
-        <span *ngIf="(item.height && !item.width) || (!item.height && item.width) || (item.height && item.width) && item.depth">x</span>
-        <span *ngIf="item.depth">{{ item.depth }}</span>
-        <span *ngIf="item.height || item.width || item.depth">cm</span>
       </div>
       <div class="item__pictures row">
         <div class="item-picture col-3" *ngFor="let picture of item.photo"></div>

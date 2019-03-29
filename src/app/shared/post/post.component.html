@@ -1,5 +1,4 @@
 <div matRipple class="post"
-    (click)="toPost()"
     (swipeLeft)="showPanel()" (swipeRight)="hidePanel()"
     [style.background-image]="'url('+backgroundPicture+')'"
     [class.hasBackground]="!!backgroundPicture"
@@ -9,6 +8,7 @@
 
     <div class="post-backdrop row" [class.horizontal]="horizontal"  [class.hasBackground]="!!backgroundPicture">
         <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="!horizontal"
+            [routerLink]="['/profile', post.user?.id]"
             [style.background-image]="'url('+avatarLocation+'/'+post.user?.avatar+')'">
            <div class="post-info__user-info" *ngIf="post.user">
                <div class="post-info__user-info__firstname">
@@ -25,7 +25,8 @@
                </div>
            </div>
        </div>
-       <div class="post-info horizontal col-4 col-sm-3 col-md-2 justify-content-center" *ngIf="horizontal">
+       <div class="post-info horizontal col-4 col-sm-3 col-md-2 justify-content-center" *ngIf="horizontal" 
+            [routerLink]="['/profile', post.user?.id]">
            <div class="post-info__user-info" *ngIf="post.user">
                <app-avatar [size]="60" [image]="post.user?.avatar" *ngIf="post.user?.avatar"></app-avatar>
                <div class="post-info__user-info__firstname">
@@ -43,12 +44,14 @@
            </div>
        </div>
        <div [ngClass]="{
-                'post-general': true,
-                'col-8 col-sm-9 col-md-10': horizontal,
-                'col-9 col-md-10': !horizontal
-            }" [class.outdated]="outdated" *ngIf="isTrip; else request">
+                'post-general col-md-10': true,
+                'col-8 col-sm-9': horizontal,
+                'col-9': !horizontal
+            }" [class.outdated]="outdated"
+            (click)="toPost()"
+             *ngIf="isTrip; else request">
             <app-space-indicator [filling]="post.availableSpace" [absolute]="true" [light]="true"
-                                 *ngIf="post.availableSpace">
+                                 *ngIf="post.availableSpace && !horizontal">
             </app-space-indicator>
             <div class="row" *ngIf="!horizontal; else horizontalTrip">
                <div class="post-trip col-7 col-sm-9 col-md-10">
@@ -96,11 +99,11 @@
 
 <ng-template #horizontalTrip>
     <div class="post-practical horizontal row">
+        <app-space-indicator *ngIf="post.availableSpace && horizontal"
+                             [filling]="post.availableSpace" [light]="true" [absolute]="true">
+        </app-space-indicator>
         <div class="post-date horizontal col-6 col-md-8">
             <div>{{ post.date?.format('DD/MM') }}</div>
-            <div class="post-space" *ngIf="post.availableSpace">
-                <app-space-indicator [filling]="post.availableSpace" [light]="true" [absolute]="true"></app-space-indicator>
-            </div>
         </div>
         <div class="post-weight horizontal col-6 col-md-4" *ngIf="weight || post.weight">
             <div>
@@ -135,7 +138,7 @@
 </ng-template>
 
 <ng-template #request>
-    <div class="post-general post-request col-9 col-md-10" [class.outdated]="outdated">
+    <div class="post-general post-request col-9 col-md-10" (click)="toPost()" [class.outdated]="outdated">
         <div class="row">
             <div class="post-request__content col-6 col-sm-8">
                 <div class="row post-request__content__items h-75">

@@ -41,6 +41,7 @@ export class User {
     lastConnection: Moment;
     formattedLastConnection: string;
     isConnected: boolean;
+    rating: number;
 
     // Database id
     id?: string;
@@ -55,6 +56,7 @@ export class User {
         }
         if (!user.ratings || user.ratings && !user.ratings.length) {
             this.ratings = [5];
+            this.rating = Math.round(this.ratings.reduce((acc, value) => acc + value, 0) / this.ratings.length);
         }
         if (user._id) {
             this.id = user._id;

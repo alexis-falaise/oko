@@ -1,8 +1,12 @@
+@import "../../../styles/animations.scss";
 @import "../../../styles/variables.scss";
 
 .login {
     width: 100vw;
     transition: all $transitionDuration;
+    background: $heroGradient;
+    background-size: 400%;
+    animation: animateBackground ease 5s infinite;
 
     &.blur {
         transition: all $transitionDuration;

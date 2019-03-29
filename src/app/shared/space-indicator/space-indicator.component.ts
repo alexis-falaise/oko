@@ -49,7 +49,6 @@ export class SpaceIndicatorComponent implements OnInit, OnChanges {
     this.slots = this.slots.map((slot, index) => {
       return index < filling ? new Slot(true) : new Slot(false);
     });
-    console.log(this.slots);
   }
 
 }

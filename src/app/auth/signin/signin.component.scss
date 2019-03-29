@@ -3,6 +3,9 @@
 .signin {
     width: 100%;
     height: 100vh;
+    background: $heroGradient;
+    background-size: 400%;
+    animation: animateBackground ease 5s infinite;
 
     &-content {
         width: 100%;
@@ -12,12 +15,14 @@
     }
 
     &-form {
+        transition: all $transitionDuration;
         padding: 15px;
         border-radius: 3px;
         background-color: rgba(255, 255, 255, .2);
         box-shadow: 0 0 15px rgba(0, 0, 0, .3);
         margin-bottom: 25px;
         &:hover {
+            transition: all $transitionDuration;
             background-color: rgba(255, 255, 255, .3);
         }
     }

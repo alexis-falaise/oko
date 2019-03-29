@@ -48,7 +48,7 @@
     </div>
     <div class="home-content" [class.expanded]="!expanded && !empty" [class.empty]="empty" id="content">
         <div class="container">
-            <div class="home-content__list-wrapper" [class.expanded]="!expanded" id="trip-list">
+            <div class="home-content__list-wrapper" [class.expanded]="displayContent" id="trip-list">
                 <div class="home-content__list" [hidden]="empty">
                     <app-post-list [trip]="true" [horizontal]="true"
                                    (listRefresh)="listStatus($event)">

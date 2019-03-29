@@ -62,10 +62,10 @@ export class AccountProposalComponent implements OnInit {
   }
 
   private initLists() {
-    this.receivedFromTrip = [];
-    this.receivedFromRequest = [];
-    this.sentAboutTrip = [];
-    this.sentAboutRequest = [];
+    this.receivedFromTrip = null;
+    this.receivedFromRequest = null;
+    this.sentAboutTrip = null;
+    this.sentAboutRequest = null;
     timer(2000).subscribe(() => this.uiService.setLoading(false));
   }
 

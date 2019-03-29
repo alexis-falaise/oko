@@ -10,6 +10,7 @@ import {
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 import { LogoutComponent } from './logout/logout.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [LoginComponent, SigninComponent, LogoutComponent],
@@ -20,6 +21,7 @@ import { LogoutComponent } from './logout/logout.component';
     MatInputModule,
     MatProgressBarModule,
     ReactiveFormsModule,
+    RouterModule,
   ]
 })
 export class AuthModule { }

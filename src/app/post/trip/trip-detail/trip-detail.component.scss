@@ -1,4 +1,5 @@
 
+@import "../../../../styles/classes.scss";
 @import "../../../../styles/variables.scss";
 @import "../../../../styles/animations.scss";
 
@@ -24,6 +25,7 @@
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         &.hasBackground {
           transition: all .5s;
+          animation: appear 1s;
           background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .7));
           background-size: cover;
           background-position: center;
@@ -33,13 +35,15 @@
     &__hero {
         transition: all .5s;
         &.hasBackground {
-            transition: all .5s;
+            transition: all 1s;
+            background: $heroGradient;
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
         background: $heroGradient;
         background-size: 100vw 100vh;
+        background-position: center;
         width: 100vw;
         position: sticky;
         z-index: 10;
@@ -77,7 +81,7 @@
         }
 
         &__date {
-            top: 16vh;
+            top: 23vh;
         }
 
         &__views {
@@ -279,11 +283,8 @@
                 max-width: 90%;
                 margin: 0 5px 5px 0;
                 .luggage-backdrop {
+                    @extend .base-icon-backdrop;
                     font-size: 128px;
-                    color: rgba(0, 0, 0, .1);
-                    position: absolute;
-                    left: 50%;
-                    z-index: 0;
                 }
                 
                 .mat-card-title {

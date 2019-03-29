@@ -42,7 +42,8 @@
   </div>
   <div class="trip-detail__info container" [class.faded]="fadeInfo" *ngIf="!own" id="info">
     <div class="row h-100">
-      <div class="trip-detail__info__user col-6 col-sm-4" *ngIf="trip && trip.user">
+      <div class="trip-detail__info__user col-6 col-sm-4 clickable" *ngIf="trip && trip.user"
+           [routerLink]="['/profile', trip.user.id]">
         <div class="trip-detail__info__user-row row">
             <div class="trip-detail__info__user-avatar col-6 col-sm-4 col-md-3">
                 <app-avatar [image]="trip.user.avatar" [size]="75"></app-avatar>
@@ -95,10 +96,10 @@
       <div class="row">
           <div class="trip-detail__engagement__constraints-luggages col-12 col-md-6" *ngIf="trip.luggages && trip.luggages.length">
               <div class="row justify-content-center">
-                <mat-card class="trip-detail__engagement__constraints-luggage col-12 col-md-6"
+                <mat-card class="trip-detail__engagement__constraints-luggage col-12"
                   *ngFor="let luggage of trip.luggages" matRipple>
                   <mat-icon class="luggage-backdrop">{{ luggage.cabin ? 'work' : luggage.large ? 'kitchen' : 'flight' }}</mat-icon>
-                  <mat-card-title>Bagage {{ luggage.cabin ? ' cabine' : luggage.large ? 'volumineux' : ' en soute'}}</mat-card-title>
+                  <mat-card-title>{{ luggage.cabin ? 'Bagage cabine' : luggage.large ? 'Article volumineux' : 'Bagage en soute'}}</mat-card-title>
                   <mat-card-content>
                     <div class="luggage-property">
                       <mat-icon>shopping_basket</mat-icon> Poids {{ luggage.large ? 'maximum' : 'disponible' }} <span *ngIf="luggage.weight">{{ ': ' + luggage.weight + ' kg' }}</span>

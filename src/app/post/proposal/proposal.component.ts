@@ -15,6 +15,7 @@ import { Request } from '@models/post/request.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
+import { Post } from '@models/post/post.model';
 
 @Component({
   selector: 'app-proposal',
@@ -24,9 +25,11 @@ import { User } from '@models/user.model';
 export class ProposalComponent implements OnInit, OnChanges {
   @Input() proposal: Proposal;
   @Input() receiver: boolean;
+  @Input() entry: Post;
   currentUser: User;
   fromTrip: boolean;
   standalone: boolean;
+  self: boolean;
   moment = moment;
 
   constructor(
@@ -43,6 +46,13 @@ export class ProposalComponent implements OnInit, OnChanges {
     if (changes.proposal) {
       this.proposal = changes.proposal.currentValue;
       this.initProposal();
+    }
+    if (changes.receiver) {
+      this.receiver = changes.receiver.currentValue;
+    }
+    if (changes.entry) {
+      console.log('Entry', changes.entry.currentValue);
+      this.entry = changes.entry.currentValue;
     }
   }
 
@@ -64,7 +74,6 @@ export class ProposalComponent implements OnInit, OnChanges {
   }
 
   initProposal() {
-    console.log(this.proposal);
     if (this.proposal) {
       this.fromTrip = this.proposal.isFromTrip();
       if (this.proposal.receiver && this.currentUser) {
@@ -72,6 +81,14 @@ export class ProposalComponent implements OnInit, OnChanges {
       }
       if (this.currentUser) {
         this.proposal.isAuthor(this.currentUser);
+      }
+      if (this.entry) {
+        if (this.proposal.from instanceof Post) {
+          this.self = this.entry.id === this.proposal.from.id;
+        }
+        if (typeof this.proposal.from === 'string') {
+          this.self = this.entry.id === this.proposal.from;
+        }
       }
     }
   }

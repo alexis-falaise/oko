@@ -18,6 +18,9 @@ export class AccountTripComponent implements OnInit {
   expiredTrips: Array<Trip> = [];
   hasDraft = false;
   loading = false;
+  sortTrips = (a, b) =>  moment(a.date).isBefore(b.date) ? -1 : 1;
+  sortExpiredTrips = (a, b) => moment(a.date).isBefore(b.date) ? 1 : -1;
+  isExpired = (trip) => moment(trip.date).isBefore();
 
   constructor(
     private postService: PostService,
@@ -27,25 +30,9 @@ export class AccountTripComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const sortTrips = (a, b) =>  moment(a.date).isBefore(b.date) ? -1 : 1;
-    const sortExpiredTrips = (a, b) => moment(a.date).isBefore(b.date) ? 1 : -1;
-    const isExpired = (trip) => moment(trip.date).isBefore();
     this.uiService.onLoading().subscribe(state => this.setLocalLoading(state));
     this.uiService.setLoading(true);
-    this.userService.getCurrentUser()
-    .subscribe(user => {
-      if (user) {
-        this.postService.getTripByAuthor(user.id)
-        .subscribe(trips => {
-          if (trips) {
-            this.trips = trips.map(trip => new Trip(trip)).filter(trip => !isExpired(trip)).sort(sortTrips);
-            this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => isExpired(trip)).sort(sortExpiredTrips);
-            this.uiService.setLoading(false);
-          }
-        });
-      }
-      this.uiService.setLoading(false);
-    }, (error) => this.uiService.serverError(error));
+    this.fetchTrips();
     this.manageDrafts();
   }
 
@@ -60,6 +47,28 @@ export class AccountTripComponent implements OnInit {
   deleteDraft() {
     this.postService.deleteTripDraft();
     this.hasDraft = false;
+  }
+
+  private fetchTrips() {
+    this.userService.getCurrentUser()
+    .subscribe(user => {
+      if (user) {
+        this.uiService.setLoading(true);
+        this.postService.getTripByAuthor(user.id)
+        .subscribe(trips => {
+          this.uiService.setLoading(false);
+          if (trips) {
+            this.trips = trips.map(trip => new Trip(trip)).filter(trip => !this.isExpired(trip)).sort(this.sortTrips);
+            this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => this.isExpired(trip)).sort(this.sortExpiredTrips);
+          }
+        }, (error) => {
+          this.uiService.setLoading(false);
+          this.uiService.serverError(error);
+        });
+      } else {
+        this.uiService.setLoading(false);
+      }
+    }, (error) => this.uiService.serverError(error));
   }
 
   private manageDrafts() {

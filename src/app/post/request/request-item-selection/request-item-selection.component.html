@@ -12,6 +12,7 @@
                 *ngFor="let item of selectableItems; let i = index"
                 [item]="item"
                 [removable]="false"
+                [constantHeight]="true"
                 [creator]="true">
       </app-item>
       <div class="request-item-selection__empty d-flex justify-content-center" *ngIf="!selectableItems.length">

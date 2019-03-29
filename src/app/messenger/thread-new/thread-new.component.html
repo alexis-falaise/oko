@@ -8,7 +8,7 @@
     <mat-form-field class="thread-new__search-input">
       <input matInput type="text" placeholder="Rechercher un utilisateur"
              [(ngModel)]="userSearch" (ngModelChange)="search()">
-      <button mat-button *ngIf="userSearch" matSuffix mat-icon-button aria-label="Effacer" (click)="userSearch=''">
+      <button mat-button *ngIf="userSearch" matSuffix mat-icon-button aria-label="Effacer" (click)="userSearch=''; search()">
         <mat-icon>close</mat-icon>
       </button>
       <mat-icon matSuffix *ngIf="!userSearch">search</mat-icon>
