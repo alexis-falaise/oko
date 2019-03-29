@@ -1,10 +1,10 @@
 <div class="profile-details">
   <div class="profile-details__hero">
     <app-avatar class="profile-details__hero-avatar" [image]="user.avatar"
-                [size]="currentUser?.id === user?.id ? 50 : 100"></app-avatar>
+                [size]="own ? 50 : 100"></app-avatar>
     <h2 class="profile-details__hero-title">{{ user.firstname }}</h2>
     <app-rating [rating]="user.rating" [light]="true"></app-rating>
-    <button class="btn btn-hero btn-icon mt-2" *ngIf="currentUser?.id === user?.id" [routerLink]="['/account', 'info']">
+    <button class="btn btn-hero btn-icon mt-2" *ngIf="own" [routerLink]="['/account', 'info']">
       <mat-icon>edit</mat-icon> Modifier mon profil
     </button>
   </div>
@@ -75,5 +75,10 @@
           <h3 matLine>{{ interest.label }}</h3>
       </mat-list-item>
     </mat-list>
+  </div>
+  <div class="d-flex justify-content-center mt-3 mb-3" *ngIf="!own">
+    <button class="btn btn-hero btn-icon" (click)="contact()">
+      <mat-icon>mail_outline</mat-icon> Contacter {{ user?.firstname }}
+    </button>
   </div>
 </div>

@@ -59,7 +59,7 @@
           </button>
         </div>
     </div>
-    <hr class="divider" *ngIf="proposal.from">
+    <hr class="divider" *ngIf="proposal.from && !self">
     <div class="proposal__trip" *ngIf="fromTrip; else fromRequest" (click)="openTrip(proposal.from)">
         <div class="proposal__trip-date">
             <div class="arrival">
@@ -132,6 +132,8 @@
     </div>
   </div>
 </ng-template>
+
+
 <ng-template #requestLocation>
   <div class="row">
     <div [ngClass]="{'col-6': proposal.from?.urgent, 'col-12': !proposal.from?.urgent}">

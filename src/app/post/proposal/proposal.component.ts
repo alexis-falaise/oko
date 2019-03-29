@@ -51,7 +51,6 @@ export class ProposalComponent implements OnInit, OnChanges {
       this.receiver = changes.receiver.currentValue;
     }
     if (changes.entry) {
-      console.log('Entry', changes.entry.currentValue);
       this.entry = changes.entry.currentValue;
     }
   }

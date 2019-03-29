@@ -26,7 +26,7 @@ export class RequestItemComponent implements OnInit {
     cabinOnly: [false],
     price: ['', Validators.compose([Validators.min(0), Validators.required])],
   });
-  itemSizes = itemSizes;
+  itemSizes = itemSizes.filter(size => size.visible);
   index: number;
   modifying: boolean;
 

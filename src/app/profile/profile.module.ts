@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule, MatListModule } from '@angular/material';
+import { MatIconModule, MatListModule, MatSnackBarModule } from '@angular/material';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { SharedModule } from '@shared/shared.module';
@@ -16,6 +16,7 @@ import { ProfileRouteComponent } from './profile-route/profile-route.component';
     CommonModule,
     MatIconModule,
     MatListModule,
+    MatSnackBarModule,
     ProfileRoutingModule,
     SharedModule,
   ],

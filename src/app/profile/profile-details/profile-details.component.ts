@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 import { User } from '@models/user.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PexelsService } from '@core/pexels.service';
 import { forkJoin, Observable } from 'rxjs';
 import { UserService } from '@core/user.service';
+import { MessengerService } from '@core/messenger.service';
+import { MatSnackBar } from '@angular/material';
 
 class DisplayElement {
   label: string;
@@ -19,12 +21,16 @@ class DisplayElement {
 export class ProfileDetailsComponent implements OnInit {
   user: User;
   currentUser: User;
+  own: boolean;
   livedCountries: Array<DisplayElement>;
   visitedCountries: Array<DisplayElement>;
   interests: Array<DisplayElement>;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+    private snack: MatSnackBar,
+    private messengerService: MessengerService,
     private userService: UserService,
     private pexelService: PexelsService
   ) { }
@@ -37,7 +43,10 @@ export class ProfileDetailsComponent implements OnInit {
       }
     });
     this.userService.getCurrentUser()
-    .subscribe(user => this.currentUser = user);
+    .subscribe(user => {
+      this.currentUser = user;
+      this.own = this.currentUser.id === this.user.id;
+    });
   }
 
   init() {
@@ -52,6 +61,15 @@ export class ProfileDetailsComponent implements OnInit {
       this.fetchDisplayElementList(this.user.description.visitedCountries)
       .subscribe(countries => this.visitedCountries = countries);
 
+    }
+  }
+
+  contact() {
+    if (this.currentUser) {
+      this.messengerService.getContactThread(this.currentUser, this.user);
+    } else {
+      const snack = this.snack.open('Connectez-vous!', 'Connexion');
+      snack.onAction().subscribe(() => this.router.navigate(['/login']));
     }
   }
 

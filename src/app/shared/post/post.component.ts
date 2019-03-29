@@ -53,6 +53,7 @@ export class PostComponent implements OnInit, OnChanges {
   }
 
   buildPostProperties(post) {
+    this.weight = null;
     this.post = post;
     this.isTrip = post instanceof Trip;
     this.isRequest = post instanceof Request;

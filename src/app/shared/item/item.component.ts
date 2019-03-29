@@ -22,9 +22,7 @@ export class ItemComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.item) {
       this.item  = changes.item.currentValue;
-      console.log('Item', changes.item.currentValue);
       this.itemSize = itemSizeFit(this.item);
-      console.log('Item size', this.itemSize);
     }
     if (changes.removePanel) {
       this.removePanel = changes.removePanel.currentValue;

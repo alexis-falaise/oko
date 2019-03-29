@@ -9,6 +9,8 @@ export class ItemSize {
     depth?: number;
     id: number;
     selected: boolean;
+    selectable: boolean;
+    visible: boolean;
     constructor(itemSize: Partial<ItemSize>) {
       Object.assign(this, itemSize);
     }
@@ -24,6 +26,8 @@ export const itemSizes = [
       depth: 5,
       id: 1,
       selected: true,
+      selectable: true,
+      visible: true,
     }),
     new ItemSize({
       label: 'Moyen',
@@ -34,6 +38,8 @@ export const itemSizes = [
       depth: 10,
       id: 2,
       selected: false,
+      selectable: true,
+      visible: true,
     }),
     new ItemSize({
       label: 'Grand',
@@ -44,6 +50,8 @@ export const itemSizes = [
       depth: 15,
       id: 3,
       selected: false,
+      selectable: true,
+      visible: true,
     }),
     new ItemSize({
       label: 'Volumineux',
@@ -54,6 +62,8 @@ export const itemSizes = [
       depth: 32,
       id: 4,
       selected: false,
+      selectable: true,
+      visible: true,
     }),
     new ItemSize({
       label: 'Taille non définie',
@@ -64,6 +74,8 @@ export const itemSizes = [
       depth: 50,
       id: 5,
       selected: false,
+      selectable: false,
+      visible: false,
     })
 ];
 
