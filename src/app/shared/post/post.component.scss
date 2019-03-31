@@ -282,6 +282,7 @@ $post-height: 100px;
         &__content {
             padding-left: 20px;
             &__items {
+                height: 60% !important;
                 overflow-y: scroll;
             }
             &__location {
@@ -291,7 +292,9 @@ $post-height: 100px;
                 color: $locationColor;
                 display: flex;
                 flex-direction: row;
-                align-items: center;
+                justify-content: flex-start;
+                align-items: flex-start;
+                height: 40% !important;
                 .mat-icon {
                     height: $locationSize;
                     width: $locationSize;
@@ -302,8 +305,7 @@ $post-height: 100px;
                     color: $locationColor;
                 }
                 &__country {
-                    display: inline-flex;
-                    margin-left: 5px;
+                    display: flex;
                     font-size: 9px;
                     color: $white-alpha-4;
                 }

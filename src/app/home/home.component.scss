@@ -398,6 +398,7 @@ $transitionStyle: ease-out;
 
         &__footer {
             height: 35vh;
+            min-height: 250px;
             position: relative;
             bottom: 0;
             z-index: 51;
@@ -405,6 +406,7 @@ $transitionStyle: ease-out;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             background-color: rgb(50, 50, 50);
             color: rgb(125, 125, 125);
             text-align: center;

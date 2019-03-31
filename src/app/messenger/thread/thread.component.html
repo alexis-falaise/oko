@@ -1,7 +1,13 @@
 <div class="thread">
     <div class="thread__header w-100 d-flex align-items-center" (click)="scrollDown()">
-        <app-avatar class="thread__header-avatar" [image]="thread?.contact?.avatar" [size]="75"></app-avatar>
-        <h6 class="thread__header-name">{{ thread?.contact?.firstname }} {{ thread?.contact?.lastname }}</h6>
+        <app-avatar class="thread__header-avatar"
+                    [image]="thread?.contact?.avatar"
+                    [routerLink]="['/profile', thread?.contact?.id]"
+                    [size]="75">
+        </app-avatar>
+        <h6 class="thread__header-name" [routerLink]="['/profile', thread?.contact?.id]">
+            {{ thread?.contact?.firstname }} {{ thread?.contact?.lastname }}
+        </h6>
     </div>
     <div class="thread__content container" id="content">
         <div class="thread__content__message" *ngFor="let message of thread?.messages; let i = index" id="{{'message-' + i}}">

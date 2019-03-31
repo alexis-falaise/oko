@@ -33,5 +33,10 @@ export class Thread {
         }
     }
 
+    pushMessage(message: Message) {
+        this.messages.push(message);
+        this.lastMessage = message;
+    }
+
 
 }

@@ -147,10 +147,12 @@ export class MessengerService {
    */
 
   resetThread() {
+    this.disconnectCurrentThread();
     this.thread.next(null);
   }
 
   resetThreads() {
+    this.disconnectCurrentThread();
     this.threads.next(null);
   }
 
@@ -168,7 +170,7 @@ export class MessengerService {
 
   private refreshThread(thread: Thread, message: Message) {
     const currentThread = this.thread.getValue();
-    if (currentThread.id === thread.id) {
+    if (currentThread && currentThread.id === thread.id) {
       currentThread.messages.push(message);
       this.thread.next(currentThread);
     }

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   randomWelcome: string;
   username: string;
   hideNavOn = ['/login', '/logout', '/signin'];
-  lightNavOn = ['/post', '/account', '/messages', '/profile'];
+  lightNavOn = ['/post', '/account', '/messages', '/profile', '/landing'];
 
   constructor(
     private authService: AuthService,
@@ -63,6 +63,11 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.displayNav = this.hideNavOn.findIndex(item => item === event.url) === -1;
         this.lightNav = this.lightNavOn.findIndex(item => event.url.includes(item)) !== -1;
+        if (event.url.includes('/messages')) {
+          this.notificationService.disableMessageNotifications();
+        } else {
+          this.notificationService.enableMessageNotifications();
+        }
       }
     });
     this.authService.onStatus()

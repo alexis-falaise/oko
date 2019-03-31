@@ -115,13 +115,16 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.socket.on(`message/new/${this.thread.id}`, (message) => {
       const receivedMessage = new Message(message, this.currentUser);
       this.thread.messages.push(new Message(receivedMessage));
+      console.log('New message', receivedMessage);
       if (!receivedMessage.isAuthor(this.currentUser) && !receivedMessage.seen) {
         const seenMessage = receivedMessage.markAsSeen();
+        console.log('Emit client sight', seenMessage);
         this.socket.emit(`message/clientSight/${this.thread.id}`, seenMessage);
       }
       timer(this.uiCoolDown).subscribe(() => this.scrollDown());
     });
     this.socket.on(`message/serverSight/${this.thread.id}`, (message) => {
+      console.log('Server sight received', message);
       const messageIndex = this.thread.messages.findIndex(threadMessage => threadMessage._id === message._id);
       this.thread[messageIndex] = message;
     });

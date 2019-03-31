@@ -55,6 +55,7 @@ export class Message {
     markAsSeen() {
         this.seen = true;
         this.sightDate = moment();
+        return this;
     }
 
     isAuthor(user: User): boolean {

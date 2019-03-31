@@ -18,12 +18,13 @@
             overflow-x: hidden;
         }
     }
-    &.column {
+    &.horizontal {
         flex-direction: column !important;
         justify-content: flex-start !important;
         overflow-y: scroll !important;
         overflow-x: hidden;
         width: 100%;
+        height: 59vh;
     }
     .contact {
         transition: all $transitionDuration;

@@ -141,16 +141,21 @@
     <div class="post-general post-request col-9 col-md-10" (click)="toPost()" [class.outdated]="outdated">
         <div class="row">
             <div class="post-request__content col-6 col-sm-8">
-                <div class="row post-request__content__items h-75">
+                <div class="row post-request__content__items">
                     <ul>
                         <li class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</li>
                     </ul>
                 </div>
-                <div class="row post-request__content__location h-25" *ngIf="post?.meetingPoint">
-                    <mat-icon>place</mat-icon>{{ post.meetingPoint.city }} 
-                        <span class="post-request__content__location__country" *ngIf="post.meetingPoint?.country">
-                        {{ post.meetingPoint.country }}
-                    </span>
+                <div class="row post-request__content__location" *ngIf="post?.meetingPoint">
+                    <mat-icon>place</mat-icon>
+                    <div class="d-flex flex-column">
+                        <div class="post-request__content__location__city">
+                                {{ post.meetingPoint.city }} 
+                        </div>
+                        <div class="post-request__content__location__country" *ngIf="post.meetingPoint?.country">
+                            {{ post.meetingPoint.country }}
+                        </div>
+                    </div>
                     <span *ngIf="!post.meetingPoint?.city && !post.meetingPoint.country">Non renseigné</span>
                 </div>
             </div>

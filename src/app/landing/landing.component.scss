@@ -1,0 +1,49 @@
+@import "../../styles/classes.scss";
+@import "../../styles/variables.scss";
+
+.landing {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-image: url('assets/hero-landing.jpg');
+    background-size: cover;
+    background-position: center;
+
+    &-backdrop {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        background: linear-gradient(0deg, rgba(0, 0, 0, .7), rgba(0, 0, 0, .1));
+        animation: appear 1s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &-profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 50vh;
+    }
+
+    &-expat,
+    &-traveler {
+        animation: appear .75s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    &-expat {
+        margin-bottom: 25px;
+    }
+
+    &-sub {
+        margin-top: 10px;
+        color: $white-alpha-8;
+        text-shadow: 0 0 2px rgba(0, 0, 0, .3);
+    }
+}

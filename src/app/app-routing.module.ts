@@ -12,6 +12,7 @@ import { AccountInfoComponent } from './account/account-info/account-info.compon
 import { AccountRequestComponent } from './account/account-request/account-request.component';
 import { AccountTripComponent } from './account/account-trip/account-trip.component';
 import { AccountProposalComponent } from './account/account-proposal/account-proposal.component';
+import { LandingComponent } from './landing/landing.component';
 import { MessengerComponent } from './messenger/messenger.component';
 import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
 import { ThreadComponent } from './messenger/thread/thread.component';
@@ -19,6 +20,7 @@ import { ThreadComponent } from './messenger/thread/thread.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'landing', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'signin', component: SigninComponent },

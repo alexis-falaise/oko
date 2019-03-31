@@ -5,12 +5,14 @@ import * as moment from 'moment';
 import { MessengerService } from '@core/messenger.service';
 
 import { Thread } from '@models/messenger/thread.model';
+import { Message } from '@models/messenger/message.model';
 import { UserService } from '@core/user.service';
 import { User } from '@models/user.model';
 import { Socket } from 'ngx-socket-io';
 import { MatDialog } from '@angular/material';
 import { ThreadNewComponent } from '../thread-new/thread-new.component';
 import { UiService } from '@core/ui.service';
+
 
 @Component({
   selector: 'app-thread-list',
@@ -34,7 +36,14 @@ export class ThreadListComponent implements OnInit {
     this.uiService.setLoading(true);
     this.messengerService.onThreads()
     .subscribe(threads => {
-      this.threads = threads.map(thread => new Thread(thread, this.currentUser || undefined))
+      if (this.threads) {
+        this.removeThreadsMessagesListeners();
+      } 
+      this.threads = threads.map(thread => {
+        const formattedThread = new Thread(thread, this.currentUser || undefined);
+        this.setThreadMessagesListener(formattedThread);
+        return formattedThread;
+      })
       .sort(this.sortThreads);
       this.uiService.setLoading(false);
     });
@@ -104,6 +113,22 @@ export class ThreadListComponent implements OnInit {
     this.socket.on(`${this.currentUser.id}/thread/new`, () => {
       this.messengerService.getThreads(this.currentUser);
     });
+  }
+
+  private setThreadMessagesListener(thread: Thread) {
+    this.socket.on(`message/new/${thread.id}`, (receivedMessage) => {
+      const message = new Message(receivedMessage, this.currentUser);
+      const threadIndex = this.threads.findIndex(listThread => listThread.id === thread.id);
+      this.threads[threadIndex].pushMessage(message);
+    });
+  }
+
+  private removeThreadsMessagesListeners() {
+    if (this.threads) {
+      this.threads.forEach(thread => {
+        this.socket.removeListener(`message/new/${thread.id}`);
+      });
+    }
   }
 
   private removeNewThreadListener() {

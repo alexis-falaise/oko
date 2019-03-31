@@ -34,6 +34,7 @@ import { UserService } from '@core/user.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MessengerModule } from './messenger/messenger.module';
+import { LandingModule } from './landing/landing.module';
 
 declare var Hammer: any;
 
@@ -75,6 +76,7 @@ const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
     MatRippleModule,
     MatSnackBarModule,
     MessengerModule,
+    LandingModule,
     SocketIoModule.forRoot(config),
   ],
   providers: [
