@@ -23,7 +23,8 @@
                             <h6 class="thread-list__thread-title" *ngIf="thread.contact">
                                 {{ thread.contact?.firstname }} {{ thread.contact?.lastname }}
                             </h6>
-                            <div class="thread-message">
+                            <!-- .thread-message won't work, and that's twilight zone kinda stuff-->
+                            <div class="hello">
                                 {{ thread?.lastMessage
                                    ? thread?.lastMessage?.authorView 
                                     ? 'Vous: ' + thread.lastMessage.content

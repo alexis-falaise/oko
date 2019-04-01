@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { MessengerService } from '@core/messenger.service';
+
+import { Thread } from '@models/messenger/thread.model';
+import { UserService } from '@core/user.service';
+
 @Component({
   selector: 'app-messenger',
   templateUrl: './messenger.component.html',
@@ -8,6 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class MessengerComponent implements OnInit {
   threadDisplay: boolean;
+  thread: Thread;
   title: string;
 
   constructor(
@@ -17,10 +23,7 @@ export class MessengerComponent implements OnInit {
 
   ngOnInit() {
     this.route.url.subscribe(segments => {
-      this.threadDisplay = !!segments.find(segment => segment.path.includes('thread'));
-      if (this.threadDisplay) {
-        this.title = 'Discussion';
-      }
+      this.threadDisplay = !!this.router.url.includes('thread');
     });
   }
 

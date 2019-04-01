@@ -28,7 +28,6 @@
           animation: appear 1s;
           background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .7));
           background-size: cover;
-          background-position: center;
         }
     }
 
@@ -38,7 +37,7 @@
             transition: all 1s;
             background: $heroGradient;
             background-size: cover;
-            background-position: center;
+            background-position: 50% 75%;
             background-attachment: fixed;
         }
         background: $heroGradient;

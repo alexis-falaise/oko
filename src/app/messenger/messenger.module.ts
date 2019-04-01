@@ -18,9 +18,10 @@ import { ThreadNewComponent } from './thread-new/thread-new.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
 import { FormsModule } from '@angular/forms';
 import { MessageComponent } from './message/message.component';
+import { ThreadHeaderComponent } from './thread-header/thread-header.component';
 
 @NgModule({
-  declarations: [ThreadComponent, MessengerComponent, ThreadListComponent, ThreadNewComponent, ContactListComponent, MessageComponent],
+  declarations: [ThreadComponent, MessengerComponent, ThreadListComponent, ThreadNewComponent, ContactListComponent, MessageComponent, ThreadHeaderComponent],
   imports: [
     CommonModule,
     FormsModule,

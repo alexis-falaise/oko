@@ -1,8 +1,12 @@
 <div class="messenger">
   <div class="messenger__hero">
-    <h2 class="messenger__hero-title">{{ title || 'Messages' }}</h2>
+    <h2 class="messenger__hero-title" *ngIf="!threadDisplay; else threadTitle">{{ title || 'Messages' }}</h2>
   </div>
   <div class="messenger__content container">
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<ng-template #threadTitle>
+  <app-thread-header *ngIf="threadDisplay"></app-thread-header>
+</ng-template>

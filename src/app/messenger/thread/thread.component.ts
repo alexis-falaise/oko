@@ -25,7 +25,8 @@ export class ThreadComponent implements OnInit, OnDestroy {
   message = new Message({});
   ngUnsubscribe = new Subject();
   currentUser: User;
-  inputRows = 1;
+  inputRows = 2;
+  maxInputRows = 4;
   uiCoolDown = 150;
   constructor(
     @Inject(DOCUMENT) public document: Document,
@@ -61,10 +62,15 @@ export class ThreadComponent implements OnInit, OnDestroy {
   captureKey(event) {
     // Shift + Enter
     if (event.shiftKey && event.keyCode === 13) {
-      this.inputRows = 2;
+      this.inputRows = this.inputRows < this.maxInputRows ? this.inputRows + 1 : this.maxInputRows;
     }
+    // Shift + Backspace
+    if (event.shiftKey && event.keyCode === 8) {
+      this.inputRows = this.inputRows > 1 ? this.inputRows - 1 : 2;
+    }
+    // Enter (without Shift)
     if (!event.shiftKey && event.keyCode === 13) {
-      this.inputRows = 1;
+      this.inputRows = 2;
       this.sendMessage();
     }
   }
@@ -96,8 +102,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(thread => {
       if (thread) {
-        this.removeThreadListeners();
-        this.thread = new Thread(thread, this.currentUser);
+        this.thread = thread;
         this.setThreadListeners();
         timer(this.uiCoolDown).subscribe(() => this.scrollDown());
         this.uiService.setMainLoading(false);
@@ -105,16 +110,10 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
   }
 
-  private removeThreadListeners() {
-    if (this.thread) {
-      this.socket.removeListener(`message/new/${this.thread.id}`);
-    }
-  }
-
   private setThreadListeners() {
     this.socket.on(`message/new/${this.thread.id}`, (message) => {
       const receivedMessage = new Message(message, this.currentUser);
-      this.thread.messages.push(new Message(receivedMessage));
+      this.messengerService.refreshThread(this.thread, receivedMessage);
       console.log('New message', receivedMessage);
       if (!receivedMessage.isAuthor(this.currentUser) && !receivedMessage.seen) {
         const seenMessage = receivedMessage.markAsSeen();
@@ -125,8 +124,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
     this.socket.on(`message/serverSight/${this.thread.id}`, (message) => {
       console.log('Server sight received', message);
-      const messageIndex = this.thread.messages.findIndex(threadMessage => threadMessage._id === message._id);
-      this.thread[messageIndex] = message;
+      this.messengerService.refreshThread(this.thread, message);
     });
   }
 
@@ -134,7 +132,6 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.messengerService.resetThread();
-    this.removeThreadListeners();
   }
 
 }

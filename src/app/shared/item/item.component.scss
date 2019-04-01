@@ -3,10 +3,11 @@
 .item {
     height: auto;
     width: 300px;
+    overflow: hidden;
 
     &.constantHeight {
         height: 300px;
-        overflow: scroll;
+        overflow-y: scroll;
     }
     &.full-width {
         width: 100%;

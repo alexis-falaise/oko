@@ -1,0 +1,10 @@
+<div class="thread-header" [routerLink]="['/profile', thread?.contact?.id]" >
+    <app-avatar class="thread-header__avatar"
+                [image]="thread?.contact?.avatar"
+                *ngIf="thread"
+                [size]="50">
+    </app-avatar>
+    <h6 class="thread-header__name">
+        {{ thread?.contact?.firstname }} {{ thread?.contact?.lastname }}
+    </h6>
+</div>

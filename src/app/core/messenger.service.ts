@@ -12,6 +12,7 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { Message } from '@models/messenger/message.model';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +22,24 @@ export class MessengerService {
   contacts = new BehaviorSubject<Array<User>>([]);
   threadChange = new Subject();
   threads = new BehaviorSubject<Array<Thread>>([]);
+  currentUser: User;
   private messengerUrl = `${environment.serverUrl}/messenger`;
 
   constructor(
     private http: HttpClient,
     private uiService: UiService,
+    private userService: UserService,
     private router: Router,
     private socket: Socket
-  ) { }
+  ) {
+    console.log('Messenger service construction');
+    userService.getCurrentUser().subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+        console.log('Messenger service - current user', user);
+      }
+    });
+  }
 
   onThread() {
     return this.thread.asObservable();
@@ -49,11 +60,18 @@ export class MessengerService {
    * @param threadId : Unique id of the thread to retrieve
    */
   getThread(threadId: number) {
+    console.log('Get thread');
     const url = `${this.messengerUrl}/thread/${threadId}`;
     this.getThreadByUrl(url);
   }
 
-  getContactThread(user: User, contact: User) {
+
+  /**
+   * Get a thread in relation with a given contact
+   * @param user: Current User
+   * @param contact: Related contact
+   */
+  getContactThread(user: User = this.currentUser, contact: User) {
     const url = `${this.messengerUrl}/thread/user/${user.id}/contact/${contact.id}`;
     this.getThreadByUrl(url);
   }
@@ -64,7 +82,7 @@ export class MessengerService {
    * Returns an empty array if server returns a 200 status with no data.
    * @param user : user object
    */
-  getThreads(user: User) {
+  getThreads(user: User = this.currentUser) {
     this.http.get(`${this.messengerUrl}/thread/user/${user.id}`, {withCredentials: true})
     .subscribe((threads: Array<Thread>) => {
       if (threads && threads.length) {
@@ -101,7 +119,7 @@ export class MessengerService {
    * @param thread : thread object (pass on new Thread({id: id}) if you only have id on hand)
    * @param user : user object
    */
-  addUserToThread(thread: Thread, user: User): Observable<ServerResponse> {
+  addUserToThread(thread: Thread, user: User = this.currentUser): Observable<ServerResponse> {
     return this.http.post(`${this.messengerUrl}/thread/${thread.id}/user`,
                 user, {withCredentials: true}) as Observable<ServerResponse>;
   }
@@ -111,7 +129,7 @@ export class MessengerService {
    * Contacts are oko users that were invovled in a proposal with the given user
    * @param user : concerned user
    */
-  getContacts(user: User) {
+  getContacts(user: User = this.currentUser) {
     this.http.get(`${this.messengerUrl}/contacts/user/${user.id}`, {withCredentials: true})
     .subscribe((contacts: Array<User>) => {
       if (contacts) {
@@ -147,6 +165,7 @@ export class MessengerService {
    */
 
   resetThread() {
+    console.log('Reset Thread');
     this.disconnectCurrentThread();
     this.thread.next(null);
   }
@@ -160,7 +179,10 @@ export class MessengerService {
     this.contacts.next(null);
   }
 
-  private disconnectCurrentThread() {
+  /**
+   * Remove listeners of the currentThread and trigger a change in Thread
+   */
+  disconnectCurrentThread() {
     const currentThread = this.thread.getValue();
     if (currentThread) {
       this.socket.removeListener(`message/new/${currentThread.id}`);
@@ -168,7 +190,12 @@ export class MessengerService {
     }
   }
 
-  private refreshThread(thread: Thread, message: Message) {
+  /**
+   * Refresh a given thread with an input message
+   * @param thread : Given thread (check purpose)
+   * @param message : New message to add to thread
+   */
+  refreshThread(thread: Thread, message: Message) {
     const currentThread = this.thread.getValue();
     if (currentThread && currentThread.id === thread.id) {
       currentThread.messages.push(message);
@@ -188,10 +215,10 @@ export class MessengerService {
       this.disconnectCurrentThread();
       if (thread) {
           this.router.navigate(['messages', 'thread', thread.id || thread._id]);
-          this.thread.next(new Thread(thread));
+          this.thread.next(new Thread(thread, this.currentUser));
           this.socket.on(`message/new/${thread.id}`, (message) => {
-          this.refreshThread(thread, message);
-        });
+            this.refreshThread(thread, message);
+          });
       } else {
         this.thread.next(null);
       }

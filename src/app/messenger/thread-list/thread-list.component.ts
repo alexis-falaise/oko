@@ -38,14 +38,14 @@ export class ThreadListComponent implements OnInit {
     .subscribe(threads => {
       if (this.threads) {
         this.removeThreadsMessagesListeners();
-      } 
+        this.uiService.setLoading(false);
+      }
       this.threads = threads.map(thread => {
         const formattedThread = new Thread(thread, this.currentUser || undefined);
         this.setThreadMessagesListener(formattedThread);
         return formattedThread;
       })
       .sort(this.sortThreads);
-      this.uiService.setLoading(false);
     });
     this.messengerService.onContacts()
     .subscribe(contacts => {

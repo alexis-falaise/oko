@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 
 import { User } from '@models/user.model';
 import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -49,12 +50,22 @@ export class NotificationService {
   private setMessageListeners() {
     console.log('Setting message listeners');
     this.socket.on(`message/new/${this.currentUser.id}`, (info) => {
-      const snack = this.snack.open(`Nouveau message de ${info.author}`, 'Ouvrir', {duration: 4000});
-      snack.onAction().subscribe(() => this.router.navigate(['/messages', 'thread', info.threadId]));
+      const title = 'Nouveau message';
+      const message = `Nouveau message de ${info.author}`;
+      const action = 'Ouvrir';
+      const redirect = `/messages/thread/${info.threadId}`;
+      this.notify(title, message, action, redirect);
     });
   }
 
   private removeMessageListeners() {
     this.socket.removeListener(`message/new/${this.currentUser.id}`);
+  }
+
+  private notify(title: string, message: string, action: string, redirect?: string) {
+    const snack = this.snack.open(message, action, {duration: 4000});
+    if (redirect) {
+      snack.onAction().subscribe(() => this.router.navigate([redirect]));
+    }
   }
 }
