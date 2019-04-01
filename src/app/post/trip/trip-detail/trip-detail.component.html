@@ -144,7 +144,7 @@
     </div>
     <div *ngIf="!own">
       <div class="trip-detail__engagement__form d-flex justify-content-center" [class.engagement]="engagement"
-           *ngIf="!requests?.length; else pending">
+           *ngIf="requests && !requests.length; else pending">
         <button class="btn btn-hero btn-engagement" (click)="makeRequest()" *ngIf="!engagement">
           <mat-icon>shop</mat-icon> Faire une demande
         </button>

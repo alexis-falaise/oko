@@ -24,6 +24,10 @@
             align-items: center;
         }
 
+        &-title {
+            font-weight: 100;
+        }
+
         .btn-type {
             transition: all $transitionStyle $transitionDuration;
             display: flex;
@@ -61,7 +65,7 @@
 
     &__content {
         animation: appear $animationDuration;
-        width: 100vw;
+        // width: 100vw;
         height: 82vh;
         background-color: white;
         box-shadow: 0 0 15px rgba(0, 0, 0, .3);
@@ -70,7 +74,7 @@
         top: -25px;
         z-index: 11;
         padding-bottom: 5px;
-        margin-left: -4vw;
+        // margin-left: -4vw;
         overflow-y: scroll;
         overflow-x: hidden;
 

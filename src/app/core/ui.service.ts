@@ -31,7 +31,6 @@ export class UiService {
   }
 
   setLoading(loadingState: boolean) {
-    console.log('Set loading', loadingState);
     this.loading.next(loadingState);
   }
 

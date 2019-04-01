@@ -124,7 +124,7 @@
       </mat-card>
     </div>
     <ng-template #fullArticles>
-        <app-item class="proposal__request__item" [item]="item" [fullWidth]="true"
+        <app-item class="proposal__request__item" [item]="item" [fullWidth]="true" [removable]="false"
                   *ngFor="let item of proposal.from?.items"></app-item>
     </ng-template>
     <div class="d-flex w-100 justify-content-center mt-5">

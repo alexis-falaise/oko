@@ -208,7 +208,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (request.items) {
       this.items = request.items;
-      this.computeBonus();
+      this.computeBonus(request.bonus);
       this.computeTotalPrice();
     }
     this.requestId = request.id;
@@ -286,11 +286,11 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     return saveRequest;
   }
 
-  private computeBonus() {
+  private computeBonus(bonus?: number) {
     this.itemsPrice = this.items.reduce((sum, item) => sum + item.price, 0);
     let calculatedBonus = this.itemsPrice * this.bonusPercentage;
     calculatedBonus = calculatedBonus > this.staticBonus ? calculatedBonus : this.staticBonus;
-    this.meeting.controls.bonus.patchValue(Math.ceil(calculatedBonus));
+    this.meeting.controls.bonus.patchValue(Math.ceil(bonus || calculatedBonus));
   }
 
   private computeTotalPrice() {

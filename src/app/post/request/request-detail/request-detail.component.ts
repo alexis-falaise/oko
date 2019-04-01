@@ -49,15 +49,14 @@ export class RequestDetailComponent implements OnInit {
             .subscribe(user => {
               if (user) {
                 this.currentUser = user;
-                this.setRequest(request);
                 this.getProposals(request);
-              } else {
-                this.setRequest(request);
               }
+              this.setRequest(request);
             }, (err) => this.setRequest(request));
           }
         }, (err) => this.serverError(err));
       } else {
+        this.uiService.setLoading(false);
         this.router.navigate(['/404']);
       }
     });

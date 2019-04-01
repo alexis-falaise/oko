@@ -55,7 +55,7 @@
                                   || signinForm.controls.password.errors?.minLength)
                                   && (signinForm.controls.password.touched || validated)"
               formControlName="password" required>
-            <small class="form-text text-muted" *ngIf="!signinForm.controls.password.touched">
+            <small class="form-text muted--light" *ngIf="!signinForm.controls.password.touched">
               Votre mot de passe doit être composé de 8 caractères minimum
             </small>
             <div class="invalid-feedback d-block"

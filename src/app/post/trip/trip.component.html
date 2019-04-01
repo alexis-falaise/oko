@@ -3,16 +3,6 @@
     <div class="trip__hero-title-wrapper">
       <h1 class="trip__hero-title">{{ edition ? 'Mon' : 'Je'}} voyage</h1>
     </div>
-    <!-- <div class="trip__hero-type">
-        <div class="btn-group btn-group-toggle">
-          <label class="btn btn-hero btn-type" [class.active]="!return">
-            <input type="radio" name="single" id="single" [checked]="!return" (click)="return = false"> Aller Simple
-          </label>
-          <label class="btn btn-hero btn-type" [class.active]="return">
-            <input type="radio" name="return" id="return" [checked]="return" (click)="return = true"> Aller-retour
-          </label>
-        </div>
-    </div> -->
   </div>
   <div class="trip__content">
     <button class="btn btn-warning btn-remove-trip" (click)="removeDraft()" *ngIf="draft">
@@ -135,8 +125,10 @@
         <small *ngIf="!departureSave || !arrivalSave">Complétez les informations de votre trajet</small>
         <div *ngIf="departureSave && arrivalSave && constraintsSave">
             <hr class="divider">
-            <div class="text-muted d-flex align-items-center" *ngIf="constraintsSave?.luggages">
-              <mat-icon>work</mat-icon> {{ constraintsSave.luggages.length }} bagage{{constraintsSave.luggages.length > 1 ? 's': '' }}
+            <div class="text-muted d-flex align-items-center" *ngFor="let luggage of constraintsSave?.luggages">
+              <mat-icon class="mr-2">{{ luggage.cabin ? 'work' : luggage.large ? 'kitchen' : 'flight' }}</mat-icon>
+              1 {{ luggage.large ? 'article volumineux' : 'bagage ' + (luggage.cabin ? 'cabine' : 'en soute') }}
+              - {{ luggage.weight }} kg disponible{{ luggage.weight === 1 ? '' : 's' }}
             </div>
             <div class="text-muted d-flex align-items-center" *ngIf="bonus">
               <mat-icon>euro_symbol</mat-icon>

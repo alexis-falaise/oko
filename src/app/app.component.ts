@@ -66,7 +66,6 @@ export class AppComponent implements OnInit {
         if (event.url.includes('/messages')) {
           this.notificationService.disableMessageNotifications();
         } else {
-          console.log('Not in messages');
           this.notificationService.enableMessageNotifications();
         }
       }

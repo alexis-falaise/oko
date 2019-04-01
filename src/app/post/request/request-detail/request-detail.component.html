@@ -72,23 +72,37 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-  <div class="request-detail__location">
-    <h4 class="request-detail__location-title request-detail__section-title">
-      {{ request.own ? 'Ma ville' : 'Ville de remise' }}
-    </h4>
-    <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
-      <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
-    </div>
-    <ng-template #noCity>
-      <small class="text-muted">
-        Aucune ville d'arrivée définie pour cette annonce.
-      </small>
-      <div class="d-flex w-100 justify-content-center">
-        <button class="btn btn-outline-info btn-sm btn-icon" *ngIf="request.own" [routerLink]="['/post/request', request.id, 'edit']">
-          <mat-icon>edit</mat-icon> Modifier l'annonce
-        </button>
+  <div class="row">
+    <div class="col-6">
+      <div class="request-detail__location">
+        <h4 class="request-detail__location-title request-detail__section-title">
+          {{ request.own ? 'Ma ville' : 'Ville de remise' }}
+        </h4>
+        <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
+          <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
+        </div>
+        <ng-template #noCity>
+          <small class="text-muted">
+            Aucune ville d'arrivée définie pour cette annonce.
+          </small>
+          <div class="d-flex w-100 justify-content-center">
+            <button class="btn btn-outline-info btn-sm btn-icon" *ngIf="request.own" [routerLink]="['/post/request', request.id, 'edit']">
+              <mat-icon>edit</mat-icon> Définir une ville de remise
+            </button>
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
+    </div>
+    <div class="col-6">
+      <div class="request-detail__location request-detail__section">
+          <h4 class="request-detail__section-title">
+            Bonus voyageur
+          </h4>
+          <div class="bonus" *ngIf="request?.bonus">
+            {{ request.bonus }} €
+          </div>
+        </div>
+    </div>
   </div>
   <hr class="divider">
   <div class="request-detail__summary">
