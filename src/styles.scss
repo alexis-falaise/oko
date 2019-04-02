@@ -57,6 +57,13 @@ html, body {
     animation: $duration enter;
 }
 
+.div {
+    outline: none;
+    &:focus {
+        outline: none;
+    }
+}
+
 .container,
 .post, .item, .avatar, .btn {
     animation: 0.15s appear;

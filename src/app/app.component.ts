@@ -1,19 +1,19 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
 import * as moment from 'moment';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
-import { HistoryService } from '@core/history.service';
 import { NotificationService } from '@core/notification.service';
-import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'oko';
   logged = false;
   displayNav = false;
@@ -23,14 +23,14 @@ export class AppComponent implements OnInit {
   mainLoading: boolean;
   randomWelcome: string;
   username: string;
+  ngUnsubscribe = new Subject();
+  nextStatus = new Subject();
   hideNavOn = ['/login', '/logout', '/signin', '/oneclick'];
   lightNavOn = ['/post', '/account', '/messages', '/profile', '/landing'];
 
   constructor(
     private authService: AuthService,
-    private historyService: HistoryService,
     private notificationService: NotificationService,
-    private socket: Socket,
     private uiService: UiService,
     private ref: ChangeDetectorRef,
     private router: Router
@@ -70,12 +70,15 @@ export class AppComponent implements OnInit {
       }
     });
     this.authService.onStatus()
+    .pipe(takeUntil(this.ngUnsubscribe || this.nextStatus))
     .subscribe((status: any) => {
+      this.nextStatus.next(true);
       if (status && status.status) {
         this.username = status.user.firstname;
         this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
         this.updateLogStatus(status.status);
       } else {
+        this.authService.checkSocialAuthentication();
         this.updateLogStatus(false);
       }
     });
@@ -108,4 +111,9 @@ export class AppComponent implements OnInit {
 
   /** Don't do anything on context menu trigger */
   nope() {}
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

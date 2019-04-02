@@ -23,7 +23,7 @@ import { PexelsService } from '@core/pexels.service';
 })
 export class TripDetailComponent implements OnInit {
   trip: Trip = null;
-  requests: Array<Request> = null;
+  requests: Array<Request> = [];
   items: Array<Item> = null;
   currentUser: User = null;
   currentRequest: Request = null;

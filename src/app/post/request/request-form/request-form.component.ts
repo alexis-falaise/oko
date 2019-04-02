@@ -179,7 +179,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         if (this.currentUser.address && objectIsComplete(this.currentUser.address)) {
           this.meeting.controls.meetingPoint.patchValue(this.currentUser.address);
         } else {
-          const snack = this.snack.open('Vous n\'avez pas indiqué d\'adresse dans votre profil', 'Ajouter');
+          const snack = this.snack.open('Vous n\'avez pas indiqué d\'adresse dans votre profil', 'Ajouter', {duration: 5000});
           snack.onAction().subscribe(() => {
             const draft = this.createSaveRequest();
             this.saveDraft(draft);

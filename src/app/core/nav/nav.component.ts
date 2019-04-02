@@ -19,7 +19,7 @@ export class NavComponent implements OnInit, OnChanges {
   menuDisplay = false;
   guestAccountMenuItems: Array<MenuItem> = [
     { label: 'Aide', path: '/help', icon: 'help' },
-    { label: 'Connexion', path: '/login', icon: 'power_settings_new' },
+    { label: 'Connexion', path: '/oneclick', icon: 'power_settings_new' },
   ];
   accountMenuItems: Array<MenuItem> = [
     { label: 'Aide', path: '/help', icon: 'help' },

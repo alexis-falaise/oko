@@ -59,7 +59,7 @@ export class AccountComponent implements OnInit {
   connexionError() {
     const snackRef = this.snack.open('Vous avez été déconnecté', 'Reconnexion');
     snackRef.onAction().subscribe(() => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/oneclick']);
     });
   }
 

@@ -16,6 +16,7 @@ import { Post } from '@models/post/post.model';
 import { Filter } from '@models/app/filter.model';
 import { Request } from '@models/post/request.model';
 import { GeoService } from '@core/geo.service';
+import { UserService } from '@core/user.service';
 
 class City {
   city: string;
@@ -57,12 +58,14 @@ export class HomeComponent implements OnInit {
   today = moment();
   city: City | string;
   cities: Array<City> = [];
+  deferredPrompt = null;
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
     private authService: AuthService,
     private postService: PostService,
     private uiService: UiService,
+    private userService: UserService,
     private geoService: GeoService,
     private homeElement: ElementRef,
     private snack: MatSnackBar,
@@ -85,17 +88,20 @@ export class HomeComponent implements OnInit {
       this.uiService.setLoading(false);
       this.cities = cities;
     });
-    this.authService.onUser().subscribe(user => {
-      if (user) {
-        if (user.sessions && user.sessions.length === 1 || !user.sessions && !this.profileSnack) {
-          this.profileSnack = true;
-          const snack = this.snack.open('Complétez votre profil !', 'Bonne idée', {duration: 7500});
-          snack.onAction().subscribe(() => this.router.navigate(['/account/info']));
-        }
+    this.authService.onUser().subscribe(authUser => {
+      if (authUser) {
+        this.userService.getCurrentUser().subscribe(user => {
+          if (user.sessions && user.sessions.length === 1 || !user.sessions && !this.profileSnack) {
+            this.profileSnack = true;
+            const snack = this.snack.open('Complétez votre profil !', 'Bonne idée', {duration: 7500});
+            snack.onAction().subscribe(() => this.router.navigate(['/account/info']));
+          }
+        });
       }
     });
     this.init();
     this.manageDrafts();
+    this.promptInstall();
   }
 
   init() {
@@ -223,4 +229,29 @@ export class HomeComponent implements OnInit {
     return array[nextIndex];
   }
 
+  private promptInstall() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this.deferredPrompt = e;
+      const a2hsBtn: any = document.querySelector('.ad2hs-prompt');
+
+      a2hsBtn.style.display = 'block';
+
+      a2hsBtn.addEventListener('click', () => {
+        a2hsBtn.style.display = 'none';
+        this.deferredPrompt.prompt();
+        this.deferredPrompt.userChoice
+        .then(function(choiceResult) {
+
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+
+          this.deferredPrompt = null;
+        });
+      });
+    });
+  }
 }

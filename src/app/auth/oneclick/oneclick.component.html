@@ -6,7 +6,7 @@
 </div>
 
 <ng-template #oneclick>
-    <div class="landing-brand-wrapper">
+    <div class="landing-brand-wrapper" [routerLink]="['/home']">
         <h1 class="landing-brand">ọkọ</h1>
         <small class="landing-brand-tagline" [class.enter]="taglineEnter" [class.exit]="taglineExit">
           {{ displayTagline }}
@@ -16,8 +16,11 @@
       <button class="btn btn-info oneclick__social__btn" (click)="facebookConnect()">
         Continuer avec Facebook
       </button>
-      <button class="btn btn-light oneclick__social__btn" disabled (click)="googleConnect()">
+      <button class="btn btn-light oneclick__social__btn" (click)="googleConnect()">
         Continuer avec Google
+      </button>
+      <button class="btn btn-hero oneclick__social__btn" (click)="googleConnect()">
+        J'ai un compte ọkọ
       </button>
     </div>
     <hr class="divider">
@@ -46,10 +49,10 @@
           <small class="form-text muted--light" *ngIf="!passwordFocused && !validated && (password?.length < 8 || !password)">
             Votre mot de passe doit être composé de 8 caractères minimum
           </small>
-          <!-- <div class="invalid-feedback d-block"
+          <div class="invalid-feedback d-block"
                 *ngIf="(passwordFocused || validated) && (!password || password === '')">
             Veuillez entrer un mot de passe
-          </div> -->
+          </div>
           <div class="invalid-feedback d-block"
                 *ngIf="(passwordFocused || validated) && password && password?.length < 8">
             Votre mot de passe doit être composé de 8 caractères minimum

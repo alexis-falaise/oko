@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import {
   AuthService as SocialService,
   GoogleLoginProvider,
   FacebookLoginProvider,
   SocialUser
 } from 'angularx-social-login';
-import { BehaviorSubject, Observable, of, observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, observable, Subject } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
+import { SocialDisconnectionComponent } from './dialogs/social-disconnection/social-disconnection.component';
+import { takeUntil } from 'rxjs/operators';
 
 class Status {
   status: boolean;
@@ -27,20 +29,18 @@ export class AuthService {
   private authUrl = `${this.serverUrl}/auth`;
   private logged = new BehaviorSubject(false);
   private currentUser = new BehaviorSubject<User>(null);
+  private nextAuthentication = new Subject();
   private status = new BehaviorSubject(null);
   private socialProfile = new BehaviorSubject<User>(null);
+  private socialAuthenticated = null;
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private social: SocialService,
     private snack: MatSnackBar,
-  ) {
-    console.log('Auth Service construction');
-    social.authState.subscribe(user => {
-      this.socialAuthentication(user);
-    });
-  }
+    private dialog: MatDialog,
+  ) { }
 
   onUser(): Observable<User> {
     return this.currentUser.asObservable();
@@ -85,6 +85,13 @@ export class AuthService {
   }
 
   /**
+   * Helper function for social authentication
+   */
+  isSocialAuthenticated(): boolean {
+    return this.socialAuthenticated;
+  }
+
+  /**
    * Log a user into oko servers
    * Returns an User object
    * @param login: Login used for authentication (email)
@@ -110,12 +117,35 @@ export class AuthService {
     this.social.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 
+  socialDisconnection(): Observable<boolean> {
+    return Observable.create(observer => {
+      this.http.get(`${this.authUrl}/social/info`, { withCredentials: true })
+      .subscribe((response: ServerResponse) => {
+        if (response.status) {
+          const dialogRef = this.dialog.open(SocialDisconnectionComponent, {
+            data: response.data,
+            height: '50vh',
+          });
+          dialogRef.afterClosed().subscribe((userChoice) => {
+            if (userChoice) {
+              this.social.signOut(true);
+            }
+            observer.next(userChoice);
+            observer.complete();
+          });
+        } else {
+          observer.next(false);
+          observer.complete();
+        }
+      });
+    });
+  }
+
   socialAuthentication(user: SocialUser) {
-    console.log('Social Authentication');
     this.http.post(`${this.authUrl}/social`, user, { withCredentials: true })
     .subscribe((socialResponse: any) => {
-      console.log('Social response', socialResponse);
       if (socialResponse.status) {
+        this.socialProfile.next(null);
         if (socialResponse.code === 'LOG_IN' && socialResponse.user) {
           this.logUserIn(socialResponse.user);
         }
@@ -155,6 +185,18 @@ export class AuthService {
    */
   signin(user: User): Observable<ServerResponse> {
     return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
+  }
+
+  checkSocialAuthentication() {
+    if (!this.socialAuthenticated) {
+      this.social.authState
+      .pipe(takeUntil(this.nextAuthentication))
+      .subscribe(user => {
+        this.nextAuthentication.next(true);
+        this.socialAuthenticated = true;
+        this.socialAuthentication(user);
+      });
+    }
   }
 
   private logUserIn(user: User) {

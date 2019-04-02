@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { AuthService } from '@core/auth.service';
 
 @Component({
@@ -8,10 +10,24 @@ import { AuthService } from '@core/auth.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
-    this.authService.logout();
+    const socialAuthenticated = this.authService.isSocialAuthenticated();
+    if (socialAuthenticated) {
+      this.authService.socialDisconnection().subscribe(disconnected => {
+        if (disconnected) {
+          this.authService.logout();
+        } else {
+          this.router.navigate(['/home']);
+        }
+      });
+    } else {
+      this.authService.logout();
+    }
   }
 
 }

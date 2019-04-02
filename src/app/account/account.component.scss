@@ -25,7 +25,11 @@
         }
 
         &__avatar {
-            align-items: center;
+            align-items: flex-end;
+        }
+
+        &__user {
+            align-items: flex-start;
         }
     }
 

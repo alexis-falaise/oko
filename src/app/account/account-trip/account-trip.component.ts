@@ -7,6 +7,7 @@ import { PostService } from '@core/post.service';
 
 import { Trip } from '@models/post/trip.model';
 import { UiService } from '@core/ui.service';
+import { User } from '@models/user.model';
 
 @Component({
   selector: 'app-account-trip',
@@ -16,6 +17,7 @@ import { UiService } from '@core/ui.service';
 export class AccountTripComponent implements OnInit {
   trips: Array<Trip> = [];
   expiredTrips: Array<Trip> = [];
+  currentUser: User;
   hasDraft = false;
   loading = false;
   sortTrips = (a, b) =>  moment(a.date).isBefore(b.date) ? -1 : 1;
@@ -50,25 +52,37 @@ export class AccountTripComponent implements OnInit {
   }
 
   private fetchTrips() {
-    this.userService.getCurrentUser()
-    .subscribe(user => {
-      if (user) {
-        this.uiService.setLoading(true);
-        this.postService.getTripByAuthor(user.id)
-        .subscribe(trips => {
+    if (this.currentUser) {
+      this.getTrips();
+    } else {
+      this.userService.getCurrentUser()
+      .subscribe(user => {
+        this.currentUser = user;
+        if (user) {
+          this.uiService.setLoading(true);
+          this.getTrips();
+        } else {
           this.uiService.setLoading(false);
-          if (trips) {
-            this.trips = trips.map(trip => new Trip(trip)).filter(trip => !this.isExpired(trip)).sort(this.sortTrips);
-            this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => this.isExpired(trip)).sort(this.sortExpiredTrips);
-          }
-        }, (error) => {
-          this.uiService.setLoading(false);
-          this.uiService.serverError(error);
-        });
-      } else {
-        this.uiService.setLoading(false);
+        }
+      }, (error) => this.uiService.serverError(error));
+    }
+  }
+
+  private getTrips() {
+    console.log('Getting trips...');
+    this.postService.getTripByAuthor(this.currentUser.id)
+    .subscribe(trips => {
+      console.log('Got them');
+      this.uiService.setLoading(false);
+      if (trips) {
+        this.trips = trips.map(trip => new Trip(trip)).filter(trip => !this.isExpired(trip)).sort(this.sortTrips);
+        this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => this.isExpired(trip)).sort(this.sortExpiredTrips);
       }
-    }, (error) => this.uiService.serverError(error));
+    }, (error) => {
+      console.log('Error');
+      this.uiService.setLoading(false);
+      this.uiService.serverError(error);
+    });
   }
 
   private manageDrafts() {

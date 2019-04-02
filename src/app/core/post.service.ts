@@ -675,6 +675,9 @@ export class PostService {
           const outputTrip = new Trip(trip);
           observer.next(outputTrip);
           observer.complete();
+        }, (error) => {
+          observer.next(null);
+          observer.complete();
         });
       } else {
         const outputTrip = new Trip(trip);

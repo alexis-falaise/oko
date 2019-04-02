@@ -3,7 +3,7 @@ import { PostService } from '@core/post.service';
 
 import { Request } from '@models/post/request.model';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '@core/user.service';
+
 import { UiService } from '@core/ui.service';
 
 @Component({
@@ -16,7 +16,6 @@ export class RequestComponent implements OnInit {
   edition = false;
 
   constructor(
-    private userService: UserService,
     private postService: PostService,
     private uiService: UiService,
     private route: ActivatedRoute,

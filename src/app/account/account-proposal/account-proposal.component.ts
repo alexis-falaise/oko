@@ -18,10 +18,10 @@ import { catchError } from 'rxjs/operators';
 })
 export class AccountProposalComponent implements OnInit {
   currentUser: User;
-  receivedFromTrip: Array<Proposal>;
-  receivedFromRequest: Array<Proposal>;
-  sentAboutTrip: Array<Proposal>;
-  sentAboutRequest: Array<Proposal>;
+  receivedFromTrip: Array<Proposal> = [];
+  receivedFromRequest: Array<Proposal> = [];
+  sentAboutTrip: Array<Proposal> = [];
+  sentAboutRequest: Array<Proposal> = [];
   moment = moment;
 
   constructor(
@@ -43,10 +43,10 @@ export class AccountProposalComponent implements OnInit {
           .pipe(catchError((err, caught) => caught))
         ])
         .subscribe(proposals => {
-          this.receivedFromTrip = proposals[0].filter(this.filterFromTrip).sort(this.sortByDate);
-          this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate);
-          this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate);
-          this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate);
+          this.receivedFromTrip = proposals[0].filter(this.filterFromTrip).sort(this.sortByDate) || [];
+          this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate) || [];
+          this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate) || [];
+          this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate) || [];
           this.uiService.setLoading(false);
         }, (error) => {
           this.uiService.serverError(error);
@@ -66,7 +66,17 @@ export class AccountProposalComponent implements OnInit {
     this.receivedFromRequest = null;
     this.sentAboutTrip = null;
     this.sentAboutRequest = null;
-    timer(2000).subscribe(() => this.uiService.setLoading(false));
+    timer(2000).subscribe(() => {
+      this.uiService.setLoading(false);
+      this.setListsEmpty();
+    });
+  }
+
+  private setListsEmpty() {
+    this.receivedFromTrip = [];
+    this.receivedFromRequest = [];
+    this.sentAboutTrip = [];
+    this.sentAboutRequest = [];
   }
 
   private filterFromTrip(proposal: Proposal) {

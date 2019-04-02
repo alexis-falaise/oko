@@ -1,0 +1,11 @@
+<div class="social-disconnection">
+    <h3 class="social-disconnection-title">Deconnexion</h3>
+    <hr class="divider">
+    <small class="text-muted">
+      Vous allez être déconnecté de <span class="text-capitalize">{{ socialProvider }}</span>. Voulez-vous continuer ?
+    </small>
+    <div class="social-disconnection__actions">
+        <button class="btn btn-warning btn-connect" (click)="close(true)">Deconnexion</button>
+        <button class="btn btn-light btn-connect" (click)="close(false)">Annuler</button>
+    </div>
+  </div>

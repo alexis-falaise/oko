@@ -9,7 +9,7 @@
       <mat-horizontal-stepper #stepper labelPosition="bottom" [linear]="true">
         <mat-step [stepControl]="item.controls.label">
           <ng-template matStepLabel>Infos</ng-template>
-            <div class="request-item__step-content"
+            <div class="request-item__step-content justify-content-center"
                  (swipeLeft)="next(!!item.controls.label.value.length)">
               <div class="form-group">
                 <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article"
@@ -37,18 +37,20 @@
         </mat-step>
         <mat-step [stepControl]="item.controls.price">
           <ng-template matStepLabel>Achat</ng-template>
-          <div class="request-item__step-content" (swipeRight)="previous()" (swipeLeft)="next(item.controls.price.value)">
+          <div class="request-item__step-content justify-content-center"
+               (swipeRight)="previous()" (swipeLeft)="next(item.controls.price.value)">
             <small class="text-muted">
-                Achat : votre voyageur achète votre article en boutique, où se le fait livrer via un site de e-commerce, indiquez lui une estimation du prix de l'article.
+                Pour plus de précision, indiquez un lien e-commerce référencant votre article (facultatif)
             </small>
             <div class="form-group">
               <input type="text" class="form-control" formControlName="link"
                      (keyup.enter)="next(item.controls.price.value)" placeholder="Lien e-commerce">
             </div>
+            <small class="text-muted">Indiquez le prix estimé de votre article</small>
             <div class="form-group">
               <div class="input-group">
                 <input type="number" min="0" class="form-control" formControlName="price"
-                       (keyup.enter)="next(item.controls.price.value)" placeholder="Prix estimé">
+                       (keyup.enter)="next(item.controls.price.value)" placeholder="Prix estimé *">
                 <div class="input-group-append">
                   <span class="input-group-text">€</span>
                 </div>
@@ -66,7 +68,7 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Dimensions</ng-template>
-          <div class="request-item__step-content" (swipeRight)="previous()">
+          <div class="request-item__step-content justify-content-start" (swipeRight)="previous()">
             <div class="form-row mb-5">
               <div class="form-group col-12">
                 <mat-checkbox formControlName="cabinOnly">Admis en cabine</mat-checkbox>

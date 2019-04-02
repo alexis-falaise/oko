@@ -42,5 +42,9 @@
             text-align: center;
             margin-bottom: 15px;
         }
+
+        &__add-item {
+            animation: slideInRight .25s ease;
+        }
     }
 }

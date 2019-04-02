@@ -17,7 +17,7 @@ import {
   GestureConfig,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
+import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { FacebookLoginProvider } from 'angularx-social-login';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from '@env/environment';
@@ -51,10 +51,15 @@ export class MyHammerConfig extends GestureConfig {
 const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
 
 const facebookAppId = '297767870905539';
+const googleAppId = '70OW82UpWR1OJ0vNyl2aILsR';
 const socialConfig = new AuthServiceConfig([
   {
     id: FacebookLoginProvider.PROVIDER_ID,
     provider: new FacebookLoginProvider(facebookAppId)
+  },
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider(googleAppId)
   }
 ]);
 

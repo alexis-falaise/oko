@@ -56,6 +56,7 @@ export class OneclickComponent implements OnInit, OnDestroy {
   signin() {
     const user = this.profile;
     user.password = this.password;
+    this.validated = true;
     if (this.password && this.password.length >= 8) {
       this.uiService.setLoading(true);
       this.authService.signin(user)
@@ -107,7 +108,6 @@ export class OneclickComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((profile: User) => {
       this.uiService.setLoading(false);
-      console.log('On social Profile', profile);
       if (profile) {
         this.profile = profile;
         this.partial = true;

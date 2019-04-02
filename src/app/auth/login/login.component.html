@@ -23,6 +23,9 @@
             <button class="btn btn-hero login-button" (click)="login()">Connexion</button>
             <button class="btn btn-hero login-button" (click)="signin()">Inscription</button>
         </div>
-        <button class="btn btn-info login-button" (click)="fbLogin()">Continuer avec Facebook</button>
+        <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+            <button class="btn btn-info mb-3" (click)="facebookConnect()">Continuer avec Facebook</button>
+            <button class="btn btn-light" (click)="googleConnect()">Continuer avec Google</button>
+        </div>
     </div>
 </div>
