@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import { MessengerService } from '@core/messenger.service';
 
@@ -18,12 +18,13 @@ export class MessengerComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.route.url.subscribe(segments => {
-      this.threadDisplay = !!this.router.url.includes('thread');
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.threadDisplay = !!this.router.url.includes('thread/');
+      }
     });
   }
 

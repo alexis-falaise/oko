@@ -13,6 +13,7 @@ import { Message } from '@models/messenger/message.model';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +30,18 @@ export class MessengerService {
     private http: HttpClient,
     private uiService: UiService,
     private userService: UserService,
+    private authService: AuthService,
     private router: Router,
     private socket: Socket
   ) {
-    console.log('Messenger service construction');
-    userService.getCurrentUser().subscribe(user => {
-      if (user) {
-        this.currentUser = user;
-        console.log('Messenger service - current user', user);
+      this.getCurrentUser();
+      authService.onStatus().subscribe(status => {
+      if (status.status) {
+        if (!this.currentUser) {
+          this.getCurrentUser();
+        }
+      } else {
+        this.resetCurrentUser();
       }
     });
   }
@@ -60,7 +65,6 @@ export class MessengerService {
    * @param threadId : Unique id of the thread to retrieve
    */
   getThread(threadId: number) {
-    console.log('Get thread');
     const url = `${this.messengerUrl}/thread/${threadId}`;
     this.getThreadByUrl(url);
   }
@@ -165,7 +169,6 @@ export class MessengerService {
    */
 
   resetThread() {
-    console.log('Reset Thread');
     this.disconnectCurrentThread();
     this.thread.next(null);
   }
@@ -191,14 +194,32 @@ export class MessengerService {
   }
 
   /**
-   * Refresh a given thread with an input message
+   * Refresh a given thread by push the input message
    * @param thread : Given thread (check purpose)
    * @param message : New message to add to thread
    */
   refreshThread(thread: Thread, message: Message) {
     const currentThread = this.thread.getValue();
     if (currentThread && currentThread.id === thread.id) {
-      currentThread.messages.push(message);
+      const formattedMessage = new Message(message, this.currentUser);
+      const messageIndex = currentThread.messages.findIndex(threadMessage => threadMessage._id === message._id);
+      if (messageIndex === -1) {
+        currentThread.messages.push(formattedMessage);
+      }
+      this.thread.next(currentThread);
+    }
+  }
+
+  /**
+   * Refresh a particular message of a given thread
+   * @param thread : Given thread (check purpose)
+   * @param message : Message to update
+   */
+  refreshThreadMessage(thread: Thread, message: Message) {
+    const currentThread = this.thread.getValue();
+    if (currentThread && currentThread.id === thread.id) {
+      const messageIndex = currentThread.messages.findIndex(threadMessage => threadMessage._id === message._id);
+      currentThread.messages[messageIndex] = new Message(message, this.currentUser);
       this.thread.next(currentThread);
     }
   }
@@ -216,12 +237,21 @@ export class MessengerService {
       if (thread) {
           this.router.navigate(['messages', 'thread', thread.id || thread._id]);
           this.thread.next(new Thread(thread, this.currentUser));
-          this.socket.on(`message/new/${thread.id}`, (message) => {
-            this.refreshThread(thread, message);
-          });
       } else {
         this.thread.next(null);
       }
     }, (error: HttpErrorResponse) => this.uiService.serverError(error));
+  }
+
+  private getCurrentUser() {
+    this.userService.getCurrentUser().subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+      }
+    });
+  }
+
+  private resetCurrentUser() {
+    this.currentUser = null;
   }
 }

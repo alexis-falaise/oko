@@ -48,7 +48,6 @@ export class NotificationService {
   }
 
   private setMessageListeners() {
-    console.log('Setting message listeners');
     this.socket.on(`message/new/${this.currentUser.id}`, (info) => {
       const title = 'Nouveau message';
       const message = `Nouveau message de ${info.author}`;

@@ -145,7 +145,7 @@ export class PostComponent implements OnInit, OnChanges {
         this.removePost();
       }
       if (status === 401) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/oneclick']);
       }
     });
   }

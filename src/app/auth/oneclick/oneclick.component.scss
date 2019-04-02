@@ -1,0 +1,120 @@
+@import "../../../styles/classes.scss";
+
+.oneclick {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-image: url('assets/hero-landing.jpg');
+    background-size: cover;
+    background-position: center;
+
+    &__backdrop {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: linear-gradient(45deg,rgba(0, 171, 193, 0.95), rgba(124, 179, 66, 0.7));
+        background-size: 400%;
+        animation: animateBackground ease 10s infinite;
+    }
+
+    &__social {
+        height: 40vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &__btn {
+            margin-bottom: 10px;
+            width: 250px;
+            border: 1px solid rgba(255, 255, 255, .5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+            &:hover {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+            }
+        }
+    }
+
+    &__signin {
+        display: flex;
+        justify-content: center;
+    }
+
+    @keyframes glow {
+        0% { box-shadow: 0 0 25px 5px rgba(255, 255, 255, .2) }
+        25% { box-shadow: 0 0 40px 10px rgba(255, 255, 255, .7) }
+        50% { box-shadow: 0 0 50px 15px rgba(255, 255, 255, .4) }
+        75% { box-shadow: 0 0 25px 5px rgba(255, 255, 255, .9) }
+        100% { box-shadow: 0 0 50px 15px rgba(255, 255, 255, .8) }
+    }
+
+    &__profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 20vh;
+        min-height: 250px;
+        margin-bottom: 50px;
+        &__avatar {
+            animation: glow 7.5s infinite alternate-reverse;
+        }
+        &__intro {
+            font-size: 42px;
+            font-weight: 100;
+            color: $white-alpha-8;
+            text-align: center;
+        }
+    }
+
+    &__password {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    &__form {
+        height: 60vh;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+    }
+
+    .landing-brand-tagline {
+        transition: all .25s;
+        position: relative;
+        top: 0;
+        opacity: 1;
+        &.enter {
+            transition: all .25s;
+            top: 20px;
+            opacity: 0;
+        }
+        &.exit {
+            transition: all .25s;
+            top: -10px;
+            opacity: 0;
+        }
+    }
+
+    .form-control,
+    .form-control.is-invalid {
+        border: 1px solid rgba(255, 255, 255, .5);
+        background-color: rgba(255, 255, 255, .25);
+        color: $white-alpha-8 !important;
+        width: 75% !important;
+        margin-left: 12.5%;
+        &::placeholder {
+            color: $white-alpha-6;
+        }
+    }
+}

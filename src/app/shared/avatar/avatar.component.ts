@@ -30,8 +30,13 @@ export class AvatarComponent implements OnInit, OnChanges {
 
   buildUrl(image: string): SafeUrl {
     let url = null;
+    let untrustedUrl = null;
     if (image) {
-      url = this.sanitizer.bypassSecurityTrustUrl(`${this.avatarLocation}/${image}`);
+      untrustedUrl = `${this.avatarLocation}/${image}`;
+      if (image.includes('graph.facebook.com')) {
+        untrustedUrl = image;
+      }
+      url = this.sanitizer.bypassSecurityTrustUrl(untrustedUrl);
     }
     return url;
   }

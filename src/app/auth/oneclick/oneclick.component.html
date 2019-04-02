@@ -1,0 +1,87 @@
+<div class="oneclick">
+  <div class="oneclick__backdrop">
+    <ng-container *ngIf="!partial && !firstConnection; then oneclick; else partialView">
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #oneclick>
+    <div class="landing-brand-wrapper">
+        <h1 class="landing-brand">ọkọ</h1>
+        <small class="landing-brand-tagline" [class.enter]="taglineEnter" [class.exit]="taglineExit">
+          {{ displayTagline }}
+        </small>
+    </div>
+    <div class="oneclick__social">
+      <button class="btn btn-info oneclick__social__btn" (click)="facebookConnect()">
+        Continuer avec Facebook
+      </button>
+      <button class="btn btn-light oneclick__social__btn" disabled (click)="googleConnect()">
+        Continuer avec Google
+      </button>
+    </div>
+    <hr class="divider">
+    <div class="oneclick__signin">
+      <button class="btn btn-hero" [routerLink]="['/signin']">Continuer avec mon email</button>
+    </div>
+</ng-template>
+
+<ng-template #partialView>
+  <div class="container" *ngIf="partial && !firstConnection; else details">
+    <div class="oneclick__profile">
+      <app-avatar class="oneclick__profile__avatar" [image]="profile.avatar" [size]="100"></app-avatar>
+      <div class="oneclick__profile__intro">
+        Bienvenue sur ọkọ, {{ profile.firstname }}
+      </div>
+    </div>
+    <div class="oneclick__password">
+      Créez un mot de passe ọkọ
+      <small class="muted--light">Votre identifiant ọkọ est votre adresse email ({{ profile.email }})</small>
+      <div class="form-group w-100 mt-5">
+          <input type="password" placeholder="Mot de passe" class="form-control" minlength="8"
+            (blur)="passwordFocused = true"
+            (keyup.enter)="signin()"
+            [class.is-invalid]="(passwordFocused || validated) && (password?.length < 8 || !password)"
+            [(ngModel)]="password" required>
+          <small class="form-text muted--light" *ngIf="!passwordFocused && !validated && (password?.length < 8 || !password)">
+            Votre mot de passe doit être composé de 8 caractères minimum
+          </small>
+          <!-- <div class="invalid-feedback d-block"
+                *ngIf="(passwordFocused || validated) && (!password || password === '')">
+            Veuillez entrer un mot de passe
+          </div> -->
+          <div class="invalid-feedback d-block"
+                *ngIf="(passwordFocused || validated) && password && password?.length < 8">
+            Votre mot de passe doit être composé de 8 caractères minimum
+          </div>
+        </div>
+    </div>
+    <div class="oneclick__actions">
+      <button class="btn btn-hero btn-icon" (click)="signin()">
+        <mat-icon>send</mat-icon> Continuer
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #details>
+    <div class="landing-brand-wrapper">
+        <h1 class="landing-brand">ọkọ</h1>
+        <small class="landing-brand-tagline" [class.enter]="taglineEnter" [class.exit]="taglineExit">
+          {{ displayTagline }}
+        </small>
+    </div>
+    <div class="oneclick__form container">
+      <h2 class="onclick__form-title">Dites nous en un peu plus</h2>
+    </div>
+    <div class="oneclick__actions">
+      <button class="btn btn-hero btn-icon">
+        <mat-icon>done</mat-icon> Valider
+      </button>
+      <button class="btn btn-light">
+        Plus tard
+      </button>
+    </div>
+</ng-template>
+
+

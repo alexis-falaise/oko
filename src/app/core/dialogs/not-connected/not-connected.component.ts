@@ -18,7 +18,7 @@ export class NotConnectedComponent implements OnInit {
   }
 
   login() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/oneclick']);
     this.dialogRef.close();
   }
 

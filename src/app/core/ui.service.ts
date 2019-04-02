@@ -95,7 +95,7 @@ export class UiService {
     }
     snackRef.onAction().subscribe(() => {
       if (status === 401) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/oneclick']);
       }
     });
   }

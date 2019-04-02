@@ -116,11 +116,9 @@ export class AccountInfoComponent implements OnInit {
     this.user.address = new MeetingPoint(this.address.value);
     this.user.email = this.account.value.email;
     this.user.birthdate = this.account.value.birthdate;
-    console.log(this.user);
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
       if (res.status) {
-        console.log(res.data);
         this.snack.open('Profil mis à jour', 'OK', {duration: 2500});
         this.init(res.data);
       } else {

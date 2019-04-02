@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+  AuthService as SocialService,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+  SocialUser
+} from 'angularx-social-login';
+import { BehaviorSubject, Observable, of, observable } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { User } from '@models/user.model';
@@ -22,15 +28,26 @@ export class AuthService {
   private logged = new BehaviorSubject(false);
   private currentUser = new BehaviorSubject<User>(null);
   private status = new BehaviorSubject(null);
+  private socialProfile = new BehaviorSubject<User>(null);
 
   constructor(
     private router: Router,
     private http: HttpClient,
+    private social: SocialService,
     private snack: MatSnackBar,
-  ) { }
+  ) {
+    console.log('Auth Service construction');
+    social.authState.subscribe(user => {
+      this.socialAuthentication(user);
+    });
+  }
 
   onUser(): Observable<User> {
     return this.currentUser.asObservable();
+  }
+
+  onSocialProfile(): Observable<User> {
+    return this.socialProfile.asObservable();
   }
 
   /**
@@ -41,7 +58,7 @@ export class AuthService {
   }
 
   /**
-  * Get current logging status as cold Observable.
+  * Get current login status as cold Observable.
   * Component needs to subscribe to onStatus() for basic log info
   * or onUser() for detailled user info
   */
@@ -79,11 +96,41 @@ export class AuthService {
     { withCredentials: true })
     .subscribe((loginInfo: any) => {
       if (loginInfo.status) {
-        this.currentUser.next(loginInfo.user);
-        this.snack.open('Vous êtes connecté !', undefined, {duration: 2500});
-        this.router.navigate(['/home']);
+        this.logUserIn(loginInfo.user);
       }
       this.status.next(loginInfo);
+    });
+  }
+
+  googleConnection() {
+    this.social.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  facebookConnection() {
+    this.social.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
+  socialAuthentication(user: SocialUser) {
+    console.log('Social Authentication');
+    this.http.post(`${this.authUrl}/social`, user, { withCredentials: true })
+    .subscribe((socialResponse: any) => {
+      console.log('Social response', socialResponse);
+      if (socialResponse.status) {
+        if (socialResponse.code === 'LOG_IN' && socialResponse.user) {
+          this.logUserIn(socialResponse.user);
+        }
+        if (socialResponse.code === 'PARTIAL') {
+          const socialProfile = new User({
+            email: user.email,
+            firstname: user.firstName,
+            lastname: user.lastName,
+            avatar: user.photoUrl,
+            socialToken: user.authToken,
+            socialProvider: user.provider
+          });
+          this.socialProfile.next(socialProfile);
+        }
+      }
     });
   }
 
@@ -108,5 +155,11 @@ export class AuthService {
    */
   signin(user: User): Observable<ServerResponse> {
     return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
+  }
+
+  private logUserIn(user: User) {
+    this.currentUser.next(user);
+    this.snack.open('Vous êtes connecté !', undefined, {duration: 2500});
+    this.router.navigate(['/home']);
   }
 }

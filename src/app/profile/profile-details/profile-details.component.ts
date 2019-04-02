@@ -69,7 +69,7 @@ export class ProfileDetailsComponent implements OnInit {
       this.messengerService.getContactThread(this.currentUser, this.user);
     } else {
       const snack = this.snack.open('Connectez-vous!', 'Connexion');
-      snack.onAction().subscribe(() => this.router.navigate(['/login']));
+      snack.onAction().subscribe(() => this.router.navigate(['/oneclick']));
     }
   }
 

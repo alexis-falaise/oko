@@ -16,11 +16,13 @@ import { LandingComponent } from './landing/landing.component';
 import { MessengerComponent } from './messenger/messenger.component';
 import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
 import { ThreadComponent } from './messenger/thread/thread.component';
+import { OneclickComponent } from './auth/oneclick/oneclick.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'landing', component: LandingComponent },
+  { path: 'oneclick', component: OneclickComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'signin', component: SigninComponent },

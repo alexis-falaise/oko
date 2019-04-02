@@ -114,7 +114,6 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.socket.on(`message/new/${this.thread.id}`, (message) => {
       const receivedMessage = new Message(message, this.currentUser);
       this.messengerService.refreshThread(this.thread, receivedMessage);
-      console.log('New message', receivedMessage);
       if (!receivedMessage.isAuthor(this.currentUser) && !receivedMessage.seen) {
         const seenMessage = receivedMessage.markAsSeen();
         console.log('Emit client sight', seenMessage);
@@ -124,7 +123,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
     this.socket.on(`message/serverSight/${this.thread.id}`, (message) => {
       console.log('Server sight received', message);
-      this.messengerService.refreshThread(this.thread, message);
+      this.messengerService.refreshThreadMessage(this.thread, message);
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
@@ -19,7 +19,7 @@ import { UiService } from '@core/ui.service';
   templateUrl: './thread-list.component.html',
   styleUrls: ['./thread-list.component.scss']
 })
-export class ThreadListComponent implements OnInit {
+export class ThreadListComponent implements OnInit, OnDestroy {
   threads: Array<Thread>;
   contacts: Array<User>;
   currentUser: User;
@@ -40,12 +40,14 @@ export class ThreadListComponent implements OnInit {
         this.removeThreadsMessagesListeners();
         this.uiService.setLoading(false);
       }
-      this.threads = threads.map(thread => {
-        const formattedThread = new Thread(thread, this.currentUser || undefined);
-        this.setThreadMessagesListener(formattedThread);
-        return formattedThread;
-      })
-      .sort(this.sortThreads);
+      if (threads) {
+        this.threads = threads.map(thread => {
+          const formattedThread = new Thread(thread, this.currentUser || undefined);
+          this.setThreadMessagesListener(formattedThread);
+          return formattedThread;
+        })
+        .sort(this.sortThreads);
+      }
     });
     this.messengerService.onContacts()
     .subscribe(contacts => {
@@ -85,6 +87,10 @@ export class ThreadListComponent implements OnInit {
               : dateToFormat.isAfter(moment().subtract(7, 'days'))
                 ? dateToFormat.format('ddd')
                 : dateToFormat.format('DD MMMM');
+  }
+
+  ngOnDestroy() {
+    this.messengerService.resetThreads();
   }
 
   private setListeners() {

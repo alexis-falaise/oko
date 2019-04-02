@@ -17,6 +17,8 @@ import {
   GestureConfig,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
+import { FacebookLoginProvider } from 'angularx-social-login';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from '@env/environment';
 
@@ -46,8 +48,19 @@ export class MyHammerConfig extends GestureConfig {
     return mc;
   }
 }
-console.log('Socket io connection url', environment.ioUrl);
 const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
+
+const facebookAppId = '297767870905539';
+const socialConfig = new AuthServiceConfig([
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider(facebookAppId)
+  }
+]);
+
+export function provideSocialConfig() {
+  return socialConfig;
+}
 
 @NgModule({
   declarations: [
@@ -77,6 +90,7 @@ const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
     MatSnackBarModule,
     MessengerModule,
     LandingModule,
+    SocialLoginModule,
     SocketIoModule.forRoot(config),
   ],
   providers: [
@@ -87,6 +101,10 @@ const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
+    },
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideSocialConfig,
     }
   ],
   bootstrap: [AppComponent]

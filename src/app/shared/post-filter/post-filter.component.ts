@@ -48,7 +48,6 @@ export class PostFilterComponent implements OnInit, OnChanges {
 
   checkFilter() {
     this.isFilled = false;
-    console.log(this.filter);
     Object.keys(this.filter).forEach(filterLabel => {
       if (this.filter[filterLabel] && this.filter[filterLabel] !== '' && filterLabel !== 'open') {
         this.isFilled = true;

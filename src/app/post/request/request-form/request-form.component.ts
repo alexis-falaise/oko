@@ -137,7 +137,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const notConnected = () => {
       const snackRef = this.snack.open('Connectez-vous !', 'Connexion', {duration: 3000});
       snackRef.onAction().subscribe(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/oneclick']);
       });
     };
 

@@ -27,17 +27,10 @@
   </div> -->
 </nav>
 
-<div class="navbar__fullscreen justify-content-center" (swipeRight)="hide()" [hidden]="!menuDisplay">
+<div class="navbar__fullscreen" (swipeRight)="hide()" [hidden]="!menuDisplay">
   <small class="navbar__fullscreen-title" *ngIf="randomWelcome">{{ randomWelcome }} </small>
   <div class="navbar__fullscreen-item" [class.active]="rlm.isActive" *ngFor="let item of menuItems" (click)="hide()">
     <a routerLink="{{ item.path }}" routerLinkActive [routerLinkActiveOptions]="{exact:true}" #rlm="routerLinkActive">
-        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-        {{ item.label }}
-    </a>
-  </div>
-  <hr class="divider">
-  <div class="navbar__fullscreen-item" [class.active]="rla.isActive" *ngFor="let item of displayAccountMenuItems" (click)="hide()">
-    <a routerLink="{{ item.path }}" routerLinkActive [routerLinkActiveOptions]="{exact:true}" #rla="routerLinkActive">
         <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
         {{ item.label }}
     </a>
@@ -49,5 +42,14 @@
           <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
           {{ item.label }}
       </a>
+  </div>
+  <div class="navbar__fullscreen__account">
+    <hr class="divider">
+    <div class="navbar__fullscreen-item" [class.active]="rla.isActive" *ngFor="let item of displayAccountMenuItems" (click)="hide()">
+      <a routerLink="{{ item.path }}" routerLinkActive [routerLinkActiveOptions]="{exact:true}" #rla="routerLinkActive">
+          <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+          {{ item.label }}
+      </a>
     </div>
+  </div>
 </div>

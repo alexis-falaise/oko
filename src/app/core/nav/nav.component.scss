@@ -157,12 +157,14 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 
     position: fixed;
     top: $navbarHeight;
+    padding-top: 10vh;
     z-index: 101;
     width: 100%;
     height: 95vh;
     box-shadow: -5px 3px 7px rgba(0, 0, 0, .05);
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     background-color: $expanded-menu-color;
 
     &-item {
@@ -173,7 +175,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         padding-left: 10%;
         text-align: left;
         font-size: $itemSize;
-        font-weight: 700;
+        font-weight: 400;
         a {
             display: flex;
             flex-direction: row;
@@ -182,7 +184,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         .mat-icon {
             height: $itemSize;
             width: $itemSize;
-            margin-right: 5px;
+            margin-right: 15px;
         }
         .material-icons {
             font-size: $itemSize;
@@ -211,6 +213,16 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     &-title {
         display: block;
         margin-left: 10%;
+    }
+
+    &__account {
+        position: absolute;
+        bottom: 75px;
+        display: flex;
+        flex-direction: column;
+        border-top: thin solid rgba(0, 0, 0, .1);
+        width: 100%;
+        font-weight: 100;
     }
 
     .divider {

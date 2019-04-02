@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   mainLoading: boolean;
   randomWelcome: string;
   username: string;
-  hideNavOn = ['/login', '/logout', '/signin'];
+  hideNavOn = ['/login', '/logout', '/signin', '/oneclick'];
   lightNavOn = ['/post', '/account', '/messages', '/profile', '/landing'];
 
   constructor(
@@ -37,7 +37,6 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.socket.on('connected', (data) => console.log('IO:', data.message));
     moment.locale('fr');
     this.hideDrawer();
     this.uiService.onLoading().subscribe(loadingState => {

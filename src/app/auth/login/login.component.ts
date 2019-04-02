@@ -55,6 +55,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.login(this.email, this.password);
   }
 
+  fbLogin() {
+    this.authService.facebookConnection();
+  }
+
   signin() {
     this.router.navigate(['signin']);
   }

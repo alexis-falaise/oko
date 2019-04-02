@@ -53,12 +53,14 @@ export class HomeComponent implements OnInit {
   expanded = true;
   empty = false;
   validated = false;
+  profileSnack = false;
   today = moment();
   city: City | string;
   cities: Array<City> = [];
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
+    private authService: AuthService,
     private postService: PostService,
     private uiService: UiService,
     private geoService: GeoService,
@@ -82,6 +84,15 @@ export class HomeComponent implements OnInit {
     this.geoService.onCities().subscribe(cities => {
       this.uiService.setLoading(false);
       this.cities = cities;
+    });
+    this.authService.onUser().subscribe(user => {
+      if (user) {
+        if (user.sessions && user.sessions.length === 1 || !user.sessions && !this.profileSnack) {
+          this.profileSnack = true;
+          const snack = this.snack.open('Complétez votre profil !', 'Bonne idée', {duration: 7500});
+          snack.onAction().subscribe(() => this.router.navigate(['/account/info']));
+        }
+      }
     });
     this.init();
     this.manageDrafts();

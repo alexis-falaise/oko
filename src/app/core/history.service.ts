@@ -66,7 +66,7 @@ export class HistoryService {
   back(number: number = 1) {
     const history = this.history.getValue();
     let route;
-    if (number < history.length - 1) {
+    if (number <= history.length - 1) {
       let index = 0;
       do {
         route = history[history.length - 1 - number - index];
@@ -80,7 +80,7 @@ export class HistoryService {
 
   hasBack(): boolean {
     const history = this.relevantHistory(this.history.getValue());
-    return history.length && !!history[history.length - 2];
+    return history.length && !!history[history.length - 1];
   }
 
   private relevantHistory(historyArray: Array<string>): Array<string> {

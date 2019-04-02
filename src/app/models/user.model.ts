@@ -20,13 +20,15 @@ export class User {
     lastname: string;
     email: string;
     birthdate?: Moment;
-    password: string;
+    password?: string;
     avatar?: string;
     description?: Description;
     trips?: number;
     requests?: number;
     ratings?: [number];
     address?: MeetingPoint;
+    socialToken?: string;
+    socialProvider?: string;
 
     // Landing page properties
     comment?: string;
