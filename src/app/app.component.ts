@@ -113,6 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
   nope() {}
 
   ngOnDestroy() {
+    console.log('Destroy app');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

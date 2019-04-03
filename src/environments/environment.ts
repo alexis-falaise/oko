@@ -10,6 +10,9 @@ export const environment = {
   serverPort: port,
   serverUrl: `http://localhost:${port}/api`,
   ioUrl: `http://localhost:${port}`,
+  facebookAppId: '297767870905539',
+  stripePrivateKey: 'sk_test_0hd9O8ohLK3AOjPfBvkyCepT00MBkEoYgs',
+  stripePublicKey: 'pk_test_2ar3cNjZrPWED42u1JDRUtyu005WkFBHJ7',
 };
 
 /*

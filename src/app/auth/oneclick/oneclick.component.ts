@@ -53,6 +53,10 @@ export class OneclickComponent implements OnInit, OnDestroy {
     this.authService.facebookConnection();
   }
 
+  login() {
+    this.router.navigate(['/login']);
+  }
+
   signin() {
     const user = this.profile;
     user.password = this.password;

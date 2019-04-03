@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import {
   AuthService as SocialService,
@@ -32,7 +32,8 @@ export class AuthService {
   private nextAuthentication = new Subject();
   private status = new BehaviorSubject(null);
   private socialProfile = new BehaviorSubject<User>(null);
-  private socialAuthenticated = null;
+  private socialAuthenticated = false;
+  private socialChecked = false;
 
   constructor(
     private router: Router,
@@ -117,30 +118,6 @@ export class AuthService {
     this.social.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 
-  socialDisconnection(): Observable<boolean> {
-    return Observable.create(observer => {
-      this.http.get(`${this.authUrl}/social/info`, { withCredentials: true })
-      .subscribe((response: ServerResponse) => {
-        if (response.status) {
-          const dialogRef = this.dialog.open(SocialDisconnectionComponent, {
-            data: response.data,
-            height: '50vh',
-          });
-          dialogRef.afterClosed().subscribe((userChoice) => {
-            if (userChoice) {
-              this.social.signOut(true);
-            }
-            observer.next(userChoice);
-            observer.complete();
-          });
-        } else {
-          observer.next(false);
-          observer.complete();
-        }
-      });
-    });
-  }
-
   socialAuthentication(user: SocialUser) {
     this.http.post(`${this.authUrl}/social`, user, { withCredentials: true })
     .subscribe((socialResponse: any) => {
@@ -164,6 +141,43 @@ export class AuthService {
     });
   }
 
+  /**
+   * Disconnect a user from the social provider and from oko servers
+   * Display a warning before disconnection
+   */
+  socialDisconnection(): Observable<boolean> {
+    return Observable.create(observer => {
+      this.http.get(`${this.authUrl}/social/info`, { withCredentials: true })
+      .subscribe((response: ServerResponse) => {
+        if (response.status) {
+          observer.next(true);
+          observer.complete();
+          // const dialogRef = this.dialog.open(SocialDisconnectionComponent, {
+          //   data: response.data,
+          //   height: '50vh',
+          // });
+          // dialogRef.afterClosed().subscribe((userChoice) => {
+          //   if (userChoice) {
+          //     this.socialAuthenticated = false;
+          //     this.social.signOut(true);
+          //   }
+          //   observer.next(userChoice);
+          //   observer.complete();
+          // });
+        } else {
+          observer.next(false);
+          observer.complete();
+        }
+      }, (error: HttpErrorResponse) => {
+        // 412 : User wasn't authenticated with a social provider
+        if (error.status === 412) {
+          this.socialAuthenticated = false;
+          observer.next(true);
+          observer.complete();
+        }
+      });
+    });
+  }
 
   /**
    * Log a user out
@@ -188,13 +202,18 @@ export class AuthService {
   }
 
   checkSocialAuthentication() {
-    if (!this.socialAuthenticated) {
+    console.log('Check social authentication - current:', this.socialAuthenticated);
+    if (!this.socialAuthenticated && !this.socialChecked) {
       this.social.authState
       .pipe(takeUntil(this.nextAuthentication))
       .subscribe(user => {
         this.nextAuthentication.next(true);
         this.socialAuthenticated = true;
+        this.socialChecked = true;
         this.socialAuthentication(user);
+      }, (error) => {
+        this.socialAuthenticated = false;
+        this.socialChecked = true;
       });
     }
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '@core/post.service';
-import { forkJoin, of, timer } from 'rxjs';
+import { forkJoin, timer, Subject } from 'rxjs';
 import * as moment from 'moment';
 
 import { UserService } from '@core/user.service';
@@ -8,8 +8,7 @@ import { UiService } from '@core/ui.service';
 
 import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
-import { MatSnackBar } from '@angular/material';
-import { catchError } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-proposal',
@@ -22,6 +21,7 @@ export class AccountProposalComponent implements OnInit {
   receivedFromRequest: Array<Proposal> = [];
   sentAboutTrip: Array<Proposal> = [];
   sentAboutRequest: Array<Proposal> = [];
+  fetchedProposals = new Subject();
   moment = moment;
 
   constructor(
@@ -42,7 +42,9 @@ export class AccountProposalComponent implements OnInit {
           this.postService.getAllSentProposalsByAuthor(user)
           .pipe(catchError((err, caught) => caught))
         ])
+        .pipe(takeUntil(this.fetchedProposals))
         .subscribe(proposals => {
+          this.fetchedProposals.next(true);
           this.receivedFromTrip = proposals[0].filter(this.filterFromTrip).sort(this.sortByDate) || [];
           this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate) || [];
           this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate) || [];
@@ -66,7 +68,7 @@ export class AccountProposalComponent implements OnInit {
     this.receivedFromRequest = null;
     this.sentAboutTrip = null;
     this.sentAboutRequest = null;
-    timer(2000).subscribe(() => {
+    timer(2000).pipe(takeUntil(this.fetchedProposals)).subscribe(() => {
       this.uiService.setLoading(false);
       this.setListsEmpty();
     });

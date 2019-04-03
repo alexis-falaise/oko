@@ -9,4 +9,5 @@ export const environment = {
   serverPort: port,
   serverUrl: `https://${publicIp}/api`,
   ioUrl: `https://${publicIp}`,
+  facebookAppId: '297767870905539',
 };

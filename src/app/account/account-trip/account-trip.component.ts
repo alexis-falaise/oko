@@ -69,17 +69,14 @@ export class AccountTripComponent implements OnInit {
   }
 
   private getTrips() {
-    console.log('Getting trips...');
     this.postService.getTripByAuthor(this.currentUser.id)
     .subscribe(trips => {
-      console.log('Got them');
       this.uiService.setLoading(false);
       if (trips) {
         this.trips = trips.map(trip => new Trip(trip)).filter(trip => !this.isExpired(trip)).sort(this.sortTrips);
         this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => this.isExpired(trip)).sort(this.sortExpiredTrips);
       }
     }, (error) => {
-      console.log('Error');
       this.uiService.setLoading(false);
       this.uiService.serverError(error);
     });

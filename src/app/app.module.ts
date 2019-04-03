@@ -50,7 +50,7 @@ export class MyHammerConfig extends GestureConfig {
 }
 const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
 
-const facebookAppId = '297767870905539';
+const facebookAppId = environment.facebookAppId;
 const googleAppId = '70OW82UpWR1OJ0vNyl2aILsR';
 const socialConfig = new AuthServiceConfig([
   {
