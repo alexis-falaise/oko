@@ -1,15 +1,15 @@
 <div class="proposal-request">
     <h6 class="text-muted">Articles ({{request?.items?.length || 0}})</h6>
-    <div *ngIf="!standalone; else fullArticles">
+    <div *ngIf="!fullDisplay; else restrictedDisplay">
+      <app-item class="proposal-request__item" [item]="item" [fullWidth]="true" [removable]="false"
+        *ngFor="let item of request?.items"></app-item>
+    </div>
+    <ng-template #restrictedDisplay>
       <mat-card class="proposal-request__item" matRipple *ngFor="let item of request?.items">
         <mat-card-title>{{ item.label }}</mat-card-title>
       </mat-card>
-    </div>
-    <ng-template #fullArticles>
-        <app-item class="proposal-request__item" [item]="item" [fullWidth]="true" [removable]="false"
-                  *ngFor="let item of request?.items"></app-item>
     </ng-template>
     <div class="d-flex w-100 justify-content-center mt-5">
-      <button (click)="openRequest()" class="btn btn-info">Voir l'annonce</button>
+      <button [disabled]="!request.id" (click)="openRequest()" class="btn btn-info">Voir l'annonce</button>
     </div>
 </div>

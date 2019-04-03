@@ -54,8 +54,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
       this.message.content = this.message.content.slice(1);
     }
     this.message.send();
-    this.messengerService.createMessage(this.thread, this.message)
-    .subscribe(response => console.log(response));
+    this.messengerService.createMessage(this.thread, this.message);
     this.message = new Message({content: ''});
   }
 
@@ -101,6 +100,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.messengerService.onThread()
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(thread => {
+      if (this.thread) {
+        this.removeThreadListeners();
+      }
       if (thread) {
         this.thread = thread;
         this.setThreadListeners();
@@ -111,7 +113,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
   private setThreadListeners() {
+    console.log('Set thread listeners');
     this.socket.on(`message/new/${this.thread.id}`, (message) => {
+      console.log('New message');
       const receivedMessage = new Message(message, this.currentUser);
       this.messengerService.refreshThread(this.thread, receivedMessage);
       if (!receivedMessage.isAuthor(this.currentUser) && !receivedMessage.seen) {
@@ -125,6 +129,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
       console.log('Server sight received', message);
       this.messengerService.refreshThreadMessage(this.thread, message);
     });
+  }
+
+  private removeThreadListeners() {
+    this.socket.removeListener(`message/new/${this.thread.id}`);
+    this.socket.removeListener(`message/serverSight/${this.thread.id}`);
   }
 
   ngOnDestroy() {

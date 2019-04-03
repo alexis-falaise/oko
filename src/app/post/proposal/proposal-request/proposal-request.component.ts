@@ -9,6 +9,7 @@ import { Request } from '@models/post/request.model';
 })
 export class ProposalRequestComponent implements OnChanges {
   @Input() request: Request;
+  @Input() fullDisplay: boolean;
   @Output() open = new EventEmitter();
 
   constructor() { }
@@ -16,6 +17,9 @@ export class ProposalRequestComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.request) {
       this.request = changes.request.currentValue;
+    }
+    if (changes.fullDisplay) {
+      this.fullDisplay = changes.fullDisplay.currentValue;
     }
   }
 

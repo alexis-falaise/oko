@@ -62,20 +62,24 @@
     <hr class="divider" *ngIf="proposal.from && !self">
     <div *ngIf="receiver; else sender">
         <div class="proposal__summary" *ngIf="fromTrip; else fromRequest">
-            Vous avez reçu une proposition de voyage de {{ proposal?.from.user.firstname }}
+            <span *ngIf="standalone">Vous avez reçu une proposition de voyage de {{ proposal?.from.user.firstname }}</span>
             <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
-            <hr class="divider">
-            Concernant votre annonce:
-            <app-proposal-request [request]="proposal?.to" (open)="openRequest($event)"></app-proposal-request>
+            <div *ngIf="standalone">
+                <hr class="divider">
+                Concernant votre annonce:
+                <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+            </div>
         </div>
     </div>
     <ng-template #sender>
       <div class="proposal__summary" *ngIf="toTrip; else toRequest">
-        Vous avez fait une demande pour le voyage de {{ proposal?.to.user.firstname }}
+        <span *ngIf="standalone">Vous avez fait une demande pour le voyage de {{ proposal?.to.user.firstname }}</span>
         <app-proposal-trip [trip]="proposal?.to" (open)="openTrip($event)"></app-proposal-trip>
-        <hr class="divider">
-        Concernant votre annonce:
-        <app-proposal-request [request]="proposal?.from" (open)="openRequest($event)"></app-proposal-request>
+        <div *ngIf="standalone">
+          <hr class="divider">
+          Concernant votre annonce:
+          <app-proposal-request [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+        </div>
       </div>
     </ng-template>
     
@@ -111,21 +115,25 @@
 
 <ng-template #fromRequest>
   <div class="proposal__request" *ngIf="!self">
-    Vous avez reçu une demande de transport de {{ proposal?.from.user.firstname }}
-    <app-proposal-request [request]="proposal?.from" (open)="openRequest($event)"></app-proposal-request>
-    <hr class="divider">
-    Concernant votre voyage:
-    <app-proposal-trip [trip]="proposal?.to" (open)="openTrip($event)"></app-proposal-trip>
+    <span *ngIf="standalone">Vous avez reçu une demande de transport de {{ proposal?.from.user.firstname }}</span>
+    <app-proposal-request [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+    <div *ngIf="standalone">
+      <hr class="divider">
+      Concernant votre voyage:
+      <app-proposal-trip [trip]="proposal?.to" (open)="openTrip($event)"></app-proposal-trip>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #toRequest>
   <div class="proposal__request" *ngIf="!self">
-    Vous avez proposé un voyage pour l'annonce de {{ proposal?.to.user.firstname }}
-    <app-proposal-request [request]="proposal?.to" (open)="openRequest($event)"></app-proposal-request>
-    <hr class="divider">
-    Votre voyage:
-    <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
+    <span *ngIf="standalone">Vous avez proposé un voyage pour l'annonce de {{ proposal?.to.user.firstname }}</span>
+    <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+    <div *ngIf="standalone">
+      <hr class="divider">
+      Votre voyage:
+      <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
+    </div>
   </div>
 </ng-template>
 
