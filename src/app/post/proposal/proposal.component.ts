@@ -28,6 +28,7 @@ export class ProposalComponent implements OnInit, OnChanges {
   @Input() entry: Post;
   currentUser: User;
   fromTrip: boolean;
+  toTrip: boolean;
   standalone: boolean;
   self: boolean;
   moment = moment;
@@ -46,6 +47,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     if (changes.proposal) {
       this.proposal = changes.proposal.currentValue;
       this.initProposal();
+      console.log('Proposal', this.proposal);
     }
     if (changes.receiver) {
       this.receiver = changes.receiver.currentValue;
@@ -75,6 +77,7 @@ export class ProposalComponent implements OnInit, OnChanges {
   initProposal() {
     if (this.proposal) {
       this.fromTrip = this.proposal.isFromTrip();
+      this.toTrip = this.proposal.isToTrip();
       if (this.proposal.receiver && this.currentUser) {
         this.receiver = this.proposal.receiver.id === this.currentUser.id;
       }

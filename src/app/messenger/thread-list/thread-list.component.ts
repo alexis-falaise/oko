@@ -132,6 +132,7 @@ export class ThreadListComponent implements OnInit, OnDestroy {
       const message = new Message(receivedMessage, this.currentUser);
       const threadIndex = this.threads.findIndex(listThread => listThread.id === thread.id);
       this.threads[threadIndex].pushMessage(message);
+      this.threads = this.threads.sort(this.sortThreads);
     });
   }
 

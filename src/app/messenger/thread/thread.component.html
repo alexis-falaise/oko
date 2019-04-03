@@ -3,6 +3,10 @@
         <div class="thread__content__message" *ngFor="let message of thread?.messages; let i = index" id="{{'message-' + i}}">
             <app-message [message]="message" (click)="scrollDown()"></app-message>
         </div>
+        <div class="thread__content__empty">
+            <mat-icon>chat_bubble_outline</mat-icon> 
+            <div>Envoyez un message à {{ thread?.contact?.firstname }} !</div>
+        </div>
     </div>
     <div class="thread__actions container">
         <mat-form-field class="thread__actions-input">

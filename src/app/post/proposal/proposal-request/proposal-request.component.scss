@@ -1,0 +1,13 @@
+@import "../../../../styles/variables.scss";
+
+.proposal-request {
+    &__item {
+        margin-bottom: 5px;
+    }
+    &__city {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: rgb(75, 75, 75);
+    }
+}

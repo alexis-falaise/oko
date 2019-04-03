@@ -1,0 +1,27 @@
+<div class="proposal-trip" (click)="openTrip()">
+    <div class="proposal-trip-date">
+        <div class="arrival">
+            <mat-icon>today</mat-icon> Arrivée
+        </div>
+        <div class="arrival-time">
+            {{ trip.date?.format('DD/MM HH:mm') }}
+        </div>
+    </div>
+    <div class="row proposal-trip-info">
+      <div class="col-5 location">
+        <div class="city-name">{{ trip.from?.label }} </div>
+        <div class="airport-name" *ngIf="trip.from?.airport">
+            {{ trip.from?.airport?.name }}
+        </div>
+      </div>
+      <div class="col-2 d-flex align-items-center">
+        <mat-icon>chevron_right</mat-icon>
+      </div>
+      <div class="col-5 location">
+        <div class="city-name">{{ trip.to.label }}</div>
+        <div class="airport-name" *ngIf="trip.to.airport">
+          {{ trip.to.airport.name }}
+        </div>
+      </div>
+    </div>
+</div>

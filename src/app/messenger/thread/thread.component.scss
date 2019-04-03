@@ -19,6 +19,27 @@
         overflow-y: scroll;
         overflow-x: hidden;
         box-shadow: 0 -5px 5px rgba(255, 255, 255, .7) inset;
+
+        &__empty {
+            $iconSize: 72px;
+            $emptyColor:rgb(225, 225, 225);
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: $emptyColor;
+            .mat-icon {
+                margin-right: 10px;
+                height: $iconSize;
+                width: $iconSize;
+            }
+            .material-icons {
+                font-size: $iconSize;
+                color: $emptyColor;
+            }
+        }
     }
     &__message {
         width: 100%;
