@@ -72,7 +72,7 @@ export class Message {
         return dateToFormat.isSame(moment(), 'd')
                 ? dateToFormat.format('HH:mm')
                 : dateToFormat.isSame(moment().subtract(1, 'days'), 'd')
-                  ? dateToFormat.format('Hier - HH:mm')
+                  ? `Hier - ${dateToFormat.format('HH:mm')}`
                   : dateToFormat.isAfter(moment().subtract(7, 'days'))
                     ? dateToFormat.format('ddd - HH:mm')
                     : dateToFormat.format('DD MMMM - HH:mm');

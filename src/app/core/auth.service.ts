@@ -29,7 +29,7 @@ export class AuthService {
   private authUrl = `${this.serverUrl}/auth`;
   private logged = new BehaviorSubject(false);
   private currentUser = new BehaviorSubject<User>(null);
-  private nextAuthentication = new Subject();
+  private socialCheck = new Subject();
   private status = new BehaviorSubject(null);
   private socialProfile = new BehaviorSubject<User>(null);
   private socialAuthenticated = false;
@@ -41,7 +41,7 @@ export class AuthService {
     private social: SocialService,
     private snack: MatSnackBar,
     private dialog: MatDialog,
-  ) { }
+  ) { console.log('Auth service constructed'); }
 
   onUser(): Observable<User> {
     return this.currentUser.asObservable();
@@ -68,6 +68,11 @@ export class AuthService {
     .subscribe((status: any) => {
       this.status.next(status);
       this.currentUser.next(status.user);
+      if (status && status.user && status.user.socialProvider) {
+        this.updateSocialAuthenticationState(true);
+      } else {
+        this.updateSocialAuthenticationState(false);
+      }
     });
   }
 
@@ -90,6 +95,14 @@ export class AuthService {
    */
   isSocialAuthenticated(): boolean {
     return this.socialAuthenticated;
+  }
+
+  /**
+   * Helper function for social authentication state update
+   * @param state : New social authentication state (boolean)
+   */
+  updateSocialAuthenticationState(state: boolean) {
+    return this.socialAuthenticated = state;
   }
 
   /**
@@ -202,18 +215,18 @@ export class AuthService {
   }
 
   checkSocialAuthentication() {
-    console.log('Check social authentication - current:', this.socialAuthenticated);
-    if (!this.socialAuthenticated && !this.socialChecked) {
+    console.log(`Social authenticated: ${this.socialAuthenticated} - Social Checked: ${this.socialChecked}`);
+      this.socialCheck.next(true);
+      if (!this.socialAuthenticated && !this.socialChecked) {
+      this.socialChecked = true;
       this.social.authState
-      .pipe(takeUntil(this.nextAuthentication))
-      .subscribe(user => {
-        this.nextAuthentication.next(true);
+      .pipe(takeUntil(this.socialCheck))
+      .subscribe((user: SocialUser) => {
+        console.log('Has received social user', user.firstName, user.email);
         this.socialAuthenticated = true;
-        this.socialChecked = true;
         this.socialAuthentication(user);
       }, (error) => {
         this.socialAuthenticated = false;
-        this.socialChecked = true;
       });
     }
   }

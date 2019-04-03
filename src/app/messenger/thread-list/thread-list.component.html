@@ -24,7 +24,7 @@
                                 {{ thread.contact?.firstname }} {{ thread.contact?.lastname }}
                             </h6>
                             <!-- .thread-message won't work, and that's twilight zone kinda stuff-->
-                            <div class="hello">
+                            <div class="hello" [class.not-seen]="!thread?.lastMessage?.authorView && !thread?.lastMessage?.seen">
                                 {{ thread?.lastMessage
                                    ? thread?.lastMessage?.authorView 
                                     ? 'Vous: ' + thread.lastMessage.content

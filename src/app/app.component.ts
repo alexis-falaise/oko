@@ -72,14 +72,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.onStatus()
     .pipe(takeUntil(this.ngUnsubscribe || this.nextStatus))
     .subscribe((status: any) => {
+      this.uiService.setLoading(false);
       this.nextStatus.next(true);
-      if (status && status.status) {
-        this.username = status.user.firstname;
-        this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
-        this.updateLogStatus(status.status);
-      } else {
-        this.authService.checkSocialAuthentication();
-        this.updateLogStatus(false);
+      if (status) {
+        if (status.status) {
+          this.username = status.user.firstname;
+          this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
+          this.updateLogStatus(status.status);
+        } else {
+          this.uiService.setLoading(true);
+          this.authService.checkSocialAuthentication();
+          this.updateLogStatus(false);
+        }
       }
     });
     this.authService.getLoginStatus();

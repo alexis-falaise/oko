@@ -96,11 +96,17 @@ export class ThreadListComponent implements OnInit, OnDestroy {
   private setListeners() {
     if (this.contacts) {
       this.contacts.forEach((contact, index) => {
-        this.socket.on(`login/${contact._id}`, () => {
-          this.contacts[index].isConnected = true;
+        this.socket.on(`login/${contact._id}`, (id) => {
+          const contactIndex = this.contacts.findIndex(searchedContact => searchedContact._id === id);
+          this.contacts[contactIndex].isConnected = true;
         });
-        this.socket.on(`logout/${contact._id}`, () => {
-          this.contacts[index].isConnected = false;
+        this.socket.on(`logout/${contact._id}`, (id) => {
+          const contactIndex = this.contacts.findIndex(searchedContact => searchedContact._id === id);
+          this.contacts[contactIndex].isConnected = false;
+        });
+        this.socket.on(`disconnected/${contact._id}`, (id) => {
+          const contactIndex = this.contacts.findIndex(searchedContact => searchedContact._id === id);
+          this.contacts[contactIndex].isConnected = false;
         });
       });
     }

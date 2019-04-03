@@ -85,4 +85,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
     max-height: 45px;
+
+    &.not-seen {
+        font-weight: 700;
+    }
 }

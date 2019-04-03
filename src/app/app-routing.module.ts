@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'messages', component: MessengerComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: ThreadListComponent },
-      { path: 'thread', component: ThreadListComponent },
+      { path: 'thread', redirectTo: '/messages', pathMatch: 'full' },
       { path: 'thread/:id', component: ThreadComponent },
     ]},
   { path: '404', component: NotFoundComponent },
