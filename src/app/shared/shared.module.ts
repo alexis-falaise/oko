@@ -25,6 +25,7 @@ import { ItemComponent } from './item/item.component';
 import { RatingComponent } from './rating/rating.component';
 import { ProposalListComponent } from './proposal-list/proposal-list.component';
 import { SpaceIndicatorComponent } from './space-indicator/space-indicator.component';
+import { ProposalSharedComponent } from './proposal-shared/proposal-shared.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SpaceIndicatorComponent } from './space-indicator/space-indicator.compo
     ItemComponent,
     RatingComponent,
     ProposalListComponent,
+    ProposalSharedComponent,
     SpaceIndicatorComponent,
   ],
   imports: [
@@ -62,6 +64,7 @@ import { SpaceIndicatorComponent } from './space-indicator/space-indicator.compo
     ItemComponent,
     RatingComponent,
     ProposalListComponent,
+    ProposalSharedComponent,
     SpaceIndicatorComponent,
   ],
 })

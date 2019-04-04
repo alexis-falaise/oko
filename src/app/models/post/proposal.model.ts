@@ -32,10 +32,18 @@ export class Proposal {
     updates: [Update];
     seen: boolean;
     sightDate: Moment;
-    authorView?: boolean;
     lastUpdate?: Update;
     id?: string;
     _id: string;
+
+    /**Front-end helpers */
+    authorView?: boolean;
+    receiverView?: boolean;
+    fromTrip?: boolean;
+    fromRequest?: boolean;
+    toTrip?: boolean;
+    toRequest?: boolean;
+
     constructor(proposal: Partial<Proposal>) {
         Object.assign(this, proposal);
         if (proposal._id) {
@@ -46,15 +54,19 @@ export class Proposal {
         }
         if (this.isTrip(proposal.from)) {
             this.from = new Trip(proposal.from);
+            this.fromTrip = true;
         }
         if (this.isRequest(proposal.from)) {
             this.from = new Request(proposal.from);
+            this.fromRequest = true;
         }
         if (this.isTrip(proposal.to)) {
             this.to = new Trip(proposal.to);
+            this.toTrip = true;
         }
         if (this.isRequest(proposal.to)) {
             this.to = new Request(proposal.to);
+            this.toRequest = true;
         }
     }
 
@@ -67,21 +79,29 @@ export class Proposal {
         }
     }
 
-    /* Check for the from and to properties, defining a trip */
+    /* Check the from & to properties type (Trip or Request)*/
     isFromTrip(): boolean {
-        return this.isTrip(this.from);
+        const isFromTrip = this.isTrip(this.from);
+        this.fromTrip = isFromTrip;
+        return isFromTrip;
     }
 
     isToTrip(): boolean {
-        return this.isTrip(this.to);
+        const isToTrip = this.isTrip(this.to);
+        this.toTrip = isToTrip;
+        return isToTrip;
     }
 
     isFromRequest(): boolean {
-        return this.isRequest(this.from);
+        const isFromRequest = this.isRequest(this.from);
+        this.fromRequest = isFromRequest;
+        return isFromRequest;
     }
 
     isToRequest(): boolean {
-        return this.isRequest(this.to);
+        const isToRequest = this.isRequest(this.to);
+        this.toRequest = isToRequest;
+        return isToRequest;
     }
 
     isTrip(object: any): boolean {

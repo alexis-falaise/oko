@@ -7,6 +7,7 @@ import { forkJoin } from 'rxjs';
 import { PostService } from '@core/post.service';
 
 import { Proposal } from '@models/post/proposal.model';
+import { User } from '@models/user.model';
 
 @Component({
   selector: 'app-proposal-edit',
@@ -16,7 +17,10 @@ import { Proposal } from '@models/post/proposal.model';
 export class ProposalEditComponent implements OnInit {
   bonus: number;
   min: number;
+  max: number;
   airportPickup: boolean;
+  proposal: Proposal;
+  currentUser: User;
   meeting = this.fb.group({
     address: ['', Validators.required],
     city: ['', Validators.required],
@@ -29,10 +33,13 @@ export class ProposalEditComponent implements OnInit {
     private dialogRef: MatDialogRef<ProposalEditComponent>,
     private snack: MatSnackBar,
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public proposal: Proposal
+    @Inject(MAT_DIALOG_DATA) public data: {proposal: Proposal, user: User}
   ) { }
 
   ngOnInit() {
+    this.proposal = this.data.proposal;
+    this.currentUser = this.data.user;
+    this.calculateBoundaries();
     this.bonus = this.proposal.bonus || 0;
     this.airportPickup = this.proposal.airportPickup;
     if (this.proposal.meetingPoint) {
@@ -67,6 +74,37 @@ export class ProposalEditComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  private calculateBoundaries() {
+    let referentOffer;
+    let originalOffer;
+    let currentBonus = this.proposal.bonus;
+    const bonusUpdates = this.proposal.updates.filter(update => update.type === 'bonus');
+    bonusUpdates.forEach(update => {
+      currentBonus = currentBonus - update.bonusDelta;
+    });
+    originalOffer = currentBonus;
+    console.log('Original offer', originalOffer);
+    const lastOppositeUpdateIndex = bonusUpdates.findIndex(update => update.author.id !== this.currentUser.id);
+    if (lastOppositeUpdateIndex === -1) {
+      referentOffer = originalOffer;
+    } else {
+      let lastOppositeOffer;
+      currentBonus = this.proposal.bonus;
+      console.log('Current bonus', currentBonus);
+      bonusUpdates.forEach((update, index) => {
+        if (index >= lastOppositeUpdateIndex && update.type === 'bonus') {
+          currentBonus = currentBonus - update.bonusDelta;
+          console.log('Current bonus - iteration', update, index, currentBonus);
+        }
+      });
+      lastOppositeOffer = currentBonus;
+      console.log('Last opposite offer', lastOppositeOffer);
+      referentOffer = lastOppositeOffer;
+    }
+    this.min = Math.floor(referentOffer * 0.6);
+    this.max = Math.ceil(referentOffer * 2);
   }
 
   private serverError(error?: HttpErrorResponse) {

@@ -1,3 +1,30 @@
-<p>
-  proposal-edit-bonus works!
-</p>
+<div class="proposal-edit-bonus">
+  <h2 class="proposal-edit-bonus-title">Contre proposition</h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="proposal-edit-bonus__content">
+    <h6 class="text-muted">Bonus voyageur</h6>
+    <mat-slider class="proposal-edit-bonus__content__slider"
+                [disabled]="proposal.accepted || proposal.closed || proposal.refused"
+                [min]="min" [max]="max" [(ngModel)]="bonus"
+                thumbLabel [displayWith]="formatLabel">
+    </mat-slider>
+    <h2 class="proposal-edit-bonus__content__bonus">{{ bonus }} €</h2>
+    <small class="text-muted" *ngIf="bonus === max">
+      Nous plafonnons les propositions au double de l'offre précédente
+    </small>
+    <small class="text-muted" *ngIf="bonus === min">
+      Nous limitons les contres propositions à 60% de l'offre précédente
+    </small>
+  </div>
+  <div class="proposal-edit-bonus__validation d-flex justify-content-between">
+    <button class="btn btn-success" 
+            [disabled]="proposal.accepted || proposal.closed || proposal.refused"
+            (click)="updateBonus()">
+      Modifier
+    </button>
+    <button class="btn btn-light" (click)="close()">
+      {{ proposal.accepted || proposal.closed || proposal.refused ? 'Fermer' : 'Annuler' }}
+    </button>
+  </div>
+</div>

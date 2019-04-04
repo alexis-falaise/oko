@@ -21,6 +21,8 @@ export class AccountProposalComponent implements OnInit {
   receivedFromRequest: Array<Proposal> = [];
   sentAboutTrip: Array<Proposal> = [];
   sentAboutRequest: Array<Proposal> = [];
+  toDeliver: Array<Proposal> = [];
+  toReceive: Array<Proposal> = [];
   fetchedProposals = new Subject();
   moment = moment;
 
@@ -49,6 +51,19 @@ export class AccountProposalComponent implements OnInit {
           this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate) || [];
           this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate) || [];
           this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate) || [];
+          const paidProposals = proposals[0].concat(proposals[1]).filter(proposal => proposal.paid);
+          /**
+           * Proposals to deliver are whether trip proposed by user or request received about a user's trip
+           */
+          this.toDeliver = paidProposals.filter(proposal => {
+            return (proposal.isAuthor(user) && proposal.fromTrip) || (!proposal.isAuthor(user) && proposal.fromRequest);
+          });
+          /**
+           * Proposals to receive are whether requests made by user on a trip or trips received for a request
+           */
+          this.toReceive = paidProposals.filter(proposal => {
+            return (proposal.isAuthor(user) && proposal.fromRequest) || (!proposal.isAuthor(user) && proposal.fromTrip);
+          });
           this.uiService.setLoading(false);
         }, (error) => {
           this.uiService.serverError(error);

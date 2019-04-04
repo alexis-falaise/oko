@@ -16,6 +16,8 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
+import { ProposalEditBonusComponent } from './proposal-edit-bonus/proposal-edit-bonus.component';
+import { ProposalEditMeetingComponent } from './proposal-edit-meeting/proposal-edit-meeting.component';
 
 @Component({
   selector: 'app-proposal',
@@ -47,7 +49,6 @@ export class ProposalComponent implements OnInit, OnChanges {
     if (changes.proposal) {
       this.proposal = changes.proposal.currentValue;
       this.initProposal();
-      console.log('Proposal', this.proposal);
     }
     if (changes.receiver) {
       this.receiver = changes.receiver.currentValue;
@@ -146,6 +147,20 @@ export class ProposalComponent implements OnInit, OnChanges {
     }, (err) => this.serverError(err));
   }
 
+  payProposal() {
+    this.uiService.setLoading(true);
+    this.postService.payProposal(this.proposal.id)
+    .subscribe((response: ServerResponse) => {
+      if (response.status) {
+        this.snack.open('La proposition a été reglée, merci', 'Super', {duration: 4500});
+        this.proposal.paid = response.data.paid;
+      } else {
+        this.serverError(response);
+      }
+      this.uiService.setLoading(false);
+    }, (err) => this.serverError(err));
+  }
+
   refuseProposal() {
     this.uiService.setLoading(true);
     this.postService.refuseProposal(this.proposal.id)
@@ -178,11 +193,51 @@ export class ProposalComponent implements OnInit, OnChanges {
     const dialogRef = this.dialog.open(ProposalEditComponent, {
       height: '85vh',
       width: '80vw',
-      data: this.proposal,
+      data: {
+        proposal: this.proposal,
+        user: this.currentUser,
+      },
     });
     dialogRef.afterClosed().subscribe(proposal => {
       if (proposal) {
         this.proposal.bonus = proposal.bonus;
+        this.proposal.updates = proposal.updates;
+        this.proposal = new Proposal(this.proposal);
+      }
+    });
+  }
+
+  updateProposalBonus() {
+    const dialogRef = this.dialog.open(ProposalEditBonusComponent, {
+      height: '60vh',
+      width: '60vw',
+      data: {
+        proposal: this.proposal,
+        user: this.currentUser,
+      },
+    });
+    dialogRef.afterClosed().subscribe(proposal => {
+      if (proposal) {
+        this.proposal.bonus = proposal.bonus;
+        this.proposal.updates = proposal.updates;
+        this.proposal = new Proposal(this.proposal);
+      }
+    });
+  }
+
+  updateProposalMeeting() {
+    const dialogRef = this.dialog.open(ProposalEditMeetingComponent, {
+      height: '75vh',
+      width: '75vw',
+      data: {
+        proposal: this.proposal,
+        user: this.currentUser,
+      }
+    });
+    dialogRef.afterClosed().subscribe(proposal => {
+      if (proposal) {
+        this.proposal.meetingPoint = proposal.meetingPoint;
+        this.proposal.airportPickup = proposal.airportPickup;
         this.proposal.updates = proposal.updates;
         this.proposal = new Proposal(this.proposal);
       }

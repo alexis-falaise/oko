@@ -8,10 +8,16 @@
       <h6 class="text-muted">Bonus voyageur</h6>
       <mat-slider class="proposal-edit__content__slider"
                   [disabled]="proposal.accepted || proposal.closed || proposal.refused"
-                  min="0" max="250" [(ngModel)]="bonus"
+                  [min]="min" [max]="max" [(ngModel)]="bonus"
                   thumbLabel [displayWith]="formatLabel">
       </mat-slider>
       <h2 class="proposal-edit__content__bonus">{{ bonus }} €</h2>
+      <small class="text-muted" *ngIf="bonus === max">
+        Nous plafonnons les propositions au double de l'offre précédente
+      </small>
+      <small class="text-muted" *ngIf="bonus === min">
+        Nous limitons les contres propositions à 60% de l'offre précédente
+      </small>
       <hr class="divider">
       <h6 class="text-muted">Lieu de rendez-vous</h6>
       <div>

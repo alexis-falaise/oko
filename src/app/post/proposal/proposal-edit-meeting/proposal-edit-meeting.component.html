@@ -1,3 +1,47 @@
-<p>
-  proposal-edit-meeting works!
-</p>
+<div class="proposal-edit-meeting">
+  <h2 class="proposal-edit-meeting-title">Modifier le lieu de rendez-vous</h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="proposal-edit-meeting__content">
+      <h6 class="text-muted">Lieu de rendez-vous</h6>
+      <div class="mb-2">
+        <mat-slide-toggle [(ngModel)]="airportPickup"
+                          [disabled]="proposal.accepted || proposal.closed || proposal.refused">
+        </mat-slide-toggle> Remise à l'aéroport <br>
+      </div>
+      <form [formGroup]="meeting" *ngIf="!airportPickup">
+        <div class="form-row">
+          <div class="form-group col-12">
+            <input type="text" class="form-control form-control-sm" placeholder="Adresse"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="address" required>
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <input type="text" class="form-control form-control-sm" placeholder="Ville"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="city" required>
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <input type="text" class="form-control form-control-sm" placeholder="Code postal"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="zip" required>
+          </div>
+          <div class="form-group col-12">
+            <input type="text" class="form-control form-control-sm" placeholder="Pays"
+                   [readonly]="proposal.accepted || proposal.closed || proposal.refused"
+                   formControlName="country" required>
+          </div>
+        </div>
+      </form>
+  </div>
+  <div class="proposal-edit-meeting__validation d-flex justify-content-between">
+      <button class="btn btn-success" 
+              [disabled]="proposal.accepted || proposal.closed || proposal.refused"
+              (click)="updateMeeting()">
+        Modifier
+      </button>
+      <button class="btn btn-light" (click)="close()">
+        {{ proposal.accepted || proposal.closed || proposal.refused ? 'Fermer' : 'Annuler' }}
+      </button>
+    </div>
+</div>

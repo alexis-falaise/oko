@@ -8,53 +8,87 @@
       </div>
   </div>
 </div>
-<div *ngIf="proposal" [ngClass]="{'proposal': true, 'standalone container': standalone, 'closed': standalone && proposal.closed}">
+<div *ngIf="proposal" [ngClass]="{'proposal': true, 'standalone container': standalone, 'closed': standalone && (proposal.closed || proposal.refused)}">
     <div class="row justify-content-around proposal__actions">
-        <button class="btn btn-light btn-icon"
+        <button class="btn btn-light btn-icon mb-2"
                 *ngIf="proposal.authorView && !proposal.closed && !proposal.accepted && !proposal.refused"
                 (click)="modifyProposal()">
           <mat-icon>edit</mat-icon> Modifier
         </button>
-        <button class="btn btn-success btn-icon"
+        <button class="btn btn-success btn-icon mb-2"
                 [disabled]="proposal.accepted"
-                *ngIf="receiver && !proposal.refused && !proposal.closed"
+                *ngIf="!proposal.refused && !proposal.closed && receiver && !proposal.paid"
                 (click)="acceptProposal()">
           <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
         </button>
-        <button class="btn btn-success btn-icon"
+        <button class="btn btn-success btn-icon mb-2"
                 [disabled]="proposal.paid"
-                *ngIf="proposal.authorView && proposal.accepted">
+                (click)="payProposal()"
+                *ngIf="
+                proposal.toRequest && receiver
+                || proposal.fromRequest && proposal.authorView
+                && proposal.accepted">
           <mat-icon>credit_card</mat-icon> {{ proposal.paid ? 'Payée' : 'Payer' }}
         </button>
-        <button class="btn btn-success btn-icon"
+        <button class="btn btn-success btn-icon mb-2"
                 [disabled]="proposal.validated"
-                *ngIf="receiver && proposal.accepted && proposal.paid"
+                *ngIf="
+                proposal.toRequest && receiver
+                || proposal.fromRequest && proposal.authorView
+                && proposal.paid"
                 (click)="validateProposal()">
           <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
         </button>
-        <button class="btn btn-danger btn-icon"
+        <button class="btn btn-danger btn-icon mb-2"
                 [disabled]="proposal.refused"
-                *ngIf="receiver && !proposal.accepted && !proposal.closed"
+                *ngIf="(receiver && !proposal.accepted && !proposal.closed) || (!receiver && proposal.refused)"
                 (click)="refuseProposal()">
           <mat-icon>clear</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
         </button>
-        <button class="btn btn-danger btn-icon"
+        <button class="btn btn-danger btn-icon mb-2"
                 [disabled]="proposal.closed"
-                *ngIf="proposal.authorView || proposal.closed"
+                *ngIf="(proposal.authorView || proposal.closed) && !proposal.accepted && !proposal.refused"
                 (click)="closeProposal()">
           <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
         </button>
+    </div>
+    <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver">
+      <small class="text-muted" *ngIf="!proposal.accepted && !proposal.refused && !proposal.closed">
+        La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
+      </small>
+      <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.accepted && !proposal.paid">
+        La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement 
+      </small>
+      <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
+        Vos articles seront livrés par {{ proposal?.to?.user.firstname }} le {{ moment(proposal?.to?.date).format('DD/MM') }}
+      </small>
+      <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
+          La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer
+      </small>
+    </div>
+    <div class="d-flex justify-content-center text-align-center" *ngIf="receiver">
+      <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
+        Vos articles seront livrés par {{ proposal?.from?.user.firstname }} le {{ moment(proposal?.from?.date).format('DD/MM') }}
+      </small>
+      <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
+        La proposition a été acceptée par {{ proposal?.from?.user.firstname }} et est en attente de paiement 
+      </small>
+      <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
+        La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer
+      </small>
     </div>
     <hr class="divider" *ngIf="proposal.bonus">
     <div class="proposal__summary">
         <h6 class="text-muted" *ngIf="proposal.bonus">Bonus voyageur: {{ proposal.bonus }} €</h6>
         <small class="text-muted" *ngIf="proposal.lastUpdate">
-          Dernière modification {{ moment(proposal.lastUpdate.date).fromNow() }} par {{ proposal.lastUpdate.author?.firstname || 'Oko user' }}
+          Dernière modification {{ moment(proposal.lastUpdate.date).fromNow() }} par
+          {{ proposal?.lastUpdate?.author?.id === currentUser.id ? ' vous' : proposal.lastUpdate.author?.firstname || 'Oko user' }}
         </small>
         <div class="d-flex w-100 justify-content-center">
           <button class="btn btn-light btn-sm btn-icon"
+                  [disabled]="proposal.accepted || proposal.refused"
                   *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
-                  (click)="modifyProposal()">
+                  (click)="updateProposalBonus()">
             <mat-icon>edit</mat-icon> Contre proposition
           </button>
         </div>
@@ -92,8 +126,8 @@
         <div class="proposal__request__city"
              *ngIf="proposal.meetingPoint?.city && proposal.meetingPoint?.city !== '' 
                     && proposal.meetingPoint?.address && proposal.meetingPoint?.address; else meeting">
-            <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint.city }} ({{ proposal.meetingPoint.country }})
-            {{ proposal.meetingPoint.address ? ', ' + proposal.meetingPoint?.address : '' }}
+            <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint?.address }}<br>
+            <small class="text-muted">{{ proposal.meetingPoint.city }} ({{ proposal.meetingPoint.country }})</small>
         </div>
         <ng-template #meeting>
           <div class="proposal__request__city">
@@ -105,8 +139,9 @@
     <br>
     <div class="d-flex w-100 justify-content-center">
       <button class="btn btn-light btn-sm btn-icon mb-5"
+              [disabled]="proposal.accepted || proposal.refused"
               *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
-              (click)="modifyProposal()">
+              (click)="updateProposalMeeting()">
         <mat-icon>my_location</mat-icon> {{ proposal.meetingPoint?.city ? 'Proposer un autre lieu' : 'Proposer un lieu de rendez-vous'}}
       </button>
     </div>
@@ -147,8 +182,8 @@
       </div>
       <ng-template #location>
         <div class="proposal__request__city" *ngIf="proposal.meetingPoint?.city; else meeting">
-            <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint?.city }} ({{ proposal.meetingPoint?.country }})
-            {{ proposal.meetingPoint.address ? ', ' + proposal.meetingPoint?.address : '' }}
+            <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint.address }}<br>
+            <small class="text-muted">{{ proposal.meetingPoint?.city }} ({{ proposal.meetingPoint?.country }})</small>
         </div>
         <ng-template #meeting>
           <div class="proposal__request__city">

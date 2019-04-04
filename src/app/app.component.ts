@@ -72,7 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.onStatus()
     .pipe(takeUntil(this.ngUnsubscribe || this.nextStatus))
     .subscribe((status: any) => {
-      this.uiService.setLoading(false);
       this.nextStatus.next(true);
       if (status) {
         if (status.status) {
@@ -80,7 +79,6 @@ export class AppComponent implements OnInit, OnDestroy {
           this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
           this.updateLogStatus(status.status);
         } else {
-          this.uiService.setLoading(true);
           this.authService.checkSocialAuthentication();
           this.updateLogStatus(false);
         }

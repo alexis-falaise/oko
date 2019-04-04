@@ -1,5 +1,21 @@
 <div class="account-proposal">
     <mat-tab-group class="account-proposal__nav" headerPosition="below" [color]="'primary'" mat-strech-tabs mat-align-tabs="center">
+        <mat-tab *ngIf="toDeliver?.length">
+            <ng-template mat-tab-label>
+                <mat-icon>flight_takeoff</mat-icon> A livrer
+            </ng-template>
+            <div class="account-proposal__list-wrapper">
+                <app-proposal-list [proposalList]="toDeliver" [user]="currentUser"></app-proposal-list>
+            </div>
+        </mat-tab>
+        <mat-tab *ngIf="toReceive?.length">
+            <ng-template mat-tab-label>
+                <mat-icon>flight_land</mat-icon> A recevoir
+            </ng-template>
+            <div class="account-proposal__list-wrapper">
+                <app-proposal-list [proposalList]="toReceive" [user]="currentUser"></app-proposal-list>
+            </div>
+        </mat-tab>
         <mat-tab class="account-proposal__nav-tab">
             <ng-template mat-tab-label>
                 <mat-icon>move_to_inbox</mat-icon> Reçues

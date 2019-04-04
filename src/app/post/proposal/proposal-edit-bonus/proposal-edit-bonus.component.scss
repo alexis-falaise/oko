@@ -1,0 +1,25 @@
+@import "../../../../styles/variables.scss";
+
+.proposal-edit-bonus {
+    &-title {
+        font-weight: 700;
+        font-size: 18px;
+        color: $cyan-600
+    }
+    &__content {
+        transition: all $transitionDuration;
+        width: 100%;
+        height: 40vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &__bonus {
+            font-size: 36px;
+            color: rgb(125, 125, 125);
+        }
+        &__slider {
+            width: 100%;
+        }
+    }
+}

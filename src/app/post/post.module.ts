@@ -76,6 +76,8 @@ import { ProposalRequestComponent } from './proposal/proposal-request/proposal-r
     RequestItemComponent,
     RequestItemSelectionComponent,
     ProposalEditComponent,
+    ProposalEditBonusComponent,
+    ProposalEditMeetingComponent,
   ],
   imports: [
     CommonModule,

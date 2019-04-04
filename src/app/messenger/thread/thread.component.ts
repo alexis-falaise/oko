@@ -54,7 +54,8 @@ export class ThreadComponent implements OnInit, OnDestroy {
       this.message.content = this.message.content.slice(1);
     }
     this.message.send();
-    this.messengerService.createMessage(this.thread, this.message);
+    this.messengerService.createMessage(this.thread, this.message)
+    .subscribe(response => console.log(response));
     this.message = new Message({content: ''});
   }
 

@@ -15,6 +15,7 @@ import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { SocialDisconnectionComponent } from './dialogs/social-disconnection/social-disconnection.component';
 import { takeUntil } from 'rxjs/operators';
+import { UiService } from './ui.service';
 
 class Status {
   status: boolean;
@@ -34,10 +35,12 @@ export class AuthService {
   private socialProfile = new BehaviorSubject<User>(null);
   private socialAuthenticated = false;
   private socialChecked = false;
+  private hasLoggedOut = false;
 
   constructor(
     private router: Router,
     private http: HttpClient,
+    private uiService: UiService,
     private social: SocialService,
     private snack: MatSnackBar,
     private dialog: MatDialog,
@@ -123,6 +126,29 @@ export class AuthService {
     });
   }
 
+  /**
+   * Log a user out
+   */
+  logout() {
+    this.http.get(`${this.authUrl}/logout`,  { withCredentials: true })
+    .subscribe((logoutInfo: any) => {
+      if (logoutInfo.status) {
+        this.currentUser.next(null);
+        this.hasLoggedOut = true;
+        this.status.next({ status: false, message: 'Successfully disconnected' });
+        this.router.navigate(['login']);
+      }
+    });
+  }
+
+  /**
+   * Register a user into oko database
+   * @param user: User data from signin form
+   */
+  signin(user: User): Observable<ServerResponse> {
+    return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
+  }
+
   googleConnection() {
     this.social.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
@@ -192,42 +218,22 @@ export class AuthService {
     });
   }
 
-  /**
-   * Log a user out
-   */
-  logout() {
-    this.http.get(`${this.authUrl}/logout`,  { withCredentials: true })
-    .subscribe((logoutInfo: any) => {
-      if (logoutInfo.status) {
-        this.currentUser.next(null);
-        this.status.next({ status: false, message: 'Successfully disconnected' });
-        this.router.navigate(['login']);
-      }
-    });
-  }
-
-  /**
-   * Register a user into oko database
-   * @param user: User data from signin form
-   */
-  signin(user: User): Observable<ServerResponse> {
-    return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
-  }
-
   checkSocialAuthentication() {
-    console.log(`Social authenticated: ${this.socialAuthenticated} - Social Checked: ${this.socialChecked}`);
-      this.socialCheck.next(true);
-      if (!this.socialAuthenticated && !this.socialChecked) {
+    this.uiService.setLoading(true);
+    this.socialCheck.next(true);
+    if (!this.socialAuthenticated && !this.socialChecked && !this.hasLoggedOut) {
       this.socialChecked = true;
       this.social.authState
       .pipe(takeUntil(this.socialCheck))
       .subscribe((user: SocialUser) => {
-        console.log('Has received social user', user.firstName, user.email);
         this.socialAuthenticated = true;
+        this.uiService.setLoading(false);
         this.socialAuthentication(user);
       }, (error) => {
         this.socialAuthenticated = false;
       });
+    } else {
+      this.uiService.setLoading(false);
     }
   }
 

@@ -1,45 +1,50 @@
 <mat-list>
+    <!-- Accepted proposals-->
     <mat-list-item class="proposal-list__proposal"
-                    *ngFor="let proposal of proposalList"
+                    *ngFor="let proposal of acceptedProposals"
                     [class.closed]="proposal.closed"
                     [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
                     [class.accepted]="proposal.accepted && !proposal.closed"
                     [class.refused]="proposal.refused && !proposal.closed"
                     [routerLink]="['/post', 'proposal', proposal.id]">
-        <h3 class="proposal-list__proposal__title row" *ngIf="aboutTrip; else requestTitle" matLine>
-            <div class="author col-4 col-sm-3" *ngIf="!own">
-                <app-avatar class="proposal-list__proposal__avatar" *ngIf="proposal.author?.avatar; else iconAvatar"
-                            [image]="proposal.author?.avatar" [size]="24"></app-avatar>
-                <ng-template #iconAvatar>
-                    <mat-icon>account_circle</mat-icon>
-                </ng-template>
-                {{ proposal.author?.firstname }}
-            </div>
-            <div [ngClass]="{'flight col-sm-6': true, 'col-8': !own, 'col-12': own}">
-                <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }} </div>
-                <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
-            </div>
-            <div class="date col-12 col-sm-3 justify-content-center justify-content-sm-end"><mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}</div>
-        </h3>
-        <ng-template #requestTitle>
-            <h3 class="proposal-list__proposal__title" matLine>
-                <app-avatar class="proposal-list__proposal__avatar" *ngIf="!own"
-                            [image]="proposal.author?.avatar" [size]="24">
-                </app-avatar>
-                {{ own ? ' Ma demande' : 'Demande de ' + proposal.author?.firstname }}
-            </h3>
-        </ng-template>
-        <p class="proposal-list__proposal__description" matLine>
-            <span class="proposal-list__proposal__status" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted">En attente</span>
-            <span class="proposal-list__proposal__status" *ngIf="proposal.closed">Annulée</span>
-            <span class="proposal-list__proposal__status" *ngIf="proposal.refused && !proposal.closed">Refusée</span>
-            <span class="proposal-list__proposal__status" *ngIf="proposal.accepted && !proposal.validated">Acceptée</span>
-            <span class="proposal-list__proposal__status" *ngIf="proposal.validated">Livrée</span>
-            <span class="proposal-list__proposal__info" *ngIf="!aboutTrip && proposal?.from?.urgent && !proposal.closed">
-                - avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}
-            </span>
-            <span class="proposal-list__proposal__info" *ngIf="proposal.bonus && !proposal.closed"> - Bonus : {{ proposal.bonus }} €</span> <br>
-            <span class="proposal-list__proposal__date"> Envoyé le {{ moment(proposal.date).format('DD/MM/YYYY à HH:mm') }} </span>
-        </p>
+        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
+                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>
+    </mat-list-item>
+
+    <!-- Pending proposals-->
+    <mat-list-item class="proposal-list__proposal"
+        *ngFor="let proposal of pendingProposals"
+        [class.closed]="proposal.closed"
+        [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+        [class.accepted]="proposal.accepted && !proposal.closed"
+        [class.refused]="proposal.refused && !proposal.closed"
+        [routerLink]="['/post', 'proposal', proposal.id]">
+        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
+                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>
+
+    </mat-list-item>
+
+    <!-- Refused proposals-->
+    <mat-list-item class="proposal-list__proposal"
+        *ngFor="let proposal of refusedProposals"
+        [class.closed]="proposal.closed"
+        [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+        [class.accepted]="proposal.accepted && !proposal.closed"
+        [class.refused]="proposal.refused && !proposal.closed"
+        [routerLink]="['/post', 'proposal', proposal.id]">
+        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
+                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>            
+    </mat-list-item>
+
+    <!-- Irrelevant proposals (closed, outdated)-->
+    <mat-list-item class="proposal-list__proposal"
+        *ngFor="let proposal of irrelevantProposals"
+        [class.closed]="proposal.closed"
+        [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+        [class.accepted]="proposal.accepted && !proposal.closed"
+        [class.refused]="proposal.refused && !proposal.closed"
+        [routerLink]="['/post', 'proposal', proposal.id]">
+        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
+                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>
     </mat-list-item>
 <mat-list>

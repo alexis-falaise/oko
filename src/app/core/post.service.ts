@@ -531,6 +531,7 @@ export class PostService {
    * @param bonus : new bonus value
    */
   updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
+    console.log('Updating proposal bonus');
     return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
@@ -539,6 +540,7 @@ export class PostService {
    * @param proposal : Proposal object
    */
   updateProposal(proposal: Proposal): Observable<ServerResponse> {
+    console.log('Updating full proposal');
     return this.http.put(`${this.proposalUrl}/${proposal.id}`, proposal, {withCredentials: true}) as Observable<ServerResponse>;
   }
 

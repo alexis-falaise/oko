@@ -96,6 +96,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(city => {
       this.meeting.controls.meetingPoint.patchValue({city: city.city, country: city.country});
     });
+    this.meeting.controls.airportPickup.valueChanges.subscribe(() => this.computeBonus());
     this.meeting.controls.bonus.valueChanges.subscribe(() => this.computeTotalPrice());
     this.checkDraft();
   }
@@ -286,9 +287,28 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     return saveRequest;
   }
 
+  /**
+   * Computes a bonus for the traveler
+   * Bonus calculation takes in account:
+   * - The items price
+   *   A percentage (bonusPercentage) is applied to the global price of items, never going under 10€
+   * - The number of items
+   *   Adding 2.5€ for every item if there are more than one
+   * - The weight of items
+   *   Adding 1€ / kg if global weight exceeds 5kg
+   * - The meeting point
+   *   Adding 10€ for delivery elsewhere than the arrival airport
+   * @param bonus : Existing bonus when editing a request
+   */
   private computeBonus(bonus?: number) {
     this.itemsPrice = this.items.reduce((sum, item) => sum + item.price, 0);
-    let calculatedBonus = this.itemsPrice * this.bonusPercentage;
+    const itemsWeight = this.items.reduce((sum, item) => sum + item.weight, 0);
+    let calculatedBonus = this.itemsPrice * this.bonusPercentage
+    + (this.items.length - 1) * 2.5
+    + (itemsWeight - 5) * 1;
+    if (!this.meeting.controls.airportPickup.value) {
+      calculatedBonus += 10;
+    }
     calculatedBonus = calculatedBonus > this.staticBonus ? calculatedBonus : this.staticBonus;
     this.meeting.controls.bonus.patchValue(Math.ceil(bonus || calculatedBonus));
   }
