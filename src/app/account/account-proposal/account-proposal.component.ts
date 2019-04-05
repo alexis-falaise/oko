@@ -51,7 +51,7 @@ export class AccountProposalComponent implements OnInit {
           this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate) || [];
           this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate) || [];
           this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate) || [];
-          const paidProposals = proposals[0].concat(proposals[1]).filter(proposal => proposal.paid);
+          const paidProposals = proposals[0].concat(proposals[1]).filter(proposal => proposal.paid && !proposal.validated);
           /**
            * Proposals to deliver are whether trip proposed by user or request received about a user's trip
            */

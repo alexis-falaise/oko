@@ -21,6 +21,9 @@
         }
         &.closed {
             opacity: .35;
+            &:hover {
+                opacity: .65;
+            }
         }
         &.pending,
         &.accepted,

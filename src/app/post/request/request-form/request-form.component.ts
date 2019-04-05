@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog, MatSnackBar, DateAdapter } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
-import { round, objectIsComplete } from '@utils/index.util';
+import { round, objectIsComplete, arraySum } from '@utils/index.util';
 import * as moment from 'moment';
 
 import { UserService } from '@core/user.service';
@@ -37,8 +37,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   itemsPrice: number;
   staticBonus = 10;
   bonusPercentage = 0.15;
-  feesPercentage = 0.01;
-  staticFees = 0.5;
+  feesPercentage = 0.075;
+  staticFees = 1.5;
   fees: number;
   totalPrice: number;
   currentUser: User;
@@ -301,15 +301,16 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
    * @param bonus : Existing bonus when editing a request
    */
   private computeBonus(bonus?: number) {
-    this.itemsPrice = this.items.reduce((sum, item) => sum + item.price, 0);
-    const itemsWeight = this.items.reduce((sum, item) => sum + item.weight, 0);
+    this.itemsPrice = arraySum(this.items.map(item => item.price));
+    let itemsWeight = arraySum(this.items.map(item => item.weight));
+    itemsWeight = itemsWeight > 5 ? itemsWeight - 5 : itemsWeight;
     let calculatedBonus = this.itemsPrice * this.bonusPercentage
     + (this.items.length - 1) * 2.5
-    + (itemsWeight - 5) * 1;
+    + itemsWeight * 1;
+    calculatedBonus = calculatedBonus > this.staticBonus ? calculatedBonus : this.staticBonus;
     if (!this.meeting.controls.airportPickup.value) {
       calculatedBonus += 10;
     }
-    calculatedBonus = calculatedBonus > this.staticBonus ? calculatedBonus : this.staticBonus;
     this.meeting.controls.bonus.patchValue(Math.ceil(bonus || calculatedBonus));
   }
 

@@ -74,7 +74,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title class="trip-detail__proposal__title">
             <span class="trip-detail__proposal__date">{{ moment(proposal.date).format('DD/MM/YYYY') }} </span>
-            {{ proposal.author.id === currentUser.id ? ' Demande' : ' ' + proposal.author?.firstname }}
+            {{ proposal.author.id === currentUser.id ? ' Ma demande' : ' ' + proposal.author?.firstname }}
             <span class="trip-detail__proposal__status" *ngIf="proposal.closed"> - Annulée</span>
             <span class="trip-detail__proposal__status" *ngIf="own && proposal.accepted && !proposal.validated"> - A livrer</span>
             <span class="trip-detail__proposal__status" *ngIf="proposal.refused && !proposal.closed"> - Refusée</span>

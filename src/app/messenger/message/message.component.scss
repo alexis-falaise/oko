@@ -32,17 +32,19 @@
     &__content {
         transition: all $transition;
         border-radius: 5px;
-        background-color: rgb(225, 225, 225);
-        color: rgb(75, 75, 75);
+        background-color: rgb(240, 240, 240);
+        color: rgb(50, 50, 50);
         font-size: 14px;
+        font-weight: 400;
         padding: 10px;
         display: flex;
         align-items: center;
         white-space: pre-line;
         &.author {
             transition: all $transition;
-            background: linear-gradient(45deg, #8bc34a, #00bcd4);
+            background: linear-gradient(45deg, #7cb342, #00acc1);
             color: white;
+            font-weight: 400;
             &:hover {
                 transition: all $transition;
                 background: linear-gradient(45deg, #9ccc65, #26c6da);

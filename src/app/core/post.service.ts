@@ -643,18 +643,6 @@ export class PostService {
     this.currentRequestFilter = new Filter();
   }
 
-  // TESTING PURPOSES
-
-  /**
-   * DELETES ALL POSTS, TRIPS, AND REQUESTS FROM SERVER
-   * Please, think twice or three times before using.
-   */
-  deleteAllPosts() {
-    this.http.get(`${this.postUrl}/delete`, {withCredentials: true});
-    this.http.get(`${this.tripUrl}/delete`, {withCredentials: true});
-    this.http.get(`${this.requestUrl}/delete`, {withCredentials: true});
-  }
-
   private getTripsUserStats(trips: Array<Trip>, observer: Observer<Array<Trip>>) {
     if (trips && !trips.length) {
       observer.next([]);

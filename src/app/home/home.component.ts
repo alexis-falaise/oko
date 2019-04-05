@@ -91,7 +91,6 @@ export class HomeComponent implements OnInit {
     this.authService.onUser().subscribe(authUser => {
       if (authUser) {
         this.userService.getCurrentUser().subscribe(user => {
-          console.log(this.profileSnack);
           if ((user.sessions && user.sessions.length === 1 || !user.sessions) && !this.profileSnack) {
             this.profileSnack = true;
             const snack = this.snack.open('Complétez votre profil !', 'Bonne idée', {duration: 7500});
@@ -184,10 +183,6 @@ export class HomeComponent implements OnInit {
       this.postService.saveRequestDraft(requestDraft);
     }
     this.router.navigate(['/post/request/new']);
-  }
-
-  deleteEverything() {
-    this.postService.deleteAllPosts();
   }
 
   private manageDrafts() {

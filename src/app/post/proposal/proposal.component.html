@@ -25,16 +25,16 @@
                 [disabled]="proposal.paid"
                 (click)="payProposal()"
                 *ngIf="
-                proposal.toRequest && receiver
-                || proposal.fromRequest && proposal.authorView
+                (proposal.toRequest && receiver
+                || proposal.fromRequest && proposal.authorView)
                 && proposal.accepted">
           <mat-icon>credit_card</mat-icon> {{ proposal.paid ? 'Payée' : 'Payer' }}
         </button>
         <button class="btn btn-success btn-icon mb-2"
                 [disabled]="proposal.validated"
                 *ngIf="
-                proposal.toRequest && receiver
-                || proposal.fromRequest && proposal.authorView
+                (proposal.toRequest && receiver
+                || proposal.fromRequest && proposal.authorView)
                 && proposal.paid"
                 (click)="validateProposal()">
           <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
@@ -52,7 +52,7 @@
           <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
         </button>
     </div>
-    <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver">
+    <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver && standalone">
       <small class="text-muted" *ngIf="!proposal.accepted && !proposal.refused && !proposal.closed">
         La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
       </small>
@@ -66,7 +66,7 @@
           La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer
       </small>
     </div>
-    <div class="d-flex justify-content-center text-align-center" *ngIf="receiver">
+    <div class="d-flex justify-content-center text-align-center" *ngIf="receiver && standalone">
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
         Vos articles seront livrés par {{ proposal?.from?.user.firstname }} le {{ moment(proposal?.from?.date).format('DD/MM') }}
       </small>
@@ -78,7 +78,7 @@
       </small>
     </div>
     <hr class="divider" *ngIf="proposal.bonus">
-    <div class="proposal__summary">
+    <div class="proposal__summary justify-content-center">
         <h6 class="text-muted" *ngIf="proposal.bonus">Bonus voyageur: {{ proposal.bonus }} €</h6>
         <small class="text-muted" *ngIf="proposal.lastUpdate">
           Dernière modification {{ moment(proposal.lastUpdate.date).fromNow() }} par
@@ -149,7 +149,7 @@
 
 
 <ng-template #fromRequest>
-  <div class="proposal__request" *ngIf="!self">
+  <div class="proposal__request" *ngIf="!self && proposal.fromRequest; else toRequestAsSender">
     <span *ngIf="standalone">Vous avez reçu une demande de transport de {{ proposal?.from.user.firstname }}</span>
     <app-proposal-request [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
     <div *ngIf="standalone">
@@ -160,8 +160,14 @@
   </div>
 </ng-template>
 
+<ng-template #fromRequestAsSender>
+    <div class="proposal__request" *ngIf="!self">
+      <app-proposal-request [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+    </div>
+  </ng-template>
+
 <ng-template #toRequest>
-  <div class="proposal__request" *ngIf="!self">
+  <div class="proposal__request" *ngIf="!self && proposal.toRequest; else fromRequestAsSender">
     <span *ngIf="standalone">Vous avez proposé un voyage pour l'annonce de {{ proposal?.to.user.firstname }}</span>
     <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
     <div *ngIf="standalone">
@@ -171,6 +177,12 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #toRequestAsSender>
+    <div class="proposal__request" *ngIf="!self">
+      <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+    </div>
+  </ng-template>
 
 
 

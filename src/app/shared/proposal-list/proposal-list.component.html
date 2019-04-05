@@ -39,7 +39,7 @@
     <!-- Irrelevant proposals (closed, outdated)-->
     <mat-list-item class="proposal-list__proposal"
         *ngFor="let proposal of irrelevantProposals"
-        [class.closed]="proposal.closed"
+        [class.closed]="true"
         [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
         [class.accepted]="proposal.accepted && !proposal.closed"
         [class.refused]="proposal.refused && !proposal.closed"

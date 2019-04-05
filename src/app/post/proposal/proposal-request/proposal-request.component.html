@@ -1,4 +1,4 @@
-<div class="proposal-request">
+<div class="proposal-request" *ngIf="request; else empty">
     <h6 class="text-muted">Articles ({{request?.items?.length || 0}})</h6>
     <div *ngIf="!fullDisplay; else restrictedDisplay">
       <app-item class="proposal-request__item" [item]="item" [fullWidth]="true" [removable]="false"
@@ -10,6 +10,12 @@
       </mat-card>
     </ng-template>
     <div class="d-flex w-100 justify-content-center mt-5">
-      <button [disabled]="!request.id" (click)="openRequest()" class="btn btn-info">Voir l'annonce</button>
+      <button [disabled]="!request?.id" (click)="openRequest()" class="btn btn-info">Voir l'annonce</button>
     </div>
 </div>
+
+<ng-template #empty>
+  <div class="proposal-request">
+    <small class="text-muted">Aucune information concernant la demande</small>
+  </div>
+</ng-template>

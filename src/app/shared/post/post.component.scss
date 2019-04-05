@@ -2,6 +2,7 @@
 @import "../../../styles/variables.scss";
 
 $post-height: 100px;
+$request-height: 135px;
 
 .post {
     $transitionDuration: 0.1s;
@@ -9,6 +10,9 @@ $post-height: 100px;
 
     transition: $transitionDuration $transitionStyle all;
     height: $post-height;
+    &.request {
+        height: $request-height;
+    }
     background-color: rgba(255, 255, 255, .1);
     background-size: cover;
     background-position: center;
@@ -279,10 +283,11 @@ $post-height: 100px;
     }
 
     &-request {
+        height: 135px;
         &__content {
             padding-left: 20px;
             &__items {
-                height: 60% !important;
+                height: 65% !important;
                 overflow-y: scroll;
             }
             &__location {
@@ -293,8 +298,8 @@ $post-height: 100px;
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-start;
-                align-items: flex-start;
-                height: 40% !important;
+                align-items: center;
+                height: 35% !important;
                 .mat-icon {
                     height: $locationSize;
                     width: $locationSize;
@@ -322,7 +327,8 @@ $post-height: 100px;
         &__practical {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             
             &__property {
                 $propertySize: 10px;
@@ -342,16 +348,24 @@ $post-height: 100px;
                 .mat-icon {
                     height: $propertySize;
                     width: $propertySize;
-                    margin-right: 5px;
+                    margin-right: 10px;
                 }
                 .material-icons {
                     font-size: $propertySize;
                     color: $propertyColor;
                 }
 
+                &__bonus {
+                    color: $white-alpha-8;
+                    font-size: $propertySize;
+                    font-weight: 700;
+                }
+
                 &__date {
                     color: $white-alpha-6;
                     font-size: 8px;
+                    position: absolute;
+                    bottom: 15px;
                 }
             }
         }

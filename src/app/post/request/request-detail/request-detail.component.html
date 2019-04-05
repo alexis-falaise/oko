@@ -79,7 +79,11 @@
           {{ request.own ? 'Ma ville' : 'Ville de remise' }}
         </h4>
         <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
-          <mat-icon>location_city</mat-icon> {{ request.meetingPoint.city }} ({{request.meetingPoint.country}})
+          <mat-icon>location_city</mat-icon>
+          <div class="city-details d-flex flex-column justify-content-center">
+            <div class="city-details__label">{{ request.meetingPoint.city }}</div>
+            <small class="city-details__country">{{request.meetingPoint.country}}</small>
+          </div>
         </div>
         <ng-template #noCity>
           <small class="text-muted">

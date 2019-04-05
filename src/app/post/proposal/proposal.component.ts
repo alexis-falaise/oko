@@ -210,7 +210,7 @@ export class ProposalComponent implements OnInit, OnChanges {
   updateProposalBonus() {
     const dialogRef = this.dialog.open(ProposalEditBonusComponent, {
       height: '60vh',
-      width: '60vw',
+      width: '80vw',
       data: {
         proposal: this.proposal,
         user: this.currentUser,
@@ -228,7 +228,7 @@ export class ProposalComponent implements OnInit, OnChanges {
   updateProposalMeeting() {
     const dialogRef = this.dialog.open(ProposalEditMeetingComponent, {
       height: '75vh',
-      width: '75vw',
+      width: '90vw',
       data: {
         proposal: this.proposal,
         user: this.currentUser,

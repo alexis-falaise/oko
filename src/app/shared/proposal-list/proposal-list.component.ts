@@ -26,13 +26,14 @@ export class ProposalListComponent implements OnChanges {
     if (changes.proposalList) {
       this.proposalList = changes.proposalList.currentValue;
       if (this.proposalList) {
-        this.acceptedProposals = this.proposalList.filter(proposal => proposal.accepted && !proposal.closed);
-        this.pendingProposals = this.proposalList.filter(proposal => {
-          return !proposal.accepted && !proposal.refused && !proposal.closed;
+        const relevantProposals = this.proposalList.filter(proposal => !this.isIrrelevant(proposal));
+        this.acceptedProposals = relevantProposals.filter(proposal => proposal.accepted);
+        this.pendingProposals = relevantProposals.filter(proposal => {
+          return !proposal.accepted && !proposal.refused;
         });
-        this.refusedProposals = this.proposalList.filter(proposal => proposal.refused && !proposal.closed);
+        this.refusedProposals = relevantProposals.filter(proposal => proposal.refused);
         this.irrelevantProposals = this.proposalList.filter(proposal => {
-          return proposal.closed;
+          return this.isIrrelevant(proposal);
         });
       }
     }
@@ -45,6 +46,14 @@ export class ProposalListComponent implements OnChanges {
     if (changes.user) {
       this.user = changes.user.currentValue;
     }
+  }
+
+  private isIrrelevant(proposal: Proposal): boolean {
+    return (proposal.from && proposal.from['urgent'] && moment(proposal.from['urgentDetails'].date).isBefore(moment()))
+    || (proposal.to && proposal.to['urgent'] && moment(proposal.to['urgentDetails'].date).isBefore(moment()))
+    || (proposal.from && moment(proposal.from['date']).isBefore(moment()))
+    || (proposal.to && moment(proposal.to['date']).isBefore(moment()))
+    || proposal.closed;
   }
 
 }

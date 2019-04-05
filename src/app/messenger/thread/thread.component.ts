@@ -75,12 +75,21 @@ export class ThreadComponent implements OnInit, OnDestroy {
     }
   }
 
-  scrollDown() {
-    if (this.thread && this.thread.messages) {
+  scrollDown(messageIndex?: number) {
+    const triggerScroll = () => {
       const messageId = `message-${this.thread.messages.length - 1}`;
       const container = this.document.getElementById('content');
       if (container) {
         container.scrollTop = container.scrollHeight;
+      }
+    };
+
+    if (this.thread && this.thread.messages) {
+      if (messageIndex && messageIndex === this.thread.messages.length - 1) {
+        triggerScroll();
+      }
+      if (!messageIndex && messageIndex !== 0) {
+        triggerScroll();
       }
     }
   }
