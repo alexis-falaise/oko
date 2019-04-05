@@ -20,7 +20,7 @@
                         [image]="proposal.author?.avatar" [size]="24">
             </app-avatar>
             <div class="d-flex flex-column justify-content-start">
-                <div>{{ own ? ' Ma demande à ' + proposal.to?.user.firstname : 'Demande de ' + proposal.author?.firstname }}</div>
+                <div>{{ own ? ' Ma demande à ' + proposal.to?.user?.firstname : 'Demande de ' + proposal.author?.firstname }}</div>
                 <div>
                     <small *ngFor="let item of proposal?.from?.items; let i = index">
                         {{ item.label }} {{ i < proposal.from.items.length - 1 ? '-' : '' }}

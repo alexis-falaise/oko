@@ -125,8 +125,9 @@
       <ng-template #location>
         <div class="proposal__request__city"
              *ngIf="proposal.meetingPoint?.city && proposal.meetingPoint?.city !== '' 
-                    && proposal.meetingPoint?.address && proposal.meetingPoint?.address; else meeting">
-            <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint?.address }}<br>
+                    && proposal.meetingPoint?.address && proposal.meetingPoint?.address !== ''; else meeting">
+            <mat-icon class="text-muted">location_city</mat-icon> 
+            {{ proposal.meetingPoint?.address !== '' ? proposal.meetingPoint.address : 'Adresse non définie' }}<br>
             <small class="text-muted">{{ proposal.meetingPoint.city }} ({{ proposal.meetingPoint.country }})</small>
         </div>
         <ng-template #meeting>

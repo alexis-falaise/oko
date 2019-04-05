@@ -18,6 +18,7 @@ import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
 import { ProposalEditBonusComponent } from './proposal-edit-bonus/proposal-edit-bonus.component';
 import { ProposalEditMeetingComponent } from './proposal-edit-meeting/proposal-edit-meeting.component';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-proposal',
@@ -42,6 +43,7 @@ export class ProposalComponent implements OnInit, OnChanges {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    private socket: Socket,
     private snack: MatSnackBar
   ) { }
 
@@ -103,7 +105,11 @@ export class ProposalComponent implements OnInit, OnChanges {
         .subscribe(proposal => {
           this.postService.getAllProposalSubPosts(proposal)
           .subscribe(filledProposal => {
+            if (this.proposal) {
+              this.removeProposalListeners();
+            }
             this.proposal = new Proposal(filledProposal);
+            this.setProposalListeners();
             this.initProposal();
           });
         });
@@ -242,6 +248,24 @@ export class ProposalComponent implements OnInit, OnChanges {
         this.proposal = new Proposal(this.proposal);
       }
     });
+  }
+
+  private setProposalListeners() {
+    this.socket.on(`proposal/${this.proposal.id}`, (proposal: Proposal) => {
+      this.proposal.meetingPoint = proposal.meetingPoint;
+      this.proposal.accepted = proposal.accepted;
+      this.proposal.refused = proposal.refused;
+      this.proposal.closed = proposal.closed;
+      this.proposal.paid = proposal.paid;
+      this.proposal.validated = proposal.validated;
+      this.proposal.updates = proposal.updates;
+      this.proposal.airportPickup = proposal.airportPickup;
+      this.proposal.bonus = proposal.bonus;
+    });
+  }
+
+  private removeProposalListeners() {
+    this.socket.removeListener(`proposal/${this.proposal.id}`);
   }
 
   private serverError(error: HttpErrorResponse | ServerResponse) {
