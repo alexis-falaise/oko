@@ -67,6 +67,9 @@ export class NotificationService {
       console.log('Proposition', info);
       let proposalAction;
       switch (info.type) {
+        case 'create':
+          proposalAction = 'fait ';
+          break;
         case 'accept':
           proposalAction = 'accepté ';
           break;

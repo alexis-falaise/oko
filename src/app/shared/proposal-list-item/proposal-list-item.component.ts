@@ -4,11 +4,11 @@ import * as moment from 'moment';
 import { Proposal } from '@models/post/proposal.model';
 
 @Component({
-  selector: 'app-proposal-shared',
-  templateUrl: './proposal-shared.component.html',
-  styleUrls: ['./proposal-shared.component.scss']
+  selector: 'app-proposal-list-item',
+  templateUrl: './proposal-list-item.component.html',
+  styleUrls: ['./proposal-list-item.component.scss']
 })
-export class ProposalSharedComponent implements OnChanges {
+export class ProposalListItemComponent implements OnChanges {
   @Input() proposal: Proposal;
   @Input() aboutTrip: boolean;
   @Input() own: boolean;

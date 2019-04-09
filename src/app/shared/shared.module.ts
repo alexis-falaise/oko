@@ -11,7 +11,8 @@ import {
   MatCardModule,
   MatSnackBarModule,
   MatCheckboxModule,
-  MatListModule
+  MatListModule,
+  MatChipsModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -25,7 +26,7 @@ import { ItemComponent } from './item/item.component';
 import { RatingComponent } from './rating/rating.component';
 import { ProposalListComponent } from './proposal-list/proposal-list.component';
 import { SpaceIndicatorComponent } from './space-indicator/space-indicator.component';
-import { ProposalSharedComponent } from './proposal-shared/proposal-shared.component';
+import { ProposalListItemComponent } from './proposal-list-item/proposal-list-item.component';
 
 @NgModule({
   declarations: [
@@ -37,13 +38,14 @@ import { ProposalSharedComponent } from './proposal-shared/proposal-shared.compo
     ItemComponent,
     RatingComponent,
     ProposalListComponent,
-    ProposalSharedComponent,
+    ProposalListItemComponent,
     SpaceIndicatorComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatCardModule,
+    MatChipsModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatExpansionModule,
@@ -64,7 +66,7 @@ import { ProposalSharedComponent } from './proposal-shared/proposal-shared.compo
     ItemComponent,
     RatingComponent,
     ProposalListComponent,
-    ProposalSharedComponent,
+    ProposalListItemComponent,
     SpaceIndicatorComponent,
   ],
 })

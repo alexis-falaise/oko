@@ -221,7 +221,7 @@ export class PostService {
   }
 
   /**
-   * Get all proposals sent about a given post
+   * Get all proposals sent about a given post (partial proposal - opposite post filled)
    * @param senderPost : Post used to send the proposal (full object)
    */
   getSentProposals(senderPost: Trip | Request): Observable<Array<Proposal>> {
@@ -237,7 +237,7 @@ export class PostService {
   }
 
   /**
-   * Get all proposals sent about a given post by a specific author
+   * Get all proposals sent about a given post by a specific author (partial proposal - opposite post filled)
    * @param senderPost : Post used to send the proposal (full object)
    * @param author : Author of the proposal (full object)
    */
@@ -254,7 +254,7 @@ export class PostService {
   }
 
   /**
-   * Get all proposals sent by a given author
+   * Get all proposals sent by a given author (full proposal)
    * @param author : author of the requested proposals
    */
   getAllSentProposalsByAuthor(author: User): Observable<Array<Proposal>> {
@@ -274,7 +274,7 @@ export class PostService {
   }
 
   /**
-   * Get all received proposal for a given post
+   * Get all received proposal for a given post (partial proposal - opposite post filled)
    * @param receptorPost : Post receiving the proposal (full Object)
    */
   getReceivedProposals(receptorPost: Trip | Request): Observable<Array<Proposal>> {
@@ -290,7 +290,7 @@ export class PostService {
   }
 
   /**
-   * Get all received proposals for a given post from a specific author
+   * Get all received proposals for a given post from a specific author (partial proposal - opposite post filled)
    * @param receptorPost : Post receiving the proposal (full Object)
    * @param author : Author of the proposal (user)
    */
@@ -307,13 +307,14 @@ export class PostService {
   }
 
   /**
-   * Get all received proposals by a given user
+   * Get all received proposals by a given user (full proposals)
    * @param receiver : receiver of the proposal (user)
    */
   getReceivedProposalsByReceiver(receiver: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true})
       .subscribe((proposals: Array<Proposal>) => {
+        console.log('Received proposals', proposals);
         forkJoin(proposals.map(proposal => {
           return this.getAllProposalSubPosts(proposal).pipe(catchError((err, caught) => of(caught)));
         }))
@@ -323,6 +324,25 @@ export class PostService {
         });
       }, () => {
         observer.next([]);
+        observer.complete();
+      });
+    });
+  }
+
+  /**
+   * Get unseen proposals by receiver (partial proposals)
+   * @param receiver : given receiver
+   */
+  getUnseenProposalsByReceiver(receiver: User): Observable<Array<Proposal>> {
+    return Observable.create(observer => {
+      this.http.get(`${this.proposalUrl}/receiver/${receiver.id}/unseen`, { withCredentials: true})
+      .subscribe((proposals: Array<Proposal>) => {
+        console.log('Unseen proposals - service', proposals);
+        observer.next(proposals);
+        observer.complete();
+      }, (error) => {
+        console.log('Unseen proposals - error', error);
+        observer.next([]).
         observer.complete();
       });
     });

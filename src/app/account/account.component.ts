@@ -8,6 +8,8 @@ import { AccountAvatarUploadComponent } from './account-avatar-upload/account-av
 
 import { User } from '@models/user.model';
 import { Link } from '@models/link.model';
+import { PostService } from '@core/post.service';
+import { Proposal } from '@models/post/proposal.model';
 
 @Component({
   selector: 'app-account',
@@ -18,7 +20,7 @@ export class AccountComponent implements OnInit {
 
   currentUser: User = null;
   categories: Array<Link> = [
-    { label: 'Propositions', path: '/account/proposal', icon: 'announcement'},
+    { label: 'Propositions', path: '/account/proposal', icon: 'announcement', badge: 0 },
     { label: 'Trajets', path: '/account/trip', icon: 'explore' },
     { label: 'Demandes', path: '/account/request', icon: 'new_releases' },
     { label: 'Infos', path: '/account/info', icon: 'account_box' },
@@ -26,6 +28,7 @@ export class AccountComponent implements OnInit {
   ];
 
   constructor(
+    private postService: PostService,
     private userService: UserService,
     private snack: MatSnackBar,
     private sheet: MatBottomSheet,
@@ -37,6 +40,15 @@ export class AccountComponent implements OnInit {
     .subscribe(user => {
       if (user) {
         this.currentUser = user;
+        this.postService.getUnseenProposalsByReceiver(user)
+        .subscribe((proposals: Array<Proposal>) => {
+          if (proposals) {
+            console.log('Unseen proposals - component', proposals.length);
+            const proposalCategoryIndex = this.categories.findIndex(category => category.label === 'Propositions');
+            this.categories[proposalCategoryIndex].badge = proposals.length;
+            console.log('Categories', this.categories);
+          }
+        });
       } else {
         this.connexionError();
       }

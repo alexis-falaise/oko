@@ -1,50 +1,39 @@
-<mat-list>
-    <!-- Accepted proposals-->
-    <mat-list-item class="proposal-list__proposal"
-                    *ngFor="let proposal of acceptedProposals"
-                    [class.closed]="proposal.closed"
-                    [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
-                    [class.accepted]="proposal.accepted && !proposal.closed"
-                    [class.refused]="proposal.refused && !proposal.closed"
-                    [routerLink]="['/post', 'proposal', proposal.id]">
-        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
-                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>
-    </mat-list-item>
+<!-- Accepted proposals-->
+<app-proposal-list-item
+    class="proposal-list-item"
+    *ngFor="let proposal of acceptedProposals"
+    [proposal]="proposal"
+    [aboutTrip]="aboutTrip || proposal.fromTrip"
+    [own]="own || proposal?.author?.id === user?.id"
+    [routerLink]="['/post', 'proposal', proposal.id]">
+</app-proposal-list-item>
 
-    <!-- Pending proposals-->
-    <mat-list-item class="proposal-list__proposal"
-        *ngFor="let proposal of pendingProposals"
-        [class.closed]="proposal.closed"
-        [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
-        [class.accepted]="proposal.accepted && !proposal.closed"
-        [class.refused]="proposal.refused && !proposal.closed"
-        [routerLink]="['/post', 'proposal', proposal.id]">
-        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
-                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>
+<!-- Pending proposals -->
+<app-proposal-list-item
+    class="proposal-list-item"
+    *ngFor="let proposal of pendingProposals"
+    [proposal]="proposal"
+    [aboutTrip]="aboutTrip || proposal.fromTrip"
+    [own]="own || proposal?.author?.id === user?.id"
+    [routerLink]="['/post', 'proposal', proposal.id]">
+</app-proposal-list-item>
 
-    </mat-list-item>
+<!-- Refused proposals-->
+<app-proposal-list-item
+    class="proposal-list-item"
+    *ngFor="let proposal of refusedProposals"
+    [proposal]="proposal"
+    [aboutTrip]="aboutTrip || proposal.fromTrip"
+    [own]="own || proposal?.author?.id === user?.id"
+    [routerLink]="['/post', 'proposal', proposal.id]">
+</app-proposal-list-item>
 
-    <!-- Refused proposals-->
-    <mat-list-item class="proposal-list__proposal"
-        *ngFor="let proposal of refusedProposals"
-        [class.closed]="proposal.closed"
-        [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
-        [class.accepted]="proposal.accepted && !proposal.closed"
-        [class.refused]="proposal.refused && !proposal.closed"
-        [routerLink]="['/post', 'proposal', proposal.id]">
-        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
-                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>            
-    </mat-list-item>
-
-    <!-- Irrelevant proposals (closed, outdated)-->
-    <mat-list-item class="proposal-list__proposal"
-        *ngFor="let proposal of irrelevantProposals"
-        [class.closed]="true"
-        [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
-        [class.accepted]="proposal.accepted && !proposal.closed"
-        [class.refused]="proposal.refused && !proposal.closed"
-        [routerLink]="['/post', 'proposal', proposal.id]">
-        <app-proposal-shared class="proposal-shared" [proposal]="proposal" [aboutTrip]="aboutTrip || proposal.fromTrip"
-                             [own]="own || proposal?.author?.id === user?.id"></app-proposal-shared>
-    </mat-list-item>
-<mat-list>
+<!-- Irrelevant proposals (closed, outdated)-->
+<app-proposal-list-item
+    class="proposal-list-item"
+    *ngFor="let proposal of irrelevantProposals"
+    [proposal]="proposal"
+    [aboutTrip]="aboutTrip || proposal.fromTrip"
+    [own]="own || proposal?.author?.id === user?.id"
+    [routerLink]="['/post', 'proposal', proposal.id]">
+</app-proposal-list-item>

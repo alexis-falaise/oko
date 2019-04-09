@@ -1,0 +1,60 @@
+<div class="proposal-list-item"
+    [class.closed]="proposal.closed || proposal.outdated"
+    [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
+    [class.accepted]="proposal.accepted && !proposal.closed"
+    [class.refused]="proposal.refused && !proposal.closed">
+    <div class="row w-100 ml-0">
+        <div class="col-3 d-flex flex-column align-items-center justify-content-center proposal-list-item__author"
+             *ngIf="!own">
+            <app-avatar class="proposal-list-item__avatar" *ngIf="proposal.author?.avatar; else iconAvatar"
+            [image]="proposal.author?.avatar" [size]="50"></app-avatar>
+            <ng-template #iconAvatar>
+                <mat-icon>account_circle</mat-icon>
+            </ng-template>
+            <h6>{{ proposal.author?.firstname }}</h6>
+        </div>
+        <div [ngClass]="{
+                'col-7 col-sm-8 col-md-9': own,
+                'col-4 col-sm-5 col-md-6': !own,
+                'd-flex
+                flex-column align-items-start justify-content-center
+                flex-md-row align-items-md-center justify-content-md-between
+                proposal-list-item__trip': true
+            }" 
+             *ngIf="aboutTrip; else requestDescription">
+            <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }}</div>
+            <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
+            <div class="flight-date">
+                <mat-icon>today</mat-icon> {{ proposal.from?.date?.format('DD/MM') }}
+            </div>
+        </div>
+        <div class="col-5 col-sm-4 col-md-3 d-flex
+                    flex-column align-items-center
+                    proposal-list-item__details">
+            <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
+                <mat-chip color="primary" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted" selected>En attente</mat-chip>
+                <mat-chip *ngIf="proposal.closed">Annulée</mat-chip>
+                <mat-chip color="warn" *ngIf="proposal.refused && !proposal.closed" selected>Refusée</mat-chip>
+                <mat-chip color="accent" *ngIf="proposal.accepted && !proposal.validated" selected>Acceptée</mat-chip>
+                <mat-chip color="accent" *ngIf="proposal.validated" selected>Livrée</mat-chip>
+                <mat-chip color="warn" *ngIf="proposal.fromRequest && proposal?.from['urgent'] && !proposal.closed" selected>- Avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}</mat-chip>
+                <mat-chip>Bonus : {{ proposal.bonus }} €</mat-chip>
+            </mat-chip-list>
+            <div class="proposal-list-item__date">Envoyé le {{ moment(proposal.date).format('DD/MM/YYYY à HH:mm') }} </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #requestDescription>
+    <div [ngClass]="{
+            'col-7 col-sm-8 col-md-9': own,
+            'col-4 col-sm-5 col-md-6': !own,
+            'd-flex
+            flex-column align-items-start justify-content-center
+            proposal-list-item__trip': true
+        }">
+        <small *ngFor="let item of proposal?.from?.items; let i = index">
+            {{ item.label }}
+        </small>
+    </div>
+</ng-template>

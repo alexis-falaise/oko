@@ -51,13 +51,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.events.subscribe(event => {
       switch (true) {
         case event instanceof NavigationStart:
-          this.uiService.setMainLoading(true);
+          this.uiService.setLoading(true);
           this.randomWelcome = this.uiService.generateRandomWelcome(this.username);
           break;
         case event instanceof NavigationCancel:
         case event instanceof NavigationError:
         case event instanceof NavigationEnd:
-          this.uiService.setMainLoading(false);
+          this.uiService.setLoading(false);
       }
       if (event instanceof NavigationEnd) {
         this.displayNav = this.hideNavOn.findIndex(item => item === event.url) === -1;

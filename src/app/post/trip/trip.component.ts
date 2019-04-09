@@ -230,6 +230,7 @@ export class TripComponent implements OnInit, OnDestroy {
         date: moment(),
         receiver: this.request.user,
         bonus: this.bonus,
+        seen: false,
       };
       this.postService.createTripForRequest(proposal)
       .subscribe(response => {

@@ -58,10 +58,10 @@ const socialConfig = new AuthServiceConfig([
     id: FacebookLoginProvider.PROVIDER_ID,
     provider: new FacebookLoginProvider(facebookAppId)
   },
-  {
-    id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider(googleAppId)
-  }
+  // {
+  //   id: GoogleLoginProvider.PROVIDER_ID,
+  //   provider: new GoogleLoginProvider(googleAppId)
+  // }
 ]);
 
 export function provideSocialConfig() {

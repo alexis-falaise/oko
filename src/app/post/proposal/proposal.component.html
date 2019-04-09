@@ -1,10 +1,12 @@
 <div class="proposal-title-wrapper" *ngIf="standalone">
   <h2 class="proposal-title">Proposition</h2>
-  <div class="proposal__author-details" *ngIf="proposal?.author && !proposal.authorView">
-      <app-avatar class="proposal__author-details__avatar" [image]="proposal?.author?.avatar" [size]="36"></app-avatar>
+  <div class="proposal__author-details" *ngIf="proposal?.author">
+      <app-avatar class="proposal__author-details__avatar"
+                  [image]="proposal?.authorView ? proposal?.receiver?.avatar : proposal?.author?.avatar"
+                  [size]="36"></app-avatar>
       <div class="proposal__author-details__personnal">
-          de {{ proposal?.author?.firstname }}
-          <app-rating [rating]="proposal.author.rating" [size]="36" [light]="true"></app-rating>
+          {{ proposal?.authorView ? 'à ' + proposal?.receiver?.firstname : 'de ' + proposal?.author?.firstname }}
+          <app-rating [rating]="proposal?.authorView ? proposal?.receiver?.rating : proposal?.author?.rating" [size]="36" [light]="true"></app-rating>
       </div>
   </div>
 </div>
@@ -70,9 +72,9 @@
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
         Vos articles seront livrés par {{ proposal?.from?.user.firstname }} le {{ moment(proposal?.from?.date).format('DD/MM') }}
       </small>
-      <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
+      <!-- <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
         La proposition a été acceptée par {{ proposal?.from?.user.firstname }} et est en attente de paiement 
-      </small>
+      </small> -->
       <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
         La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer
       </small>
@@ -127,7 +129,7 @@
              *ngIf="proposal.meetingPoint?.city && proposal.meetingPoint?.city !== '' 
                     && proposal.meetingPoint?.address && proposal.meetingPoint?.address !== ''; else meeting">
             <mat-icon class="text-muted">location_city</mat-icon> 
-            {{ proposal.meetingPoint?.address !== '' ? proposal.meetingPoint.address : 'Adresse non définie' }}<br>
+            {{ proposal.meetingPoint?.address }}<br>
             <small class="text-muted">{{ proposal.meetingPoint.city }} ({{ proposal.meetingPoint.country }})</small>
         </div>
         <ng-template #meeting>

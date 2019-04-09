@@ -149,9 +149,9 @@ export class AuthService {
     return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
   }
 
-  googleConnection() {
-    this.social.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
+  // googleConnection() {
+  //   this.social.signIn(GoogleLoginProvider.PROVIDER_ID);
+  // }
 
   facebookConnection() {
     this.social.signIn(FacebookLoginProvider.PROVIDER_ID);

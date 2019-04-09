@@ -16,7 +16,14 @@
          [routerLink]="category.path"
          routerLinkActive #rla="routerLinkActive"
          [active]="rla.isActive">
-         <mat-icon>{{ category.icon }}</mat-icon>
+         <mat-icon
+          matBadge="{{ category.badge }}"
+          [matBadgeHidden]="category.badge === 0"
+          matBadgePosition="below after"
+          matBadgeColor="primary"
+          matBadgeOverlap="true">
+          {{ category.icon }}
+        </mat-icon>
         {{ category.label }}
       </a>
     </nav>

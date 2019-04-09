@@ -1,7 +1,8 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Socket } from 'ngx-socket-io';
 import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
@@ -9,6 +10,8 @@ import { UiService } from '@core/ui.service';
 import { UserService } from '@core/user.service';
 
 import { ProposalEditComponent } from '../proposal-edit/proposal-edit.component';
+import { ProposalEditBonusComponent } from './proposal-edit-bonus/proposal-edit-bonus.component';
+import { ProposalEditMeetingComponent } from './proposal-edit-meeting/proposal-edit-meeting.component';
 
 import { Proposal } from '@models/post/proposal.model';
 import { Request } from '@models/post/request.model';
@@ -16,16 +19,13 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
-import { ProposalEditBonusComponent } from './proposal-edit-bonus/proposal-edit-bonus.component';
-import { ProposalEditMeetingComponent } from './proposal-edit-meeting/proposal-edit-meeting.component';
-import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-proposal',
   templateUrl: './proposal.component.html',
   styleUrls: ['./proposal.component.scss']
 })
-export class ProposalComponent implements OnInit, OnChanges {
+export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   @Input() proposal: Proposal;
   @Input() receiver: boolean;
   @Input() entry: Post;
@@ -261,6 +261,7 @@ export class ProposalComponent implements OnInit, OnChanges {
       this.proposal.updates = proposal.updates;
       this.proposal.airportPickup = proposal.airportPickup;
       this.proposal.bonus = proposal.bonus;
+      this.proposal = new Proposal(this.proposal);
     });
   }
 
@@ -274,5 +275,8 @@ export class ProposalComponent implements OnInit, OnChanges {
     undefined, {duration: 5000});
   }
 
+  ngOnDestroy() {
+    this.removeProposalListeners();
+  }
 
 }

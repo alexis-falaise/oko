@@ -11,7 +11,8 @@ import {
   MatSnackBarModule,
   MatBottomSheetModule,
   MatListModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatBadgeModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -24,6 +25,7 @@ import { AccountAvatarUploadComponent } from './account-avatar-upload/account-av
 import { AccountComponent } from './account.component';
 import { AccountProposalComponent } from './account-proposal/account-proposal.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { AccountRoutingModule } from './account-routing.module';
 
 @NgModule({
   declarations: [
@@ -40,10 +42,12 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     AccountAvatarUploadComponent,
   ],
   imports: [
+    AccountRoutingModule,
     RouterModule,
     SharedModule,
     CommonModule,
     FormsModule,
+    MatBadgeModule,
     MatBottomSheetModule,
     MatButtonModule,
     MatDatepickerModule,

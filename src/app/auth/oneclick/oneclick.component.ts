@@ -45,9 +45,9 @@ export class OneclickComponent implements OnInit, OnDestroy {
     this.subscribeSocialProfile();
   }
 
-  googleConnect() {
-    this.authService.googleConnection();
-  }
+  // googleConnect() {
+  //   this.authService.googleConnection();
+  // }
 
   facebookConnect() {
     this.authService.facebookConnection();

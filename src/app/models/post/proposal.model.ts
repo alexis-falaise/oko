@@ -3,6 +3,7 @@ import { User } from '@models/user.model';
 import { MeetingPoint } from '@models/meeting-point.model';
 
 import { Moment } from 'moment';
+import * as moment from 'moment';
 import { Trip } from './trip.model';
 import { Request } from './request.model';
 
@@ -43,8 +44,10 @@ export class Proposal {
     fromRequest?: boolean;
     toTrip?: boolean;
     toRequest?: boolean;
+    outdated?: boolean;
 
     constructor(proposal: Partial<Proposal>) {
+        const now = moment();
         Object.assign(this, proposal);
         if (proposal._id) {
             this.id = proposal._id;
@@ -53,20 +56,28 @@ export class Proposal {
             this.lastUpdate = proposal.updates[proposal.updates.length - 1];
         }
         if (this.isTrip(proposal.from)) {
-            this.from = new Trip(proposal.from);
+            const from = new Trip(proposal.from);
+            this.from = from;
             this.fromTrip = true;
+            this.outdated = moment(from.date).isBefore(now);
         }
         if (this.isRequest(proposal.from)) {
-            this.from = new Request(proposal.from);
+            const from = new Request(proposal.from);
+            this.from = from;
             this.fromRequest = true;
+            this.outdated = from.urgent && moment(from.urgentDetails.date).isBefore(now);
         }
         if (this.isTrip(proposal.to)) {
-            this.to = new Trip(proposal.to);
+            const to = new Trip(proposal.to);
+            this.to = to;
             this.toTrip = true;
+            this.outdated = moment(to.date).isBefore(now);
         }
         if (this.isRequest(proposal.to)) {
-            this.to = new Request(proposal.to);
+            const to = new Request(proposal.to);
+            this.to = to;
             this.toRequest = true;
+            this.outdated = to.urgent && moment(to.urgentDetails.date).isBefore(now);
         }
     }
 

@@ -164,6 +164,9 @@
                 <div class="post-request__practical__property post-request__practical__property__bonus" *ngIf="post.bonus">
                     <mat-icon>euro_symbol</mat-icon> Bonus: {{ post.bonus }} €
                 </div>
+                <div class="post-request__practical__property post-request__practical__property__weight" *ngIf="weight">
+                    <mat-icon>shopping_basket</mat-icon> {{ weight }} kg
+                </div>
                 <div class="post-request__practical__property" *ngIf="post.cabinOnly; else cargo">
                     <mat-icon>work</mat-icon> En cabine
                 </div>
@@ -188,9 +191,6 @@
                         <mat-icon>info</mat-icon> En attente
                     </div>
                 </ng-template>
-                <div class="post-request__practical__property" *ngIf="weight">
-                    <mat-icon>shopping_basket</mat-icon> {{ weight }} kg
-                </div>
                 <div class="post-request__practical__property urgent" *ngIf="urgent && post.urgentDetails?.date">
                     <mat-icon>warning</mat-icon> Avant le {{ moment(post.urgentDetails?.date).format('DD/MM') }}
                 </div>

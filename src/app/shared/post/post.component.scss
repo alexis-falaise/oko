@@ -357,7 +357,13 @@ $request-height: 135px;
 
                 &__bonus {
                     color: $white-alpha-8;
-                    font-size: $propertySize;
+                    font-size: $propertySize + 1;
+                    font-weight: 700;
+                }
+
+                &__weight {
+                    color: $white-alpha-8;
+                    font-size: $propertySize + 1;
                     font-weight: 700;
                 }
 

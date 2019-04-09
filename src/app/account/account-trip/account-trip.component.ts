@@ -33,7 +33,6 @@ export class AccountTripComponent implements OnInit {
 
   ngOnInit() {
     this.uiService.onLoading().subscribe(state => this.setLocalLoading(state));
-    this.uiService.setLoading(true);
     this.fetchTrips();
     this.manageDrafts();
   }
@@ -52,6 +51,7 @@ export class AccountTripComponent implements OnInit {
   }
 
   private fetchTrips() {
+    this.uiService.setLoading(true);
     if (this.currentUser) {
       this.getTrips();
     } else {
@@ -59,7 +59,6 @@ export class AccountTripComponent implements OnInit {
       .subscribe(user => {
         this.currentUser = user;
         if (user) {
-          this.uiService.setLoading(true);
           this.getTrips();
         } else {
           this.uiService.setLoading(false);
@@ -69,6 +68,7 @@ export class AccountTripComponent implements OnInit {
   }
 
   private getTrips() {
+    this.uiService.setLoading(true);
     this.postService.getTripByAuthor(this.currentUser.id)
     .subscribe(trips => {
       this.uiService.setLoading(false);
@@ -90,6 +90,7 @@ export class AccountTripComponent implements OnInit {
   private setLocalLoading(state: boolean) {
     this.loading = state;
     this.trips = state ? [new Trip({}), new Trip({}), new Trip({})] : [];
+    this.expiredTrips = state ? [new Trip({}), new Trip({}), new Trip({})] : [];
   }
 
 }

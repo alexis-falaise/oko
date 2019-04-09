@@ -59,9 +59,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.facebookConnection();
   }
 
-  googleConnect() {
-    this.authService.googleConnection();
-  }
+  // googleConnect() {
+  //   this.authService.googleConnection();
+  // }
 
   signin() {
     this.router.navigate(['signin']);
