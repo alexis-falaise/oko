@@ -96,6 +96,14 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(city => {
       this.meeting.controls.meetingPoint.patchValue({city: city.city, country: city.country});
     });
+    this.meeting.controls.urgent.valueChanges
+    .subscribe((value) => {
+      if (value) {
+        this.meeting.controls.urgentDetails.get('date').setValidators(Validators.required);
+      } else {
+        this.meeting.controls.urgentDetails.get('date').clearValidators();
+      }
+    });
     this.meeting.controls.airportPickup.valueChanges.subscribe(() => this.computeBonus());
     this.meeting.controls.bonus.valueChanges.subscribe(() => this.computeTotalPrice());
     this.checkDraft();

@@ -2,7 +2,7 @@
   "name": "ọkọ",
   "short_name": "ọkọ",
   "theme_color": "#00acc1",
-  "background_color": "#7CB342",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

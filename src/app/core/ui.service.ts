@@ -80,6 +80,11 @@ export class UiService {
           action = 'OK';
           duration = 3000;
           break;
+        case 403:
+          message = 'Oups, ce n\'était pas pour vous';
+          action = 'Ca marche';
+          duration = 4500;
+          break;
         case 401:
           message = 'Vous n\'êtes pas connecté';
           action = 'Connexion';
@@ -96,6 +101,9 @@ export class UiService {
     snackRef.onAction().subscribe(() => {
       if (status === 401) {
         this.router.navigate(['/oneclick']);
+      }
+      if (status === 403) {
+        this.router.navigate(['/account']);
       }
     });
   }

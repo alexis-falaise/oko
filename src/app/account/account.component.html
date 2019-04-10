@@ -24,7 +24,7 @@
           matBadgeOverlap="true">
           {{ category.icon }}
         </mat-icon>
-        {{ category.label }}
+        <span *ngIf="rla.isActive">{{ category.label }}</span>
       </a>
     </nav>
     <router-outlet></router-outlet>

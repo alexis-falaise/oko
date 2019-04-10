@@ -1,9 +1,10 @@
 <div class="proposal-list-item"
-    [class.closed]="proposal.closed || proposal.outdated"
+    [class.unseen]="!proposal.seen && !own"
+    [class.closed]="proposal.closed || proposal.outdated && !(proposal.paid && !proposal.validated)"
     [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"
     [class.accepted]="proposal.accepted && !proposal.closed"
     [class.refused]="proposal.refused && !proposal.closed">
-    <div class="row w-100 ml-0">
+    <div class="row w-100 h-100 ml-0">
         <div class="col-3 d-flex flex-column align-items-center justify-content-center proposal-list-item__author"
              *ngIf="!own">
             <app-avatar class="proposal-list-item__avatar" *ngIf="proposal.author?.avatar; else iconAvatar"
@@ -29,18 +30,27 @@
             </div>
         </div>
         <div class="col-5 col-sm-4 col-md-3 d-flex
-                    flex-column align-items-center
+                    flex-column align-items-center justify-content-center
                     proposal-list-item__details">
             <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
-                <mat-chip color="primary" *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted" selected>En attente</mat-chip>
+                <mat-chip color="primary"
+                         *ngIf="!proposal.closed && !proposal.refused && !proposal.accepted && !proposal.outdated"
+                         selected>
+                    En attente
+                </mat-chip>
                 <mat-chip *ngIf="proposal.closed">Annulée</mat-chip>
+                <mat-chip *ngIf="proposal.outdated && !proposal.closed
+                                 && !proposal.refused && !proposal.accepted
+                                 && !proposal.paid">
+                    Expirée
+                </mat-chip>
                 <mat-chip color="warn" *ngIf="proposal.refused && !proposal.closed" selected>Refusée</mat-chip>
-                <mat-chip color="accent" *ngIf="proposal.accepted && !proposal.validated" selected>Acceptée</mat-chip>
+                <mat-chip color="accent" *ngIf="proposal.accepted && !proposal.paid" selected>Acceptée</mat-chip>
+                <mat-chip color="accent" *ngIf="proposal.paid && !proposal.validated" selected>Payée</mat-chip>
                 <mat-chip color="accent" *ngIf="proposal.validated" selected>Livrée</mat-chip>
-                <mat-chip color="warn" *ngIf="proposal.fromRequest && proposal?.from['urgent'] && !proposal.closed" selected>- Avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}</mat-chip>
                 <mat-chip>Bonus : {{ proposal.bonus }} €</mat-chip>
             </mat-chip-list>
-            <div class="proposal-list-item__date">Envoyé le {{ moment(proposal.date).format('DD/MM/YYYY à HH:mm') }} </div>
+            <div class="proposal-list-item__date">Envoyé le {{ moment(proposal.date).format('DD/MM à HH:mm') }} </div>
         </div>
     </div>
 </div>
@@ -56,5 +66,9 @@
         <small *ngFor="let item of proposal?.from?.items; let i = index">
             {{ item.label }}
         </small>
+        <div class="proposal-list-item__before"
+            *ngIf="proposal.fromRequest && proposal?.from['urgent'] && !proposal.closed" selected>
+            <mat-icon>warning</mat-icon> Avant le {{ moment(proposal.from.urgentDetails.date).format('DD/MM') }}
+        </div>
     </div>
 </ng-template>

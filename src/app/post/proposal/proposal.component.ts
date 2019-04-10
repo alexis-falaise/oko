@@ -74,6 +74,9 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       }
+    }, (error) => {
+      this.uiService.serverError(error);
+      this.router.navigate(['/login']);
     });
   }
 
@@ -103,16 +106,18 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
       if (param && param.id) {
         this.postService.getProposalById(param.id)
         .subscribe(proposal => {
-          this.postService.getAllProposalSubPosts(proposal)
-          .subscribe(filledProposal => {
-            if (this.proposal) {
-              this.removeProposalListeners();
-            }
-            this.proposal = new Proposal(filledProposal);
-            this.setProposalListeners();
-            this.initProposal();
-          });
-        });
+          if (proposal) {
+            this.postService.getAllProposalSubPosts(proposal)
+            .subscribe(filledProposal => {
+              if (this.proposal) {
+                this.removeProposalListeners();
+              }
+              this.proposal = new Proposal(filledProposal);
+              this.setProposalListeners();
+              this.initProposal();
+            }, (error) => this.uiService.serverError(error));
+          }
+        }, (error) => this.uiService.serverError(error));
       }
     });
   }
@@ -266,7 +271,9 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private removeProposalListeners() {
-    this.socket.removeListener(`proposal/${this.proposal.id}`);
+    if (this.proposal) {
+      this.socket.removeListener(`proposal/${this.proposal.id}`);
+    }
   }
 
   private serverError(error: HttpErrorResponse | ServerResponse) {

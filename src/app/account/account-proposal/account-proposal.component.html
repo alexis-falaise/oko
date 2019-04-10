@@ -1,26 +1,38 @@
 <div class="account-proposal">
-    <mat-tab-group class="account-proposal__nav" headerPosition="below" [color]="'primary'" mat-strech-tabs mat-align-tabs="center">
+    <mat-tab-group
+        class="account-proposal__nav"
+        headerPosition="below"
+        animationDuration="150ms"
+        [color]="'primary'"
+        mat-strech-tabs mat-align-tabs="center" #deliverTabs>
         <mat-tab *ngIf="toDeliver?.length">
             <ng-template mat-tab-label>
-                <mat-icon>flight_takeoff</mat-icon> A livrer
+                <mat-icon>flight_takeoff</mat-icon> 
+                
+                <span class="d-none d-sm-inline">À livrer</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
+                <h4 class="account-proposal__tab-title d-sm-none">À livrer</h4>
                 <app-proposal-list [proposalList]="toDeliver" [user]="currentUser"></app-proposal-list>
             </div>
         </mat-tab>
         <mat-tab *ngIf="toReceive?.length">
             <ng-template mat-tab-label>
-                <mat-icon>flight_land</mat-icon> A recevoir
+                <mat-icon>flight_land</mat-icon>
+                <span class="d-none d-sm-inline">À recevoir</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
+                <h4 class="account-proposal__tab-title d-sm-none">À recevoir</h4>
                 <app-proposal-list [proposalList]="toReceive" [user]="currentUser"></app-proposal-list>
             </div>
         </mat-tab>
         <mat-tab class="account-proposal__nav-tab">
             <ng-template mat-tab-label>
-                <mat-icon>move_to_inbox</mat-icon> Reçues
+                <mat-icon>move_to_inbox</mat-icon>
+                <span class="d-none d-sm-inline">Reçues</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
+                <h4 class="account-proposal__tab-title d-sm-none">Reçues</h4>
                 <h6 class="account-proposal__list-title" *ngIf="receivedFromTrip?.length">Propositions de trajet</h6>
                 <app-proposal-list [aboutTrip]="true" [proposalList]="receivedFromTrip" [own]="false"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="receivedFromRequest?.length">Demandes de transport</h6>
@@ -33,9 +45,11 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon>send</mat-icon> Envoyées
+                <mat-icon>send</mat-icon>
+                <span class="d-none d-sm-inline">Envoyées</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
+                <h4 class="account-proposal__tab-title d-sm-none">Envoyées</h4>
                 <h6 class="account-proposal__list-title" *ngIf="sentAboutRequest?.length">Demandes de transport</h6>
                 <app-proposal-list [aboutTrip]="false" [proposalList]="sentAboutRequest" [own]="true"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="sentAboutTrip?.length">Propositions de trajet</h6>

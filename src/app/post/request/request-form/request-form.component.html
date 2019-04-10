@@ -16,6 +16,9 @@
               (remove)="removeItem(i)"
               (click)="openItemDialog(item, i)">
     </app-item>
+    <small class="text-muted" *ngIf="!item.weight">
+      Cliquez sur l'article pour y ajouter un poids
+    </small>
   </div>
   <div class="request-form__meeting">
     <form [formGroup]="meeting">
