@@ -49,4 +49,31 @@
     &__actions {
         margin-bottom: 10px;
     }
+
+    &__loading {
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        $iconSize: 30vh;
+        &-icon {
+            animation: spin 1s ease-in-out infinite;
+            color: $white-alpha-6;
+        }
+
+        .mat-icon {
+            height: $iconSize;
+            width: $iconSize;
+        }
+        .material-icons {
+            font-size: $iconSize;
+        }
+
+        &-title {
+            font-weight: 100;
+            color: $white-alpha-8;
+        }
+    }
 }

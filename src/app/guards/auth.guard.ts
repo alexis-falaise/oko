@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, observable } from 'rxjs';
 import { AuthService } from '@core/auth.service';
 import { HistoryService } from '@core/history.service';
 
@@ -18,11 +18,24 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const logged = this.authService.isLogged();
-    this.historyService.add(this.router.url);
-    if (!logged) {
-      this.router.navigate(['/login']);
-    }
-    return this.authService.isLogged();
+    return Observable.create(observer => {
+      this.historyService.add(this.router.url);
+      const logged = this.authService.isLogged();
+      if (logged) {
+        observer.next(true);
+        observer.complete();
+      } else {
+        this.authService.getLoginStatus();
+        this.authService.onStatus().subscribe(status => {
+          if (status) {
+            if (!status.status) {
+              this.router.navigate(['/login']);
+            }
+            observer.next(status.status);
+            observer.complete();
+          }
+        });
+      }
+    });
   }
 }

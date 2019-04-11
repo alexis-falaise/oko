@@ -7,10 +7,9 @@
     animation: slideInUpAppearance .25s;
     height: 110px !important;
     padding: 2.5px;
-    // border-bottom: 1px solid rgb(235, 235, 235) !important;
+    border-bottom: 1px solid rgb(235, 235, 235) !important;
     border-radius: 3px;
     margin-bottom: 2.5px;
-
     outline: none;
     &__avatar {
         margin-right: 5px;
@@ -60,7 +59,7 @@
     &__before {
         display: flex;
         align-items: center;
-        $beforeSize: 14px;
+        $beforeSize: 12px;
         font-size: $beforeSize;
         font-weight: 700;
         color: $red-800;
@@ -80,11 +79,14 @@
     }
 
     &:hover {
+        transition: all $transitionDuration;
         background-color: rgb(250, 250, 250);
         cursor: pointer;
     }
     &:focus {
+        transition: all $transitionDuration;
         outline: none;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
     }
     &.closed {
         transition: all .35s;
@@ -108,8 +110,9 @@
         border-color: $red-800;
     }
     &.unseen {
-        border-left: 5px solid;
-        border-left-color: $cyan-600;
+        border-bottom: 2px solid !important;
+        box-shadow: 0px -5px 5px $cyan-300-alpha-4 inset;
+        border-bottom-color: $cyan-300 !important;
     }
     @media screen and (max-width: $break-md) {
         &.accepted {
@@ -124,6 +127,9 @@
     }
 }
 
-mat-chip {
-    text-align: center;
+.mat-standard-chip {
+    justify-content: center;
+}
+.mat-chip-selected {
+    color: white;
 }

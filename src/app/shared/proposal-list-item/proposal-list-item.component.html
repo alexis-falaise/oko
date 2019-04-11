@@ -1,4 +1,5 @@
 <div class="proposal-list-item"
+    [routerLink]="['/post', 'proposal', proposal.id]"
     [class.unseen]="!proposal.seen && !own"
     [class.closed]="proposal.closed || proposal.outdated && !(proposal.paid && !proposal.validated)"
     [class.pending]="!proposal.closed && !proposal.refused && !proposal.accepted"

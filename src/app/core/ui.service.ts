@@ -64,6 +64,9 @@ export class UiService {
   }
 
   serverError(error: HttpErrorResponse | ServerResponse, customMessage?: string) {
+    console.log('Server Error', error);
+    this.setLoading(false);
+    this.setMainLoading(false);
     const status = error instanceof HttpErrorResponse ? error.status : error.message;
     let message: string;
     let action: string;

@@ -16,6 +16,7 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { SocialDisconnectionComponent } from './dialogs/social-disconnection/social-disconnection.component';
 import { takeUntil } from 'rxjs/operators';
 import { UiService } from './ui.service';
+import { Socket } from 'ngx-socket-io';
 
 class Status {
   status: boolean;
@@ -44,7 +45,7 @@ export class AuthService {
     private social: SocialService,
     private snack: MatSnackBar,
     private dialog: MatDialog,
-  ) { console.log('Auth service constructed'); }
+  ) { }
 
   onUser(): Observable<User> {
     return this.currentUser.asObservable();

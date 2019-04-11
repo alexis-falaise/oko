@@ -19,6 +19,7 @@ import { ServerResponse } from '@models/app/server-response.model';
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
+import { MessengerService } from '@core/messenger.service';
 
 @Component({
   selector: 'app-proposal',
@@ -37,6 +38,7 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   moment = moment;
 
   constructor(
+    private messengerService: MessengerService,
     private postService: PostService,
     private userService: UserService,
     private uiService: UiService,
@@ -104,18 +106,20 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   getStandaloneProposal() {
     this.route.params.subscribe(param => {
       if (param && param.id) {
+        this.uiService.setLoading(true);
         this.postService.getProposalById(param.id)
         .subscribe(proposal => {
           if (proposal) {
             this.postService.getAllProposalSubPosts(proposal)
             .subscribe(filledProposal => {
-              if (this.proposal) {
-                this.removeProposalListeners();
-              }
+              this.uiService.setLoading(false);
+              this.removeProposalListeners();
               this.proposal = new Proposal(filledProposal);
               this.setProposalListeners();
               this.initProposal();
             }, (error) => this.uiService.serverError(error));
+          } else {
+            this.uiService.setLoading(false);
           }
         }, (error) => this.uiService.serverError(error));
       }
@@ -128,6 +132,11 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
 
   openRequest(request: Request) {
     this.router.navigate([`/post/request/${request._id}`]);
+  }
+
+  contact() {
+    const otherParty = this.proposal.authorView ? this.proposal.receiver : this.proposal.author;
+    this.messengerService.getContactThread(this.currentUser, otherParty);
   }
 
   acceptProposal() {

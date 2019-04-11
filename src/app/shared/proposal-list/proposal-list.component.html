@@ -1,11 +1,19 @@
+<!-- New proposals-->
+<app-proposal-list-item
+    class="proposal-list-item"
+    *ngFor="let proposal of newActivityProposals"
+    [proposal]="proposal"
+    [aboutTrip]="aboutTrip || proposal.fromTrip"
+    [own]="own || proposal?.author?.id === user?.id">
+</app-proposal-list-item>
+
 <!-- Accepted proposals-->
 <app-proposal-list-item
     class="proposal-list-item"
     *ngFor="let proposal of acceptedProposals"
     [proposal]="proposal"
     [aboutTrip]="aboutTrip || proposal.fromTrip"
-    [own]="own || proposal?.author?.id === user?.id"
-    [routerLink]="['/post', 'proposal', proposal.id]">
+    [own]="own || proposal?.author?.id === user?.id">
 </app-proposal-list-item>
 
 <!-- Pending proposals -->
@@ -14,8 +22,7 @@
     *ngFor="let proposal of pendingProposals"
     [proposal]="proposal"
     [aboutTrip]="aboutTrip || proposal.fromTrip"
-    [own]="own || proposal?.author?.id === user?.id"
-    [routerLink]="['/post', 'proposal', proposal.id]">
+    [own]="own || proposal?.author?.id === user?.id">
 </app-proposal-list-item>
 
 <!-- Refused proposals-->
@@ -24,8 +31,7 @@
     *ngFor="let proposal of refusedProposals"
     [proposal]="proposal"
     [aboutTrip]="aboutTrip || proposal.fromTrip"
-    [own]="own || proposal?.author?.id === user?.id"
-    [routerLink]="['/post', 'proposal', proposal.id]">
+    [own]="own || proposal?.author?.id === user?.id">
 </app-proposal-list-item>
 
 <!-- Irrelevant proposals (closed, outdated)-->
@@ -34,6 +40,5 @@
     *ngFor="let proposal of irrelevantProposals"
     [proposal]="proposal"
     [aboutTrip]="aboutTrip || proposal.fromTrip"
-    [own]="own || proposal?.author?.id === user?.id"
-    [routerLink]="['/post', 'proposal', proposal.id]">
+    [own]="own || proposal?.author?.id === user?.id">
 </app-proposal-list-item>

@@ -22,7 +22,7 @@
                 <span class="d-none d-sm-inline">À recevoir</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
-                <h4 class="account-proposal__tab-title d-sm-none">À recevoir</h4>
+                <h4 class="account-proposal__tab-title d-sm-none">Livrées prochainement</h4>
                 <app-proposal-list [proposalList]="toReceive" [user]="currentUser"></app-proposal-list>
             </div>
         </mat-tab>
@@ -32,7 +32,7 @@
                 <span class="d-none d-sm-inline">Reçues</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
-                <h4 class="account-proposal__tab-title d-sm-none">Reçues</h4>
+                <h4 class="account-proposal__tab-title d-sm-none">Propositions reçues</h4>
                 <h6 class="account-proposal__list-title" *ngIf="receivedFromTrip?.length">Propositions de trajet</h6>
                 <app-proposal-list [aboutTrip]="true" [proposalList]="receivedFromTrip" [own]="false"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="receivedFromRequest?.length">Demandes de transport</h6>
@@ -49,7 +49,7 @@
                 <span class="d-none d-sm-inline">Envoyées</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
-                <h4 class="account-proposal__tab-title d-sm-none">Envoyées</h4>
+                <h4 class="account-proposal__tab-title d-sm-none">Propositions envoyées</h4>
                 <h6 class="account-proposal__list-title" *ngIf="sentAboutRequest?.length">Demandes de transport</h6>
                 <app-proposal-list [aboutTrip]="false" [proposalList]="sentAboutRequest" [own]="true"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="sentAboutTrip?.length">Propositions de trajet</h6>

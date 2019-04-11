@@ -10,6 +10,12 @@
       </div>
   </div>
 </div>
+<div class="proposal__loading" *ngIf="!proposal">
+  <mat-icon class="proposal__loading-icon">
+    autorenew
+  </mat-icon>
+  <h4 class="proposal__loading-title">Chargement de la proposition</h4>
+</div>
 <div *ngIf="proposal" [ngClass]="{'proposal': true, 'standalone container': standalone, 'closed': standalone && (proposal.closed || proposal.refused)}">
     <div class="row justify-content-around proposal__actions">
         <button class="btn btn-light btn-icon mb-2"
@@ -146,6 +152,11 @@
               *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
               (click)="updateProposalMeeting()">
         <mat-icon>my_location</mat-icon> {{ proposal.meetingPoint?.city ? 'Proposer un autre lieu' : 'Proposer un lieu de rendez-vous'}}
+      </button>
+    </div>
+    <div class="d-flex justify-content-center mt-3 mb-3" *ngIf="!own">
+      <button class="btn btn-light btn-icon" (click)="contact()">
+        <mat-icon>mail_outline</mat-icon> Contacter {{ proposal.authorView ? proposal.receiver.firstname : proposal.author.firstname }}
       </button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { PostService } from '@core/post.service';
 import { forkJoin, timer, Subject } from 'rxjs';
 import * as moment from 'moment';
@@ -9,13 +9,14 @@ import { UiService } from '@core/ui.service';
 import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
 import { catchError, takeUntil } from 'rxjs/operators';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-account-proposal',
   templateUrl: './account-proposal.component.html',
   styleUrls: ['./account-proposal.component.scss']
 })
-export class AccountProposalComponent implements OnInit {
+export class AccountProposalComponent implements OnInit, OnDestroy {
   @ViewChild('deliverTabs') tabs;
   currentUser: User;
   receivedFromTrip: Array<Proposal> = [];
@@ -31,16 +32,21 @@ export class AccountProposalComponent implements OnInit {
     private postService: PostService,
     private uiService: UiService,
     private userService: UserService,
+    private socket: Socket,
   ) { }
 
   ngOnInit() {
-    console.log(this.tabs);
     this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe((user: User) => {
       if (user) {
+        if (this.currentUser) {
+          this.removeProposalListeners();
+        }
+        this.currentUser = user;
         this.initLists();
         this.fetchLists(user);
+        this.setProposalListeners(user);
       } else {
         this.uiService.setLoading(false);
       }
@@ -62,6 +68,7 @@ export class AccountProposalComponent implements OnInit {
   }
 
   private fetchLists(user: User) {
+    this.uiService.setLoading(true);
     forkJoin([
       this.postService.getReceivedProposalsByReceiver(user)
       .pipe(catchError((err, caught) => caught)),
@@ -91,7 +98,6 @@ export class AccountProposalComponent implements OnInit {
       this.uiService.setLoading(false);
     }, (error) => {
       this.uiService.serverError(error);
-      this.uiService.setLoading(false);
     });
   }
 
@@ -112,6 +118,20 @@ export class AccountProposalComponent implements OnInit {
 
   private sortByDate(a, b) {
     return moment(a.date).isBefore(b.date) ? 1 : -1;
+  }
+
+  private setProposalListeners(user: User) {
+    this.socket.on(`proposal/${user.id}`, () => {
+      this.fetchLists(user);
+    });
+  }
+
+  private removeProposalListeners() {
+    this.socket.removeListener(`proposal/${this.currentUser.id}`);
+  }
+
+  ngOnDestroy() {
+    this.removeProposalListeners();
   }
 
 }

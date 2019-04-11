@@ -11,6 +11,7 @@ import { User } from '@models/user.model';
 })
 export class ProposalListComponent implements OnChanges {
   @Input() proposalList: Array<Proposal>;
+  newActivityProposals: Array<Proposal>;
   acceptedProposals: Array<Proposal>;
   pendingProposals: Array<Proposal>;
   refusedProposals: Array<Proposal>;
@@ -27,6 +28,7 @@ export class ProposalListComponent implements OnChanges {
       this.proposalList = changes.proposalList.currentValue;
       if (this.proposalList) {
         const relevantProposals = this.proposalList.filter(proposal => !this.isIrrelevant(proposal));
+        this.newActivityProposals = relevantProposals.filter(proposal => !proposal.seen);
         this.acceptedProposals = relevantProposals.filter(proposal => proposal.accepted);
         this.pendingProposals = relevantProposals.filter(proposal => {
           return !proposal.accepted && !proposal.refused;
