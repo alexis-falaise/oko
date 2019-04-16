@@ -204,7 +204,8 @@
             align-items: center;
         }
         &-wrapper {
-            margin-top: 25px;
+            margin-bottom: 25px;
+            width: 90vw;
             background-color: white;
             padding: 15px;
             border-radius: 3px;
@@ -241,7 +242,10 @@
     }
 
     &__engagement {
-        padding: 25px 0;
+        width: 90vw;
+        margin-left: auto;
+        margin-right: auto;
+        padding-bottom: 25px;
         color: $white-alpha-8;
         position: relative;
         z-index: 9;
@@ -367,4 +371,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
 }

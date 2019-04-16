@@ -7,6 +7,7 @@ export class ItemSize {
     width?: number;
     height?: number;
     depth?: number;
+    weight?: number;
     id: number;
     selected: boolean;
     selectable: boolean;
@@ -24,6 +25,7 @@ export const itemSizes = [
       width: 11,
       height: 16,
       depth: 5,
+      weight: 0.250,
       id: 1,
       selected: true,
       selectable: true,
@@ -36,6 +38,7 @@ export const itemSizes = [
       width: 24,
       height: 19,
       depth: 10,
+      weight: 0.750,
       id: 2,
       selected: false,
       selectable: true,
@@ -48,6 +51,7 @@ export const itemSizes = [
       width: 37.5,
       height: 25,
       depth: 15,
+      weight: 3,
       id: 3,
       selected: false,
       selectable: true,
@@ -60,6 +64,7 @@ export const itemSizes = [
       width: 75,
       height: 50,
       depth: 32,
+      weight: 10,
       id: 4,
       selected: false,
       selectable: true,

@@ -590,6 +590,10 @@ export class PostService {
     return this.http.delete(`${this.requestUrl}/${request.id}`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
+  getItemFromMerchant(url: string) {
+    this.http.get(url).subscribe((response) => console.log(response));
+  }
+
   // In app functions
 
   /**
@@ -641,8 +645,10 @@ export class PostService {
       items: [{label : filter.item}],
       location: {label: filter.location}}
     );
-  }
 
+    const obs = new Observable((observer) => { observer.complete(); });
+
+  }
   getCurrentDraft(): Post {
     return this.postDraft;
   }

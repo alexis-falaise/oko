@@ -7,3 +7,16 @@ export function objectIsComplete(object: Object) {
     });
     return complete;
 }
+
+
+export function objectMatch(a: Object, b: Object) {
+  let match = true;
+  Object.keys(a).forEach(key => {
+    if (key !== 'id' && key !== '_id') {
+      if (a[key] !== b[key]) {
+        match = false;
+      }
+    }
+  });
+  return match;
+}

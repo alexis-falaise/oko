@@ -9,6 +9,7 @@ import { RequestDetailComponent } from './request/request-detail/request-detail.
 import { TripComponent } from './trip/trip.component';
 import { TripListComponent } from './trip/trip-list/trip-list.component';
 import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
+import { RequestItemNewComponent } from './request/request-item-new/request-item-new.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,13 +17,25 @@ const routes: Routes = [
     { path: 'proposal/:id', component: ProposalComponent },
     { path: 'request', component: RequestListComponent },
     { path: 'request/new', component: RequestComponent },
+    { path: 'request/new/item', redirectTo: 'request/new', pathMatch: 'full' },
+    { path: 'request/new/item/new', component: RequestItemNewComponent },
+    { path: 'request/new/item/edit', component: RequestItemNewComponent },
     { path: 'request/:id', component: RequestDetailComponent },
     { path: 'request/:id/edit', component: RequestComponent },
+    { path: 'request/:id/edit/item', redirectTo: 'request/:id/edit', pathMatch: 'full' },
+    { path: 'request/:id/edit/item/new', component: RequestItemNewComponent },
+    { path: 'request/:id/edit/item/edit', component: RequestItemNewComponent },
     { path: 'trip', component: TripListComponent },
     { path: 'trip/new', component: TripComponent },
     { path: 'trip/propose/:id', component: TripComponent },
     { path: 'trip/:id', component: TripDetailComponent },
+    { path: 'trip/:id/order', component: TripDetailComponent },
     { path: 'trip/:id/edit', component: TripComponent },
+    { path: 'trip/:id/item', redirectTo: 'trip/:id', pathMatch: 'full' },
+    { path: 'trip/:id/item/new', redirectTo: 'trip/:id/order/item/new', pathMatch: 'full' },
+    { path: 'trip/:id/order/item', redirectTo: 'trip/:id/order', pathMatch: 'full' },
+    { path: 'trip/:id/order/item/new', component: RequestItemNewComponent },
+    { path: 'trip/:id/order/item/edit', component: RequestItemNewComponent },
   ];
 
 @NgModule({

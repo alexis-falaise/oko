@@ -65,25 +65,21 @@ export class ProposalEditBonusComponent implements OnInit {
       currentBonus = currentBonus - update.bonusDelta;
     });
     originalOffer = currentBonus;
-    console.log('Original offer', originalOffer);
     const lastOppositeUpdateIndex = bonusUpdates.reverse().findIndex(update => update.author.id !== this.currentUser.id);
     if (lastOppositeUpdateIndex === -1) {
       referentOffer = originalOffer;
     } else {
       let lastOppositeOffer;
       currentBonus = this.proposal.bonus;
-      console.log('Current bonus', currentBonus);
       bonusUpdates.reverse().forEach((update, index) => {
         if (index <= lastOppositeUpdateIndex) {
           currentBonus = currentBonus - update.bonusDelta;
-          console.log('Current bonus - iteration', update, index, currentBonus);
         }
       });
       lastOppositeOffer = currentBonus;
-      console.log('Last opposite offer', lastOppositeOffer);
       referentOffer = lastOppositeOffer;
     }
-    this.min = Math.floor(referentOffer * 0.6);
+    this.min = Math.floor(referentOffer * 0.6) || 1;
     this.max = Math.ceil(referentOffer * 2);
   }
 

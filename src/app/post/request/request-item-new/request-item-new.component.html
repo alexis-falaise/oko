@@ -1,0 +1,163 @@
+<div class="request-item-new container-fluid">
+  <div class="request-item-new__hero row">
+    <h2>{{ item.controls.label.value || 'Nouvel article' }}</h2>
+  </div>
+  <div class="request-item-new__content container">
+    <form class="request-item-new__content__form" [formGroup]="item">
+      <mat-vertical-stepper [linear]="!edition" #stepper>
+          <mat-step [stepControl]="item.controls.price">
+            <ng-template matStepLabel>Références</ng-template>
+            <h4 class="request-item-new__content__form-title">
+              {{ isNotEcommerce ? 'Prix estimé' : 'Lien E-commerce' }}
+            </h4>
+            <small class="text-muted" *ngIf="!isNotEcommerce">
+                Pour plus de précision, indiquez un lien e-commerce référencant votre article (facultatif)
+            </small>
+            <div class="form-group" *ngIf="!isNotEcommerce">
+              <input type="text" class="form-control"
+                     formControlName="link"
+                     (keyup.enter)="next(true)"
+                     placeholder="Lien e-commerce">
+            </div>
+            <small class="text-muted">
+                Mon article n'est pas référencé sur un site de e-commerce
+            </small>
+            <mat-slide-toggle [(ngModel)]="isNotEcommerce" [ngModelOptions]="{standalone: true}">
+              Non reférencé
+            </mat-slide-toggle>
+            <div class="form-group mt-3">
+              <div class="input-group">
+                <input type="number" min="0" class="form-control" formControlName="price"
+                       (keyup.enter)="next(item.controls.price.value)" placeholder="Prix estimé *">
+                <div class="input-group-append">
+                  <span class="input-group-text">€</span>
+                </div>
+              </div>
+            </div>
+            <small class="text-muted">Indiquez le prix estimé de votre article</small>
+          </mat-step>
+          <mat-step [stepControl]="item.controls.label">
+            <ng-template matStepLabel>Détails</ng-template>
+            <h4 class="request-item-new__content__form-title">Détails de l'article</h4>
+            <small class="text-muted">Donnez des précisions sur l'article que vous recherchez</small>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" formControlName="label"
+                       placeholder="Nom de l'article"
+                       (keyup.enter)="next(!!item.controls.label.value.length)" required>
+            </div>
+            <div class="form-group">
+              <textarea rows="7" class="form-control" formControlName="description"
+                        (keyup.enter)="next(!!item.controls.label.value.length)"
+                        placeholder="Description (edition d'un livre, taille d'un vêtement, couleur, fournisseur, boutique, année, modèle...)"
+                        required>
+              </textarea>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="item.controls.photo">
+            <ng-template matStepLabel>Photo</ng-template>
+            <img *ngIf="item.controls.photo.value"
+                  class="request-item-new__item-image"
+                  [src]="item.controls.photo.value"
+                  (click)="focusPicture()" 
+                  [alt]="item.controls.label.value">
+            <small class="text-muted" *ngIf="!isNotEcommerce && item.controls.photo.value">
+              Modifier la photo de l'article:
+            </small>
+            <div class="form-group">
+              <input type="text" class="form-control" formControlName="photo" #itemPicture
+                      (keyup.enter)="next(!!item.controls.label.value.length)" placeholder="Photo (lien)">
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="item.controls.weight">
+            <ng-template matStepLabel>Transport</ng-template>
+            <h4 class="request-item-new__content__form-title">Dimensions</h4>
+            <div class="request-item-new__item-size-wrapper row mt-1">
+              <div class="request-item-new__item-size col-12 col-sm-6 col-md-3"
+                  (click)="selectSize(i)"
+                  [class.selected]="size.selected"
+                    *ngFor="let size of itemSizes; let i = index;">
+                <div class="request-item-new__item-size__icon">
+                    <mat-icon>{{ size.icon }}</mat-icon>
+                </div>
+                <div class="request-item-new__item-size__description">
+                    <div>{{ size.label }}</div>
+                    <small class="text-muted">{{ size.description }}</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-row mt-1">
+              <div class="form-group col-12">
+                  <div class="input-group">
+                      <input type="number" class="form-control" min="0" placeholder="Poids estimé"
+                             formControlName="weight" required>
+                      <div class="input-group-append">
+                        <span class="input-group-text">kg</span>
+                      </div><br>
+                  </div>
+              </div>
+              <small class="text-muted">Le poids estimé de l'article</small>
+              <div class="form-group col-12">
+                <mat-checkbox formControlName="cabinOnly">Admis en cabine</mat-checkbox>
+              </div>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Validation</ng-template>
+            <mat-list class="mb-2" dense>
+              <mat-list-item *ngIf="item.controls.label.value; else labelError">
+                <h3 matLine>{{ item.controls.label.value }}</h3>
+                <small class="text-muted" matLine>Nom de l'article</small>
+              </mat-list-item>
+              <mat-list-item *ngIf="item.controls.description.value">
+                <p matLine>{{ item.controls.description.value }}</p>
+                <small class="text-muted" matLine>Description</small>
+              </mat-list-item>
+              <mat-list-item *ngIf="item.controls.price.value; else priceError">
+                <h3 matLine>{{ item.controls.price.value }} €</h3>
+                <small class="text-muted" matLine>Prix</small>
+              </mat-list-item>
+              <mat-list-item>
+                <h3 matLine>{{ selectedSize }}</h3>
+                <small class="text-muted" matLine>Taille</small> 
+              </mat-list-item>
+              <mat-list-item>
+                <h3 matLine>{{ item.controls.cabinOnly.value ? 'En cabine' : 'En soute' }}</h3>
+                <small class="text-muted" matLine>Embarquement</small>
+              </mat-list-item>
+              <mat-list-item *ngIf="item.controls.weight.value; else weightError">
+                <h3 matLine>{{ item.controls.weight.value }} kg</h3>
+                <small class="text-muted" matLine>Poids</small>
+              </mat-list-item>
+            </mat-list>
+            <button class="btn btn-success"
+                    [disabled]="
+                      !item.controls.price.value
+                      || !item.controls.weight.value
+                      || !item.controls.label.value
+                    "
+                    (click)="save()">Enregistrer</button>
+          </mat-step>
+      </mat-vertical-stepper>
+    </form>
+  </div>
+</div>
+
+<ng-template #labelError>
+  <mat-list-item (click)="goToStep(1)">
+    <small class="text-danger">Ajoutez un nom d'article</small>
+  </mat-list-item>
+</ng-template>
+
+
+<ng-template #priceError>
+  <mat-list-item (click)="goToStep(0)">
+    <small class="text-danger">Indiquez une estimation de prix</small>
+  </mat-list-item>
+</ng-template>
+
+<ng-template #weightError>
+  <mat-list-item (click)="goToStep(3)">
+    <small class="text-danger">Indiquez un poids estimé pour votre article</small>
+  </mat-list-item>
+</ng-template>
+

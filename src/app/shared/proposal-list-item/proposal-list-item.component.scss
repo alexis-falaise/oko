@@ -48,7 +48,18 @@
         &-start,
         &-end,
         &-date {
+            $size: 14px;
             margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: $size;
+            .mat-icon {
+                height: $size;
+                width: $size;
+                margin-right: 7.5px;
+            }
+            .material-icons {
+                font-size: $size;
+            }
         }
     }
 
@@ -117,12 +128,15 @@
     @media screen and (max-width: $break-md) {
         &.accepted {
             background: radial-gradient(circle at 100% 50%, #7cb34233, rgba(0, 0, 0, 0));
+            border-bottom: none !important;
         }
         &.pending {
             background: radial-gradient(circle at 100% 50%, #ff8f0033, rgba(0, 0, 0, 0));
+            border-bottom: none !important;
         }
         &.refused {
             background: radial-gradient(circle at 100% 50%, #c6282833, rgba(0, 0, 0, 0));
+            border-bottom: none !important;
         }
     }
 }

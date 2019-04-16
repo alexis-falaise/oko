@@ -183,14 +183,14 @@
                         <mat-icon>my_location</mat-icon> Rendez-vous
                     </div>
                 </ng-template>
-                <div class="post-request__practical__property" *ngIf="post.trip; else freeRequest">
+                <!-- <div class="post-request__practical__property" *ngIf="post.trip; else freeRequest">
                     <mat-icon>map</mat-icon> Voyage sélectionné
-                </div>
-                <ng-template #freeRequest>
+                </div> -->
+                <!-- <ng-template #freeRequest>
                     <div class="post-request__practical__property">
                         <mat-icon>info</mat-icon> En attente
                     </div>
-                </ng-template>
+                </ng-template> -->
                 <div class="post-request__practical__property urgent" *ngIf="urgent && post.urgentDetails?.date">
                     <mat-icon>warning</mat-icon> Avant le {{ moment(post.urgentDetails?.date).format('DD/MM') }}
                 </div>

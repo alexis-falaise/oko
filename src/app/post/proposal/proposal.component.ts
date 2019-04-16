@@ -140,17 +140,19 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   acceptProposal() {
-    this.uiService.setLoading(true);
-    this.postService.acceptProposal(this.proposal.id)
-    .subscribe((response: ServerResponse) => {
-      if (response.status) {
-        this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
-        this.proposal.accepted = response.data.accepted;
-      } else {
-        this.serverError(response);
-      }
-    this.uiService.setLoading(false);
-    }, (err) => this.serverError(err));
+    if (!this.proposal.accepted && !this.proposal.outdated) {
+      this.uiService.setLoading(true);
+      this.postService.acceptProposal(this.proposal.id)
+      .subscribe((response: ServerResponse) => {
+        if (response.status) {
+          this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
+          this.proposal.accepted = response.data.accepted;
+        } else {
+          this.serverError(response);
+        }
+      this.uiService.setLoading(false);
+      }, (err) => this.serverError(err));
+    }
   }
 
   closeProposal() {
@@ -182,17 +184,19 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   refuseProposal() {
-    this.uiService.setLoading(true);
-    this.postService.refuseProposal(this.proposal.id)
-    .subscribe((response: ServerResponse) => {
-      if (response.status) {
-        this.snack.open('La proposition a été refusée', 'OK', {duration: 3000});
-        this.proposal.refused = response.data.refused;
-      } else {
-        this.serverError(response);
-      }
-    this.uiService.setLoading(false);
-    }, (err) => this.serverError(err));
+    if (!this.proposal.refused && !this.proposal.outdated) {
+      this.uiService.setLoading(true);
+      this.postService.refuseProposal(this.proposal.id)
+      .subscribe((response: ServerResponse) => {
+        if (response.status) {
+          this.snack.open('La proposition a été refusée', 'OK', {duration: 3000});
+          this.proposal.refused = response.data.refused;
+        } else {
+          this.serverError(response);
+        }
+      this.uiService.setLoading(false);
+      }, (err) => this.serverError(err));
+    }
   }
 
   validateProposal() {

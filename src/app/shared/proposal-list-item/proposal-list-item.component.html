@@ -49,7 +49,7 @@
                 <mat-chip color="accent" *ngIf="proposal.accepted && !proposal.paid" selected>Acceptée</mat-chip>
                 <mat-chip color="accent" *ngIf="proposal.paid && !proposal.validated" selected>Payée</mat-chip>
                 <mat-chip color="accent" *ngIf="proposal.validated" selected>Livrée</mat-chip>
-                <mat-chip>Bonus : {{ proposal.bonus }} €</mat-chip>
+                <mat-chip>{{ proposal.bonus }} €</mat-chip>
             </mat-chip-list>
             <div class="proposal-list-item__date">Envoyé le {{ moment(proposal.date).format('DD/MM à HH:mm') }} </div>
         </div>

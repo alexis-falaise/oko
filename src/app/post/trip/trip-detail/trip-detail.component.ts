@@ -1,7 +1,8 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
+import { Location } from '@angular/common';
 import { DateAdapter, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, timer } from 'rxjs';
 import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
@@ -15,6 +16,7 @@ import { User } from '@models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UiService } from '@core/ui.service';
 import { PexelsService } from '@core/pexels.service';
+import { MessengerService } from '@core/messenger.service';
 
 @Component({
   selector: 'app-trip-detail',
@@ -33,21 +35,32 @@ export class TripDetailComponent implements OnInit {
   moment = moment;
   background: string;
   fadeInfo: boolean;
+  ordering: boolean;
 
   constructor(
     private element: ElementRef,
     private router: Router,
     private dateAdapter: DateAdapter<Date>,
     private route: ActivatedRoute,
+    private location: Location,
+    private messengerService: MessengerService,
+    private postService: PostService,
     private userService: UserService,
     private uiService: UiService,
-    private postService: PostService,
     private snack: MatSnackBar,
     private pexels: PexelsService,
   ) { }
 
   ngOnInit() {
     this.dateAdapter.setLocale('fr');
+    this.route.url.subscribe(segments => {
+      this.ordering = !!segments.find(segment => segment.path === 'order');
+      if (this.ordering) {
+        this.makeRequest();
+      } else {
+        this.engagement = false;
+      }
+    });
     this.route.params.subscribe(param => {
       if (param && param.id) {
         this.fetchTrip(param.id);
@@ -86,6 +99,9 @@ export class TripDetailComponent implements OnInit {
     this.postService.getReceivedProposals(this.trip)
     .subscribe(proposals => {
       this.setProposals(proposals);
+      if (this.ordering) {
+        this.scrollToRequest();
+      }
     });
   }
 
@@ -97,6 +113,9 @@ export class TripDetailComponent implements OnInit {
       .filter(proposal => !proposal.closed && !proposal.accepted && !proposal.refused)
       .map(proposal => proposal.from) as Array<Request>;
       this.items = this.requests.reduce((acc, request) => acc.concat(request.items), []);
+      if (this.ordering) {
+        this.scrollToRequest();
+      }
     }, (err) => this.snack.open('Erreur lors du chargement des annonces', 'OK', {duration: 3000}));
   }
 
@@ -107,9 +126,20 @@ export class TripDetailComponent implements OnInit {
   }
 
   makeRequest() {
+    if (!this.ordering) {
+      const url = this.router.createUrlTree(['order'], { relativeTo: this.route });
+      const serializedUrl = this.router.serializeUrl(url);
+      this.location.go(serializedUrl);
+    }
     this.engagement = true;
-    const requestEl = document.getElementById('request');
-    requestEl.scrollIntoView({behavior: 'smooth', block: 'start'});
+    this.scrollToRequest();
+  }
+
+  scrollToRequest() {
+    timer(250).subscribe(() => {
+      const requestEl = document.getElementById('request');
+      requestEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+    });
   }
 
   openRequest() {
@@ -132,6 +162,15 @@ export class TripDetailComponent implements OnInit {
       }
       this.uiService.setLoading(false);
     });
+  }
+
+  contact() {
+    if (this.currentUser) {
+      this.messengerService.getContactThread(this.currentUser, this.trip.user);
+    } else {
+      const snackRef = this.snack.open('Connectez-vous', 'Connexion', {duration: 3000});
+      snackRef.onAction().subscribe(() => this.router.navigate(['/login']));
+    }
   }
 
   onScroll(event) {

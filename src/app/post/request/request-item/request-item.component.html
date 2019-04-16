@@ -1,15 +1,15 @@
 <div class="request-item">
-  <h2 class="request-item-title justify-content-around">
+  <!-- <h2 class="request-item-title justify-content-around">
       <span style="display: inline-block">{{ modifying ? 'Modifier' : 'Ajouter' }} un article</span>
-  </h2>
+  </h2> -->
   <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
-  <hr class="divider">
+  <!-- <hr class="divider"> -->
   <div class="request-item__content">
     <form [formGroup]="item" novalidate>
       <mat-horizontal-stepper #stepper labelPosition="bottom" [linear]="true">
         <mat-step [stepControl]="item.controls.label">
           <ng-template matStepLabel>Infos</ng-template>
-            <div class="request-item__step-content justify-content-center"
+            <div class="request-item__step-content justify-content-start"
                  (swipeLeft)="next(!!item.controls.label.value.length)">
               <div class="form-group">
                 <input type="text" class="form-control" formControlName="label" placeholder="Nom de l'article"
@@ -69,19 +69,6 @@
         <mat-step>
           <ng-template matStepLabel>Dimensions</ng-template>
           <div class="request-item__step-content justify-content-start" (swipeRight)="previous()">
-            <div class="form-row mb-5">
-              <div class="form-group col-12">
-                <mat-checkbox formControlName="cabinOnly">Admis en cabine</mat-checkbox>
-              </div>
-              <div class="form-group col-12">
-                  <div class="input-group">
-                      <input type="number" class="form-control" min="0" placeholder="Poids estimé" required formControlName="weight">
-                      <div class="input-group-append">
-                        <span class="input-group-text">kg</span>
-                      </div><br>
-                  </div>
-              </div>
-            </div>
             <div class="request-item__item-size-wrapper row mt-1">
               <div class="request-item__item-size col-12 col-sm-6 col-md-3"
                   (click)="selectSize(i)"
@@ -95,6 +82,19 @@
                     <small class="text-muted">{{ size.description }}</small>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="form-row mt-1">
+            <div class="form-group col-12">
+                <div class="input-group">
+                    <input type="number" class="form-control" min="0" placeholder="Poids estimé" required formControlName="weight">
+                    <div class="input-group-append">
+                      <span class="input-group-text">kg</span>
+                    </div><br>
+                </div>
+            </div>
+            <div class="form-group col-12">
+              <mat-checkbox formControlName="cabinOnly">Admis en cabine</mat-checkbox>
             </div>
           </div>
           <div class="request-item__step-validation">

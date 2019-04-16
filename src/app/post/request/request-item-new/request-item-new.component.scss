@@ -1,0 +1,86 @@
+@import "../../../../styles/classes.scss";
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/animations.scss";
+
+.request-item-new {
+    height: 100vh;
+    background: $heroGradient;
+    
+    &__hero {
+        @extend .base-hero;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 15vh;
+        color: $white-alpha-8;
+    }
+
+    &__content {
+        animation: appear $animationDuration;
+        position: relative;
+        top: -25px;
+        border-radius: 3px;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+        overflow-x: hidden;
+        overflow-y: scroll;
+        height: 80vh;
+
+        &__form {
+            &-title {
+                color: rgb(175, 175, 175);
+            }
+        }
+    }
+
+    &__item-image {
+        transition: all $transitionDuration;
+        width: 100%;
+        border-radius: 3px;
+        padding: 5px;
+        border: 1px solid rgb(245, 245, 245);
+
+        &:hover {
+            transition: all $transitionDuration;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+        }
+    }
+
+    &__item-size {
+        &-wrapper {
+            margin: 0;
+        }
+        transition: all $transitionDuration;
+        border-radius: 3px;
+        &.selected {
+            transition: all $transitionDuration;
+            background-color: $cyan-600-alpha-2;
+            border-radius: 3px;
+            border: thin solid $cyan-600;
+            .material-icons {
+                color: $cyan-600;
+            }
+        }
+        &:hover {
+            transition: all $transitionDuration;
+            border-radius: 3px;
+            background-color: $cyan-600-alpha-2;
+        }
+        &__icon {
+            $iconSize: 36px;
+            display: flex;
+            justify-content: center;
+            .mat-icon {
+                height: $iconSize;
+                width: $iconSize;
+            }
+            .material-icons {
+                font-size: $iconSize;
+                color: rgb(175, 175, 175);
+            }
+        }
+        &__description {
+            padding: 15px;
+        }
+    }
+}

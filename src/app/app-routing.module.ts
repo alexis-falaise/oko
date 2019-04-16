@@ -1,22 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { NotFoundComponent } from '@core/not-found/not-found.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SigninComponent } from './auth/signin/signin.component';
-import { LogoutComponent } from './auth/logout/logout.component';
-import { AccountComponent } from './account/account.component';
 
-import { AuthGuard } from './guards/auth.guard';
-import { AccountInfoComponent } from './account/account-info/account-info.component';
-import { AccountRequestComponent } from './account/account-request/account-request.component';
-import { AccountTripComponent } from './account/account-trip/account-trip.component';
-import { AccountProposalComponent } from './account/account-proposal/account-proposal.component';
+import { HomeComponent } from './home/home.component';
 import { LandingComponent } from './landing/landing.component';
+import { LoginComponent } from './auth/login/login.component';
+import { LogoutComponent } from './auth/logout/logout.component';
 import { MessengerComponent } from './messenger/messenger.component';
+import { NotFoundComponent } from '@core/not-found/not-found.component';
+import { OneclickComponent } from './auth/oneclick/oneclick.component';
+import { RequestItemNewComponent } from './post/request/request-item-new/request-item-new.component';
+import { SigninComponent } from './auth/signin/signin.component';
 import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
 import { ThreadComponent } from './messenger/thread/thread.component';
-import { OneclickComponent } from './auth/oneclick/oneclick.component';
+
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -34,7 +31,8 @@ const routes: Routes = [
       { path: '', component: ThreadListComponent },
       { path: 'thread', redirectTo: '/messages', pathMatch: 'full' },
       { path: 'thread/:id', component: ThreadComponent },
-    ]},
+    ]
+  },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404', pathMatch: 'full'},
 ];

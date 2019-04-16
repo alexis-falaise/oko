@@ -48,6 +48,8 @@ import { ProposalEditMeetingComponent } from './proposal/proposal-edit-meeting/p
 import { ProposalEditBonusComponent } from './proposal/proposal-edit-bonus/proposal-edit-bonus.component';
 import { ProposalTripComponent } from './proposal/proposal-trip/proposal-trip.component';
 import { ProposalRequestComponent } from './proposal/proposal-request/proposal-request.component';
+import { RequestItemNewComponent } from './request/request-item-new/request-item-new.component';
+import { RequestService } from './request/request.service';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { ProposalRequestComponent } from './proposal/proposal-request/proposal-r
     ProposalEditMeetingComponent,
     ProposalEditBonusComponent,
     ProposalTripComponent,
-    ProposalRequestComponent
+    ProposalRequestComponent,
+    RequestItemNewComponent,
   ],
   entryComponents: [
     TripLuggageComponent,
@@ -107,6 +110,7 @@ import { ProposalRequestComponent } from './proposal/proposal-request/proposal-r
     PostRoutingModule,
     SharedModule,
     ScrollDispatchModule,
-  ]
+  ],
+  providers: [RequestService],
 })
 export class PostModule { }

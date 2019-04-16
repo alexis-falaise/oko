@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar, DateAdapter } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
 import { round, objectIsComplete, arraySum } from '@utils/index.util';
 import * as moment from 'moment';
 
+import { RequestService } from '../request.service';
 import { UserService } from '@core/user.service';
 import { UiService } from '@core/ui.service';
 import { PostService } from '@core/post.service';
@@ -67,9 +68,11 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router,
     private adapter: DateAdapter<any>,
     private postService: PostService,
+    private requestService: RequestService,
     private uiService: UiService,
     private userService: UserService,
     private geoService: GeoService,
@@ -90,6 +93,13 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.adapter.setLocale('fr');
     this.userService.getCurrentUser().subscribe(user => this.currentUser = user);
+    this.checkDraft();
+    this.requestService.onStoredItems().subscribe((items) => {
+      this.items = items;
+      this.computeBonus();
+    });
+    this.requestService.getStoredItems();
+    this.requestService.onTotalPrice().subscribe((price) => this.totalPrice = price);
     this.geoService.onCities()
     .subscribe(cities => this.cities = cities);
     this.meeting.controls.city.valueChanges
@@ -106,7 +116,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.meeting.controls.airportPickup.valueChanges.subscribe(() => this.computeBonus());
     this.meeting.controls.bonus.valueChanges.subscribe(() => this.computeTotalPrice());
-    this.checkDraft();
   }
 
   fetchCities(city: string) {
@@ -117,29 +126,16 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     return city ? city.city : '';
   }
 
+  setCity(city: {city: string, country: string}) {
+    this.meeting.controls.city.patchValue(city);
+  }
+
   checkDraft() {
     const draft = this.postService.getRequestDraft();
     if (draft) {
       this.setEditableRequest(draft);
       this.edition = false;
     }
-  }
-
-  openItemDialog(item?: Item, index?: number) {
-    const dialogRef = this.dialog.open(RequestItemComponent, {
-      height: '85vh',
-      width: '95vw',
-      data: item ? { item: item, index: index, modifying: true } : null,
-    });
-    dialogRef.afterClosed().subscribe(savedItemData => {
-      if (savedItemData) {
-        if (savedItemData.modifying) {
-          this.editItem(savedItemData.item, savedItemData.index);
-        } else {
-          this.addItem(savedItemData.item);
-        }
-      }
-    });
   }
 
   openItemSelectionDialog() {
@@ -167,18 +163,28 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addItem(item) {
-    this.items.push(item);
-    this.computeBonus();
+    this.requestService.addItem(item);
   }
 
-  editItem(item, index) {
-    this.items[index] = item;
-    this.computeBonus();
+  newItem() {
+    const tree = this.router.createUrlTree(['item', 'new'], { relativeTo: this.route });
+    const serializedTree = this.router.serializeUrl(tree);
+    this.router.navigate([serializedTree]);
+  }
+
+  editItem(item: Item) {
+    this.requestService.setCurrentItem(item);
+    const tree = this.router.createUrlTree(['item', 'edit'], { relativeTo: this.route });
+    const serializedTree = this.router.serializeUrl(tree);
+    this.router.navigate([serializedTree]);
   }
 
   removeItem(index) {
-    this.items.splice(index, 1);
-    this.computeBonus();
+    this.requestService.removeItem(index);
+  }
+
+  getItemFromMerchant(url: string) {
+    this.postService.getItemFromMerchant(url);
   }
 
   homeDelivery() {
@@ -297,7 +303,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Computes a bonus for the traveler
-   * Bonus calculation takes in account:
+   * Bonus calculation takes into account:
    * - The items price
    *   A percentage (bonusPercentage) is applied to the global price of items, never going under 10€
    * - The number of items
@@ -311,6 +317,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   private computeBonus(bonus?: number) {
     this.itemsPrice = arraySum(this.items.map(item => item.price));
     let itemsWeight = arraySum(this.items.map(item => item.weight));
+    if (Number.isNaN(itemsWeight)) {
+      itemsWeight = 0;
+    }
+    if (Number.isNaN(this.itemsPrice)) {
+      this.itemsPrice = 0;
+    }
     itemsWeight = itemsWeight > 5 ? itemsWeight - 5 : itemsWeight;
     let calculatedBonus = this.itemsPrice * this.bonusPercentage
     + (this.items.length - 1) * 2.5
@@ -320,6 +332,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       calculatedBonus += 10;
     }
     this.meeting.controls.bonus.patchValue(Math.ceil(bonus || calculatedBonus));
+    this.requestService.setBonus(bonus);
   }
 
   private computeTotalPrice() {
@@ -327,7 +340,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const itemsPrice = this.itemsPrice || 0;
     const preFeesPrice = itemsPrice + bonus;
     this.fees = preFeesPrice * this.feesPercentage + this.staticFees;
-    this.totalPrice = round(this.fees + preFeesPrice, 2);
+    const price = round(this.fees + preFeesPrice, 2);
+    this.requestService.setTotalPrice(price);
   }
 
   private requestError(draft) {
@@ -353,10 +367,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.geoService.resetCities();
-    // if (!this.saved) {
-    //   const draft = this.createSaveRequest();
-    //   this.saveDraft(draft);
-    // }
+    if (!this.saved) {
+      const draft = this.createSaveRequest();
+      this.saveDraft(draft);
+    }
   }
 
 }

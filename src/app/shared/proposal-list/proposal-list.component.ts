@@ -28,12 +28,14 @@ export class ProposalListComponent implements OnChanges {
       this.proposalList = changes.proposalList.currentValue;
       if (this.proposalList) {
         const relevantProposals = this.proposalList.filter(proposal => !this.isIrrelevant(proposal));
-        this.newActivityProposals = relevantProposals.filter(proposal => !proposal.seen);
-        this.acceptedProposals = relevantProposals.filter(proposal => proposal.accepted);
-        this.pendingProposals = relevantProposals.filter(proposal => {
+        const seenProposals = relevantProposals.filter(proposal => proposal.seen);
+        const newProposals = relevantProposals.filter(proposal => !proposal.seen);
+        this.newActivityProposals = newProposals;
+        this.acceptedProposals = seenProposals.filter(proposal => proposal.accepted);
+        this.pendingProposals = seenProposals.filter(proposal => {
           return !proposal.accepted && !proposal.refused;
         });
-        this.refusedProposals = relevantProposals.filter(proposal => proposal.refused);
+        this.refusedProposals = seenProposals.filter(proposal => proposal.refused);
         this.irrelevantProposals = this.proposalList.filter(proposal => {
           return this.isIrrelevant(proposal);
         });

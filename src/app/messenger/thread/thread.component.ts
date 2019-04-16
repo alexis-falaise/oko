@@ -28,6 +28,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   inputRows = 2;
   maxInputRows = 4;
   uiCoolDown = 150;
+  inputFocus = false;
   constructor(
     @Inject(DOCUMENT) public document: Document,
     private route: ActivatedRoute,
@@ -60,6 +61,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
   captureKey(event) {
+    this.inputFocus = true;
     // Shift + Enter
     if (event.shiftKey && event.keyCode === 13) {
       this.inputRows = this.inputRows < this.maxInputRows ? this.inputRows + 1 : this.maxInputRows;
@@ -71,7 +73,15 @@ export class ThreadComponent implements OnInit, OnDestroy {
     // Enter (without Shift)
     if (!event.shiftKey && event.keyCode === 13) {
       this.inputRows = 2;
+      this.inputFocus = false;
       this.sendMessage();
+    }
+  }
+
+  toggleInputFocus(state: boolean) {
+    this.inputFocus = state;
+    if (state) {
+      this.scrollDown();
     }
   }
 

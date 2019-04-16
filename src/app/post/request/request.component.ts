@@ -5,11 +5,12 @@ import { Request } from '@models/post/request.model';
 import { ActivatedRoute } from '@angular/router';
 
 import { UiService } from '@core/ui.service';
+import { RequestService } from './request.service';
 
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
-  styleUrls: ['./request.component.scss']
+  styleUrls: ['./request.component.scss'],
 })
 export class RequestComponent implements OnInit {
   request: Request = new Request();
