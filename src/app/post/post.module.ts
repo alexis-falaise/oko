@@ -33,7 +33,6 @@ import { RequestComponent } from './request/request.component';
 import { RequestDetailComponent } from './request/request-detail/request-detail.component';
 import { RequestFormComponent } from './request/request-form/request-form.component';
 import { RequestListComponent } from './request/request-list/request-list.component';
-import { RequestItemComponent } from './request/request-item/request-item.component';
 import { TripComponent } from './trip/trip.component';
 import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
 import { TripLocationComponent } from './trip/trip-location/trip-location.component';
@@ -64,7 +63,6 @@ import { RequestService } from './request/request.service';
     RequestListComponent,
     TripSizingComponent,
     TripLuggageComponent,
-    RequestItemComponent,
     RequestItemSelectionComponent,
     ProposalComponent,
     ProposalEditComponent,
@@ -76,7 +74,6 @@ import { RequestService } from './request/request.service';
   ],
   entryComponents: [
     TripLuggageComponent,
-    RequestItemComponent,
     RequestItemSelectionComponent,
     ProposalEditComponent,
     ProposalEditBonusComponent,

@@ -7,6 +7,9 @@ import { RequestService } from '../request.service';
 import { Item } from '@models/item.model';
 import { Link } from '@models/link.model';
 import { itemSizes } from '@static/item-sizes.static';
+import { validUrl } from '@utils/index.util';
+import { UiService } from '@core/ui.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-request-item-new',
@@ -35,9 +38,11 @@ export class RequestItemNewComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private uiService: UiService,
     private requestService: RequestService,
     private route: ActivatedRoute,
     private router: Router,
+    private snack: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -50,7 +55,23 @@ export class RequestItemNewComponent implements OnInit {
         this.item.controls.link.patchValue(item.link.path);
       }
     });
+    this.item.controls.link.valueChanges.subscribe(() => this.getItemInfo());
     this.initSize();
+  }
+
+  getItemInfo() {
+    const pastedUrl = this.item.controls.link.value;
+    if (validUrl(pastedUrl)) {
+      this.uiService.setLoading(true);
+      this.requestService.getItemInfo(pastedUrl)
+      .subscribe(item => {
+        this.uiService.setLoading(false);
+        if (item) {
+          this.snack.open('Article trouvé', 'Génial', {duration: 3000});
+          this.item.patchValue(item);
+        }
+      });
+    }
   }
 
   focusPicture() {

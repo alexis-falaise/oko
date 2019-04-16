@@ -1,5 +1,5 @@
 <div class="request-form container">
-  <div class="request-form__city" *ngIf="!meeting.controls.city.value">
+  <div class="request-form__city" *ngIf="!meeting.controls.city.value && !edition">
     <div class="form-group">
       <input type="text" class="form-control"
              placeholder="Votre ville"

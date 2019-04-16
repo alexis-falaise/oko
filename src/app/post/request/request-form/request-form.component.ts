@@ -13,7 +13,6 @@ import { PostService } from '@core/post.service';
 import { GeoService } from '@core/geo.service';
 
 import { NotConnectedComponent } from '@core/dialogs/not-connected/not-connected.component';
-import { RequestItemComponent } from '../request-item/request-item.component';
 import { RequestItemSelectionComponent } from '../request-item-selection/request-item-selection.component';
 
 import { User } from '@models/user.model';
@@ -88,20 +87,35 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         this.setEditableRequest(changes.request.currentValue);
       }
     }
+    if (changes.trip) {
+      const trip: Trip = changes.trip.currentValue;
+      this.meeting.controls.city.patchValue({
+        city: trip.to.airport.city,
+        country: trip.to.airport.country,
+      });
+    }
   }
 
   ngOnInit() {
     this.adapter.setLocale('fr');
+
+    // Initialisation
     this.userService.getCurrentUser().subscribe(user => this.currentUser = user);
     this.checkDraft();
+
+    // Manage stored items
     this.requestService.onStoredItems().subscribe((items) => {
       this.items = items;
       this.computeBonus();
     });
     this.requestService.getStoredItems();
     this.requestService.onTotalPrice().subscribe((price) => this.totalPrice = price);
+
+    // Fetch citites
     this.geoService.onCities()
     .subscribe(cities => this.cities = cities);
+
+    // Manage form changes
     this.meeting.controls.city.valueChanges
     .subscribe(city => {
       this.meeting.controls.meetingPoint.patchValue({city: city.city, country: city.country});

@@ -15,17 +15,22 @@
             </small>
             <div class="form-group" *ngIf="!isNotEcommerce">
               <input type="text" class="form-control"
+                     #itemLink
                      formControlName="link"
+                     (paste)="getItemInfo(itemLink.value)"
                      (keyup.enter)="next(true)"
                      placeholder="Lien e-commerce">
             </div>
-            <small class="text-muted">
-                Mon article n'est pas référencé sur un site de e-commerce
-            </small>
-            <mat-slide-toggle [(ngModel)]="isNotEcommerce" [ngModelOptions]="{standalone: true}">
-              Non reférencé
-            </mat-slide-toggle>
-            <div class="form-group mt-3">
+            <div *ngIf="!item.controls.link.value">
+              <small class="text-muted">
+                  Mon article n'est pas référencé sur un site de e-commerce
+              </small><br>
+              <mat-slide-toggle [(ngModel)]="isNotEcommerce" [ngModelOptions]="{standalone: true}">
+                Non reférencé
+              </mat-slide-toggle><br><br>
+            </div>
+            <small class="text-muted">Indiquez le prix estimé de votre article</small>
+            <div class="form-group mt-1">
               <div class="input-group">
                 <input type="number" min="0" class="form-control" formControlName="price"
                        (keyup.enter)="next(item.controls.price.value)" placeholder="Prix estimé *">
@@ -34,7 +39,6 @@
                 </div>
               </div>
             </div>
-            <small class="text-muted">Indiquez le prix estimé de votre article</small>
           </mat-step>
           <mat-step [stepControl]="item.controls.label">
             <ng-template matStepLabel>Détails</ng-template>
@@ -85,7 +89,8 @@
                 </div>
               </div>
             </div>
-            <div class="form-row mt-1">
+            <div class="form-row mt-2">
+              <small class="text-muted">Le poids estimé de l'article</small>
               <div class="form-group col-12">
                   <div class="input-group">
                       <input type="number" class="form-control" min="0" placeholder="Poids estimé"
@@ -95,7 +100,6 @@
                       </div><br>
                   </div>
               </div>
-              <small class="text-muted">Le poids estimé de l'article</small>
               <div class="form-group col-12">
                 <mat-checkbox formControlName="cabinOnly">Admis en cabine</mat-checkbox>
               </div>

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { BehaviorSubject } from 'rxjs';
+import { environment } from '@env/environment';
 
 import { objectMatch } from '@utils/object.util';
 
 import { Item } from '@models/item.model';
+import { ServerResponse } from '@models/app/server-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +18,11 @@ export class RequestService {
   computedBonus = new BehaviorSubject<number>(null);
   computedTotalPrice = new BehaviorSubject<number>(null);
   currentItem = new BehaviorSubject<Item>(null);
+  private itemUrl = `${environment.serverUrl}/item`;
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   onStoredItems() {
     return this.storedItems.asObservable();
@@ -51,6 +57,29 @@ export class RequestService {
 
   getCurrentItem() {
     return this.currentItem.getValue();
+  }
+
+  getItemInfo(url: string): Observable<Item> {
+    return Observable.create(observer => {
+      this.http.get(`${this.itemUrl}/scrap?url=${url}`, { withCredentials: true})
+      .subscribe((response: ServerResponse) => {
+        if (response.status) {
+          const itemInfo = response.data;
+          const label = itemInfo.label.split('-')[0].split(',')[0];
+          const price = parseInt(itemInfo.price.slice(4), 10);
+          const item = new Item({
+            price: price,
+            label: label,
+            description: itemInfo.label,
+            photo: itemInfo.photo,
+          });
+          observer.next(item);
+          observer.complete();
+        } else {
+          observer.complete();
+        }
+      }, (error) => observer.complete());
+    });
   }
 
   setCurrentItem(item: Item) {

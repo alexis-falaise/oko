@@ -56,7 +56,14 @@ export class PostService {
     return this.requests.asObservable();
   }
 
-  // Getters
+  /**
+   *
+   * GETTERS
+   *
+   *
+   *
+   *
+   */
 
   /**
    * Fetch all existing posts.
@@ -314,7 +321,6 @@ export class PostService {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true})
       .subscribe((proposals: Array<Proposal>) => {
-        console.log('Received proposals', proposals);
         forkJoin(proposals.map(proposal => {
           return this.getAllProposalSubPosts(proposal).pipe(catchError((err, caught) => of(caught)));
         }))
@@ -337,11 +343,9 @@ export class PostService {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/receiver/${receiver.id}/unseen`, { withCredentials: true})
       .subscribe((proposals: Array<Proposal>) => {
-        console.log('Unseen proposals - service', proposals);
         observer.next(proposals);
         observer.complete();
       }, (error) => {
-        console.log('Unseen proposals - error', error);
         observer.next([]).
         observer.complete();
       });
@@ -401,7 +405,14 @@ export class PostService {
     });
   }
 
-  // Creators
+  /**
+   * 
+   * CREATORS
+   * 
+   * 
+   * 
+   * 
+   */
 
   createPost(post: Post | Array<Post>): Observable<ServerResponse> {
     return this.http.post(this.postUrl, post, {withCredentials: true}) as Observable<ServerResponse>;
@@ -479,7 +490,14 @@ export class PostService {
     });
   }
 
-  // Modifiers
+  /**
+   * 
+   * MODIFIERS
+   * 
+   * 
+   * 
+   * 
+   */
 
   updatePost(post: Post): Observable<ServerResponse> {
     return this.http.put(`${this.postUrl}/${post.id}`, post, {withCredentials: true}) as Observable<ServerResponse>;
@@ -503,7 +521,14 @@ export class PostService {
     return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  // Proposal management
+  /**
+   * 
+   * PROPOSAL MANAGEMENT
+   * 
+   * 
+   * 
+   * 
+   */
 
   /**
    * Accept a proposal
@@ -551,7 +576,6 @@ export class PostService {
    * @param bonus : new bonus value
    */
   updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
-    console.log('Updating proposal bonus');
     return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus}, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
@@ -560,7 +584,6 @@ export class PostService {
    * @param proposal : Proposal object
    */
   updateProposal(proposal: Proposal): Observable<ServerResponse> {
-    console.log('Updating full proposal');
     return this.http.put(`${this.proposalUrl}/${proposal.id}`, proposal, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
@@ -594,7 +617,13 @@ export class PostService {
     this.http.get(url).subscribe((response) => console.log(response));
   }
 
-  // In app functions
+  /**
+   * 
+   * IN APP FUNCTIONS
+   * 
+   * 
+   * 
+   */
 
   /**
    * Saves a draft in memory (no cache)
