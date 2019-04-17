@@ -1,0 +1,61 @@
+<div class="item-details">
+  <h2 class="item-details-title">{{ title || 'Article' }}</h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="item-details__content">
+    <h4 class="item-details-subtitle" *ngIf="subtitle">{{ subtitle }}</h4>
+    <p class="item-details__content__description">
+      {{ item.description }}
+    </p>
+    <div class="d-flex justify-content-center">
+      <a class="btn btn-success btn-icon justify-content-center" [href]="item.link.path" *ngIf="item.link?.path">
+        <mat-icon>shopping_cart</mat-icon> Acheter
+      </a>
+    </div>
+    <hr class="divider">
+    <div class="row">
+      <div class="col-6">
+        <div class="item-details__content__price item-details__content__cell">
+          <div class="cell-content">{{ item.price }} €</div>
+          <h4 class="item-details__content__price-title cell-title">
+            Prix estimé
+          </h4>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="item-details__content__weight item-details__content__cell">
+          <div class="cell-content">{{ item.weight }}</div>
+          <h4 class="item-details__content__weight-title cell-title">
+            Poids (kg)
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="item-details__content__size item-details__content__cell">
+          <mat-icon class="cell-content">{{ itemSize.icon }}</mat-icon>
+          <h4 class="item-details__content__size-title cell-title">
+            {{ itemSize.label }}
+          </h4>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="item-details__content__cabin item-details__content__cell">
+          <mat-icon class="cell-content">{{ item.cabinOnly ? 'work' : 'flight' }}</mat-icon>
+          <h4 class="item-details__content__cabin-title cell-title">
+            {{ item.cabinOnly ? 'En cabine' : 'En soute' }}
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <img class="item-details__picture" [src]="item.photo" [alt]="item.label">
+
+  </div>
+  <div class="item-details__actions mt-2">
+    <button class="btn btn-info" (click)="close()">Fermer</button>
+  </div>
+</div>

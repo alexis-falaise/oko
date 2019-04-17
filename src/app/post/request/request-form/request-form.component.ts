@@ -58,7 +58,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       explaination: [''],
       date: [null],
     }),
-    bonus: ['', Validators.required],
+    bonus: ['', Validators.compose([Validators.required, Validators.min(1)])],
   });
   bonusAgreed = false;
   requestId: string;

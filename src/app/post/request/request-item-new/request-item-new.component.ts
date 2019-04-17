@@ -107,8 +107,8 @@ export class RequestItemNewComponent implements OnInit {
   selectSize(index: number) {
     this.itemSizes.forEach((size, sizeIndex) => {
         size.selected = sizeIndex === index;
-        this.selectedSize = size.label;
         if (sizeIndex === index) {
+          this.selectedSize = size.label;
           this.item.patchValue({
             height: size.height,
             width: size.width,

@@ -76,19 +76,7 @@ export class RequestService {
         });
         if (response.status) {
           foundItem.next(true);
-          const itemInfo = response.data;
-          let label = itemInfo.label;
-          this.specialChars.forEach(char => {
-            label = label.split(char)[0];
-          });
-          const formattedPrice = itemInfo.price ? itemInfo.price.slice(4).split(',').join('.') : null;
-          const price = formattedPrice ? parseFloat(formattedPrice) : null;
-          const item = new Item({
-            price: price,
-            label: label,
-            description: itemInfo.label,
-            photo: itemInfo.photo,
-          });
+          const item = this.formatItemInfo(response.data);
           observer.next(item);
           observer.complete();
         } else {
@@ -140,5 +128,21 @@ export class RequestService {
 
   setCurrentCity(city: {city: string, country: string}) {
     this.currentCity = city;
+  }
+
+  private formatItemInfo(itemData: any): Item {
+    const itemInfo = itemData;
+    let label = itemInfo.label;
+    this.specialChars.forEach(char => {
+      label = label.split(char)[0];
+    });
+    const formattedPrice = itemInfo.price ? itemInfo.price.slice(4).split(',').join('.') : null;
+    const price = formattedPrice ? parseFloat(formattedPrice) : null;
+    return new Item({
+      price: price,
+      label: label,
+      description: itemInfo.label,
+      photo: itemInfo.photo,
+    });
   }
 }

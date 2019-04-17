@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Item } from '@models/item.model';
 import { ItemSize, itemSizeFit } from '@static/item-sizes.static';
+import { MatDialog } from '@angular/material';
+import { ItemDetailsComponent } from '@shared/item-details/item-details.component';
 
 @Component({
   selector: 'app-item',
@@ -9,6 +11,7 @@ import { ItemSize, itemSizeFit } from '@static/item-sizes.static';
 })
 export class ItemComponent implements OnInit, OnChanges {
   @Input() item: Item;
+  @Input() openable = false;
   @Input() removable = true;
   @Input() removePanel: boolean;
   @Input() creator = false;
@@ -17,7 +20,7 @@ export class ItemComponent implements OnInit, OnChanges {
   @Output() remove = new EventEmitter();
   itemSize: ItemSize;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.item) {
@@ -30,6 +33,16 @@ export class ItemComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+  }
+
+  openItem() {
+    if (this.openable) {
+      this.dialog.open(ItemDetailsComponent, {
+        data: this.item,
+        height: '75vh',
+        width: '80vw',
+      });
+    }
   }
 
   removeItem() {

@@ -39,6 +39,7 @@
       </div>
       <div class="request-form__item" *ngFor="let item of items; let i = index">
         <app-item [item]="item"
+                  [creator]="true"
                   (remove)="removeItem(i)"
                   (click)="editItem(item)">
         </app-item>
@@ -116,6 +117,7 @@
                   <div class="form-group col-10 col-md-7">
                     <input type="text" name="date" formControlName="date"
                             autocomplete="off"
+                            (click)="picker.open()"
                             [matDatepicker]="picker"
                             [min]="today"
                             [readonly]="true"
@@ -146,6 +148,7 @@
             </div>
           </div>
           <h5 class="form-title" *ngIf="meeting.controls.bonus.value">Prix total: {{ totalPrice }} €</h5>
+          <small class="text-danger" *ngIf="meeting.controls.bonus.value === 0">C'est un peu faible...</small>
           <small class="text-danger" *ngIf="meeting.controls.bonus.value && !this.itemsPrice">Vous n'avez pas saisi d'articles</small>
           <small class="text-muted" *ngIf="meeting.controls.bonus.value && this.itemsPrice">Frais de service inclus</small>
         </form>
@@ -153,6 +156,7 @@
       <div class="request-form__validation row">
         <button class="btn btn-success" [disabled]="
             (!items || items && !items.length)
+            || !meeting.controls.bonus.valid
             || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
             || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
           " (click)="saveRequest()">

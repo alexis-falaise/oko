@@ -1,0 +1,52 @@
+@import "../../../styles/classes.scss";
+@import "../../../styles/variables.scss";
+
+.item-details {
+    height: 100%;
+
+    &-title {
+        @extend .base-modal-title;
+    }
+
+    &__content {
+        height: 55vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        $cellContentSize: 48px;
+
+        &__cell {
+            height: 100px;
+            .mat-icon {
+                height: $cellContentSize;
+                width: $cellContentSize;
+            }
+            .material-icons {
+                font-size: $cellContentSize;
+                color: rgb(175, 175, 175);
+            }
+        }
+
+        .cell {
+            &-content {
+                font-size: $cellContentSize;
+                color: rgb(175, 175, 175);
+            }
+            &-title {
+                font-size: 18px;
+                color: rgb(75, 75, 75);
+            }
+        }
+    }
+
+    &__picture {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: thin solid rgb(235, 235, 235);
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+    }
+}

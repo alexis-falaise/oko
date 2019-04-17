@@ -33,6 +33,7 @@ const routes: Routes = [
     { path: 'trip/:id/edit', component: TripComponent },
     { path: 'trip/:id/item', redirectTo: 'trip/:id', pathMatch: 'full' },
     { path: 'trip/:id/item/new', redirectTo: 'trip/:id/order/item/new', pathMatch: 'full' },
+    { path: 'trip/:id/item/edit', redirectTo: 'trip/:id/order/item/edit', pathMatch: 'full' },
     { path: 'trip/:id/order/item', redirectTo: 'trip/:id/order', pathMatch: 'full' },
     { path: 'trip/:id/order/item/new', component: RequestItemNewComponent },
     { path: 'trip/:id/order/item/edit', component: RequestItemNewComponent },

@@ -27,6 +27,7 @@ import { RatingComponent } from './rating/rating.component';
 import { ProposalListComponent } from './proposal-list/proposal-list.component';
 import { SpaceIndicatorComponent } from './space-indicator/space-indicator.component';
 import { ProposalListItemComponent } from './proposal-list-item/proposal-list-item.component';
+import { ItemDetailsComponent } from './item-details/item-details.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ProposalListItemComponent } from './proposal-list-item/proposal-list-it
     ProposalListComponent,
     ProposalListItemComponent,
     SpaceIndicatorComponent,
+    ItemDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,9 @@ import { ProposalListItemComponent } from './proposal-list-item/proposal-list-it
     MatSnackBarModule,
     ScrollDispatchModule,
     RouterModule,
+  ],
+  entryComponents: [
+    ItemDetailsComponent,
   ],
   exports: [
     AvatarComponent,

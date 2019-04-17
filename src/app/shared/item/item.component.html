@@ -1,4 +1,6 @@
-<mat-card class="item" matRipple [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'"
+<mat-card class="item" matRipple
+          (click)="openItem()"
+          [style.touchAction]="removable ? 'pan-y' : 'pan-x pan-y'"
           [class.full-width]="fullWidth"
           [class.constantHeight]="constantHeight"
           (swipeLeft)="removePanel = true" (swipeRight)="removePanel = false" class="item">
