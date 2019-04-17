@@ -4,7 +4,7 @@
   </div>
   <div class="request-item-new__content container">
     <form class="request-item-new__content__form" [formGroup]="item">
-      <mat-vertical-stepper [linear]="!edition" #stepper>
+      <mat-vertical-stepper [linear]="!edition && !ecommerceFound" #stepper>
           <mat-step [stepControl]="item.controls.price">
             <ng-template matStepLabel>Références</ng-template>
             <h4 class="request-item-new__content__form-title">

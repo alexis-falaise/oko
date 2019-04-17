@@ -6,23 +6,19 @@
     [class.accepted]="proposal.accepted && !proposal.closed"
     [class.refused]="proposal.refused && !proposal.closed">
     <div class="row w-100 h-100 ml-0">
-        <div class="col-3 d-flex flex-column align-items-center justify-content-center proposal-list-item__author"
-             *ngIf="!own">
-            <app-avatar class="proposal-list-item__avatar" *ngIf="proposal.author?.avatar; else iconAvatar"
-            [image]="proposal.author?.avatar" [size]="50"></app-avatar>
+        <div class="col-3 d-flex flex-column align-items-center justify-content-center proposal-list-item__author">
+            <app-avatar class="proposal-list-item__avatar"
+            *ngIf="(!own && proposal.author?.avatar) || (own && proposal.receiver?.avatar); else iconAvatar"
+            [image]="own ? proposal.receiver.avatar : proposal.author.avatar" [size]="50"></app-avatar>
             <ng-template #iconAvatar>
                 <mat-icon>account_circle</mat-icon>
             </ng-template>
-            <h6>{{ proposal.author?.firstname }}</h6>
+            <h6>{{ own ? proposal.receiver?.firstname : proposal.author?.firstname }}</h6>
         </div>
-        <div [ngClass]="{
-                'col-7 col-sm-8 col-md-9': own,
-                'col-4 col-sm-5 col-md-6': !own,
-                'd-flex
+        <div class="col-4 col-sm-5 col-md-6 d-flex
                 flex-column align-items-start justify-content-center
                 flex-md-row align-items-md-center justify-content-md-between
-                proposal-list-item__trip': true
-            }" 
+                proposal-list-item__trip" 
              *ngIf="aboutTrip; else requestDescription">
             <div class="flight-start"><mat-icon>flight_takeoff</mat-icon> {{ proposal.from?.from?.label }}</div>
             <div class="flight-end"><mat-icon>flight_land</mat-icon> {{ proposal.from?.to?.label }}</div>
@@ -57,13 +53,9 @@
 </div>
 
 <ng-template #requestDescription>
-    <div [ngClass]="{
-            'col-7 col-sm-8 col-md-9': own,
-            'col-4 col-sm-5 col-md-6': !own,
-            'd-flex
-            flex-column align-items-start justify-content-center
-            proposal-list-item__trip': true
-        }">
+    <div class="col-4 col-sm-5 col-md-6 d-flex
+                flex-column align-items-start justify-content-center
+                proposal-list-item__trip">
         <small *ngFor="let item of proposal?.from?.items; let i = index">
             {{ item.label }}
         </small>

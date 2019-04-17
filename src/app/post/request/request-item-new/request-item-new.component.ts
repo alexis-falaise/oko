@@ -34,6 +34,7 @@ export class RequestItemNewComponent implements OnInit {
   itemSizes = itemSizes.filter(size => size.visible);
   selectedSize: string;
   isNotEcommerce: boolean;
+  ecommerceFound: boolean;
   edition: boolean;
 
   constructor(
@@ -61,12 +62,14 @@ export class RequestItemNewComponent implements OnInit {
 
   getItemInfo() {
     const pastedUrl = this.item.controls.link.value;
+    this.ecommerceFound = false;
     if (validUrl(pastedUrl)) {
       this.uiService.setLoading(true);
       this.requestService.getItemInfo(pastedUrl)
       .subscribe(item => {
         this.uiService.setLoading(false);
         if (item) {
+          this.ecommerceFound = true;
           this.snack.open('Article trouvé', 'Génial', {duration: 3000});
           this.item.patchValue(item);
         }

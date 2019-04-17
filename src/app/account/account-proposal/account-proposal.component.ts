@@ -10,7 +10,14 @@ import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
+import { ActivatedRoute } from '@angular/router';
 
+
+class ProposalNotification {
+  type: 'create' | 'meeting' | 'bonus' | 'accept' | 'refuse' | 'close' | 'validate' | 'pay';
+  author: string;
+  proposalId: string;
+}
 @Component({
   selector: 'app-account-proposal',
   templateUrl: './account-proposal.component.html',
@@ -25,6 +32,7 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
   sentAboutRequest: Array<Proposal> = [];
   toDeliver: Array<Proposal> = [];
   toReceive: Array<Proposal> = [];
+  proposals: Array<Proposal> = [];
   fetchedProposals = new Subject();
   moment = moment;
 
@@ -33,26 +41,26 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
     private uiService: UiService,
     private userService: UserService,
     private socket: Socket,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.uiService.setLoading(true);
-    this.userService.getCurrentUser()
-    .subscribe((user: User) => {
-      if (user) {
+    this.route.data.subscribe((resolverData) => {
+      console.log('Resolved', resolverData);
+      const data = resolverData.data;
+      if (data.user) {
         if (this.currentUser) {
           this.removeProposalListeners();
         }
-        this.currentUser = user;
+        this.currentUser = data.user;
+        this.proposals = data.proposals;
         this.initLists();
-        this.fetchLists(user);
-        this.setProposalListeners(user);
+        this.filterLists(data.proposals);
+        this.setProposalListeners(data.user);
       } else {
         this.uiService.setLoading(false);
       }
-    }, (error) => {
-      this.uiService.serverError(error);
-      this.uiService.setLoading(false);
     });
   }
 
@@ -67,37 +75,48 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
     });
   }
 
-  private fetchLists(user: User) {
+  private filterLists(proposals: Array<Proposal>) {
+    const user = this.currentUser;
     this.uiService.setLoading(true);
-    forkJoin([
-      this.postService.getReceivedProposalsByReceiver(user)
-      .pipe(catchError((err, caught) => caught)),
-      this.postService.getAllSentProposalsByAuthor(user)
-      .pipe(catchError((err, caught) => caught))
-    ])
-    .pipe(takeUntil(this.fetchedProposals))
-    .subscribe(proposals => {
-      this.fetchedProposals.next(true);
-      this.receivedFromTrip = proposals[0].filter(this.filterFromTrip).sort(this.sortByDate) || [];
-      this.receivedFromRequest = proposals[0].filter(this.filterFromRequest).sort(this.sortByDate) || [];
-      this.sentAboutTrip = proposals[1].filter(this.filterFromTrip).sort(this.sortByDate) || [];
-      this.sentAboutRequest = proposals[1].filter(this.filterFromRequest).sort(this.sortByDate) || [];
-      const paidProposals = proposals[0].concat(proposals[1]).filter(proposal => proposal.paid && !proposal.validated);
-      /**
-       * Proposals to deliver are whether trip proposed by user or request received about a user's trip
-       */
-      this.toDeliver = paidProposals.filter(proposal => {
-        return (proposal.isAuthor(user) && proposal.fromTrip) || (!proposal.isAuthor(user) && proposal.fromRequest);
-      });
-      /**
-       * Proposals to receive are whether requests made by user on a trip or trips received for a request
-       */
-      this.toReceive = paidProposals.filter(proposal => {
-        return (proposal.isAuthor(user) && proposal.fromRequest) || (!proposal.isAuthor(user) && proposal.fromTrip);
-      });
-      this.uiService.setLoading(false);
-    }, (error) => {
-      this.uiService.serverError(error);
+    this.fetchedProposals.next(true);
+    const received = proposals.filter(proposal => !proposal.isAuthor(user));
+    const sent = proposals.filter(proposal => proposal.isAuthor(user));
+    this.receivedFromTrip = received.filter(this.filterFromTrip).sort(this.sortByDate) || [];
+    this.receivedFromRequest = received.filter(this.filterFromRequest).sort(this.sortByDate) || [];
+    this.sentAboutTrip = sent.filter(this.filterFromTrip).sort(this.sortByDate) || [];
+    this.sentAboutRequest = sent.filter(this.filterFromRequest).sort(this.sortByDate) || [];
+    const paidProposals = proposals.filter(proposal => proposal.paid && !proposal.validated);
+    /**
+     * Proposals to deliver are whether trips proposed by user or requests received about a user's trip
+     */
+    this.toDeliver = paidProposals.filter(proposal => {
+      return (proposal.isAuthor(user) && proposal.fromTrip) || (!proposal.isAuthor(user) && proposal.fromRequest);
+    });
+    /**
+     * Proposals to receive are whether requests made by user on a trip or trips received for a request
+     */
+    this.toReceive = paidProposals.filter(proposal => {
+      return (proposal.isAuthor(user) && proposal.fromRequest) || (!proposal.isAuthor(user) && proposal.fromTrip);
+    });
+    this.uiService.setLoading(false);
+  }
+
+  private refreshProposals(notification: ProposalNotification) {
+    this.postService.getProposalById(notification.proposalId)
+    .subscribe((proposal) => {
+      if (proposal) {
+        this.postService.getAllProposalSubPosts(proposal)
+        .subscribe((completeProposal) => {
+          const formattedProposal = new Proposal(completeProposal);
+          if (notification.type === 'create') {
+            this.proposals.push(formattedProposal);
+          } else {
+            const proposalIndex = this.proposals.findIndex(searchedProposal => searchedProposal.id === notification.proposalId);
+            this.proposals[proposalIndex] = formattedProposal;
+          }
+          this.filterLists(this.proposals);
+        });
+      }
     });
   }
 
@@ -121,8 +140,8 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
   }
 
   private setProposalListeners(user: User) {
-    this.socket.on(`proposal/${user.id}`, () => {
-      this.fetchLists(user);
+    this.socket.on(`proposal/${user.id}`, (notification: ProposalNotification) => {
+      this.refreshProposals(notification);
     });
   }
 

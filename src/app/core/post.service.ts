@@ -223,7 +223,7 @@ export class PostService {
    * Get a proposal by id
    * @param id : proposal unique identifier
    */
-  getProposalById(id: number): Observable<Proposal> {
+  getProposalById(id: string): Observable<Proposal> {
     return this.http.get(`${this.proposalUrl}/${id}`, {withCredentials: true}) as Observable<Proposal>;
   }
 

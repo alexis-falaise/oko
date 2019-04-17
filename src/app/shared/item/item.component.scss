@@ -9,6 +9,9 @@
         height: 300px;
         overflow-y: scroll;
         overflow-x: hidden;
+        .item__image-wrapper {
+            max-height: 125px !important;
+        }
     }
     &.full-width {
         width: 100%;
@@ -49,7 +52,7 @@
         }
 
         &-wrapper {
-            max-height: 125px;
+            max-height: 250px;
             display: flex;
             flex-direction: row;
             align-items: center;

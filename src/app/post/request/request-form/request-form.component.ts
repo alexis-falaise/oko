@@ -163,7 +163,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     if (this.currentUser) {
       const dialogRef = this.dialog.open(RequestItemSelectionComponent, {
         height: '500px',
-        width: '75vw',
+        width: '85vw',
         data: this.currentUser,
       });
       dialogRef.afterClosed().subscribe(selection => {
@@ -199,6 +199,13 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   getItemFromMerchant(url: string) {
     this.postService.getItemFromMerchant(url);
+  }
+
+  setHomeCity() {
+    const user = this.currentUser;
+    if (user && user.address.city && user.address.country) {
+      this.meeting.controls.city.patchValue({city: user.address.city, country: user.address.country});
+    }
   }
 
   homeDelivery() {

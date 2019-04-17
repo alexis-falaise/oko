@@ -19,7 +19,7 @@ export class RequestService {
   computedTotalPrice = new BehaviorSubject<number>(null);
   currentItem = new BehaviorSubject<Item>(null);
   private itemUrl = `${environment.serverUrl}/item`;
-
+  private specialChars = ['-', '/', ',', '('];
   constructor(
     private http: HttpClient,
   ) { }
@@ -65,7 +65,10 @@ export class RequestService {
       .subscribe((response: ServerResponse) => {
         if (response.status) {
           const itemInfo = response.data;
-          const label = itemInfo.label.split('-')[0].split(',')[0];
+          let label = itemInfo.label;
+          this.specialChars.forEach(char => {
+            label = label.split(char)[0];
+          });
           const price = parseInt(itemInfo.price.slice(4), 10);
           const item = new Item({
             price: price,

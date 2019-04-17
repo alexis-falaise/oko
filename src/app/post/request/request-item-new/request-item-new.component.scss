@@ -8,6 +8,7 @@
     
     &__hero {
         @extend .base-hero;
+        animation: appear $animationDuration;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -16,7 +17,7 @@
     }
 
     &__content {
-        animation: appear $animationDuration;
+        animation: slideInRight $animationDuration;
         position: relative;
         top: -25px;
         border-radius: 3px;

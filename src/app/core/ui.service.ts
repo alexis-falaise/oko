@@ -63,6 +63,13 @@ export class UiService {
     return randomWelcomes[rand];
   }
 
+  connectionSnack() {
+    const snackRef = this.snack.open('Connectez-vous !', 'Connexion', {duration: 3000});
+    snackRef.onAction().subscribe(() => {
+      this.router.navigate(['/oneclick']);
+    });
+  }
+
   serverError(error: HttpErrorResponse | ServerResponse, customMessage?: string) {
     console.log('Server Error', error);
     this.setLoading(false);

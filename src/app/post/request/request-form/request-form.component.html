@@ -2,8 +2,14 @@
   <div class="request-form__city" *ngIf="!meeting.controls.city.value && !edition">
     <div class="form-group">
       <input type="text" class="form-control"
+             autocomplete="off"
              placeholder="Votre ville"
              name="cityFetch" #cityFetch (keyup)="fetchCities(cityFetch.value)">
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+      <button class="btn btn-info" (click)="setHomeCity()" *ngIf="currentUser">
+        Utiliser mon adresse
+      </button>
     </div>
     <div [ngClass]="{
       'request-form__city-results': true,
