@@ -47,7 +47,6 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.uiService.setLoading(true);
     this.route.data.subscribe((resolverData) => {
-      console.log('Resolved', resolverData);
       const data = resolverData.data;
       if (data.user) {
         if (this.currentUser) {

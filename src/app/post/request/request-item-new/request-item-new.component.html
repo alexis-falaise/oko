@@ -1,6 +1,8 @@
 <div class="request-item-new container-fluid">
   <div class="request-item-new__hero row">
-    <h2>{{ item.controls.label.value || 'Nouvel article' }}</h2>
+    <h2 [class.long]="item.controls.label.value && item.controls.label.value.length > 15">
+      {{ item.controls.label.value || 'Nouvel article' }}
+    </h2>
   </div>
   <div class="request-item-new__content container">
     <form class="request-item-new__content__form" [formGroup]="item">
@@ -10,16 +12,27 @@
             <h4 class="request-item-new__content__form-title">
               {{ isNotEcommerce ? 'Prix estimé' : 'Lien E-commerce' }}
             </h4>
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-success btn-icon justify-content-center" href="http://www.amazon.fr" target="_blank">
+                  <mat-icon>shopping_cart</mat-icon> Amazon
+                </a>
+            </div>
             <small class="text-muted" *ngIf="!isNotEcommerce">
                 Pour plus de précision, indiquez un lien e-commerce référencant votre article (facultatif)
             </small>
             <div class="form-group" *ngIf="!isNotEcommerce">
-              <input type="text" class="form-control"
-                     #itemLink
-                     formControlName="link"
-                     (paste)="getItemInfo(itemLink.value)"
-                     (keyup.enter)="next(true)"
-                     placeholder="Lien e-commerce">
+              <div class="input-group">
+                <input type="text" class="form-control"
+                        #itemLink
+                        formControlName="link"
+                        (keyup.enter)="next(true)"
+                        placeholder="Lien e-commerce">
+                <div class="input-group-append" (click)="itemLink.value = ''" *ngIf="itemLink.value">
+                  <span class="input-group-text">
+                    <mat-icon>clear</mat-icon>
+                  </span>
+                </div>
+              </div>
             </div>
             <div *ngIf="!item.controls.link.value">
               <small class="text-muted">
@@ -49,6 +62,9 @@
                        placeholder="Nom de l'article"
                        (keyup.enter)="next(!!item.controls.label.value.length)" required>
             </div>
+            <small class="text-muted" *ngIf="item.controls.label.value?.length > 50">
+              Le nom semble peut être un peu long, pourquoi ne pas en dire plus en description ?
+            </small>
             <div class="form-group">
               <textarea rows="7" class="form-control" formControlName="description"
                         (keyup.enter)="next(!!item.controls.label.value.length)"
@@ -133,13 +149,16 @@
                 <small class="text-muted" matLine>Poids</small>
               </mat-list-item>
             </mat-list>
-            <button class="btn btn-success"
-                    [disabled]="
-                      !item.controls.price.value
-                      || !item.controls.weight.value
-                      || !item.controls.label.value
-                    "
-                    (click)="save()">Enregistrer</button>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-success"
+                        [disabled]="
+                          !item.controls.price.value
+                          || !item.controls.weight.value
+                          || !item.controls.label.value
+                        " (click)="save()">
+                    Enregistrer
+                </button>
+            </div>
           </mat-step>
       </mat-vertical-stepper>
     </form>

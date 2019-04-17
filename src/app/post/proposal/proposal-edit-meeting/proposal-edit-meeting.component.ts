@@ -46,7 +46,6 @@ export class ProposalEditMeetingComponent implements OnInit {
     this.postService.updateProposal(this.proposal)
     .subscribe((response) => {
       if (response.status) {
-        console.log('Updated meeting', response.data);
         this.snack.open('La proposition a bien été modifiée', 'Top', {duration: 3000});
         this.dialogRef.close(response.data);
       }

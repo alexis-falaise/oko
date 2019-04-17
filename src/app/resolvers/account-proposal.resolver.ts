@@ -23,9 +23,9 @@ export class AccountProposalResolver implements Resolve<{user: User, proposals: 
                 if (user) {
                     forkJoin([
                         this.postService.getReceivedProposalsByReceiver(user)
-                        .pipe(catchError(caught => of(caught))),
+                        .pipe(catchError((err, caught) => caught)),
                         this.postService.getAllSentProposalsByAuthor(user)
-                        .pipe(catchError(caught => of(caught))),
+                        .pipe(catchError((err, caught) => caught)),
                     ]).subscribe((proposals) => {
                         const outputProposals = proposals[0].concat(proposals[1]).map(proposal => new Proposal(proposal));
                         if (proposals) {

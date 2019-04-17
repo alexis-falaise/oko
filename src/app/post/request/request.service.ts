@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, timer, Subject } from 'rxjs';
 
 import { environment } from '@env/environment';
 
@@ -8,6 +8,8 @@ import { objectMatch } from '@utils/object.util';
 
 import { Item } from '@models/item.model';
 import { ServerResponse } from '@models/app/server-response.model';
+import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +21,10 @@ export class RequestService {
   computedTotalPrice = new BehaviorSubject<number>(null);
   currentItem = new BehaviorSubject<Item>(null);
   private itemUrl = `${environment.serverUrl}/item`;
-  private specialChars = ['-', '/', ',', '('];
+  private specialChars = ['-', '/', ',', '(', ':', '.'];
   constructor(
     private http: HttpClient,
+    private snack: MatSnackBar,
   ) { }
 
   onStoredItems() {
@@ -60,16 +63,25 @@ export class RequestService {
   }
 
   getItemInfo(url: string): Observable<Item> {
+    const timeout = timer(7500);
+    const foundItem = new Subject();
     return Observable.create(observer => {
       this.http.get(`${this.itemUrl}/scrap?url=${url}`, { withCredentials: true})
+      .pipe(takeUntil(timeout))
       .subscribe((response: ServerResponse) => {
+        timeout.pipe(takeUntil(foundItem)).subscribe(() => {
+          this.snack.open('Votre article n\'a pas été trouvé. Complétez le formulaire', 'Ca marche', {duration: 5000});
+          observer.complete();
+        });
         if (response.status) {
+          foundItem.next(true);
           const itemInfo = response.data;
           let label = itemInfo.label;
           this.specialChars.forEach(char => {
             label = label.split(char)[0];
           });
-          const price = parseInt(itemInfo.price.slice(4), 10);
+          const formattedPrice = itemInfo.price ? itemInfo.price.slice(4).split(',').join('.') : null;
+          const price = formattedPrice ? parseFloat(formattedPrice) : null;
           const item = new Item({
             price: price,
             label: label,

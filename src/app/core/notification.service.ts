@@ -64,7 +64,6 @@ export class NotificationService {
 
   private setProposalListeners() {
     this.socket.on(`proposal/${this.currentUser.id}`, (info) => {
-      console.log('Proposition', info);
       let proposalAction;
       switch (info.type) {
         case 'create':

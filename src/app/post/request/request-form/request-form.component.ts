@@ -203,8 +203,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   setHomeCity() {
     const user = this.currentUser;
-    if (user && user.address.city && user.address.country) {
+    if (user && user.address && user.address.city && user.address.country) {
       this.meeting.controls.city.patchValue({city: user.address.city, country: user.address.country});
+    } else {
+      this.noAddress();
     }
   }
 
@@ -215,12 +217,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         if (this.currentUser.address && objectIsComplete(this.currentUser.address)) {
           this.meeting.controls.meetingPoint.patchValue(this.currentUser.address);
         } else {
-          const snack = this.snack.open('Vous n\'avez pas indiqué d\'adresse dans votre profil', 'Ajouter', {duration: 5000});
-          snack.onAction().subscribe(() => {
-            const draft = this.createSaveRequest();
-            this.saveDraft(draft);
-            this.router.navigate(['/account/info']);
-          });
+          this.noAddress();
         }
       }
     } else {
@@ -384,6 +381,15 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   private requestServerError(message: string, code: string) {
     const snackRef = this.snack.open(`Un problème a eu lieu. (${message} - ${code})`, 'Réessayer', {duration: 5000});
     snackRef.onAction().subscribe(() => this.saveRequest());
+  }
+
+  private noAddress() {
+    const snack = this.snack.open('Vous n\'avez pas indiqué d\'adresse dans votre profil', 'Ajouter', {duration: 5000});
+    snack.onAction().subscribe(() => {
+      const draft = this.createSaveRequest();
+      this.saveDraft(draft);
+      this.router.navigate(['/account/info']);
+    });
   }
 
   ngOnDestroy() {

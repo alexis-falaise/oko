@@ -268,11 +268,19 @@ export class PostService {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/author/${author.id}`, {withCredentials: true})
       .subscribe((proposals: Array<any>) => {
-        forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
-        .subscribe((outputProposals: Array<Proposal>) => {
-          observer.next(outputProposals);
+        if (proposals && proposals.length) {
+          forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
+          .subscribe((outputProposals: Array<Proposal>) => {
+            observer.next(outputProposals);
+            observer.complete();
+          }, (error) => {
+            observer.next([]);
+            observer.complete();
+          });
+        } else {
+          observer.next([]);
           observer.complete();
-        });
+        }
       }, (err) => {
         observer.next([]);
         observer.complete();
@@ -321,13 +329,21 @@ export class PostService {
     return Observable.create(observer => {
       this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true})
       .subscribe((proposals: Array<Proposal>) => {
-        forkJoin(proposals.map(proposal => {
-          return this.getAllProposalSubPosts(proposal).pipe(catchError((err, caught) => of(caught)));
-        }))
-        .subscribe((outputProposals: Array<Proposal>) => {
-          observer.next(outputProposals);
+        if (proposals && proposals.length) {
+          forkJoin(proposals.map(proposal => {
+            return this.getAllProposalSubPosts(proposal);
+          }))
+          .subscribe((outputProposals: Array<Proposal>) => {
+            observer.next(outputProposals);
+            observer.complete();
+          }, () => {
+            observer.next([]);
+            observer.complete();
+          });
+        } else {
+          observer.next([]);
           observer.complete();
-        });
+        }
       }, () => {
         observer.next([]);
         observer.complete();
@@ -401,18 +417,20 @@ export class PostService {
         const outputProposal = new Proposal(proposal);
         observer.next(outputProposal);
         observer.complete();
-      }, (error) => console.log('error', error));
+      }, (error) => {
+        observer.next([]);
+        observer.complete();
+      });
     });
   }
 
-  /**
-   * 
+  /************************************************************
+   *
+   *
    * CREATORS
-   * 
-   * 
-   * 
-   * 
-   */
+   *
+   *
+   ************************************************************/
 
   createPost(post: Post | Array<Post>): Observable<ServerResponse> {
     return this.http.post(this.postUrl, post, {withCredentials: true}) as Observable<ServerResponse>;
@@ -490,14 +508,13 @@ export class PostService {
     });
   }
 
-  /**
-   * 
+  /************************************************************
+   *
+   *
    * MODIFIERS
-   * 
-   * 
-   * 
-   * 
-   */
+   *
+   *
+   ************************************************************/
 
   updatePost(post: Post): Observable<ServerResponse> {
     return this.http.put(`${this.postUrl}/${post.id}`, post, {withCredentials: true}) as Observable<ServerResponse>;
@@ -521,14 +538,13 @@ export class PostService {
     return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  /**
-   * 
+  /************************************************************
+   *
+   *
    * PROPOSAL MANAGEMENT
-   * 
-   * 
-   * 
-   * 
-   */
+   * User management of proposals
+   *
+   ************************************************************/
 
   /**
    * Accept a proposal
@@ -587,7 +603,13 @@ export class PostService {
     return this.http.put(`${this.proposalUrl}/${proposal.id}`, proposal, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  // Deleters
+  /************************************************************
+   *
+   *
+   * DELETERS
+   *
+   *
+   ************************************************************/
 
   /**
    * Removes a post
@@ -617,13 +639,13 @@ export class PostService {
     this.http.get(url).subscribe((response) => console.log(response));
   }
 
-  /**
-   * 
+  /************************************************************
+   *
+   *
    * IN APP FUNCTIONS
-   * 
-   * 
-   * 
-   */
+   * Functions used for front-end only, not communicating with the server
+   *
+   ************************************************************/
 
   /**
    * Saves a draft in memory (no cache)
@@ -698,6 +720,20 @@ export class PostService {
     this.currentRequestFilter = new Filter();
   }
 
+  /************************************************************
+   *
+   *
+   * INFORMATION COMPLETERS
+   *
+   *
+   ************************************************************/
+
+   /**
+    * Get stats on the creators of every trip of a given list of trips
+    * To be used inside an Observable
+    * @param trips : trip list
+    * @param observer : Observables's observer
+    */
   private getTripsUserStats(trips: Array<Trip>, observer: Observer<Array<Trip>>) {
     if (trips && !trips.length) {
       observer.next([]);
@@ -712,6 +748,11 @@ export class PostService {
     }
   }
 
+  /**
+   * Get stats on the creator of a trip
+   * @param trip : trip
+   * @param observer : Observable's observer
+   */
   private getTripUserStats(trip: Trip, observer: Observer<Trip>) {
       if (trip.user && trip.user.id) {
         this.userService.getUserStatsById(trip.user.id)
@@ -731,6 +772,11 @@ export class PostService {
       }
   }
 
+  /**
+   * Get stats on the creators of every request of a list of requests
+   * @param requests : request list
+   * @param observer : Observable's observer
+   */
   private getRequestsUserStats(requests: Array<Request>, observer: Observer<Array<Request>>) {
     if (requests && !requests.length) {
       observer.next([]);
@@ -752,6 +798,11 @@ export class PostService {
     }
   }
 
+  /**
+   * Get stats on the creator of a request
+   * @param request : request
+   * @param observer : Observable's observer
+   */
   private getRequestUserStats(request: Request, observer: Observer<Request>) {
     if (request.user && request.user.id) {
       this.userService.getUserStatsById(request.user.id)
@@ -766,6 +817,15 @@ export class PostService {
     }
   }
 
+  /**
+   * See getProposalSubPost
+   * Helper to extend getProposalSubPost function to proposal lists
+   * To be used in an Observable
+   * @param post : currently viewed post
+   * @param proposals : proposals list (set as any to allow uncomplete proposals)
+   * @param observer : Observable's observer
+   * @param postIsReceiver : Boolean to indicate if currently view post is the receiver of the proposals
+   */
   private getProposalsSubPosts(post: Trip | Request, proposals: Array<any>, observer: Observer<Array<Proposal>>, postIsReceiver: boolean) {
     if (proposals && proposals.length) {
       forkJoin(proposals.map(proposal => Observable.create(postObserver => {

@@ -43,10 +43,8 @@ export class AccountComponent implements OnInit {
         this.postService.getUnseenProposalsByReceiver(user)
         .subscribe((proposals: Array<Proposal>) => {
           if (proposals) {
-            console.log('Unseen proposals - component', proposals.length);
             const proposalCategoryIndex = this.categories.findIndex(category => category.label === 'Propositions');
             this.categories[proposalCategoryIndex].badge = proposals.length;
-            console.log('Categories', this.categories);
           }
         });
       } else {

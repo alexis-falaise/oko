@@ -17,7 +17,6 @@ export class LogoutComponent implements OnInit {
 
   ngOnInit() {
     const socialAuthenticated = this.authService.isSocialAuthenticated();
-    console.log('Is social authenticated', socialAuthenticated);
     if (socialAuthenticated) {
       this.authService.socialDisconnection().subscribe(disconnected => {
         if (disconnected) {
