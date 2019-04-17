@@ -42,7 +42,9 @@
                 Non reférencé
               </mat-slide-toggle><br><br>
             </div>
-            <small class="text-muted">Indiquez le prix estimé de votre article</small>
+            <small class="text-muted" *ngIf="!item.controls.link.value">
+              Indiquez le prix estimé de votre article
+            </small>
             <div class="form-group mt-1">
               <div class="input-group">
                 <input type="number" min="0" class="form-control" formControlName="price"
@@ -123,30 +125,38 @@
           </mat-step>
           <mat-step>
             <ng-template matStepLabel>Validation</ng-template>
-            <mat-list class="mb-2" dense>
+            <mat-list class="mb-2">
               <mat-list-item *ngIf="item.controls.label.value; else labelError">
-                <h3 matLine>{{ item.controls.label.value }}</h3>
-                <small class="text-muted" matLine>Nom de l'article</small>
+                <mat-icon mat-list-icon>book</mat-icon>
+                <h3 mat-line>{{ item.controls.label.value }}</h3>
+                <small class="text-muted" mat-line>Nom de l'article</small>
               </mat-list-item>
               <mat-list-item *ngIf="item.controls.description.value">
-                <p matLine>{{ item.controls.description.value }}</p>
-                <small class="text-muted" matLine>Description</small>
+                <mat-icon mat-list-icon>description</mat-icon>
+                <p mat-line>{{ item.controls.description.value }}</p>
+                <small class="text-muted" mat-line>Description</small>
               </mat-list-item>
               <mat-list-item *ngIf="item.controls.price.value; else priceError">
-                <h3 matLine>{{ item.controls.price.value }} €</h3>
-                <small class="text-muted" matLine>Prix</small>
+                <mat-icon mat-list-icon>euro_symbol</mat-icon>
+                <h3 mat-line>{{ item.controls.price.value }} €</h3>
+                <small class="text-muted" mat-line>Prix</small>
               </mat-list-item>
               <mat-list-item>
-                <h3 matLine>{{ selectedSize }}</h3>
-                <small class="text-muted" matLine>Taille</small> 
+                <mat-icon mat-list-icon>swap_horiz</mat-icon>
+                <h3 mat-line>{{ selectedSize }}</h3>
+                <small class="text-muted" mat-line>Taille</small> 
               </mat-list-item>
               <mat-list-item>
-                <h3 matLine>{{ item.controls.cabinOnly.value ? 'En cabine' : 'En soute' }}</h3>
-                <small class="text-muted" matLine>Embarquement</small>
+                <mat-icon mat-list-icon>
+                 {{ item.controls.cabinOnly.value ? 'work' : 'flight' }} 
+                </mat-icon>
+                <h3 mat-line>{{ item.controls.cabinOnly.value ? 'En cabine' : 'En soute' }}</h3>
+                <small class="text-muted" mat-line>Embarquement</small>
               </mat-list-item>
               <mat-list-item *ngIf="item.controls.weight.value; else weightError">
-                <h3 matLine>{{ item.controls.weight.value }} kg</h3>
-                <small class="text-muted" matLine>Poids</small>
+                <mat-icon mat-list-icon>shopping_basket</mat-icon>
+                <h3 mat-line>{{ item.controls.weight.value }} kg</h3>
+                <small class="text-muted" mat-line>Poids</small>
               </mat-list-item>
             </mat-list>
             <div class="d-flex justify-content-center">

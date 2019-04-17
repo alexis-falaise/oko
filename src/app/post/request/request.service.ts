@@ -20,6 +20,7 @@ export class RequestService {
   computedBonus = new BehaviorSubject<number>(null);
   computedTotalPrice = new BehaviorSubject<number>(null);
   currentItem = new BehaviorSubject<Item>(null);
+  currentCity: {city: string, country: string};
   private itemUrl = `${environment.serverUrl}/item`;
   private specialChars = ['-', '/', ',', '(', ':', '.'];
   constructor(
@@ -135,5 +136,9 @@ export class RequestService {
 
   setTotalPrice(price: number) {
     this.computedTotalPrice.next(price);
+  }
+
+  setCurrentCity(city: {city: string, country: string}) {
+    this.currentCity = city;
   }
 }

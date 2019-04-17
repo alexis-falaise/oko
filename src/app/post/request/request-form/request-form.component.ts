@@ -89,7 +89,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (changes.trip) {
       const trip: Trip = changes.trip.currentValue;
-      this.meeting.controls.city.patchValue({
+      this.setCity({
         city: trip.to.airport.city,
         country: trip.to.airport.country,
       });
@@ -101,6 +101,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // Initialisation
     this.userService.getCurrentUser().subscribe(user => this.currentUser = user);
+    const savedCity = this.requestService.currentCity;
+    if (savedCity) {
+      this.setCity(savedCity);
+    }
     this.checkDraft();
 
     // Manage stored items
@@ -142,6 +146,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   setCity(city: {city: string, country: string}) {
     this.meeting.controls.city.patchValue(city);
+    if (!this.requestService.currentCity) {
+      this.requestService.setCurrentCity(city);
+    }
   }
 
   checkDraft() {
@@ -204,7 +211,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   setHomeCity() {
     const user = this.currentUser;
     if (user && user.address && user.address.city && user.address.country) {
-      this.meeting.controls.city.patchValue({city: user.address.city, country: user.address.country});
+      this.setCity({city: user.address.city, country: user.address.country});
     } else {
       this.noAddress();
     }
@@ -234,7 +241,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   setEditableRequest(request: Request) {
     this.meeting.patchValue(request);
     if (request.meetingPoint && request.meetingPoint.city && request.meetingPoint.country) {
-      this.meeting.controls.city.patchValue({
+      this.setCity({
         city: request.meetingPoint.city,
         country: request.meetingPoint.country
       });
