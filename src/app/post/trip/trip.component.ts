@@ -235,9 +235,10 @@ export class TripComponent implements OnInit, OnDestroy {
       this.postService.createTripForRequest(proposal)
       .subscribe(response => {
         this.uiService.setLoading(false);
+        const createdProposal = new Proposal(response.data);
         if (response.status) {
           this.snack.open('Voyage proposé !', 'Parfait!', {duration: 2000});
-          this.router.navigate([`/post/request/${this.proposeTo}`]);
+          this.router.navigate([`/post/proposal/${createdProposal.id}`]);
         } else {
           this.serverError(response);
         }

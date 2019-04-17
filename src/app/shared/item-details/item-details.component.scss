@@ -12,10 +12,14 @@
         height: 55vh;
         overflow-y: scroll;
         overflow-x: hidden;
-        $cellContentSize: 48px;
+        $cellContentSize: 6vh;
 
         &__cell {
-            height: 100px;
+            height: 125px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             .mat-icon {
                 height: $cellContentSize;
                 width: $cellContentSize;
@@ -32,7 +36,7 @@
                 color: rgb(175, 175, 175);
             }
             &-title {
-                font-size: 18px;
+                font-size: 16px;
                 color: rgb(75, 75, 75);
             }
         }
@@ -40,6 +44,7 @@
 
     &__picture {
         width: 100%;
+        height: 100%;
         padding: 10px;
         border-radius: 5px;
         border: thin solid rgb(235, 235, 235);

@@ -110,6 +110,13 @@ export class RequestService {
     this.storedItems.next(storedItems);
   }
 
+  setStoredItems(items: Array<Item>) {
+    const storedItems = this.storedItems.getValue();
+    if (storedItems && !storedItems.length) {
+      this.storedItems.next(items);
+    }
+  }
+
   resetStoredItems() {
     this.storedItems.next(null);
   }

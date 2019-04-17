@@ -24,7 +24,7 @@
       <mat-icon *ngIf="!cities || (cities && !cities.length)">explore</mat-icon>
     </div>
   </div>
-  <div *ngIf="meeting.controls.city.value">
+  <div *ngIf="meeting.controls.city.value || edition">
       <div class="request-form__actions row">
           <div class="col-12 col-sm-6">
               <button class="btn btn-info btn-add-item" (click)="newItem()">

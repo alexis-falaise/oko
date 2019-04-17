@@ -8,21 +8,21 @@
       {{ item.description }}
     </p>
     <div class="d-flex justify-content-center">
-      <a class="btn btn-success btn-icon justify-content-center" [href]="item.link.path" *ngIf="item.link?.path">
+      <a class="btn btn-success btn-icon justify-content-center" [href]="item.link.path" target="_blank" *ngIf="item.link?.path">
         <mat-icon>shopping_cart</mat-icon> Acheter
       </a>
     </div>
     <hr class="divider">
     <div class="row">
-      <div class="col-6">
+      <div class="col-6 col-lg-3">
         <div class="item-details__content__price item-details__content__cell">
-          <div class="cell-content">{{ item.price }} €</div>
+          <div class="cell-content">{{ item.price }}</div>
           <h4 class="item-details__content__price-title cell-title">
-            Prix estimé
+            Prix estimé (€)
           </h4>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-6 col-lg-3">
         <div class="item-details__content__weight item-details__content__cell">
           <div class="cell-content">{{ item.weight }}</div>
           <h4 class="item-details__content__weight-title cell-title">
@@ -30,9 +30,7 @@
           </h4>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
+      <div class="col-6 col-lg-3">
         <div class="item-details__content__size item-details__content__cell">
           <mat-icon class="cell-content">{{ itemSize.icon }}</mat-icon>
           <h4 class="item-details__content__size-title cell-title">
@@ -40,7 +38,7 @@
           </h4>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-6 col-lg-3">
         <div class="item-details__content__cabin item-details__content__cell">
           <mat-icon class="cell-content">{{ item.cabinOnly ? 'work' : 'flight' }}</mat-icon>
           <h4 class="item-details__content__cabin-title cell-title">
@@ -52,7 +50,9 @@
 
     <hr class="divider">
 
-    <img class="item-details__picture" [src]="item.photo" [alt]="item.label">
+    <div class="d-flex justify-content-center w-100">
+        <img class="item-details__picture" [src]="item.photo" [alt]="item.label">
+    </div>
 
   </div>
   <div class="item-details__actions mt-2">

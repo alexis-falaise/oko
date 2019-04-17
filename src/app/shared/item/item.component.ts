@@ -39,7 +39,7 @@ export class ItemComponent implements OnInit, OnChanges {
     if (this.openable) {
       this.dialog.open(ItemDetailsComponent, {
         data: this.item,
-        height: '75vh',
+        height: '80vh',
         width: '80vw',
       });
     }

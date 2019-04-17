@@ -142,7 +142,7 @@
     <div class="post-general post-request col-9 col-md-10" (click)="toPost()" [class.outdated]="outdated">
         <div class="row">
             <div class="post-request__content col-6 col-sm-8">
-                <div class="row post-request__content__items">
+                <div class="row post-request__content__items mt-2">
                     <ul>
                         <li class="post-request__content__item" *ngFor="let item of post.items">{{ item.label }}</li>
                     </ul>
@@ -162,7 +162,7 @@
             </div>
             <div class="post-request__practical col-6 col-sm-4">
                 <div class="post-request__practical__property post-request__practical__property__bonus" *ngIf="post.bonus">
-                    <mat-icon>euro_symbol</mat-icon> Bonus: {{ post.bonus }} €
+                    Bonus: {{ post.bonus }} €
                 </div>
                 <div class="post-request__practical__property post-request__practical__property__weight" *ngIf="weight">
                     <mat-icon>shopping_basket</mat-icon> {{ weight }} kg

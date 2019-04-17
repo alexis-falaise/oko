@@ -21,6 +21,8 @@ import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { Proposal } from '@models/post/proposal.model';
 import { MeetingPoint } from '@models/meeting-point.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-request-form',
@@ -63,6 +65,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   bonusAgreed = false;
   requestId: string;
   saved = false;
+  ngUnsubscribe = new Subject();
 
   constructor(
     private dialog: MatDialog,
@@ -101,17 +104,25 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // Initialisation
     this.userService.getCurrentUser().subscribe(user => this.currentUser = user);
+    if (!this.edition) {
+      this.checkDraft();
+    }
+
     const savedCity = this.requestService.currentCity;
     if (savedCity) {
       this.setCity(savedCity);
     }
-    this.checkDraft();
 
     // Manage stored items
-    this.requestService.onStoredItems().subscribe((items) => {
+    const nextItemList = new Subject();
+    this.requestService.onStoredItems()
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((items) => {
+      nextItemList.next();
       this.items = items;
       this.computeBonus();
     });
+
     this.requestService.getStoredItems();
     this.requestService.onTotalPrice().subscribe((price) => this.totalPrice = price);
 
@@ -246,7 +257,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         country: request.meetingPoint.country
       });
     }
-    if (request.items) {
+    if (request.items && !this.items.length) {
+      this.requestService.setStoredItems(request.items);
       this.items = request.items;
       this.computeBonus(request.bonus);
       this.computeTotalPrice();
@@ -293,8 +305,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
             responseRequest = new Request(response.data);
           }
           this.uiService.setLoading(false);
+          this.postService.deleteRequestDraft();
           this.snack.open(`Annonce ${this.edition ? 'modifiée' : 'enregistrée'}`, 'Top!', {duration: 3000});
-          this.router.navigate([`post/request/${saveRequest.trip ? responseProposal.from : responseRequest.id}`]);
+          const route = saveRequest.trip
+          ? [`/post/proposal/${responseProposal.id}`]
+          : [`/post/request/${responseRequest.id}`];
+          this.router.navigate(route);
         } else {
           this.requestServerError(response.message, response.code);
         }
@@ -405,6 +421,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
     }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

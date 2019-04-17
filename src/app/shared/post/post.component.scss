@@ -356,9 +356,10 @@ $request-height: 135px;
                 }
 
                 &__bonus {
+                    margin-top: 5px;
                     color: $white-alpha-8;
-                    font-size: $propertySize + 1;
-                    font-weight: 700;
+                    font-size: $propertySize + 3;
+                    font-weight: 400;
                 }
 
                 &__weight {
@@ -388,7 +389,7 @@ $request-height: 135px;
             width: 110%;
         }
         height: 105% !important;
-        padding: 15px;
+        padding: 10px;
         margin-top: -10px;
         &.horizontal {
             width: 110%;
