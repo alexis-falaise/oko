@@ -71,16 +71,16 @@
         Vos articles seront livrés par {{ proposal?.to?.user.firstname }} le {{ moment(proposal?.to?.date).format('DD/MM') }}
       </small>
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
-          La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer
+        La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer
       </small>
     </div>
     <div class="d-flex justify-content-center text-align-center" *ngIf="receiver && standalone">
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
         Vos articles seront livrés par {{ proposal?.from?.user.firstname }} le {{ moment(proposal?.from?.date).format('DD/MM') }}
       </small>
-      <!-- <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
-        La proposition a été acceptée par {{ proposal?.from?.user.firstname }} et est en attente de paiement 
-      </small> -->
+      <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
+        Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
+      </small>
       <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
         La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer
       </small>

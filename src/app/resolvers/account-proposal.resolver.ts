@@ -18,6 +18,7 @@ export class AccountProposalResolver implements Resolve<{user: User, proposals: 
         private uiService: UiService,
     ) {}
     resolve(route): Observable<{user: User, proposals: Array<Proposal>}> {
+        this.uiService.setMainLoading(true);
         return Observable.create(observer => {
             this.userService.getCurrentUser().subscribe((user) => {
                 if (user) {
@@ -27,6 +28,7 @@ export class AccountProposalResolver implements Resolve<{user: User, proposals: 
                         this.postService.getAllSentProposalsByAuthor(user)
                         .pipe(catchError((err, caught) => caught)),
                     ]).subscribe((proposals) => {
+                        this.uiService.setMainLoading(false);
                         const outputProposals = proposals[0].concat(proposals[1]).map(proposal => new Proposal(proposal));
                         if (proposals) {
                             observer.next({

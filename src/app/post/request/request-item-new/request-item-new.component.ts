@@ -7,7 +7,7 @@ import { RequestService } from '../request.service';
 import { Item } from '@models/item.model';
 import { Link } from '@models/link.model';
 import { itemSizes } from '@static/item-sizes.static';
-import { validUrl } from '@utils/index.util';
+import { validUrl, extractHostname } from '@utils/index.util';
 import { UiService } from '@core/ui.service';
 import { MatSnackBar } from '@angular/material';
 
@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class RequestItemNewComponent implements OnInit {
   @ViewChild('itemPicture') itemPicture: ElementRef;
+  @ViewChild('itemLink') itemLink;
   @ViewChild('stepper') stepper;
   item = this.fb.group({
     label: ['', Validators.required],
@@ -63,6 +64,8 @@ export class RequestItemNewComponent implements OnInit {
   getItemInfo() {
     const pastedUrl = this.item.controls.link.value;
     this.ecommerceFound = false;
+    const host = extractHostname(pastedUrl);
+    this.snack.open(`Recherche de votre article sur ${host}`, undefined, {duration: 5000});
     if (validUrl(pastedUrl)) {
       this.uiService.setLoading(true);
       this.requestService.getItemInfo(pastedUrl)
@@ -74,6 +77,9 @@ export class RequestItemNewComponent implements OnInit {
           this.item.patchValue(item);
         }
       });
+    } else {
+      const snackRef = this.snack.open('Merci d\'entrer un lien valide', 'OK', {duration: 3000});
+      snackRef.onAction().subscribe(() => this.itemLink.focus());
     }
   }
 

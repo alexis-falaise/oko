@@ -9,7 +9,7 @@
     </div>
     <mat-card-title class="item__title">{{ item.label }}</mat-card-title>
     <mat-card-subtitle class="item__subtitle justify-content-center" *ngIf="item?.link?.path && item?.link?.path != ''">
-      <a class="btn btn-info btn-icon item__link" [href]="item.link.path" target="_blank" *ngIf="!creator">
+      <a class="btn btn-info btn-icon item__link" href="{{item.link.path}}" target="_blank" *ngIf="!creator">
         <mat-icon>shopping_cart</mat-icon> Acheter en ligne
       </a>
     </mat-card-subtitle>

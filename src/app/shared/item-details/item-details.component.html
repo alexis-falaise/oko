@@ -8,7 +8,7 @@
       {{ item.description }}
     </p>
     <div class="d-flex justify-content-center">
-      <a class="btn btn-success btn-icon justify-content-center" [href]="item.link.path" target="_blank" *ngIf="item.link?.path">
+      <a class="btn btn-success btn-icon justify-content-center" href="{{item.link.path}}" target="_blank" *ngIf="item.link?.path">
         <mat-icon>shopping_cart</mat-icon> Acheter
       </a>
     </div>

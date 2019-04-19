@@ -635,10 +635,6 @@ export class PostService {
     return this.http.delete(`${this.requestUrl}/${request.id}`, {withCredentials: true}) as Observable<ServerResponse>;
   }
 
-  getItemFromMerchant(url: string) {
-    this.http.get(url).subscribe((response) => console.log(response));
-  }
-
   /************************************************************
    *
    *

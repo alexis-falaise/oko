@@ -34,6 +34,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() request: Request;
   @Input() freeRequest = false;
   @Input() edition = false;
+  @Input() creation = false;
   today = moment();
   items: Array<Item> = [];
   itemsPrice: number;
@@ -65,6 +66,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   bonusAgreed = false;
   requestId: string;
   saved = false;
+  draft = false;
   ngUnsubscribe = new Subject();
 
   constructor(
@@ -85,6 +87,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.edition) {
       this.edition = changes.edition.currentValue;
     }
+    if (changes.freeRequest) {
+      this.freeRequest = changes.freeRequest.currentValue;
+    }
     if (changes.request) {
       if (this.edition) {
         this.setEditableRequest(changes.request.currentValue);
@@ -104,9 +109,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // Initialisation
     this.userService.getCurrentUser().subscribe(user => this.currentUser = user);
-    if (!this.edition) {
-      this.checkDraft();
-    }
 
     const savedCity = this.requestService.currentCity;
     if (savedCity) {
@@ -120,7 +122,13 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe((items) => {
       nextItemList.next();
       this.items = items;
-      this.computeBonus();
+      if (items && items.length) {
+        this.computeBonus();
+      } else {
+        if (!this.edition) {
+          this.checkDraft();
+        }
+      }
     });
 
     this.requestService.getStoredItems();
@@ -157,6 +165,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   setCity(city: {city: string, country: string}) {
     this.meeting.controls.city.patchValue(city);
+    this.meeting.controls.meetingPoint.patchValue(city);
     if (!this.requestService.currentCity) {
       this.requestService.setCurrentCity(city);
     }
@@ -166,6 +175,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const draft = this.postService.getRequestDraft();
     if (draft) {
       this.setEditableRequest(draft);
+      this.draft = true;
       this.edition = false;
     }
   }
@@ -215,8 +225,22 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     this.requestService.removeItem(index);
   }
 
-  getItemFromMerchant(url: string) {
-    this.postService.getItemFromMerchant(url);
+  removeDraft() {
+    this.postService.deleteRequestDraft();
+    this.snack.open('Le brouillon a été supprimé', 'OK', {duration: 3000});
+    this.draft = false;
+  }
+
+  removeRequest() {
+    if (this.edition) {
+      this.postService.removeRequest(this.request)
+      .subscribe((response) => {
+        if (response.status) {
+          this.snack.open('L\'annonce a été supprimée', 'OK', {duration: 5000});
+          this.router.navigate(['/home']);
+        }
+      }, (error) => this.uiService.serverError(error));
+    }
   }
 
   setHomeCity() {
@@ -250,6 +274,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setEditableRequest(request: Request) {
+    console.log('Set editable request');
     this.meeting.patchValue(request);
     if (request.meetingPoint && request.meetingPoint.city && request.meetingPoint.country) {
       this.setCity({
@@ -275,19 +300,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     saveRequest.user = this.currentUser;
     if (this.currentUser) {
       if (saveRequest.trip) {
-        proposal = {
-          from: saveRequest,
-          to: saveRequest.trip.id,
-          date: moment(),
-          author: this.currentUser,
-          receiver: saveRequest.trip.user,
-          bonus: saveRequest.bonus,
-          airportPickup: this.trip.airportDrop || saveRequest.airportPickup,
-          meetingPoint: (this.trip.airportDrop || saveRequest.airportPickup) ? new MeetingPoint({
-            city: this.trip.to.airport.city,
-            country: this.trip.to.airport.country
-          }) : saveRequest.meetingPoint,
-        };
+        proposal = this.createProposal(saveRequest);
       }
       const requestService = this.edition
       ? this.postService.updateRequest(saveRequest)
@@ -306,6 +319,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
           }
           this.uiService.setLoading(false);
           this.postService.deleteRequestDraft();
+          this.requestService.resetRequest();
           this.snack.open(`Annonce ${this.edition ? 'modifiée' : 'enregistrée'}`, 'Top!', {duration: 3000});
           const route = saveRequest.trip
           ? [`/post/proposal/${responseProposal.id}`]
@@ -342,6 +356,22 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     return saveRequest;
   }
 
+  private createProposal(request: Request) {
+    return {
+      from: request,
+      to: request.trip.id,
+      date: moment(),
+      author: this.currentUser,
+      receiver: request.trip.user,
+      bonus: request.bonus,
+      airportPickup: this.trip.airportDrop || request.airportPickup,
+      meetingPoint: (this.trip.airportDrop || request.airportPickup) ? new MeetingPoint({
+        city: this.trip.to.airport.city,
+        country: this.trip.to.airport.country
+      }) : request.meetingPoint,
+    };
+  }
+
   /**
    * Computes a bonus for the traveler
    * Bonus calculation takes into account:
@@ -373,6 +403,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       calculatedBonus += 10;
     }
     this.meeting.controls.bonus.patchValue(Math.ceil(bonus || calculatedBonus));
+    this.computeTotalPrice();
     this.requestService.setBonus(bonus);
   }
 
@@ -382,6 +413,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const preFeesPrice = itemsPrice + bonus;
     this.fees = preFeesPrice * this.feesPercentage + this.staticFees;
     const price = round(this.fees + preFeesPrice, 2);
+    console.log('Compute total price', price);
     this.requestService.setTotalPrice(price);
   }
 
@@ -417,7 +449,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.geoService.resetCities();
-    if (!this.saved) {
+    if (!this.saved && this.freeRequest) {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
     }

@@ -13,7 +13,7 @@ import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
 const routes: Routes = [
     { path: '', component: AccountComponent, canActivate: [AuthGuard],
         children: [
-            { path: '', redirectTo: 'proposal', pathMatch: 'full' },
+            { path: '', redirectTo: 'info', pathMatch: 'full' },
             { path: 'info', component: AccountInfoComponent },
             { path: 'request', component: AccountRequestComponent },
             { path: 'trip', component: AccountTripComponent },

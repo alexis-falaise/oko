@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "deploy-test": "ng build --prod && cp src/manifest.webmanifest dist/oko/ && scp -r dist/oko/* root@204.48.21.183:/var/www/html/",
+    "deploy-test": "ng build --prod --buildOptimizer=true --aot=true --optimization=true --progress=true && cp src/manifest.webmanifest dist/oko/ && scp -r dist/oko/* root@204.48.21.183:/var/www/html/",
     "transfert-dist": "scp -r dist/oko/* root@204.48.21.183:/var/www/html/",
     "test": "ng test",
     "lint": "ng lint",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.3",
+    "@angular-devkit/build-optimizer": "^0.13.8",
     "@angular/cli": "~7.0.5",
     "@angular/compiler-cli": "~7.0.0",
     "@angular/language-service": "~7.0.0",

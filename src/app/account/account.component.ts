@@ -20,10 +20,10 @@ export class AccountComponent implements OnInit {
 
   currentUser: User = null;
   categories: Array<Link> = [
+    { label: 'Infos', path: '/account/info', icon: 'account_box' },
     { label: 'Propositions', path: '/account/proposal', icon: 'announcement', badge: 0 },
     { label: 'Trajets', path: '/account/trip', icon: 'explore' },
     { label: 'Demandes', path: '/account/request', icon: 'new_releases' },
-    { label: 'Infos', path: '/account/info', icon: 'account_box' },
     // { label: 'Articles', path: '/account/item', icon: 'shopping_cart' },
   ];
 

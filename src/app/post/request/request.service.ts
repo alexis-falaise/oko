@@ -22,7 +22,7 @@ export class RequestService {
   currentItem = new BehaviorSubject<Item>(null);
   currentCity: {city: string, country: string};
   private itemUrl = `${environment.serverUrl}/item`;
-  private specialChars = ['-', '/', ',', '(', ':', '.'];
+  private specialChars = ['-', '/', ',', '(', ')', ':', '.', '[', ']', '{', '}', '*', '_'];
   constructor(
     private http: HttpClient,
     private snack: MatSnackBar,
@@ -125,6 +125,14 @@ export class RequestService {
     this.currentItem.next(null);
   }
 
+  resetRequest() {
+    this.resetStoredItems();
+    this.resetCurrentItem();
+    this.computedBonus.next(null);
+    this.computedTotalPrice.next(null);
+    this.currentCity = null;
+  }
+
   setBonus(bonus: number) {
     this.computedBonus.next(bonus);
   }
@@ -134,6 +142,7 @@ export class RequestService {
   }
 
   setCurrentCity(city: {city: string, country: string}) {
+    console.log('Current city set', city);
     this.currentCity = city;
   }
 

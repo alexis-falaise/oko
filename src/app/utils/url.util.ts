@@ -7,3 +7,9 @@ export function validUrl(url: string): boolean {
         return false;
     }
 }
+
+export function extractHostname(url: string): string {
+    const withoutProtocol = url.split('://')[1];
+    const firstSegment = withoutProtocol.split('/')[0];
+    return firstSegment;
+}

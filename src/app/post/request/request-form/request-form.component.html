@@ -26,6 +26,11 @@
   </div>
   <div *ngIf="meeting.controls.city.value || edition">
       <div class="request-form__actions row">
+          <div class="col-12" *ngIf="draft">
+            <button class="btn btn-warning btn-add-item" (click)="removeDraft()">
+              <mat-icon>remove_circle</mat-icon> Supprimer ce brouillon
+            </button>
+          </div>
           <div class="col-12 col-sm-6">
               <button class="btn btn-info btn-add-item" (click)="newItem()">
                 <mat-icon>add</mat-icon> Ajouter un article
@@ -154,14 +159,19 @@
         </form>
       </div>
       <div class="request-form__validation row">
-        <button class="btn btn-success" [disabled]="
+        <button class="btn btn-success" [class.btn-add-item]="edition" [disabled]="
             (!items || items && !items.length)
             || !meeting.controls.bonus.valid
             || (!meeting.controls.airportPickup.value && !meeting.controls.meetingPoint.valid)
             || (meeting.controls.urgent.value && !meeting.controls.urgentDetails.valid)
           " (click)="saveRequest()">
            <span *ngIf="trip?.user?.firstname">{{ edition ?  'Modifier ma demande pour' : 'Faire une demande à' }} {{ trip.user.firstname }}</span>
-           <span *ngIf="freeRequest || !trip">{{ edition ? 'Modifier' : 'Créer' }} une annonce</span>
+           <span *ngIf="freeRequest || !trip">{{ edition ? 'Modifier cette' : 'Créer une' }} annonce</span>
+        </button>
+      </div>
+      <div class="d-flex w-100 mt-5 justify-content-center" *ngIf="edition">
+        <button class="btn btn-danger btn-icon" (click)="removeRequest()">
+          <mat-icon>delete</mat-icon> Supprimer cette annonce
         </button>
       </div>
   </div>

@@ -8,7 +8,6 @@ import { LogoutComponent } from './auth/logout/logout.component';
 import { MessengerComponent } from './messenger/messenger.component';
 import { NotFoundComponent } from '@core/not-found/not-found.component';
 import { OneclickComponent } from './auth/oneclick/oneclick.component';
-import { RequestItemNewComponent } from './post/request/request-item-new/request-item-new.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { ThreadListComponent } from './messenger/thread-list/thread-list.component';
 import { ThreadComponent } from './messenger/thread/thread.component';
