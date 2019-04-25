@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import * as moment from 'moment';
 
 import { PostService } from '@core/post.service';
@@ -17,6 +18,7 @@ export class AccountRequestComponent implements OnInit {
   requests: Array<Request> = [];
   hasDraft = false;
   loading = false;
+  localLoading = new Subject<boolean>();
 
   constructor(
     private userService: UserService,
@@ -26,15 +28,16 @@ export class AccountRequestComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.uiService.onLoading().subscribe(state => this.setLocalLoading(state));
+    this.onLocalLoading().subscribe(state => this.loadingDisplay(state));
     this.uiService.setLoading(true);
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
-        this.uiService.setLoading(true);
+        this.setLocalLoading(true);
          this.postService.getRequestByAuthor(user.id)
         .subscribe(requests => {
           this.uiService.setLoading(false);
+          this.setLocalLoading(false);
           if (requests) {
             this.requests = requests
             .map(request => new Request(request))
@@ -56,7 +59,7 @@ export class AccountRequestComponent implements OnInit {
               }
             });
           }
-        });
+        }, () => this.uiService.setLoading(false));
       }
     });
     this.manageDrafts();
@@ -80,8 +83,15 @@ export class AccountRequestComponent implements OnInit {
     this.hasDraft = !!draft;
   }
 
+  private onLocalLoading() {
+    return this.localLoading.asObservable();
+  }
+
   private setLocalLoading(state: boolean) {
-    this.loading = state;
+    this.localLoading.next(state);
+  }
+
+  private loadingDisplay(state: boolean) {
     this.requests = state ? [new Request({}), new Request({}), new Request({})] : [];
   }
 

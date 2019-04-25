@@ -89,6 +89,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (changes.freeRequest) {
       this.freeRequest = changes.freeRequest.currentValue;
+      if (this.freeRequest) {
+        this.checkDraft();
+        if (!this.draft) {
+          this.requestService.resetRequest();
+        }
+      }
     }
     if (changes.request) {
       if (this.edition) {
@@ -108,7 +114,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     this.adapter.setLocale('fr');
 
     // Initialisation
-    this.userService.getCurrentUser().subscribe(user => this.currentUser = user);
+    this.userService.getCurrentUser().subscribe(
+      user => this.currentUser = user,
+      (error) => this.uiService.serverError(error)
+    );
 
     const savedCity = this.requestService.currentCity;
     if (savedCity) {
@@ -124,11 +133,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       this.items = items;
       if (items && items.length) {
         this.computeBonus();
-      } else {
-        if (!this.edition) {
-          this.checkDraft();
-        }
       }
+      this.checkDraft();
     });
 
     this.requestService.getStoredItems();
@@ -174,7 +180,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   checkDraft() {
     const draft = this.postService.getRequestDraft();
     if (draft) {
-      this.setEditableRequest(draft);
+      // this.setEditableRequest(draft);
       this.draft = true;
       this.edition = false;
     }
@@ -227,6 +233,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   removeDraft() {
     this.postService.deleteRequestDraft();
+    this.requestService.resetRequest();
     this.snack.open('Le brouillon a été supprimé', 'OK', {duration: 3000});
     this.draft = false;
   }
@@ -274,7 +281,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setEditableRequest(request: Request) {
-    console.log('Set editable request');
     this.meeting.patchValue(request);
     if (request.meetingPoint && request.meetingPoint.city && request.meetingPoint.country) {
       this.setCity({
@@ -282,7 +288,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         country: request.meetingPoint.country
       });
     }
-    if (request.items && !this.items.length) {
+    if (request.items) {
       this.requestService.setStoredItems(request.items);
       this.items = request.items;
       this.computeBonus(request.bonus);
@@ -413,7 +419,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     const preFeesPrice = itemsPrice + bonus;
     this.fees = preFeesPrice * this.feesPercentage + this.staticFees;
     const price = round(this.fees + preFeesPrice, 2);
-    console.log('Compute total price', price);
     this.requestService.setTotalPrice(price);
   }
 
@@ -449,7 +454,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.geoService.resetCities();
-    if (!this.saved && this.freeRequest) {
+    if (!this.saved && this.freeRequest && !this.edition) {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
     }

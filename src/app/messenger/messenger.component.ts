@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-
-import { MessengerService } from '@core/messenger.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { Thread } from '@models/messenger/thread.model';
-import { UserService } from '@core/user.service';
 
 @Component({
   selector: 'app-messenger',

@@ -61,38 +61,26 @@ export class TripDetailComponent implements OnInit {
         this.engagement = false;
       }
     });
-    this.route.params.subscribe(param => {
-      if (param && param.id) {
-        this.fetchTrip(param.id);
-      }
+    this.route.data.subscribe((data) => {
+      this.currentUser = new User(data.tripInfo.user);
+      this.trip = new Trip(data.tripInfo.trip);
+      this.background = data.tripInfo.background;
+      this.init();
     });
   }
 
-  fetchTrip(id: string) {
-    this.uiService.setLoading(true);
-    this.postService.getTripById(id)
-    .subscribe(trip => {
-      if (trip) {
-        this.trip = new Trip(trip);
-        this.setBackgroundPicture();
-        const requestDraft = this.postService.getRequestDraft();
-        if (requestDraft && requestDraft.trip.id === this.trip.id) {
-          this.engagement = true;
-        }
-        this.userService.getCurrentUser()
-        .subscribe(user => {
-          this.own = user.id === trip.user.id;
-          this.currentUser = user;
-          if (this.own) {
-            this.proposals = [];
-            this.fetchProposals();
-          } else {
-            this.getUserRequests();
-          }
-         this.uiService.setLoading(false);
-        }, (error) => this.serverError(error, id));
-      }
-    }, (error) => this.serverError(error, id));
+  init() {
+    this.own = this.currentUser.id === this.trip.user.id;
+    if (this.own) {
+      this.proposals = [];
+      this.fetchProposals();
+    } else {
+      this.getUserRequests();
+    }
+    const requestDraft = this.postService.getRequestDraft();
+    if (requestDraft && requestDraft.trip.id === this.trip.id) {
+      this.engagement = true;
+    }
   }
 
   fetchProposals() {
@@ -179,19 +167,6 @@ export class TripDetailComponent implements OnInit {
     const info = children[1];
     const scrollTop = event.target.scrollTop;
     this.fadeInfo = scrollTop > (info.offsetTop - 20 * heightUnit);
-  }
-
-  private setBackgroundPicture() {
-    this.pexels.getBackgroundPicture(this.trip.to.airport.country, 'large2x')
-    .subscribe(picture => this.background = picture);
-  }
-
-  private serverError(error: HttpErrorResponse, id: string) {
-    if (error.status !== 401) {
-      const snackRef = this.snack.open('Erreur lors du chargement du voyage', 'Réessayer', {duration: 3000});
-      snackRef.onAction().subscribe(() => this.fetchTrip(id));
-    }
-    this.uiService.setLoading(false);
   }
 
 }

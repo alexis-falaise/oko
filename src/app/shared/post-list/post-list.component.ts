@@ -6,6 +6,7 @@ import { Trip } from '@models/post/trip.model';
 import { PostService } from '@core/post.service';
 import { UiService } from '@core/ui.service';
 import { Request } from '@models/post/request.model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
@@ -13,6 +14,8 @@ import { Request } from '@models/post/request.model';
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit, AfterViewInit {
+  listLengthCache = 3;
+  localLoading = new Subject<boolean>();
   posts: Array<Post> = [new Trip({}), new Trip({}), new Trip({})];
   carousel: any;
   empty = false;
@@ -26,14 +29,13 @@ export class PostListComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.uiService.setMainLoading(true);
+    this.setLocalLoading(true);
     if (this.trip) {
       this.postService.onTrips()
       .subscribe(trips => {
         if (trips) {
           this.setPosts(trips);
-          this.uiService.setLoading(false);
-          this.uiService.setMainLoading(false);
+          this.setLocalLoading(false);
         }
       });
       if (!this.posts) {
@@ -44,15 +46,14 @@ export class PostListComponent implements OnInit, AfterViewInit {
       .subscribe(requests => {
         if (requests) {
           this.setPosts(requests);
-          this.uiService.setLoading(false);
-          this.uiService.setMainLoading(false);
+          this.setLocalLoading(false);
         }
       });
       if (!this.posts) {
         this.postService.getRequests();
       }
     }
-    this.uiService.onLoading().subscribe(loading => this.loadingDisplay(loading));
+    this.onLocalLoading().subscribe(loading => this.loadingDisplay(loading));
   }
 
   ngAfterViewInit() {
@@ -70,7 +71,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
 
   loadingDisplay(loading: boolean) {
     if (loading) {
-      this.posts = this.generatePlaceholder(5);
+      this.posts = this.generatePlaceholder(this.listLengthCache);
     }
   }
 
@@ -89,7 +90,16 @@ export class PostListComponent implements OnInit, AfterViewInit {
       this.empty = false;
     }
     this.posts = posts;
+    this.listLengthCache = posts.length;
     this.listRefresh.emit(posts.length);
+  }
+
+  private onLocalLoading() {
+    return this.localLoading.asObservable();
+  }
+
+  private setLocalLoading(state: boolean) {
+    this.localLoading.next(state);
   }
 
 }

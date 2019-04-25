@@ -49,6 +49,9 @@ import { ProposalTripComponent } from './proposal/proposal-trip/proposal-trip.co
 import { ProposalRequestComponent } from './proposal/proposal-request/proposal-request.component';
 import { RequestItemNewComponent } from './request/request-item-new/request-item-new.component';
 import { RequestService } from './request/request.service';
+import { TripDetailResolver } from '@resolvers/trip-detail.resolver';
+import { RequestDetailResolver } from '@resolvers/request-detail.resolver';
+import { RequestResolver } from '@resolvers/request.resolver';
 
 @NgModule({
   declarations: [
@@ -108,6 +111,6 @@ import { RequestService } from './request/request.service';
     SharedModule,
     ScrollDispatchModule,
   ],
-  providers: [RequestService],
+  providers: [RequestService, RequestResolver, RequestDetailResolver, TripDetailResolver],
 })
 export class PostModule { }

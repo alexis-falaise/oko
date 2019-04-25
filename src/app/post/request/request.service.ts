@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, timer, Subject } from 'rxjs';
 
 import { environment } from '@env/environment';
@@ -111,10 +111,7 @@ export class RequestService {
   }
 
   setStoredItems(items: Array<Item>) {
-    const storedItems = this.storedItems.getValue();
-    if (storedItems && !storedItems.length) {
-      this.storedItems.next(items);
-    }
+    this.storedItems.next(items);
   }
 
   resetStoredItems() {
@@ -142,7 +139,6 @@ export class RequestService {
   }
 
   setCurrentCity(city: {city: string, country: string}) {
-    console.log('Current city set', city);
     this.currentCity = city;
   }
 

@@ -4,9 +4,6 @@ import { PostService } from '@core/post.service';
 import { Request } from '@models/post/request.model';
 import { ActivatedRoute } from '@angular/router';
 
-import { UiService } from '@core/ui.service';
-import { RequestService } from './request.service';
-
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
@@ -18,7 +15,6 @@ export class RequestComponent implements OnInit {
 
   constructor(
     private postService: PostService,
-    private uiService: UiService,
     private route: ActivatedRoute,
   ) { }
 
@@ -27,20 +23,13 @@ export class RequestComponent implements OnInit {
     if (draft) {
       this.request = draft;
     }
-    this.uiService.setLoading(true);
+    this.route.data.subscribe((data) => {
+      this.request = new Request(data.request);
+    });
     this.route.url.subscribe(segments => {
       const editionSegment = segments.find(segment => segment.path === 'edit');
       if (editionSegment) {
         this.edition = true;
-        this.route.params.subscribe(params => {
-          this.postService.getRequestById(params.id)
-          .subscribe(request => {
-            this.request = new Request(request);
-            this.uiService.setLoading(false);
-          });
-        });
-      } else {
-        this.uiService.setLoading(false);
       }
     });
   }

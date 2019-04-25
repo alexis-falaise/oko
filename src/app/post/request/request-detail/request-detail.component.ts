@@ -40,24 +40,12 @@ export class RequestDetailComponent implements OnInit {
   ngOnInit() {
     this.dateAdapter.setLocale('fr');
     this.uiService.setLoading(true);
-    this.route.params.subscribe(param => {
-      if (param && param.id) {
-        this.postService.getRequestById(param.id)
-        .subscribe((request) => {
-          if (request) {
-            this.userService.getCurrentUser()
-            .subscribe(user => {
-              if (user) {
-                this.currentUser = user;
-                this.getProposals(request);
-              }
-              this.setRequest(request);
-            }, (err) => this.setRequest(request));
-          }
-        }, (err) => this.serverError(err));
-      } else {
-        this.uiService.setLoading(false);
-        this.router.navigate(['/404']);
+    this.route.data.subscribe((data) => {
+      const request = data.requestInfo.request;
+      this.currentUser = new User(data.requestInfo.user);
+      this.setRequest(request);
+      if (this.currentUser) {
+        this.getProposals(request);
       }
     });
   }

@@ -9,14 +9,13 @@ import {
   SocialUser
 } from 'angularx-social-login';
 import { BehaviorSubject, Observable, of, observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { SocialDisconnectionComponent } from './dialogs/social-disconnection/social-disconnection.component';
-import { takeUntil } from 'rxjs/operators';
 import { UiService } from './ui.service';
-import { Socket } from 'ngx-socket-io';
 
 class Status {
   status: boolean;
