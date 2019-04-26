@@ -7,6 +7,9 @@ import { HistoryService } from '@core/history.service';
 
 import { MenuItem } from '@models/app/menu-item.model';
 import { UiService } from '@core/ui.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { User } from '@models/user.model';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -38,7 +41,9 @@ export class NavComponent implements OnInit, OnChanges {
   ];
   displayAccountMenuItems: Array<MenuItem> = null;
   secondaryMenuItems: Array<MenuItem> = [];
+  currentUser: User;
   randomWelcome: string;
+  nextQuery = new Subject();
   logged = false;
 
   constructor(
@@ -60,8 +65,11 @@ export class NavComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.authService.onUser()
+    .pipe(takeUntil(this.nextQuery))
     .subscribe(user => {
+      this.nextQuery.next();
       if (user) {
+        this.currentUser = user;
         this.displayAccountMenuItems = this.accountMenuItems;
         this.randomWelcome = this.uiService.generateRandomWelcome(user.firstname);
       } else {

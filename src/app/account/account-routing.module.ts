@@ -11,14 +11,14 @@ import { AccountProposalComponent } from './account-proposal/account-proposal.co
 import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
 
 const routes: Routes = [
-    { path: '', component: AccountComponent, canActivate: [AuthGuard],
+    { path: 'account', component: AccountComponent, canActivate: [AuthGuard],
         children: [
             { path: '', redirectTo: 'info', pathMatch: 'full' },
             { path: 'info', component: AccountInfoComponent },
             { path: 'request', component: AccountRequestComponent },
             { path: 'trip', component: AccountTripComponent },
             { path: 'proposal', component: AccountProposalComponent, resolve: {data: AccountProposalResolver} },
-          ]
+        ]
     },
 ];
 

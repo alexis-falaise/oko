@@ -12,7 +12,7 @@
             <h4 class="request-item-new__content__form-title">
               {{ isNotEcommerce ? 'Prix estimé' : 'Lien E-commerce' }}
             </h4>
-            <div class="d-flex justify-content-around">
+            <div class="d-flex justify-content-around" *ngIf="!isNotEcommerce">
                 <a class="btn btn-success btn-icon justify-content-center" href="http://www.amazon.fr" target="_blank">
                   <mat-icon>shopping_cart</mat-icon> Amazon
                 </a>

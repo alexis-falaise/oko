@@ -7,11 +7,13 @@ import { NavComponent } from '@core/nav/nav.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DialogsModule } from './dialogs/dialogs.module';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [NavComponent, NotFoundComponent],
   imports: [
     CommonModule,
+    SharedModule,
     DialogsModule,
     MatDialogModule,
     MatIconModule,

@@ -28,6 +28,7 @@
 </nav>
 
 <div class="navbar__fullscreen" (click)="hide()" (swipeRight)="hide()" [hidden]="!menuDisplay">
+
   <small class="navbar__fullscreen-title" *ngIf="randomWelcome">{{ randomWelcome }} </small>
   <div class="navbar__fullscreen-item" [class.active]="rlm.isActive" *ngFor="let item of menuItems">
     <a routerLink="{{ item.path }}" routerLinkActive [routerLinkActiveOptions]="{exact:true}" #rlm="routerLinkActive">

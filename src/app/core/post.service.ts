@@ -133,6 +133,7 @@ export class PostService {
         this.getRequestsUserStats(requests, this.requests);
         nextQuery.next(true);
       }
+      this.uiService.setLoading(false);
     });
   }
 

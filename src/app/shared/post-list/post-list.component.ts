@@ -23,10 +23,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
   @Input() trip = false;
   @Input() horizontal = false;
 
-  constructor(
-    private postService: PostService,
-    private uiService: UiService,
-  ) { }
+  constructor(private postService: PostService) { }
 
   ngOnInit() {
     this.setLocalLoading(true);
