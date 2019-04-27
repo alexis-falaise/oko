@@ -1,11 +1,15 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar, DateAdapter } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { round, objectIsComplete, arraySum } from '@utils/index.util';
 import * as moment from 'moment';
 
+import { HistoryService } from '@core/history.service';
 import { RequestService } from '../request.service';
 import { UserService } from '@core/user.service';
 import { UiService } from '@core/ui.service';
@@ -21,8 +25,6 @@ import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { Proposal } from '@models/post/proposal.model';
 import { MeetingPoint } from '@models/meeting-point.model';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-request-form',
@@ -75,6 +77,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private adapter: DateAdapter<any>,
+    private historyService: HistoryService,
+    private location: Location,
     private postService: PostService,
     private requestService: RequestService,
     private uiService: UiService,
@@ -215,6 +219,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   newItem() {
+    this.historyService.add(this.location.path());
     const tree = this.router.createUrlTree(['item', 'new'], { relativeTo: this.route });
     const serializedTree = this.router.serializeUrl(tree);
     this.router.navigate([serializedTree]);

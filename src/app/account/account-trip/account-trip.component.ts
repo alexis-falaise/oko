@@ -51,17 +51,16 @@ export class AccountTripComponent implements OnInit {
   }
 
   private fetchTrips() {
-    this.uiService.setLoading(true);
     if (this.currentUser) {
       this.getTrips();
     } else {
+      this.uiService.setLoading(true);
       this.userService.getCurrentUser()
       .subscribe(user => {
+        this.uiService.setLoading(false);
         this.currentUser = user;
         if (user) {
           this.getTrips();
-        } else {
-          this.uiService.setLoading(false);
         }
       }, (error) => this.uiService.serverError(error));
     }
@@ -76,10 +75,7 @@ export class AccountTripComponent implements OnInit {
         this.trips = trips.map(trip => new Trip(trip)).filter(trip => !this.isExpired(trip)).sort(this.sortTrips);
         this.expiredTrips = trips.map(trip => new Trip(trip)).filter(trip => this.isExpired(trip)).sort(this.sortExpiredTrips);
       }
-    }, (error) => {
-      this.uiService.setLoading(false);
-      this.uiService.serverError(error);
-    });
+    }, (error) => this.uiService.serverError(error));
   }
 
   private manageDrafts() {

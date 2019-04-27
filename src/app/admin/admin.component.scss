@@ -1,0 +1,38 @@
+@import "../../styles/animations.scss";
+@import "../../styles/variables.scss";
+
+.admin {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &-title {
+        height: $navbarHeight;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $white-alpha-8;
+        font-weight: 100;
+        font-size: 16px;
+    }
+    &-view {
+        height: 85vh;
+        width: 95vw;
+        background-color: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+        border-radius: 5px;
+        &__content {
+            height: 90%;
+        }
+        &__nav {
+            width: 100%;
+            &-link {
+                &:hover {
+                    transition: all $transitionDuration;
+                    color: rgb(105, 105, 105);
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}

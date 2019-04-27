@@ -1,0 +1,19 @@
+<div class="admin">
+  <h2 class="admin-title">Administration</h2>
+  <div class="admin-view">
+    <div class="admin-view__content">
+      <nav class="admin-view__nav" mat-tab-nav-bar headerPosition="below">
+          <a  class="admin-view__nav-link"
+              mat-tab-link
+              *ngFor="let category of categories"
+              [routerLink]="category.path"
+              routerLinkActive #rla="routerLinkActive"
+              [active]="rla.isActive">
+              <mat-icon>{{ category.icon }}</mat-icon>
+            {{ category.label }}
+          </a>
+      </nav>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

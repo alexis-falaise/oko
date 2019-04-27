@@ -84,6 +84,11 @@ export class UiService {
           action = 'Réessayer';
           duration = 5000;
           break;
+        case 409:
+          message =  'Un utilisateur avec cette adresse email existe déjà';
+          action = 'Réessayer';
+          duration = 5000;
+          break;
         case 404:
           message = 'Le post n\'a pas été trouvé';
           action = 'OK';
@@ -101,7 +106,10 @@ export class UiService {
           break;
       }
     } else {
+      console.log('Error', error);
       message = `Une erreur est survenue (${error.message})`;
+      action = 'OK';
+      duration = 5000;
     }
     const snackRef = this.snack.open(customMessage || message, action, {duration: duration});
     if (status === 404 || status === 403) {

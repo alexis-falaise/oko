@@ -112,7 +112,7 @@ export function provideSocialConfig() {
     {
       provide: AuthServiceConfig,
       useFactory: provideSocialConfig,
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

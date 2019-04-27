@@ -28,12 +28,19 @@
 </nav>
 
 <div class="navbar__fullscreen" (click)="hide()" (swipeRight)="hide()" [hidden]="!menuDisplay">
-
+  <div class="navbar__fullscreen-avatar" >
+    <app-avatar [image]="currentUser.avatar" [size]="75" *ngIf="currentUser?.avatar"></app-avatar>
+  </div>
   <small class="navbar__fullscreen-title" *ngIf="randomWelcome">{{ randomWelcome }} </small>
   <div class="navbar__fullscreen-item" [class.active]="rlm.isActive" *ngFor="let item of menuItems">
     <a routerLink="{{ item.path }}" routerLinkActive [routerLinkActiveOptions]="{exact:true}" #rlm="routerLinkActive">
         <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
         {{ item.label }}
+    </a>
+  </div>
+  <div class="navbar__fullscreen-item" [class.active]="rlm.isActive" *ngIf="currentUser?.admin">
+    <a [routerLink]="['/admin']" routerLinkActive [routerLinkActiveOptions]="{exact: true}" #rlm="routerLinkActive">
+      <mat-icon>settings</mat-icon> Admin
     </a>
   </div>
   <hr class="divider">

@@ -2,7 +2,7 @@
 
 .trip-luggage {
     height: 100%;
-    width: 70vw;
+    width: 100%;
     overflow: hidden;
 
     .close {
@@ -18,6 +18,9 @@
     &__content {
         .step-wrapper {
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             overflow-y: scroll;
             overflow-x: hidden;
         }

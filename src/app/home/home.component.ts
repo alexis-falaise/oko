@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, Inject, AfterViewInit } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DOCUMENT } from '@angular/platform-browser';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';

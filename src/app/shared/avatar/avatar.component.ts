@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, Input, SimpleChanges, Sanitizer } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges, Sanitizer } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { environment } from '@env/environment';
@@ -7,7 +7,7 @@ import { environment } from '@env/environment';
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
-export class AvatarComponent implements OnInit, OnChanges {
+export class AvatarComponent implements OnChanges {
 
   @Input() image: string;
   @Input() size: number;
@@ -17,10 +17,6 @@ export class AvatarComponent implements OnInit, OnChanges {
   avatarLocation = environment.avatarLocation;
 
   constructor(private sanitizer: DomSanitizer) { }
-
-  ngOnInit() {
-    this.imageUrl = this.buildUrl(this.image);
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.image) {

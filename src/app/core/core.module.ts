@@ -8,9 +8,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DialogsModule } from './dialogs/dialogs.module';
 import { SharedModule } from '@shared/shared.module';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 @NgModule({
-  declarations: [NavComponent, NotFoundComponent],
+  declarations: [NavComponent, NotFoundComponent, ForbiddenComponent],
   imports: [
     CommonModule,
     SharedModule,

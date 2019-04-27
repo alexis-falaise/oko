@@ -17,6 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UiService } from '@core/ui.service';
 import { PexelsService } from '@core/pexels.service';
 import { MessengerService } from '@core/messenger.service';
+import { HistoryService } from '@core/history.service';
 
 @Component({
   selector: 'app-trip-detail',
@@ -43,12 +44,11 @@ export class TripDetailComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>,
     private route: ActivatedRoute,
     private location: Location,
+    private historyService: HistoryService,
     private messengerService: MessengerService,
     private postService: PostService,
-    private userService: UserService,
     private uiService: UiService,
     private snack: MatSnackBar,
-    private pexels: PexelsService,
   ) { }
 
   ngOnInit() {
@@ -118,6 +118,7 @@ export class TripDetailComponent implements OnInit {
       const url = this.router.createUrlTree(['order'], { relativeTo: this.route });
       const serializedUrl = this.router.serializeUrl(url);
       this.location.go(serializedUrl);
+      this.historyService.add(serializedUrl);
     }
     this.engagement = true;
     this.scrollToRequest();

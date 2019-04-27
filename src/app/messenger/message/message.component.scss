@@ -31,7 +31,10 @@
     }
     &__content {
         transition: all $transition;
-        border-radius: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 7.5px;
         background-color: rgb(240, 240, 240);
         color: rgb(50, 50, 50);
         font-size: 14px;
@@ -42,6 +45,8 @@
         white-space: pre-line;
         &.author {
             transition: all $transition;
+            border-bottom-left-radius: 7.5px;
+            border-bottom-right-radius: 0px;
             background: linear-gradient(45deg, #7cb342, #00acc1);
             color: white;
             font-weight: 400;

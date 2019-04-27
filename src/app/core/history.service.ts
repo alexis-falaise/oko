@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart, ActivatedRoute, UrlSerializer } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
+import { Location } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -12,9 +12,9 @@ export class HistoryService {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private serializer: UrlSerializer
+    private location: Location,
   ) {
+    this.add(this.location.path());
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.add(event.url);

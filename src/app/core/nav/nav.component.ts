@@ -43,7 +43,6 @@ export class NavComponent implements OnInit, OnChanges {
   secondaryMenuItems: Array<MenuItem> = [];
   currentUser: User;
   randomWelcome: string;
-  nextQuery = new Subject();
   logged = false;
 
   constructor(
@@ -65,9 +64,7 @@ export class NavComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.authService.onUser()
-    .pipe(takeUntil(this.nextQuery))
     .subscribe(user => {
-      this.nextQuery.next();
       if (user) {
         this.currentUser = user;
         this.displayAccountMenuItems = this.accountMenuItems;

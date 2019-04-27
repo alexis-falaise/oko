@@ -38,10 +38,13 @@ export class User {
     // App properties
     secure: boolean;
     sessions: Array<Session>;
+    admin: boolean;
+    signinDate: Moment;
 
     // Front-end helpers
     lastConnection: Moment;
     formattedLastConnection: string;
+    formattedSigninDate: string;
     isConnected: boolean;
     rating: number;
 
@@ -69,6 +72,9 @@ export class User {
             this.lastConnection = lastConnection.end;
             this.formattedLastConnection = this.formatDate(lastConnection.end);
             this.isConnected = lastConnection.open;
+        }
+        if (user.signinDate) {
+            this.formattedSigninDate = this.formatDate(user.signinDate);
         }
     }
 

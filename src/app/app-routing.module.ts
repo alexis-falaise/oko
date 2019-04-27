@@ -13,9 +13,12 @@ import { ThreadListComponent } from './messenger/thread-list/thread-list.compone
 import { ThreadComponent } from './messenger/thread/thread.component';
 
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { ForbiddenComponent } from '@core/forbidden/forbidden.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule', canActivate: [AdminGuard] },
   { path: 'home', component: HomeComponent },
   { path: 'landing', component: LandingComponent },
   { path: 'oneclick', component: OneclickComponent },
@@ -33,6 +36,8 @@ const routes: Routes = [
     ]
   },
   { path: '404', component: NotFoundComponent },
+  { path: '403', component: ForbiddenComponent },
+  { path: '401', component: ForbiddenComponent },
   { path: '**', redirectTo: '404', pathMatch: 'full'},
 ];
 

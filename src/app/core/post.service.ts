@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, forkJoin, Observer, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, forkJoin, Observer, of, zip } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -166,14 +166,22 @@ export class PostService {
     return Observable.create(observer => {
       this.http.get(`${this.tripUrl}/author/${id}`, {withCredentials: true})
       .subscribe((trips: Array<Trip>) => {
-        forkJoin(trips.map(trip => Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))))
-        .subscribe((outputTrips: Array<Trip>) => {
-          const resultingTrips = outputTrips.sort((first, second) =>  {
-            return moment(first.date).isBefore(second.date) ? -1 : 1;
+        if (trips && trips.length) {
+          forkJoin(trips.map(trip => {
+            return Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))
+            .pipe(catchError((err, caught) => of(caught)));
+          }))
+          .subscribe((outputTrips: Array<Trip>) => {
+            const resultingTrips = outputTrips.sort((first, second) =>  {
+              return moment(first.date).isBefore(second.date) ? -1 : 1;
+            });
+            observer.next(resultingTrips);
+            observer.complete();
           });
-          observer.next(resultingTrips);
+        } else {
+          observer.next(trips);
           observer.complete();
-        });
+        }
       });
     });
   }

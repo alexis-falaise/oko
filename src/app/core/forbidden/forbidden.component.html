@@ -1,0 +1,19 @@
+<div class="forbidden">
+    <div class="forbidden__illustration">
+        <mat-icon>pan_tool</mat-icon>
+    </div>
+    <h2 class="forbidden__title">Zone de contrôle</h2>
+    <small class="forbidden__subtitle">
+      Oups, ce n'est pas pour vous
+    </small>
+    <div class="forbidden__actions mt-5">
+      <button class="btn btn-hero btn-icon" matRipple [routerLink]="['/home']">
+        <mat-icon>home</mat-icon>
+        Accueil
+      </button>
+      <button class="btn btn-hero btn-icon" (click)="back()">
+        <mat-icon>arrow_back_ios</mat-icon>
+        Retour
+      </button>
+    </div>
+  </div>
