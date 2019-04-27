@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { AdminService } from '../admin.service';
 import { User } from '@models/user.model';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user',
@@ -32,7 +33,10 @@ export class AdminUserComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   moment = moment;
 
-  constructor(private adminService: AdminService) { }
+  constructor(
+    private adminService: AdminService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     // this.usersSource.paginator = this.paginator;
@@ -45,6 +49,11 @@ export class AdminUserComponent implements OnInit {
 
   filter(filter: string) {
     this.usersSource.filter = filter;
+  }
+
+  displayUser(user: User) {
+    this.adminService.setCurrentUser(user);
+    this.router.navigate([`/admin/user/${user.id}`]);
   }
 
   setAdmin(user: User, change) {

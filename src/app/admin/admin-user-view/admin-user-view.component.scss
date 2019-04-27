@@ -1,0 +1,10 @@
+.admin-user-view {
+    &__title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &-avatar {
+            margin-right: 10px;
+        }
+    }
+}

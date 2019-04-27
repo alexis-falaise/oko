@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, ValidationErrors, FormGroup, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AuthService } from '@core/auth.service';
 import { Router } from '@angular/router';
+import { UiService } from '@core/ui.service';
 
 
 
@@ -35,6 +36,7 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private uiService: UiService,
     private router: Router,
     private fb: FormBuilder
   ) { }
@@ -58,7 +60,7 @@ export class SigninComponent implements OnInit {
       if (signInfo.status) {
         this.authService.login(this.signinForm.value.email, this.signinForm.value.password);
       }
-    });
+    }, (error) => this.uiService.serverError(error));
   }
 
   login() {

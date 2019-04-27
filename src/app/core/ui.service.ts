@@ -84,6 +84,17 @@ export class UiService {
           action = 'Réessayer';
           duration = 5000;
           break;
+        case 418:
+          console.log('Error', error);
+          if (error instanceof ServerResponse) {
+            message = `${error.code} - ${error.message}`;
+          } else {
+            const errorContent = error.error;
+            message = `${errorContent.code} - ${errorContent.message}`;
+          }
+          action = 'OK';
+          duration = 5000;
+          break;
         case 409:
           message =  'Un utilisateur avec cette adresse email existe déjà';
           action = 'Réessayer';
@@ -106,7 +117,6 @@ export class UiService {
           break;
       }
     } else {
-      console.log('Error', error);
       message = `Une erreur est survenue (${error.message})`;
       action = 'OK';
       duration = 5000;

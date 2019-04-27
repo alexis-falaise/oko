@@ -8,8 +8,8 @@ import {
   FacebookLoginProvider,
   SocialUser
 } from 'angularx-social-login';
-import { BehaviorSubject, Observable, of, observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { User } from '@models/user.model';
@@ -123,7 +123,7 @@ export class AuthService {
         this.logUserIn(loginInfo.user);
       }
       this.status.next(loginInfo);
-    });
+    }, (error) => this.uiService.serverError(error));
   }
 
   /**
@@ -138,7 +138,7 @@ export class AuthService {
         this.status.next({ status: false, message: 'Successfully disconnected' });
         this.router.navigate(['login']);
       }
-    });
+    }, (error) => this.uiService.serverError(error));
   }
 
   /**

@@ -1,0 +1,23 @@
+<div class="admin-user-view container">
+  <h4 class="admin-user-view__title mt-3" *ngIf="user">
+    <app-avatar class="admin-user-view__title-avatar" [image]="user.avatar" [size]="50"></app-avatar>
+    <div class="details d-flex flex-column">
+      <span class="admin-user-view__title-name">
+        {{ user.firstname }} {{ user.lastname }}
+      </span>
+      <small class="text-muted">{{ user.email }}</small>
+    </div>
+  </h4>
+  <div class="d-flex flex-column align-items-center">
+    <button class="btn btn-info btn-icon" (click)="contact()">
+      <mat-icon>mail</mat-icon> Contacter
+    </button>
+  </div>
+  <hr class="divider">
+  <hr class="divider">
+  <div class="d-flex justify-content-center">
+    <button class="btn btn-danger btn-icon" (click)="deleteUser()">
+      <mat-icon>clear</mat-icon> Supprimer cet utilisateur
+    </button>
+  </div>
+</div>
