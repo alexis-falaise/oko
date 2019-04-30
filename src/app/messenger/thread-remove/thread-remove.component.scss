@@ -1,11 +1,21 @@
 @import "../../../styles/classes.scss";
 
 .thread-remove {
+    height: 60vh;
+    width: 100%;
+
     &__title {
         @extend .base-modal-title;
     }
+    &__loading {
+        top: -16px;
+    }
     &__message {
-        height: 35vh;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     &__actions {
         height: 40px;

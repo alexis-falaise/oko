@@ -178,11 +178,11 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         padding-left: 10%;
         width: 100%;
         height: 10vh;
-        min-height: 80px;
+        min-height: 50px;
     }
 
     &-item {
-        $itemSize: 3.5vh;
+        $itemSize: 3.25vh;
         animation: fullscreenItemsEnter $animationDuration;
         transition: all $transitionDuration;
         width: 100%;

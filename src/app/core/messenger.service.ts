@@ -101,7 +101,7 @@ export class MessengerService {
     this.http.get(`${this.messengerUrl}/thread/user/${user.id}`, {withCredentials: true})
     .subscribe((threads: Array<Thread>) => {
       if (threads && threads.length) {
-        const resultThreads = threads.map(thread => new Thread(thread));
+        const resultThreads = threads.map(thread => new Thread(thread, this.currentUser));
         this.threads.next(resultThreads);
       } else {
         this.threads.next(threads);
@@ -146,9 +146,12 @@ export class MessengerService {
   deleteThread(thread: Thread): Observable<ServerResponse> {
     return Observable.create(observer => {
       this.http.delete(`${this.messengerUrl}/thread/${thread.id}`, {withCredentials: true})
-      .subscribe((response) => {
-        const threads = this.threads.getValue().filter(listThread => listThread.id !== thread.id);
-        this.threads.next(threads);
+      .subscribe((response: ServerResponse) => {
+        if (response.status) {
+          const removedThread = response.data;
+          const threads = this.threads.getValue().filter(listThread => listThread.id !== removedThread._id);
+          this.threads.next(threads);
+        }
         observer.next(response);
         observer.complete();
       }, (error) => {
@@ -263,14 +266,21 @@ export class MessengerService {
   private getThreadByUrl(url: string) {
     this.http.get(url, {withCredentials: true})
     .pipe(takeUntil(this.threadChange))
-    .subscribe((thread: Thread) => {
+    .subscribe((response: any) => {
       this.disconnectCurrentThread();
-      if (thread) {
-          this.router.navigate(['messages', 'thread', thread.id || thread._id]);
-          this.thread.next(new Thread(thread, this.currentUser));
+      if (response) {
+        let thread;
+        if (response.status) {
+          thread = response.data;
+        } else {
+          thread = response;
+        }
+        this.router.navigate(['messages', 'thread', thread.id || thread._id]);
+        this.thread.next(new Thread(thread, this.currentUser));
       } else {
-        this.thread.next(null);
+          this.thread.next(null);
       }
+
     }, (error: HttpErrorResponse) => this.uiService.serverError(error));
   }
 

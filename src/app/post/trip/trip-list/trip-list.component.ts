@@ -38,6 +38,9 @@ export class TripListComponent implements OnInit, OnDestroy {
 
   toggleFilterDisplay() {
     this.displayFilter = !this.displayFilter;
+    if (!this.displayFilter) {
+      this.resetFilters();
+    }
   }
 
   resetFilters() {

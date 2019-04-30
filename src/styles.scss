@@ -158,6 +158,10 @@ html, body {
     display: flex !important;
     flex-direction: row;
     align-items: center;
+    outline: none !important;
+    &:focus {
+        outline: none !important;
+    }
     .mat-icon {
         margin-right: 5px;
     }

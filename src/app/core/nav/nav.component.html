@@ -29,7 +29,7 @@
 
 <div class="navbar__fullscreen" (click)="hide()" (swipeRight)="hide()" [class.display]="menuDisplay">
   <div class="navbar__fullscreen-avatar" >
-    <app-avatar [image]="currentUser.avatar" [size]="75" *ngIf="currentUser?.avatar"></app-avatar>
+    <app-avatar [image]="currentUser.avatar" [size]="50" *ngIf="currentUser?.avatar"></app-avatar>
   </div>
   <small class="navbar__fullscreen-title" *ngIf="randomWelcome">{{ randomWelcome }} </small>
   <div class="navbar__fullscreen-item" [class.active]="rlm.isActive" *ngFor="let item of menuItems">
@@ -43,8 +43,7 @@
       <mat-icon>settings</mat-icon> Admin
     </a>
   </div>
-  <hr class="divider">
-  <small class="navbar__fullscreen-title">Espace Voyageur</small>
+  <small class="navbar__fullscreen-title mt-3">Espace Voyageur</small>
   <div class="navbar__fullscreen-item" [class.active]="rlt.isActive" *ngFor="let item of travelerMenuItems">
       <a routerLink="{{ item.path }}" routerLinkActive [routerLinkActiveOptions]="{exact:true}" #rlt="routerLinkActive">
           <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>

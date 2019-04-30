@@ -18,6 +18,7 @@
         }
         &.filters {
             transition: all $animationDuration;
+            min-height: 225px !important;
             height: 35vh;
         }
     }

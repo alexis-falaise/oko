@@ -10,6 +10,7 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['./thread-remove.component.scss']
 })
 export class ThreadRemoveComponent implements OnInit {
+  loading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public thread: Thread,
@@ -23,8 +24,10 @@ export class ThreadRemoveComponent implements OnInit {
   }
 
   removeThread() {
+    this.loading = true;
     this.messenger.deleteThread(this.thread)
     .subscribe(() => {
+        this.loading = false;
         this.snack.open('La discussion a été supprimée', 'OK', {duration: 3000});
         this.close();
     }, (error) => this.uiService.serverError(error));

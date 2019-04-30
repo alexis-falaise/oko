@@ -113,9 +113,8 @@ export class ThreadListComponent implements OnInit, OnDestroy {
 
   private setThreads(threads: Array<Thread>) {
     this.threads = threads.sort(this.sortThreads).map(thread => {
-      const formattedThread = new Thread(thread, this.currentUser || undefined);
-      this.setThreadMessagesListener(formattedThread);
-      return formattedThread;
+      this.setThreadMessagesListener(thread);
+      return thread;
     });
     this.threadPanels = this.threads.map(() => false);
   }

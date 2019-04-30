@@ -7,7 +7,7 @@
         @extend .base-modal-title;
     }
     &__search {
-        height: 100px;
+        height: 75px;
         &-input {
             width: 100%;
         }
@@ -17,7 +17,7 @@
         top: -55px;
     }
     &__list {
-        height: 60%;
+        height: 55%;
         margin-bottom: 25px;
         overflow-y: scroll;
         overflow-x: hidden;

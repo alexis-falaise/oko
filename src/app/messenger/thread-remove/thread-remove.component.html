@@ -4,6 +4,7 @@
   </h2>
   <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
   <hr class="divider">
+  <mat-progress-bar class="thread-remove__loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <div class="thread-remove__message">
     Vous allez supprimer une discussion. Cette action est irréversible. <br>
     <small class="text-muted">

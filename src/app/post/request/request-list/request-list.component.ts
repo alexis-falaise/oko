@@ -40,6 +40,9 @@ export class RequestListComponent implements OnInit {
 
   toggleFilterDisplay() {
     this.displayFilter = !this.displayFilter;
+    if (!this.displayFilter) {
+      this.resetFilters();
+    }
   }
 
 }
