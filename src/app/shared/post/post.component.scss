@@ -1,8 +1,7 @@
 @import '~@angular/material/theming';
 @import "../../../styles/variables.scss";
 
-$post-height: 100px;
-$request-height: 135px;
+$post-height: 135px;
 
 .post {
     $transitionDuration: 0.1s;
@@ -10,9 +9,6 @@ $request-height: 135px;
 
     transition: $transitionDuration $transitionStyle all;
     height: $post-height;
-    &.request {
-        height: $request-height;
-    }
     background-color: rgba(255, 255, 255, .1);
     background-size: cover;
     background-position: center;
@@ -77,6 +73,7 @@ $request-height: 135px;
 
     &-general {
         margin-top: -5px;
+        height: 125%;
         &.outdated {
             opacity: .5;
         }
@@ -86,10 +83,11 @@ $request-height: 135px;
         height: 150%;
         width: 100%;
         margin: -10px 0px -5px -5px;
+        padding-top: 5px;
         &.horizontal {
+            padding-top: 10px;
             height: 114%;
             margin: -15px 0 -5px -5px;
-            padding-top: 10px;
         }
         background-color: rgba(0, 0, 0, .015);
         background-size: cover;
@@ -120,6 +118,11 @@ $request-height: 135px;
             &__requests {
                 font-size: 10px;
             }
+        }
+
+        &__date {
+            font-size: 8px;
+            color: $white-alpha-6;
         }
     }
 
@@ -287,8 +290,23 @@ $request-height: 135px;
         &__content {
             padding-left: 20px;
             &__items {
-                height: 65% !important;
-                overflow-y: scroll;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                overflow: hidden;
+            }
+            &__item {
+                font-size: 12px;
+                font-weight: 700;
+                color: $white-alpha-8;
+                &-picture {
+                    height: 100%;
+                    width: 50%;
+                    padding: 5px;
+                    border-radius: 3px;
+                    border: 1px solid rgba(255, 255, 255, .4);
+                }
             }
             &__location {
                 $locationSize: 11px;
@@ -314,13 +332,6 @@ $request-height: 135px;
                     font-size: 9px;
                     color: $white-alpha-4;
                 }
-            }
-            &__item {
-                font-size: 12px;
-                font-weight: 700;
-                color: $white-alpha-8;
-                list-style: none;
-                margin-left: -35px;
             }
         }
 

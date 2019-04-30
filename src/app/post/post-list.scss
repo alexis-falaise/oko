@@ -12,13 +12,14 @@
         @extend .base-hero;
         transition: all $animationDuration;
         height: 10vh;
-        min-height: 85px !important;
+        min-height: 60px !important;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, .1) !important;
         &-title {
              @extend .base-hero-title;
         }
         &.filters {
             transition: all $animationDuration;
-            min-height: 225px !important;
+            min-height: 285px !important;
             height: 35vh;
         }
     }
@@ -31,16 +32,14 @@
 
     &__list {
         transition: all $animationDuration;
-        // display: flex;
-        // flex-direction: column;
-        // align-items: center;
-        height: 80vh;
-        overflow-y: scroll;
+        height: 90vh;
+        overflow: hidden;
         padding-bottom: 25px;
 
         &.filters {
             transition: all $animationDuration;
             height: 65vh;
+            overflow-y: scroll;
         }
     }
 }

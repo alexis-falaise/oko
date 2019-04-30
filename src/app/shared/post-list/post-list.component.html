@@ -1,4 +1,4 @@
-<cdk-virtual-scroll-viewport itemSize="120" minBufferPx="260" maxBufferPx="520" [style.height]="'80vh'"
+<cdk-virtual-scroll-viewport itemSize="155" minBufferPx="310" maxBufferPx="620" [style.height]="'90vh'"
                              class="post-list" *ngIf="!horizontal; else carousel">
     <app-post [post]="post" *cdkVirtualFor="let post of posts" [hidden]="empty"></app-post>
     <div class="post-list__empty d-flex justify-content-center" *ngIf="empty">

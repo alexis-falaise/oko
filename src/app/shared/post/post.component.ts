@@ -72,6 +72,7 @@ export class PostComponent implements OnInit, OnChanges {
       if (post.closed) {
         this.outdated = true;
       }
+      console.log('Post', post.items);
     }
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
     if (post instanceof Trip && this.horizontal) {

@@ -7,6 +7,7 @@ export class Post {
     submitDate?: Moment;
     expirationDate?: Moment;
     homeDelivery?: boolean;
+    private: boolean;
 
     /* App Management (Moderation) */
     approved: boolean;
