@@ -6,6 +6,12 @@
                            (keyup.enter)="validate()"
                            id="hero"
                            (click)="edit()">
+        <div class="landing-brand-wrapper" [class.d-none]="displayContent" [routerLink]="['/home']">
+            <h1 class="landing-brand">ọkọ</h1>
+            <small class="landing-brand-tagline" [class.enter]="taglineEnter" [class.exit]="taglineExit">
+                {{ displayTagline }}
+            </small>
+        </div>
         <div class="home-hero__input" [class.d-none]="displayContent">
             Je veux me faire livrer
             <mat-form-field class="input-hero__item" floatLabel="never">

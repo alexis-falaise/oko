@@ -217,6 +217,20 @@ html, body {
     color: rgb(175, 175, 175);
 }
 
+.mat-checkbox {
+    &.light {
+        .mat-checkbox-frame {
+            border-color: rgba(255, 255, 255, .7);
+        }
+    }
+}
+
+.mat-datepicker-toggle {
+    &.light {
+        color: rgba(255, 255, 255, .7);
+    }
+}
+
 .text-muted.light {
     color: $white-alpha-6 !important;
 }

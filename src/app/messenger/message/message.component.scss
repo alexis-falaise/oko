@@ -43,6 +43,9 @@
         display: flex;
         align-items: center;
         white-space: pre-line;
+        &.push {
+            margin-left: 35px;
+        }
         &.author {
             transition: all $transition;
             border-bottom-left-radius: 7.5px;
@@ -53,6 +56,9 @@
             &:hover {
                 transition: all $transition;
                 background: linear-gradient(45deg, #9ccc65, #26c6da);
+            }
+            &.push {
+                margin-right: 37.5px;
             }
         }
         &:hover {

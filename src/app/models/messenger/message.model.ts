@@ -21,6 +21,7 @@ export class Message {
     formattedSendDate: string;
     formattedReceptionDate: string;
     formattedSightDate: string;
+    avatar: boolean;
 
     constructor(message: Partial<Message>, user?: User) {
         Object.assign(this, message);

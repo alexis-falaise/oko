@@ -31,14 +31,7 @@ export class AdminUserViewComponent implements OnInit, OnDestroy {
   }
 
   contact() {
-    this.userService.getCurrentUser()
-    .subscribe(user => {
-      if (user.id !== this.user.id) {
-        this.messengerService.getContactThread(user, this.user);
-      } else {
-        this.snack.open('Vous êtes actuellement en relation', 'Ah oui', {duration: 3000});
-      }
-    });
+    this.messengerService.getContactThread(undefined, this.user);
   }
 
   deleteUser() {

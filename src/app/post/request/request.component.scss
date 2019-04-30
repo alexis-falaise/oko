@@ -1,4 +1,5 @@
 @import "../../../styles/animations.scss";
+@import "../../../styles/classes.scss";
 @import "../../../styles/variables.scss";
 
 .request {
@@ -6,27 +7,19 @@
     background: $heroGradient;
 
     &__hero {
-        background: $heroGradient;
-        background-size: 100vw 100vh;
-        width: 100vw;
-        min-height: 125px;
-        position: sticky;
-        height: 15vh;
-        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
-        color: $white-alpha-8;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        @extend .base-hero;
+        height: 10vh;
+        min-height: 90px !important;
 
         &-title {
-            font-size: 24px;
+            @extend .base-hero-title;
+            margin-top: 5px;
         }
     }
 
     &__form {
-        animation: appear $animationDuration;        
+        animation: appear $animationDuration; 
+        z-index: 11;       
         max-height: 85vh;
         padding-top: 15px;
         padding-bottom: 25px;

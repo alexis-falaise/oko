@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { MessengerService } from '@core/messenger.service';
@@ -37,13 +37,14 @@ export class ThreadNewComponent implements OnInit, OnDestroy {
 
   search() {
     this.userSearchInput.next();
-    this.getUsers();
+    timer(250).pipe(takeUntil(this.userSearchInput))
+    .subscribe(() => this.getUsers());
   }
 
   getUsers() {
     this.loading = true;
     this.messengerService.getUsers(this.userSearch)
-    .pipe(takeUntil(this.userSearchInput || this.ngUnsubscribe))
+    .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(users => {
       this.users = users;
       this.loading = false;

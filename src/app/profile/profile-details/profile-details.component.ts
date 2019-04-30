@@ -65,12 +65,7 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   contact() {
-    if (this.currentUser) {
-      this.messengerService.getContactThread(this.currentUser, this.user);
-    } else {
-      const snack = this.snack.open('Connectez-vous!', 'Connexion');
-      snack.onAction().subscribe(() => this.router.navigate(['/oneclick']));
-    }
+    this.messengerService.getContactThread(this.currentUser, this.user);
   }
 
   private fetchDisplayElementList(countries: Array<string>): Observable<Array<DisplayElement>> {

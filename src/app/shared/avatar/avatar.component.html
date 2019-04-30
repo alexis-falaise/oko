@@ -2,4 +2,5 @@
     [class.shadowed]="shadowed"
     [class.connected]="connected">
     <img class="avatar-image" [src]="imageUrl" [width]="size" alt="Avatar" *ngIf="imageUrl">
+    <mat-icon *ngIf="!imageUrl">perm_identity</mat-icon>
 </div>

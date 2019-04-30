@@ -32,7 +32,7 @@ export class ContactListComponent implements OnInit, OnChanges {
   }
 
   getContactThread(contact: User) {
-    this.messengerService.getContactThread(this.currentUser, contact);
+    this.messengerService.getContactThread(contact, this.currentUser);
   }
 
   private sortContacts(a: User, b: User): number {

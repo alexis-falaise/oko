@@ -1,6 +1,27 @@
+@import "../../../styles/variables.scss";
+
 .post-filter {
     width: 100%;
+    padding: 0 7.5%;
+    display: flex;
+    align-items: center;
+    height: 25vh;
     
+    .form-control {
+        background-color: rgba(255, 255, 255, .1);
+        border: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, .4);
+        color: $white-alpha-8;
+
+        &::placeholder {
+            color: $white-alpha-6;
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .2);
+        }
+    }
+
     .mat-expansion-panel-header-title {
         text-align: center;
         color: rgb(80, 80, 80);

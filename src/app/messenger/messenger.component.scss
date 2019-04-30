@@ -6,15 +6,12 @@
     background: $heroGradient;
     &__hero {
         @extend .base-hero;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        height: 15vh;
+        height: 10vh;
+        min-height: 100px;
         width: 100vw;
         &-title {
-            color: $white-alpha-8;
-            font-size: 24px;
+            @extend .base-hero-title;
+            margin-top: 5px;
         }
     }
 
@@ -22,7 +19,7 @@
         background-color: white;
         border-radius: 3px;
         box-shadow: 0 0 15px rgba(0, 0, 0, .3);
-        height: 80vh;
+        height: 85vh;
         position: relative;
         top: -25px;
     }

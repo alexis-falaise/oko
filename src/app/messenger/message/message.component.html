@@ -4,12 +4,12 @@
   </div>
   <div class="message__main" [class.author]="message.authorView">
       <app-avatar class="message__avatar" [image]="message?.author?.avatar" [size]="avatarSize"
-                  *ngIf="!message.authorView"></app-avatar>
-      <div class="message__content" [class.author]="message?.authorView">
+                  *ngIf="!message.authorView && message.avatar"></app-avatar>
+      <div class="message__content" [class.push]="!message.avatar" [class.author]="message?.authorView">
         {{ message?.content }}
       </div>
       <app-avatar class="message__avatar author" [image]="message?.author?.avatar" [size]="avatarSize"
-                  *ngIf="message.authorView"></app-avatar>
+                  *ngIf="message.authorView && message.avatar"></app-avatar>
     </div>
   <div class="message__info d-flex" [class.author]="message.authorView" *ngIf="showInfo && message.authorView">
     <mat-icon *ngIf="message?.sent && !message?.received">send</mat-icon>

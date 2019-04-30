@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Message } from '@models/messenger/message.model';
 
 @Component({
   selector: 'app-message',
@@ -6,9 +7,9 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit, OnChanges {
-  @Input() message;
+  @Input() message: Message;
   showInfo = false;
-  avatarSize = 25;
+  avatarSize = 30;
 
   constructor() { }
 

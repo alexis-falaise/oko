@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { Thread } from '@models/messenger/thread.model';
+import { MessengerService } from '@core/messenger.service';
 
 @Component({
   selector: 'app-messenger',
   templateUrl: './messenger.component.html',
   styleUrls: ['./messenger.component.scss']
 })
-export class MessengerComponent implements OnInit {
+export class MessengerComponent implements OnInit, OnDestroy {
   threadDisplay: boolean;
   thread: Thread;
   title: string;
 
   constructor(
     private router: Router,
+    private messengerService: MessengerService,
   ) { }
 
   ngOnInit() {
@@ -23,6 +25,10 @@ export class MessengerComponent implements OnInit {
         this.threadDisplay = !!this.router.url.includes('thread/');
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.messengerService.resetThreads();
   }
 
 }

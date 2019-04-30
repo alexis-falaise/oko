@@ -16,8 +16,14 @@
           <div class="col-12 col-md-10 thread-list__content__list-wrapper">
             <div class="thread-list__content__list">
                 <h6 class="thread-list__content__list-title">Discussions</h6>
-                <div class="thread-list__thread" *ngFor="let thread of threads" [routerLink]="['/messages', 'thread', thread.id]">
-                    <div class="d-flex w-100 align-items-center">
+                <div class="thread-list__thread"
+                     *ngFor="let thread of threads; let i = index"
+                     (press)="displayPanel(i)"
+                     (swipeLeft)="displayPanel(i)"
+                     (swipeRight)="hidePanel(i)"
+                     [class.panel-display]="threadPanels[i]">
+                    <div class="thread-list__thread__content w-75 d-flex align-items-center"
+                         [routerLink]="['/messages', 'thread', thread.id]">
                         <app-avatar class="thread-avatar" [size]="75" [image]="thread.contact?.avatar"></app-avatar>
                         <div class="w-75 d-flex flex-column justify-content-center">
                             <h6 class="thread-list__thread-title" *ngIf="thread.contact">
@@ -40,6 +46,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="thread-list__thread__remove-panel w-25 d-flex justify-content-around">
+                        <!-- <button class="btn btn-icon btn-light mr-1" (click)="removeThreadMessagesListener(thread)">
+                            <mat-icon>notifications_off</mat-icon>
+                        </button> -->
+                        <button class="btn btn-icon btn-danger" (click)="removeThread(thread)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="thread-list__empty d-flex flex-column align-items-center justify-content-center" *ngIf="threads && !threads.length">
+                    <small class="text-muted">Aucune discussion en cours</small>
+                    <button class="btn btn-light btn-icon" (click)="newThread()">
+                        <mat-icon>add</mat-icon> Nouvelle discussion
+                    </button>
                 </div>
             </div>
           </div>

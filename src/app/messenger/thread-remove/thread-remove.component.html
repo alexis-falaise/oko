@@ -1,0 +1,17 @@
+<div class="thread-remove">
+  <h2 class="thread-remove__title">
+    Supprimer une discussion
+  </h2>
+  <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+  <hr class="divider">
+  <div class="thread-remove__message">
+    Vous allez supprimer une discussion. Cette action est irréversible. <br>
+    <small class="text-muted">
+      Utilisez la fonction signaler pour nous avertir d'un comportement inapproprié.
+    </small>
+  </div>
+  <div class="thread-remove__actions">
+    <button class="btn btn-danger" (click)="removeThread()">Supprimer</button>
+    <button class="btn btn-light" (click)="close()">Annuler</button>
+  </div>
+</div>

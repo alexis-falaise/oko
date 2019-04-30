@@ -11,6 +11,7 @@ import { Filter } from '@models/app/filter.model';
 export class RequestListComponent implements OnInit {
 
   requests: Array<Request> = null;
+  displayFilter = false;
   filter = new Filter({open: true});
   filterComponentOptions = {
     country: true,
@@ -35,6 +36,10 @@ export class RequestListComponent implements OnInit {
 
   resetFilters() {
     this.postService.resetRequestFilters();
+  }
+
+  toggleFilterDisplay() {
+    this.displayFilter = !this.displayFilter;
   }
 
 }

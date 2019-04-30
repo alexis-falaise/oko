@@ -17,10 +17,9 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     height: $navbarHeight;
     flex-wrap: nowrap;
     width: 100%;
-    border-bottom: thin solid rgba(255, 255, 255, .5);
-    background-color: $menu-color;
+    // border-bottom: thin solid rgba(255, 255, 255, .5);
+    // background-color: $menu-color;
 
-    &:hover,
     &.expanded {
         transition: $transitionDuration $transitionStyle all;
         border-bottom: thin solid rgb(255, 255, 255);
@@ -37,6 +36,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     }
 
     &-brand {
+        animation: slideInUp $transitionStyle $animationDuration;
         flex-direction: column;
         justify-content: center;
         width: auto;
@@ -112,10 +112,6 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
             }
         }
 
-        &:hover {
-            background-color: rgba(255, 255, 255, .2);
-        }
-
         &.expanded {
             background-color: $expanded-menu-color;
             .navbar-toggler {
@@ -150,22 +146,31 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
 }
 
 .navbar__fullscreen {
-    animation: fullscreenEnter $animationDuration;
-    -webkit-animation: fullscreenEnter $animationDuration;
-    -moz-animation: fullscreenEnter $animationDuration;
-    -o-animation: fullscreenEnter $animationDuration;
+    // animation: fullscreenEnter $animationDuration;
+    // -webkit-animation: fullscreenEnter $animationDuration;
+    // -moz-animation: fullscreenEnter $animationDuration;
+    // -o-animation: fullscreenEnter $animationDuration;
 
     position: fixed;
+    transition: all $transitionStyle $animationDuration;
+    right: -100%;
     top: $navbarHeight;
     padding-top: 1vh;
     z-index: 102;
     width: 100%;
     height: 95vh;
-    box-shadow: -5px 3px 7px rgba(0, 0, 0, .05);
+    box-shadow: 0px 3px 7px rgba(0, 0, 0, .05);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     background-color: $expanded-menu-color;
+    opacity: 0.5;
+
+    &.display {
+        transition: all $transitionStyle $animationDuration;
+        right: 0;
+        opacity: 1;
+    }
 
     &-avatar {
         display: flex;

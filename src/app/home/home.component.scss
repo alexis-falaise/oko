@@ -1,7 +1,7 @@
 @import "../../styles/variables.scss";
 @import "../../styles/classes.scss";
 
-$homeHeroSize: 36px;
+$homeHeroSize: 5vh;
 $onBoardTransitionDuration: 0.35s;
 $transitionDuration: 0.15s;
 $transitionStyle: ease-out;
@@ -120,6 +120,7 @@ $transitionStyle: ease-out;
 
         .mat-form-field {
             width: 40vw;
+            min-width: 225px !important;
         }
 
         &__summary {
@@ -484,4 +485,30 @@ $transitionStyle: ease-out;
 
 .divider {
     border-color: $white-alpha-6;
+}
+
+.landing-brand {
+    &-wrapper {
+        outline: none;
+        &:focus {
+            outline: none;
+        }
+    }
+    &-tagline {
+        transition: all .25s;
+        position: relative;
+        top: 0;
+        opacity: 1;
+        outline: none;
+        &.enter {
+            transition: all .25s;
+            top: 20px;
+            opacity: 0;
+        }
+        &.exit {
+            transition: all .25s;
+            top: -10px;
+            opacity: 0;
+        }
+    }
 }

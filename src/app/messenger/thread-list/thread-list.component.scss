@@ -54,8 +54,21 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0 15px;
+        width: 115vw;
         border-radius: 5px;
+        padding-right: 15px;
+        transition: all .25s;
+
+        &__content {
+            border-radius: 5px;
+            padding: 0 15px;
+        }
+
+        &:hover {
+            background-color: rgba(0, 0, 0, .05);
+            cursor: pointer;
+        }
+
         &-title {
             font-weight: 700;
             font-size: 18px;
@@ -63,9 +76,10 @@
             margin-bottom: 0;
         }
 
-        &:hover {
-            background-color: rgba(0, 0, 0, .05);
-            cursor: pointer;
+
+        &.panel-display {
+            transition: all .25s;
+            transform: translateX(-40vw);
         }
     }
 }

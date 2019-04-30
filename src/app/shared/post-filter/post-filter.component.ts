@@ -1,7 +1,10 @@
 import { Component, EventEmitter, OnInit, OnChanges, Input, Output, SimpleChanges } from '@angular/core';
-import { Filter } from '@models/app/filter.model';
 import { DateAdapter } from '@angular/material';
+import { timer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
+
+import { Filter } from '@models/app/filter.model';
 
 class FilterOptions {
   location: boolean;
@@ -23,6 +26,7 @@ export class PostFilterComponent implements OnInit, OnChanges {
   @Output() filterRefresh = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
   isFilled = false;
+  nextQuery = new Subject();
   today = moment();
 
   constructor(private dateAdapter: DateAdapter<Date>) { }
@@ -42,8 +46,10 @@ export class PostFilterComponent implements OnInit, OnChanges {
   }
 
   emitFilter() {
+    this.nextQuery.next();
     this.checkFilter();
-    this.filterRefresh.emit(this.filter);
+    timer(250).pipe(takeUntil(this.nextQuery))
+    .subscribe(() => this.filterRefresh.emit(this.filter));
   }
 
   checkFilter() {

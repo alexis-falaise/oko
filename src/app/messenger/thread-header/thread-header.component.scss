@@ -1,11 +1,12 @@
 @import "../../../styles/variables.scss";
 
 .thread-header {
-    height: 100px;
+    height: 85px;
     padding: 0 15px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: -12px;
     animation: appear .5s;
     &:focus {
         outline: none;

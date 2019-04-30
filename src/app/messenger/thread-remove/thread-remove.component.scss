@@ -1,0 +1,16 @@
+@import "../../../styles/classes.scss";
+
+.thread-remove {
+    &__title {
+        @extend .base-modal-title;
+    }
+    &__message {
+        height: 35vh;
+    }
+    &__actions {
+        height: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+}

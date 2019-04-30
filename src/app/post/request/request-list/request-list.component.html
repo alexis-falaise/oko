@@ -1,15 +1,20 @@
 <div class="request-list">
-  <div class="request-list__hero d-flex justify-content-center">
-    <h2 class="request-list__hero-title">Annonces</h2>
-  </div>
-  <div class="request-list__filters">
-      <app-post-filter [filter]="filter"
-                       [options]="filterComponentOptions"
-                       (filterRefresh)="filterRequests($event)"
-                       (resetFilter)="resetFilters()">
-      </app-post-filter>
+  <div class="request-list__hero" [class.filters]="displayFilter">
+    <h2 class="request-list__hero-title">
+      Annonces
+      <button class="btn btn-icon" (click)="toggleFilterDisplay()">
+        <mat-icon>{{ displayFilter ? 'clear' : 'search' }}</mat-icon>
+      </button>
+    </h2>
+    <div class="request-list__filters" *ngIf="displayFilter">
+        <app-post-filter [filter]="filter"
+                         [options]="filterComponentOptions"
+                         (filterRefresh)="filterRequests($event)"
+                         (resetFilter)="resetFilters()">
+        </app-post-filter>
     </div>
-  <div class="request-list__list">
+  </div>
+  <div class="request-list__list" [class.filters]="displayFilter">
     <app-post-list></app-post-list>
   </div>
 </div>

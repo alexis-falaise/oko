@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { PostService } from '@core/post.service';
@@ -11,6 +11,7 @@ import { Filter } from '@models/app/filter.model';
 })
 export class TripListComponent implements OnInit, OnDestroy {
   filter = new Filter();
+  displayFilter = false;
   filterComponentOptions = {
     location: true,
     beforeDate: true
@@ -20,7 +21,6 @@ export class TripListComponent implements OnInit, OnDestroy {
 
   constructor(
     private postService: PostService,
-    private ref: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -34,6 +34,10 @@ export class TripListComponent implements OnInit, OnDestroy {
 
   filterPosts(filter) {
     this.postService.getTrips(filter);
+  }
+
+  toggleFilterDisplay() {
+    this.displayFilter = !this.displayFilter;
   }
 
   resetFilters() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, observable } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 
 import { environment } from '@env/environment';
@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class MessengerService {
   thread = new BehaviorSubject<Thread>(new Thread({}));
   contacts = new BehaviorSubject<Array<User>>([]);
   threadChange = new Subject();
-  threads = new BehaviorSubject<Array<Thread>>([]);
+  threads = new BehaviorSubject<Array<Thread>>(null);
   currentUser: User;
   private messengerUrl = `${environment.serverUrl}/messenger`;
 
@@ -31,6 +32,7 @@ export class MessengerService {
     private uiService: UiService,
     private userService: UserService,
     private authService: AuthService,
+    private snack: MatSnackBar,
     private router: Router,
     private socket: Socket
   ) {
@@ -72,12 +74,21 @@ export class MessengerService {
 
   /**
    * Get a thread in relation with a given contact
-   * @param user: Current User
    * @param contact: Related contact
+   * @param user: Current User (optional)
    */
-  getContactThread(user: User = this.currentUser, contact: User) {
-    const url = `${this.messengerUrl}/thread/user/${user.id}/contact/${contact.id}`;
-    this.getThreadByUrl(url);
+  getContactThread(contact: User, user: User = this.currentUser) {
+    if (user) {
+      if (user.id !== contact.id) {
+        const url = `${this.messengerUrl}/thread/user/${user.id}/contact/${contact.id}`;
+        this.getThreadByUrl(url);
+      } else {
+        this.snack.open('Vous êtes actuellement en relation', 'Ah oui', {duration: 3000});
+      }
+    } else {
+      const snackRef = this.snack.open('Connectez-vous', 'Connexion', {duration: 3000});
+      snackRef.onAction().subscribe(() => this.router.navigate(['/oneclick']));
+    }
   }
 
   /**
@@ -93,7 +104,7 @@ export class MessengerService {
         const resultThreads = threads.map(thread => new Thread(thread));
         this.threads.next(resultThreads);
       } else {
-        this.threads.next([]);
+        this.threads.next(threads);
       }
     }, (error: HttpErrorResponse) => this.uiService.serverError(error));
   }
@@ -126,6 +137,26 @@ export class MessengerService {
   addUserToThread(thread: Thread, user: User = this.currentUser): Observable<ServerResponse> {
     return this.http.post(`${this.messengerUrl}/thread/${thread.id}/user`,
                 user, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  /**
+   * Deletes a thread
+   * @param thread : thread object (pass on new Thread({id: id}) if you only have id on hand)
+   */
+  deleteThread(thread: Thread): Observable<ServerResponse> {
+    return Observable.create(observer => {
+      this.http.delete(`${this.messengerUrl}/thread/${thread.id}`, {withCredentials: true})
+      .subscribe((response) => {
+        const threads = this.threads.getValue().filter(listThread => listThread.id !== thread.id);
+        this.threads.next(threads);
+        observer.next(response);
+        observer.complete();
+      }, (error) => {
+        this.uiService.serverError(error.error);
+        observer.next(error.error);
+        observer.complete();
+      });
+    });
   }
 
   /**

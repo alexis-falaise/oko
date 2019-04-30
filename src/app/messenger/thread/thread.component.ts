@@ -116,6 +116,25 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
   }
 
+  private parseThread(thread: Thread): Thread {
+    if (thread.messages) {
+      thread.messages = thread.messages.map((message: Message, index) => {
+        if (message.author) {
+          if (index < thread.messages.length - 1) {
+            const nextMessage = thread.messages[index + 1];
+            if (nextMessage.author.id !== message.author.id) {
+              message.avatar = true;
+            }
+          } else {
+            message.avatar = true;
+          }
+        }
+        return message;
+      });
+    }
+    return thread;
+  }
+
   private subscribeThread() {
     this.messengerService.onThread()
     .pipe(takeUntil(this.ngUnsubscribe))
@@ -124,7 +143,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
         this.removeThreadListeners();
       }
       if (thread) {
-        this.thread = thread;
+        this.thread = this.parseThread(thread);
         this.setThreadListeners();
         timer(this.uiCoolDown).subscribe(() => this.scrollDown());
         this.uiService.setMainLoading(false);

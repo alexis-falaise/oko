@@ -1,13 +1,38 @@
 @import "./variables.scss";
 
 .base-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 12px;
     background: $heroGradient;
     background-size: 100vw 100vh;
     width: 100vw;
-    z-index: 10;
     min-height: 125px;
+    z-index: 10;
     box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
-    color: white;
+    color: $white-alpha-8;
+}
+
+.base-hero-title {
+    $titleSize: 3vh;
+    font-size: $titleSize;
+    font-weight: 100;
+    display: flex;
+    align-items: center;
+    .btn {
+        z-index: 110;
+         display: inline-flex !important;
+        .mat-icon {
+            height: $titleSize;
+            width: $titleSize;
+        }
+        .material-icons {
+            font-size: $titleSize;
+            color: $white-alpha-8;
+        }
+    }
 }
 
 .base-brand {

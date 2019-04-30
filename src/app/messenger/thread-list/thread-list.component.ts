@@ -1,17 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Moment } from 'moment';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
 import * as moment from 'moment';
 
 import { MessengerService } from '@core/messenger.service';
+import { UserService } from '@core/user.service';
+import { UiService } from '@core/ui.service';
+
+import { ThreadNewComponent } from '../thread-new/thread-new.component';
+import { ThreadRemoveComponent } from '../thread-remove/thread-remove.component';
 
 import { Thread } from '@models/messenger/thread.model';
 import { Message } from '@models/messenger/message.model';
-import { UserService } from '@core/user.service';
 import { User } from '@models/user.model';
-import { Socket } from 'ngx-socket-io';
-import { MatDialog } from '@angular/material';
-import { ThreadNewComponent } from '../thread-new/thread-new.component';
-import { UiService } from '@core/ui.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -21,45 +24,29 @@ import { UiService } from '@core/ui.service';
 })
 export class ThreadListComponent implements OnInit, OnDestroy {
   threads: Array<Thread>;
+  threadPanels: Array<boolean>;
   contacts: Array<User>;
   currentUser: User;
+  ngUnsubscribe = new Subject();
 
   constructor(
     private messengerService: MessengerService,
     private userService: UserService,
     private uiService: UiService,
+    private snack: MatSnackBar,
     private dialog: MatDialog,
     private socket: Socket,
   ) { }
 
   ngOnInit() {
-    this.uiService.setLoading(true);
-    this.messengerService.onThreads()
-    .subscribe(threads => {
-      if (this.threads) {
-        this.removeThreadsMessagesListeners();
-        this.uiService.setLoading(false);
-      }
-      if (threads) {
-        this.threads = threads.map(thread => {
-          const formattedThread = new Thread(thread, this.currentUser || undefined);
-          this.setThreadMessagesListener(formattedThread);
-          return formattedThread;
-        })
-        .sort(this.sortThreads);
-      }
-    });
-    this.messengerService.onContacts()
-    .subscribe(contacts => {
-      this.removeListeners();
-      this.contacts = contacts;
-      this.setListeners();
-    });
+    this.subscribeThreads();
+    this.subscribeContacts();
     this.userService.getCurrentUser()
     .subscribe(user => {
       if (user) {
         this.removeNewThreadListener();
         this.currentUser = user;
+        this.uiService.setLoading(true);
         this.messengerService.getThreads(user);
         this.messengerService.getContacts(user);
         this.setNewThreadListener();
@@ -89,8 +76,58 @@ export class ThreadListComponent implements OnInit, OnDestroy {
                 : dateToFormat.format('DD MMMM');
   }
 
+  displayPanel(index: number) {
+    this.threadPanels[index] = true;
+  }
+
+  hidePanel(index: number) {
+    this.threadPanels[index] = false;
+  }
+
+  removeThread(thread: Thread) {
+    this.dialog.open(ThreadRemoveComponent, {
+      data: thread,
+      height: '60vh',
+      width: '75vw',
+    });
+  }
+
   ngOnDestroy() {
-    this.messengerService.resetThreads();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  private subscribeThreads() {
+    this.messengerService.onThreads()
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(threads => {
+      if (this.threads) {
+        this.removeThreadsMessagesListeners();
+      }
+      if (threads) {
+        this.setThreads(threads);
+      }
+      this.uiService.setLoading(false);
+    });
+  }
+
+  private setThreads(threads: Array<Thread>) {
+    this.threads = threads.sort(this.sortThreads).map(thread => {
+      const formattedThread = new Thread(thread, this.currentUser || undefined);
+      this.setThreadMessagesListener(formattedThread);
+      return formattedThread;
+    });
+    this.threadPanels = this.threads.map(() => false);
+  }
+
+  private subscribeContacts() {
+    this.messengerService.onContacts()
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(contacts => {
+      this.removeListeners();
+      this.contacts = contacts;
+      this.setListeners();
+    });
   }
 
   private setListeners() {
@@ -136,10 +173,14 @@ export class ThreadListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private removeThreadMessagesListener(thread: Thread) {
+    this.socket.removeListener(`message/new/${thread.id}`);
+  }
+
   private removeThreadsMessagesListeners() {
     if (this.threads) {
       this.threads.forEach(thread => {
-        this.socket.removeListener(`message/new/${thread.id}`);
+        this.removeThreadMessagesListener(thread);
       });
     }
   }

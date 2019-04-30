@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngUnsubscribe = new Subject();
   nextStatus = new Subject();
   hideNavOn = ['/login', '/logout', '/signin', '/oneclick'];
-  lightNavOn = ['/post', '/account', '/messages', '/profile', '/landing', '/admin'];
+  lightNavOn = ['/home', '/post', '/account', '/messages', '/profile', '/landing', '/admin'];
 
   constructor(
     private authService: AuthService,

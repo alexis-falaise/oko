@@ -1,4 +1,5 @@
 @import "../../styles/variables.scss";
+@import "../../styles/classes.scss";
 @import "../../styles/animations.scss";
 
 .request-list,
@@ -8,27 +9,37 @@
     animation: slideInRight .15s;
     box-shadow: -5px 0 15px rgba(0, 0, 0, .3);
     &__hero {
-        background: $heroGradient;
-        background-size: 100vw 100vh;
-        width: 100vw;
-        height: 15vh;
-        min-height: 100px;
-        align-items: center;
-        box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
-        color: $white-alpha-8;
+        @extend .base-hero;
+        transition: all $animationDuration;
+        height: 10vh;
+        min-height: 85px !important;
+        &-title {
+             @extend .base-hero-title;
+        }
+        &.filters {
+            transition: all $animationDuration;
+            height: 35vh;
+        }
     }
     
     &__filters {
-        position: relative;
-        top: -25px;
+        animation: expandFilters $animationDuration;
+        height: 25vh;
         z-index: 11;
-        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
     }
 
     &__list {
+        transition: all $animationDuration;
+        // display: flex;
+        // flex-direction: column;
+        // align-items: center;
         height: 80vh;
         overflow-y: scroll;
         padding-bottom: 25px;
-        margin-top: -25px;
+
+        &.filters {
+            transition: all $animationDuration;
+            height: 65vh;
+        }
     }
 }

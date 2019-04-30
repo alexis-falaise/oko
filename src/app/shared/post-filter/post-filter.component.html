@@ -1,62 +1,48 @@
-<mat-expansion-panel class="post-filter">
-    <mat-expansion-panel-header class="post-filter__header">
-        <mat-panel-title>
-            <div class="d-flex align-items-center" *ngIf="!isFilled">
-                <mat-icon class="post-filter__reset">tune</mat-icon>
-                Filtres
-            </div>
-            <div class="d-flex align-items-center" *ngIf="isFilled" (click)="reset()">
-                <mat-icon class="post-filter__reset">highlight_off</mat-icon>
-                Réinitialiser
-            </div>
-        </mat-panel-title>
-        <mat-panel-description>
-            <span class="white-spaced" *ngIf="filter.beforeDate">Avant le {{ filter.beforeDate.format('DD MMMM') }} </span>
-            <span class="white-spaced" *ngIf="filter.location"> À {{ filter.location }}</span>
-        </mat-panel-description>
-    </mat-expansion-panel-header>
+<div class="post-filter">
     <div class="row" *ngIf="options.location || options.country || options.city || options.beforeDate">
         <div class="form-group col-6" *ngIf="options.location">
             <input type="text" name="location" class="form-control"
-                   [(ngModel)]="filter.location" (ngModelChange)="emitFilter()">
-            <small class="text-muted">Lieu de réception</small>
+                    placeholder="Lieu de réception"
+                    [(ngModel)]="filter.location" (ngModelChange)="emitFilter()">
         </div>
         <div class="form-group col-6" *ngIf="options.country">
             <input type="text" name="country" class="form-control"
+                    placeholder="Pays"
                     [(ngModel)]="filter.country" (ngModelChange)="emitFilter()">
-            <small class="text-muted">Pays</small>
         </div>
         <div class="form-group col-6" *ngIf="options.city">
             <input type="text" name="city" class="form-control"
+                    placeholder="Ville de remise"
                     [(ngModel)]="filter.city" (ngModelChange)="emitFilter()">
-            <small class="text-muted">Ville de remise</small>
         </div>
         <div class="col-6" *ngIf="options.beforeDate">
             <div class="row">
                 <div class="form-group col-8">
                     <input type="text" name="beforeDate"
+                            placeholder="Avant le"
+                            readonly
                             class="form-control"
                             [(ngModel)]="filter.beforeDate"
                             (ngModelChange)="emitFilter()"
                             [matDatepicker]="picker"
                             [min]="today">
-                    <small class="text-muted">Avant le</small>
                 </div>
                 <div class="form-group col-3">
-                    <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker-toggle class="light" [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker touchUi #picker></mat-datepicker>
                 </div>
             </div>
         </div>
+        <mat-divider></mat-divider>
         <div class="form-group col-6" *ngIf="options.airportPickup">
-            <mat-checkbox [(ngModel)]="filter.airportPickup" (ngModelChange)="emitFilter()">
-                <small class="text-muted">Remise à l'aéroport</small>
+            <mat-checkbox class="light" [(ngModel)]="filter.airportPickup" (ngModelChange)="emitFilter()" color="primary">
+                <small class="text-muted light">Remise à l'aéroport</small>
             </mat-checkbox>
         </div>
         <div class="form-group col-6" *ngIf="options.urgent">
-            <mat-checkbox [(ngModel)]="filter.urgent" (ngModelChange)="emitFilter()">
-                <small class="text-muted">Demande urgente</small>
+            <mat-checkbox class="light" [(ngModel)]="filter.urgent" (ngModelChange)="emitFilter()" color="primary">
+                <small class="text-muted light">Demande urgente</small>
             </mat-checkbox>
         </div>
     </div>
-</mat-expansion-panel>
+</div>

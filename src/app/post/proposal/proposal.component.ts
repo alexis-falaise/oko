@@ -136,7 +136,7 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
 
   contact() {
     const otherParty = this.proposal.authorView ? this.proposal.receiver : this.proposal.author;
-    this.messengerService.getContactThread(this.currentUser, otherParty);
+    this.messengerService.getContactThread(otherParty, this.currentUser);
   }
 
   acceptProposal() {

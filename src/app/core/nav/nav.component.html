@@ -2,7 +2,7 @@
     <button mat-button class="btn navbar-previous-wrapper" matRipple [matRippleColor]="'#FFFFFF55'" (click)="back()">
       <span class="navbar-previous"><mat-icon>arrow_back_ios</mat-icon></span>
     </button>
-    <a class="navbar-brand" href="#">ọkọ</a>
+    <a class="navbar-brand" href="#" *ngIf="menuDisplay">ọkọ</a>
     <button class="navbar-toggler" type="button"
       aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
       <mat-icon *ngIf="!menuDisplay">menu</mat-icon>
@@ -27,7 +27,7 @@
   </div> -->
 </nav>
 
-<div class="navbar__fullscreen" (click)="hide()" (swipeRight)="hide()" [hidden]="!menuDisplay">
+<div class="navbar__fullscreen" (click)="hide()" (swipeRight)="hide()" [class.display]="menuDisplay">
   <div class="navbar__fullscreen-avatar" >
     <app-avatar [image]="currentUser.avatar" [size]="75" *ngIf="currentUser?.avatar"></app-avatar>
   </div>

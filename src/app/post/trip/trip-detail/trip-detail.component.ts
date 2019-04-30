@@ -154,12 +154,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   contact() {
-    if (this.currentUser) {
-      this.messengerService.getContactThread(this.currentUser, this.trip.user);
-    } else {
-      const snackRef = this.snack.open('Connectez-vous', 'Connexion', {duration: 3000});
-      snackRef.onAction().subscribe(() => this.router.navigate(['/login']));
-    }
+    this.messengerService.getContactThread(this.trip.user, this.currentUser);
   }
 
   onScroll(event) {

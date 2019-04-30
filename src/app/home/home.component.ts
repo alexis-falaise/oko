@@ -47,6 +47,13 @@ export class HomeComponent implements OnInit {
   backgroundImage = 'assets/hero.jpg';
   swingingLocation = this.locationSamples[0];
   swingingItem = this.itemSamples[0];
+  displayTagline: string;
+  taglines = [
+    'Le service de livraison collaboratif',
+    'Ça veut dire transport',
+  ];
+  taglineEnter = false;
+  taglineExit = false;
   posts: Array<Post> = null;
   filter = new Filter({});
   displayContent = false;
@@ -106,6 +113,8 @@ export class HomeComponent implements OnInit {
 
   init() {
     timer(0, 1500).subscribe(() => this.swingDisplay());
+    this.displayTagline = this.taglines[0];
+    timer(3000, 4000).subscribe(() => this.swapTagline());
     this.uiService.setLoading(false);
     this.geoService.getCities();
     this.filter = new Filter({});
@@ -223,6 +232,20 @@ export class HomeComponent implements OnInit {
     const nextIndex = (index + 1 < array.length)
     ? index + 1 : 0;
     return array[nextIndex];
+  }
+
+  private swapTagline() {
+    this.taglineExit = true;
+    timer(250).subscribe(() => {
+      const currentTaglineIndex = this.taglines.findIndex(line => line === this.displayTagline);
+      const nextTaglineIndex = currentTaglineIndex + 1 < this.taglines.length
+      ? currentTaglineIndex + 1 : 0;
+      const nextTagline = this.taglines[nextTaglineIndex];
+      this.displayTagline = nextTagline;
+      this.taglineEnter = true;
+      this.taglineExit = false;
+      timer(250).subscribe(() => this.taglineEnter = false);
+    });
   }
 
   private promptInstall() {
