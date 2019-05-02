@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, Inject,
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DOCUMENT } from '@angular/platform-browser';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { timer } from 'rxjs';
@@ -17,6 +17,7 @@ import { Filter } from '@models/app/filter.model';
 import { Request } from '@models/post/request.model';
 import { GeoService } from '@core/geo.service';
 import { UserService } from '@core/user.service';
+import { InstallComponent } from '@core/dialogs/install/install.component';
 
 class City {
   city: string;
@@ -75,6 +76,7 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
     private geoService: GeoService,
     private homeElement: ElementRef,
+    private dialog: MatDialog,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
@@ -174,6 +176,13 @@ export class HomeComponent implements OnInit {
 
   displayCity(city: City) {
     return city ? city.city : '';
+  }
+
+  install() {
+    this.dialog.open(InstallComponent, {
+      height: '80vh',
+      width: '80vw',
+    });
   }
 
   post() {

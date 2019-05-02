@@ -16,7 +16,12 @@
   </mat-icon>
   <h4 class="proposal__loading-title">Chargement de la proposition</h4>
 </div>
-<div *ngIf="proposal" [ngClass]="{'proposal': true, 'standalone container': standalone, 'closed': standalone && (proposal.closed || proposal.refused)}">
+<div *ngIf="proposal"
+     [ngClass]="{
+       'proposal': true,
+       'standalone container': standalone,
+       'closed': standalone && (proposal.closed || proposal.refused)
+     }">
     <div class="row justify-content-around proposal__actions">
         <button class="btn btn-light btn-icon mb-2"
                 *ngIf="proposal.authorView && !proposal.closed && !proposal.accepted && !proposal.refused"

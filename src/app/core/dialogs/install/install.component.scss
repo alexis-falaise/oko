@@ -1,0 +1,87 @@
+@import "../../../../styles/classes.scss";
+@import "../../../../styles/variables.scss";
+
+.install {
+    height: 100%;
+    width: 100%;
+    &__title {
+        @extend .base-modal-title;
+        font-size: 16px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.content {
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &__step {
+        height: 45vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        &__title {
+            font-size: 16px;
+            font-weight: 700;
+            color: $light-green-600;
+        }
+        $iconSize: 36px;
+        .mat-icon {
+            height: $iconSize;
+            width: $iconSize;
+        }
+        .material-icons {
+            font-size: $iconSize;
+            color: rgb(150, 150, 150);
+        }
+        &__description {
+            color: rgb(75, 75, 75);
+            text-align: center;
+        }
+        &__button {
+            transition: all ease-in-out .35s;
+        }
+        &-wrapper {
+            height: 45vh;
+            width: 300%;
+            display: flex;
+            justify-content: flex-start;
+            overflow: hidden;
+            transition: all ease-in-out .35s;
+        }
+    }
+
+    &__dot {
+        height: 10px;
+        width: 10px;
+        border-radius: 5px;
+        background-color: rgb(225, 225, 225);
+        margin-right: 5px;
+        &-wrapper {
+            height: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &:hover {
+            background-color: $cyan-200;
+            box-shadow: 0 0 10px $cyan-200;
+        }
+
+        &.active {
+            background-color: $cyan-600;
+        }
+    }
+}

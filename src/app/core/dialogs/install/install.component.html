@@ -1,0 +1,36 @@
+<div class="install">
+  <div class="install__title">
+    Installer ọkọ sur votre appareil
+  </div>
+  <hr class="divider">
+  <div class="content">
+    <div class="content__step-wrapper"
+        [style.transform]="'translateX('+ selectedStep * -33.34 +'%)'"
+        (swipeLeft)="next()"
+        (swipeRight)="previous()"
+        *ngIf="steps?.length">
+        <div class="content__step" *ngFor="let step of steps; let i = index">
+          <h4 class="content__step__title">
+            {{ step.title }}
+          </h4>
+          <mat-icon class="content__step__icon">{{ step.icon }}</mat-icon>
+          <p class="content__step__description">{{ step.description }}</p>
+          <button class="btn content__step__button" [ngClass]="{
+            'btn-info': i !== steps.length - 1,
+            'btn-success': i === steps.length - 1
+          }" (click)="next()">
+            {{ i === steps.length - 1 ? 'Terminé' : 'Suivant' }}
+          </button>
+        </div>
+    </div>
+    <div class="content__dot-wrapper" *ngIf="steps?.length">
+      <div class="content__dot" [class.active]="selectedStep === i"
+           *ngFor="let step of steps; let i = index"></div>
+    </div>
+  </div>
+  <div class="install__actions">
+    <button class="btn btn-light" (click)="close()">
+      Fermer
+    </button>
+  </div>
+</div>
