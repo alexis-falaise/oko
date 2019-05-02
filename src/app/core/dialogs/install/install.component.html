@@ -5,7 +5,8 @@
   <hr class="divider">
   <div class="content">
     <div class="content__step-wrapper"
-        [style.transform]="'translateX('+ selectedStep * -33.34 +'%)'"
+        [style.width]="100 * steps.length + '%'"
+        [style.transform]="'translateX('+ selectedStep * - (100 / steps.length) +'%)'"
         (swipeLeft)="next()"
         (swipeRight)="previous()"
         *ngIf="steps?.length">

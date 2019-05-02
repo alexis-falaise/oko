@@ -18,6 +18,7 @@ import { Request } from '@models/post/request.model';
 import { GeoService } from '@core/geo.service';
 import { UserService } from '@core/user.service';
 import { InstallComponent } from '@core/dialogs/install/install.component';
+import { User } from '@models/user.model';
 
 class City {
   city: string;
@@ -67,6 +68,8 @@ export class HomeComponent implements OnInit {
   city: City | string;
   cities: Array<City> = [];
   deferredPrompt = null;
+  standaloneMode = false;
+  currentUser: User;
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
@@ -100,6 +103,7 @@ export class HomeComponent implements OnInit {
     this.authService.onUser().subscribe(authUser => {
       if (authUser) {
         this.userService.getCurrentUser().subscribe(user => {
+          this.currentUser = user;
           if ((user.sessions && user.sessions.length === 1 || !user.sessions) && !this.profileSnack) {
             this.profileSnack = true;
             const snack = this.snack.open('Complétez votre profil !', 'Bonne idée', {duration: 7500});
@@ -122,6 +126,7 @@ export class HomeComponent implements OnInit {
     this.filter = new Filter({});
     this.postService.resetTripFilters();
     this.postService.getTrips();
+    this.standaloneMode = window.matchMedia('(display-mode: standalone)').matches;
   }
 
   edit() {

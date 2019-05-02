@@ -2,11 +2,14 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
 import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 
 import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
 import { NotificationService } from '@core/notification.service';
+import { Socket } from 'ngx-socket-io';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { InstallComponent } from '@core/dialogs/install/install.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   displayNav = false;
   lightNav = false;
   drawerExpanded = false;
+  standaloneMode = false;
   loading: boolean;
   mainLoading: boolean;
   randomWelcome: string;
@@ -32,12 +36,22 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private notificationService: NotificationService,
     private uiService: UiService,
+    private dialog: MatDialog,
     private ref: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private socket: Socket,
+    private snack: MatSnackBar,
   ) { }
 
   ngOnInit() {
     moment.locale('fr');
+    this.socket.connect();
+    this.socket.on('disconnect', () => {
+      this.snack.open('Petit problème réseau...', 'OK', {duration: 7500});
+      this.socket.once('connect', () => {
+        this.snack.open('Le réseau est rétabli', 'Top', {duration: 5000});
+      });
+    });
     this.hideDrawer();
     this.uiService.onLoading().subscribe(loadingState => {
       this.loading = loadingState;
@@ -85,6 +99,19 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
     this.authService.getLoginStatus();
+    this.standaloneMode = window.matchMedia('(display-mode: standalone)').matches;
+    timer(15000).subscribe(() => {
+      if (!this.standaloneMode && !this.username) {
+        this.install();
+      }
+    });
+  }
+
+  install() {
+    this.dialog.open(InstallComponent, {
+      height: '80vh',
+      width: '80vw',
+    });
   }
 
   updateLogStatus(status: boolean) {
