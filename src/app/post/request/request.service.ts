@@ -148,6 +148,7 @@ export class RequestService {
     this.specialChars.forEach(char => {
       label = label.split(char)[0];
     });
+    label = label.split(' ').slice(0, 4).join(' ');
     const formattedPrice = itemInfo.price ? itemInfo.price.slice(4).split(',').join('.') : null;
     const price = formattedPrice ? parseFloat(formattedPrice) : null;
     return new Item({

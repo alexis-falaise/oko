@@ -56,7 +56,7 @@
     <div class="col-4 col-sm-5 col-md-6 d-flex
                 flex-column align-items-start justify-content-center
                 proposal-list-item__trip">
-        <small *ngFor="let item of proposal?.from?.items; let i = index">
+        <small class="item-label" *ngFor="let item of proposal?.from?.items; let i = index">
             {{ item.label }}
         </small>
         <div class="proposal-list-item__before"

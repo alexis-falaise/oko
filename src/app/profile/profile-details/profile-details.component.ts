@@ -65,7 +65,7 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   contact() {
-    this.messengerService.getContactThread(this.currentUser, this.user);
+    this.messengerService.getContactThread(this.user, this.currentUser);
   }
 
   private fetchDisplayElementList(countries: Array<string>): Observable<Array<DisplayElement>> {

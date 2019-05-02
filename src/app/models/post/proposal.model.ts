@@ -10,10 +10,14 @@ import { Request } from './request.model';
 export class Update {
     date: Moment;
     author: User;
-    type: string;
+    type: 'create' | 'meeting' | 'bonus' | 'accept' | 'refuse' | 'close' | 'validate' | 'pay';
     bonusDelta: number;
     seen: boolean;
     sightDate: Moment;
+
+    constructor(update: Partial<Update>) {
+        Object.assign(this, update);
+    }
 }
 
 export class Proposal {
@@ -33,7 +37,6 @@ export class Proposal {
     updates: [Update];
     seen: boolean;
     sightDate: Moment;
-    lastUpdate?: Update;
     id?: string;
     _id: string;
 
@@ -45,6 +48,7 @@ export class Proposal {
     toTrip?: boolean;
     toRequest?: boolean;
     outdated?: boolean;
+    lastUpdate?: Update;
 
     constructor(proposal: Partial<Proposal>) {
         const now = moment();
@@ -54,6 +58,12 @@ export class Proposal {
         }
         if (proposal.updates && proposal.updates.length) {
             this.lastUpdate = proposal.updates[proposal.updates.length - 1];
+        } else {
+            this.lastUpdate = new Update({
+                date : this.date,
+                author: this.author,
+                type: 'create',
+            });
         }
         if (this.isTrip(proposal.from)) {
             const from = new Trip(proposal.from);

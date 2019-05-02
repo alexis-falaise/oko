@@ -6,6 +6,8 @@
     padding-top: 20px;
     animation: slideInUpAppearance .25s;
     height: 110px !important;
+    max-height: 110px !important;
+    overflow: hidden;
     padding: 2.5px;
     border-bottom: 1px solid rgb(235, 235, 235) !important;
     border-radius: 3px;
@@ -61,6 +63,10 @@
                 font-size: $size;
             }
         }
+    }
+
+    .item-label {
+        text-overflow: ellipsis;
     }
 
     &__description {

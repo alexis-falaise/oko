@@ -64,6 +64,7 @@ export class PostComponent implements OnInit, OnChanges {
     }
     if (post instanceof Request && post.items) {
       const items = post.items as any;
+      post.items = items.map(item => this.formatLabel(item));
       this.weight = items.reduce((acc: number, item: Item) => acc + item.weight, 0) as number;
       if (post.urgent && post.urgentDetails) {
         this.outdated = moment(post.urgentDetails.date).isBefore(moment.now());
@@ -72,7 +73,6 @@ export class PostComponent implements OnInit, OnChanges {
       if (post.closed) {
         this.outdated = true;
       }
-      console.log('Post', post.items);
     }
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
     if (post instanceof Trip && this.horizontal) {
@@ -117,6 +117,15 @@ export class PostComponent implements OnInit, OnChanges {
     if (!this.panel) {
       this.router.navigate(['post', this.isTrip ? 'trip' : 'request', this.post.id]);
     }
+  }
+
+  private formatLabel(item: Item): Item {
+    if (item.label) {
+      const label = item.label;
+      const labelWords = label.split(' ');
+      item.label = labelWords.slice(0, 4).join(' ');
+    }
+    return item;
   }
 
   private serverError(status: number) {

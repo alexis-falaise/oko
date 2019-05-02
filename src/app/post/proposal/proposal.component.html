@@ -23,9 +23,16 @@
                 (click)="modifyProposal()">
           <mat-icon>edit</mat-icon> Modifier
         </button>
+        <button class="btn btn-danger btn-icon mb-2"
+                [disabled]="proposal.closed"
+                *ngIf="(proposal.authorView || proposal.closed) && !proposal.accepted && !proposal.refused"
+                (click)="closeProposal()">
+          <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
+        </button>
         <button class="btn btn-success btn-icon mb-2"
                 [disabled]="proposal.accepted || proposal.outdated"
-                *ngIf="!proposal.refused && !proposal.closed && receiver && !proposal.paid"
+                *ngIf="proposal.lastUpdate?.author.id !== currentUser.id &&
+                       !proposal.refused && !proposal.closed && !proposal.paid"
                 (click)="acceptProposal()">
           <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
         </button>
@@ -47,21 +54,23 @@
                 (click)="validateProposal()">
           <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
         </button>
+        <button class="btn btn-success btn-icon mb-2" disabled
+                *ngIf="(proposal.toTrip && receiver
+                       || proposal.fromTrip && !receiver) && proposal.validated">
+          <mat-icon>done_all</mat-icon> Livrée
+        </button>
         <button class="btn btn-danger btn-icon mb-2"
                 [disabled]="proposal.refused || proposal.outdated"
-                *ngIf="(receiver && !proposal.accepted && !proposal.closed) || (!receiver && proposal.refused)"
+                *ngIf="(proposal.lastUpdate?.author.id !== currentUser.id && !proposal.accepted && !proposal.closed)
+                      || (proposal.lastUpdate?.author.id === currentUser.id && proposal.refused)"
                 (click)="refuseProposal()">
           <mat-icon>clear</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
         </button>
-        <button class="btn btn-danger btn-icon mb-2"
-                [disabled]="proposal.closed"
-                *ngIf="(proposal.authorView || proposal.closed) && !proposal.accepted && !proposal.refused"
-                (click)="closeProposal()">
-          <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
-        </button>
     </div>
     <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver && standalone">
-      <small class="text-muted" *ngIf="!proposal.accepted && !proposal.refused && !proposal.closed">
+      <small class="text-muted"
+             *ngIf="proposal.lastUpdate?.author.id === currentUser.id
+                    && !proposal.accepted && !proposal.refused && !proposal.closed">
         La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
       </small>
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.accepted && !proposal.paid">
@@ -70,20 +79,27 @@
       <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
         Vos articles seront livrés par {{ proposal?.to?.user.firstname }} le {{ moment(proposal?.to?.date).format('DD/MM') }}
       </small>
-      <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
-        La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer
-      </small>
+      <div class="d-flex flex-column align-items-center" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
+        <button class="btn btn-warning" disabled>À livrer</button> <br>
+        <small class="text-muted">La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer</small>
+      </div>
     </div>
     <div class="d-flex justify-content-center text-align-center" *ngIf="receiver && standalone">
+      <small class="text-muted"
+              *ngIf="proposal.lastUpdate?.author.id === currentUser.id
+                    && !proposal.accepted && !proposal.refused && !proposal.closed">
+        La proposition est en attente d'acceptation par {{ proposal?.from?.user.firstname }}
+      </small>
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
         Vos articles seront livrés par {{ proposal?.from?.user.firstname }} le {{ moment(proposal?.from?.date).format('DD/MM') }}
       </small>
       <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
         Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
       </small>
-      <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
-        La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer
-      </small>
+      <div class="d-flex flex-column align-items-center" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
+        <button class="btn btn-warning" disabled>À livrer</button> <br>
+        <small class="text-muted">La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer</small>
+      </div>
     </div>
     <hr class="divider" *ngIf="proposal.bonus">
     <div class="proposal__summary justify-content-center">

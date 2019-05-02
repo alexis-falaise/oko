@@ -286,21 +286,26 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setEditableRequest(request: Request) {
-    this.meeting.patchValue(request);
-    if (request.meetingPoint && request.meetingPoint.city && request.meetingPoint.country) {
-      this.setCity({
-        city: request.meetingPoint.city,
-        country: request.meetingPoint.country
-      });
+    if (!request.outdated && !request.closed) {
+      this.meeting.patchValue(request);
+      if (request.meetingPoint && request.meetingPoint.city && request.meetingPoint.country) {
+        this.setCity({
+          city: request.meetingPoint.city,
+          country: request.meetingPoint.country
+        });
+      }
+      if (request.items) {
+        this.requestService.setStoredItems(request.items);
+        this.items = request.items;
+        this.computeBonus(request.bonus);
+        this.computeTotalPrice();
+      }
+      this.requestId = request.id;
+      this.edition = true;
+    } else {
+      this.snack.open('Cette annonce n\'est plus valide', 'OK', {duration: 3000});
+      this.historyService.back(1);
     }
-    if (request.items) {
-      this.requestService.setStoredItems(request.items);
-      this.items = request.items;
-      this.computeBonus(request.bonus);
-      this.computeTotalPrice();
-    }
-    this.requestId = request.id;
-    this.edition = true;
   }
 
   saveRequest() {

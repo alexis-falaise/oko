@@ -224,14 +224,14 @@ $post-height: 135px;
         color: rgba(255, 255, 255, .9);
         padding-left: 0;
         &.horizontal {
-            height: 40% !important;
+            height: 30% !important;
             flex-direction: row;
             border-bottom: 1px solid rgba(255, 255, 255, .2);
         }
 
         @media screen and (min-width: 400px) {
             &.horizontal {
-                height: 33% !important;
+                height: 25% !important;
             }
         }
     }
@@ -302,7 +302,7 @@ $post-height: 135px;
                 color: $white-alpha-8;
                 &-picture {
                     height: 100%;
-                    width: 50%;
+                    width: 60%;
                     padding: 5px;
                     border-radius: 3px;
                     border: 1px solid rgba(255, 255, 255, .4);

@@ -130,6 +130,7 @@ export class PostService {
         const requests = response.data;
         delete filter.afterDate;
         this.currentRequestFilter = filter;
+        console.log('Got requests', requests);
         this.getRequestsUserStats(requests, this.requests);
         nextQuery.next(true);
       }
@@ -743,9 +744,14 @@ export class PostService {
     if (trips && !trips.length) {
       observer.next([]);
     } else {
-      forkJoin(trips.map(trip => Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))))
+      forkJoin(trips.map(trip => {
+        return Observable.create(tripObserver => this.getTripUserStats(trip, tripObserver))
+               .pipe(catchError((err, caught) => of(caught)));
+      }))
       .subscribe((outputTrips: Array<Trip>) => {
-        const resultingTrips = outputTrips.sort((first, second) =>  {
+        const resultingTrips = outputTrips
+        .filter(trip => trip instanceof Trip)
+        .sort((first, second) =>  {
           return moment(first.date).isBefore(second.date) ? -1 : 1;
         });
         observer.next(resultingTrips);
@@ -767,7 +773,7 @@ export class PostService {
           observer.next(outputTrip);
           observer.complete();
         }, (error) => {
-          observer.next(null);
+          observer.error(error);
           observer.complete();
         });
       } else {
@@ -786,10 +792,14 @@ export class PostService {
     if (requests && !requests.length) {
       observer.next([]);
     } else {
-      forkJoin(requests.map(request => Observable.create(requestObserver => {
-        return this.getRequestUserStats(request, requestObserver);
-      }))).subscribe((outputRequests) => {
-        const resultingRequests = outputRequests.sort((first, second) => {
+      forkJoin(requests.map(request => {
+        return Observable.create(requestObserver => {
+              return this.getRequestUserStats(request, requestObserver);
+        }).pipe(catchError((err, caught) => of(caught)));
+      })).subscribe((outputRequests) => {
+        const resultingRequests = outputRequests
+        .filter(request => request instanceof Request)
+        .sort((first, second) => {
           if (second.urgent) {
             return 1;
           }
@@ -814,6 +824,9 @@ export class PostService {
       .subscribe(user => {
         request.user = user;
         observer.next(new Request(request));
+        observer.complete();
+      }, (error) => {
+        observer.error(error);
         observer.complete();
       });
     } else {

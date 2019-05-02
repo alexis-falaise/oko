@@ -145,13 +145,15 @@
     <div class="post-general post-request col-9 col-md-10" (click)="toPost()" [class.outdated]="outdated">
         <div class="row">
             <div class="post-request__content col-6 col-sm-8">
-                <div class="row post-request__content__items ml-1 justify-content-center">
+                <div class="row post-request__content__items justify-content-center">
                     <div class="d-flex justify-content-start w-100"
-                        *ngIf="post.items && post.items[0]?.photo[0] && post.items[0].photo[0] !== ''">
+                        *ngIf="post.items && post.items[0]?.photo
+                              && post.items[0].photo[0]
+                              && post.items[0].photo[0] !== ''">
                         <img class="post-request__content__item-picture" [src]="post.items[0].photo[0]" [alt]="post.items[0].label">
                     </div>
                     <!-- {{ post.items[0].photo }} -->
-                    <small class="post-request__content__item">{{ post.items[0].label }}</small>
+                    <small class="post-request__content__item" *ngIf="post.items">{{ post.items[0].label }}</small>
                     <small class="text-muted light" *ngIf="post.items?.length > 1">
                         Et {{ post.items?.length - 1 }} autre{{ post.items?.length - 1 === 1 ? '' : 's' }}
                         article{{ post.items?.length - 1 === 1 ? '' : 's' }}

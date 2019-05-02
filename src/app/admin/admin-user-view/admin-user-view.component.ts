@@ -31,7 +31,7 @@ export class AdminUserViewComponent implements OnInit, OnDestroy {
   }
 
   contact() {
-    this.messengerService.getContactThread(undefined, this.user);
+    this.messengerService.getContactThread(this.user);
   }
 
   deleteUser() {

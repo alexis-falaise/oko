@@ -77,6 +77,7 @@ export class ThreadListComponent implements OnInit, OnDestroy {
   }
 
   displayPanel(index: number) {
+    this.threadPanels = this.threadPanels.map(() => false);
     this.threadPanels[index] = true;
   }
 
