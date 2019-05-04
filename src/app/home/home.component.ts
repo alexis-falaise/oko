@@ -19,6 +19,7 @@ import { GeoService } from '@core/geo.service';
 import { UserService } from '@core/user.service';
 import { InstallComponent } from '@core/dialogs/install/install.component';
 import { User } from '@models/user.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 class City {
   city: string;
@@ -69,6 +70,7 @@ export class HomeComponent implements OnInit {
   cities: Array<City> = [];
   deferredPrompt = null;
   standaloneMode = false;
+  installable = false;
   currentUser: User;
 
   constructor(
@@ -80,6 +82,7 @@ export class HomeComponent implements OnInit {
     private geoService: GeoService,
     private homeElement: ElementRef,
     private dialog: MatDialog,
+    private deviceDetector: DeviceDetectorService,
     private snack: MatSnackBar,
     private router: Router,
   ) { }
@@ -126,6 +129,7 @@ export class HomeComponent implements OnInit {
     this.filter = new Filter({});
     this.postService.resetTripFilters();
     this.postService.getTrips();
+    this.installable = this.isInstallable();
     this.standaloneMode = window.matchMedia('(display-mode: standalone)').matches;
   }
 
@@ -260,6 +264,12 @@ export class HomeComponent implements OnInit {
       this.taglineExit = false;
       timer(250).subscribe(() => this.taglineEnter = false);
     });
+  }
+
+  private isInstallable(): boolean {
+    const browser = this.deviceDetector.browser;
+    const isDesktop = this.deviceDetector.isDesktop();
+    return browser === 'Chrome' || !isDesktop;
   }
 
   private promptInstall() {

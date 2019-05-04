@@ -10,6 +10,7 @@ import { NotificationService } from '@core/notification.service';
 import { Socket } from 'ngx-socket-io';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { InstallComponent } from '@core/dialogs/install/install.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
   username: string;
   ngUnsubscribe = new Subject();
   nextStatus = new Subject();
+  connection = new Subject();
+  isDisconnected = false;
   hideNavOn = ['/login', '/logout', '/signin', '/oneclick'];
   lightNavOn = ['/home', '/post', '/account', '/messages', '/profile', '/landing', '/admin'];
 
@@ -38,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private uiService: UiService,
     private dialog: MatDialog,
     private ref: ChangeDetectorRef,
+    private deviceDetector: DeviceDetectorService,
     private router: Router,
     private socket: Socket,
     private snack: MatSnackBar,
@@ -45,13 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     moment.locale('fr');
-    this.socket.connect();
-    this.socket.on('disconnect', () => {
-      this.snack.open('Petit problème réseau...', 'OK', {duration: 7500});
-      this.socket.once('connect', () => {
-        this.snack.open('Le réseau est rétabli', 'Top', {duration: 5000});
-      });
-    });
+    this.connectServer();
     this.hideDrawer();
     this.uiService.onLoading().subscribe(loadingState => {
       this.loading = loadingState;
@@ -100,11 +98,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     this.authService.getLoginStatus();
     this.standaloneMode = window.matchMedia('(display-mode: standalone)').matches;
-    timer(15000).subscribe(() => {
-      if (!this.standaloneMode && !this.username) {
-        this.install();
-      }
-    });
+    this.promptInstall();
   }
 
   install() {
@@ -144,5 +138,35 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  private connectServer() {
+    this.socket.connect();
+    this.socket.on('disconnect', () => {
+      timer(5000).pipe(takeUntil(this.connection))
+      .subscribe(() => {
+        this.isDisconnected = true;
+        this.snack.open('Petit problème réseau...', 'OK', {duration: 7500});
+      });
+      this.socket.once('connect', () => {
+        this.connection.next(true);
+        if (this.isDisconnected) {
+          this.snack.open('Le réseau est rétabli', 'Top', {duration: 5000});
+          this.isDisconnected = false;
+        }
+      });
+    });
+  }
+
+  private promptInstall() {
+    const browser = this.deviceDetector.browser;
+    const isDesktop = this.deviceDetector.isDesktop();
+    if (browser === 'Chrome' || !isDesktop) {
+      timer(15000).subscribe(() => {
+        if (!this.standaloneMode && !this.username) {
+          this.install();
+        }
+      });
+    }
   }
 }

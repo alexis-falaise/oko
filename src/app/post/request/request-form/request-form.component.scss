@@ -11,6 +11,13 @@
 
     &__city {
         height: 60vh;
+        &__loading {
+            height: 2px;
+            width: 98%;
+            margin-left: 1%;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
         &-results {
             height: 50vh;
             overflow-y: scroll;

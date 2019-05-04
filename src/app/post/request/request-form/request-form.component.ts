@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar, DateAdapter } from '@angular/material';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { round, objectIsComplete, arraySum } from '@utils/index.util';
 import * as moment from 'moment';
@@ -48,6 +48,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   totalPrice: number;
   currentUser: User;
   cities: Array<string> = [];
+  cityLoading = false;
+  nextCityQuery = new Subject();
   meeting = this.fb.group({
     city: [],
     meetingPoint: this.fb.group({
@@ -146,7 +148,10 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // Fetch citites
     this.geoService.onCities()
-    .subscribe(cities => this.cities = cities);
+    .subscribe(cities => {
+      this.cityLoading = false;
+      this.cities = cities;
+    });
 
     // Manage form changes
     this.meeting.controls.city.valueChanges
@@ -166,7 +171,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   fetchCities(city: string) {
-    this.geoService.getCities(city);
+    this.nextCityQuery.next();
+    this.cityLoading = true;
+    timer(250).pipe(takeUntil(this.nextCityQuery))
+    .subscribe(() => {
+      this.geoService.getCities(city);
+    });
   }
 
   displayCity(city: {city: string, country: string}) {

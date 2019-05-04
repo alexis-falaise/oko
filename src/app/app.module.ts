@@ -21,6 +21,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { FacebookLoginProvider } from 'angularx-social-login';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 import { environment } from '@env/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -78,6 +79,7 @@ export function provideSocialConfig() {
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    DeviceDetectorModule.forRoot(),
     FormsModule,
     SharedModule,
     MatAutocompleteModule,

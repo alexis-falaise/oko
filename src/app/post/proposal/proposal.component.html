@@ -153,21 +153,7 @@
     <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
       <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
         <mat-icon>flight</mat-icon> Remise à l'aéroport
-      </div>
-      <ng-template #location>
-        <div class="proposal__request__city"
-             *ngIf="proposal.meetingPoint?.city && proposal.meetingPoint?.city !== '' 
-                    && proposal.meetingPoint?.address && proposal.meetingPoint?.address !== ''; else meeting">
-            <mat-icon class="text-muted">location_city</mat-icon> 
-            {{ proposal.meetingPoint?.address }}<br>
-            <small class="text-muted">{{ proposal.meetingPoint.city }} ({{ proposal.meetingPoint.country }})</small>
-        </div>
-        <ng-template #meeting>
-          <div class="proposal__request__city">
-            <mat-icon>location_on</mat-icon> Remise au point de rendez-vous (à définir)
-          </div>
-        </ng-template>
-      </ng-template>            
+      </div>         
     </div>
     <br>
     <div class="d-flex w-100 justify-content-center">
@@ -217,30 +203,17 @@
 </ng-template>
 
 <ng-template #toRequestAsSender>
-    <div class="proposal__request" *ngIf="!self">
-      <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
-    </div>
-  </ng-template>
-
-
+  <div class="proposal__request" *ngIf="!self">
+    <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+  </div>
+</ng-template>
 
 <ng-template #requestLocation>
   <div class="row">
     <div [ngClass]="{'col-6': proposal.from?.urgent, 'col-12': !proposal.from?.urgent}">
       <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
         <mat-icon>flight</mat-icon> Remise à l'aéroport
-      </div>
-      <ng-template #location>
-        <div class="proposal__request__city" *ngIf="proposal.meetingPoint?.city; else meeting">
-            <mat-icon>location_city</mat-icon> {{ proposal.meetingPoint.address }}<br>
-            <small class="text-muted">{{ proposal.meetingPoint?.city }} ({{ proposal.meetingPoint?.country }})</small>
-        </div>
-        <ng-template #meeting>
-          <div class="proposal__request__city">
-            <mat-icon>location_on</mat-icon> Remise au point de rendez-vous (à définir)
-          </div>
-        </ng-template>
-      </ng-template>            
+      </div>       
     </div>
     <div class="col-6" *ngIf="proposal.from?.urgent">
       <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
@@ -250,3 +223,18 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #location>
+  <div class="proposal__request__city"
+        *ngIf="proposal.meetingPoint?.city && proposal.meetingPoint?.city !== '' 
+              && proposal.meetingPoint?.address && proposal.meetingPoint?.address !== ''; else meeting">
+      <mat-icon class="text-muted">location_city</mat-icon> 
+      {{ proposal.meetingPoint?.address }}<br>
+      <small class="text-muted">{{ proposal.meetingPoint.city }} ({{ proposal.meetingPoint.country }})</small>
+  </div>
+  <ng-template #meeting>
+    <div class="proposal__request__city">
+      <mat-icon>location_on</mat-icon> Remise au point de rendez-vous <br> (à définir)
+    </div>
+  </ng-template>
+</ng-template>   

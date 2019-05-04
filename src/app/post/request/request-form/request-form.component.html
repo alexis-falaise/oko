@@ -5,6 +5,7 @@
              autocomplete="off"
              placeholder="Votre ville"
              name="cityFetch" #cityFetch (keyup)="fetchCities(cityFetch.value)">
+      <mat-progress-bar class="request-form__city__loading" *ngIf="cityLoading" mode="indeterminate"></mat-progress-bar>
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <button class="btn btn-info" (click)="setHomeCity()" *ngIf="currentUser">

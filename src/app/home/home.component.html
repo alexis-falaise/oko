@@ -14,22 +14,25 @@
         </div>
         <div class="home-hero__input" [class.d-none]="displayContent">
             Je veux me faire livrer
-            <mat-form-field class="input-hero__item" floatLabel="never">
+            <mat-form-field class="home-hero__input__item" floatLabel="never">
                 <input matInput type="text" name="item"
                        #itemSelection
                        autocomplete="off"
+                       (keyup.enter)="citySelection.focus()"
                        placeholder="{{swingingItem}}" [(ngModel)]="filter.item">
                 <button mat-button *ngIf="itemSelection.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetItem()">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
             à
-            <mat-form-field class="input-hero__location" floatLabel="never">
+            <mat-form-field class="home-hero__input__location" floatLabel="never">
                 <input matInput type="text" name="location"
                        #citySelection
                        [matAutocomplete]="citiesAuto"
+                       autocomplete="off"
                        placeholder="{{swingingLocation}}"
                        [(ngModel)]="city"
+                       (keyup.enter)="validate()"
                        (ngModelChange)="filterPosts();">
                 <button mat-button *ngIf="citySelection.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetCity()">
                     <mat-icon>close</mat-icon>
@@ -71,7 +74,7 @@
         </div>
         <section class="home-content__onboarding-service" id="service">
             ọkọ est la plateforme web qui te met en relation avec un voyageur qui te livrera un produit de ton choix.
-            <button class="btn btn-hero btn-icon mt-2" (click)="install()" *ngIf="!standaloneMode">
+            <button class="btn btn-hero btn-icon mt-2" (click)="install()" *ngIf="!standaloneMode && installable">
                 <mat-icon>save</mat-icon>
                 Installer ọkọ
             </button>
