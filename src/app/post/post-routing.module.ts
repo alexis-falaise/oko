@@ -13,11 +13,14 @@ import { RequestItemNewComponent } from './request/request-item-new/request-item
 import { TripDetailResolver } from '@resolvers/trip-detail.resolver';
 import { RequestDetailResolver } from '@resolvers/request-detail.resolver';
 import { RequestResolver } from '@resolvers/request.resolver';
+import { ProposalPayComponent } from './proposal/proposal-pay/proposal-pay.component';
+import { ProposalPayResolver } from '@resolvers/proposal-pay.resolver';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'proposal', redirectTo: '/account/proposal', pathMatch: 'full' },
     { path: 'proposal/:id', component: ProposalComponent },
+    { path: 'proposal/:id/pay', component: ProposalPayComponent, resolve: {proposal: ProposalPayResolver} },
     { path: 'request', component: RequestListComponent },
     { path: 'request/new', component: RequestComponent },
     { path: 'request/new/item', redirectTo: 'request/new', pathMatch: 'full' },

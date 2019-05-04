@@ -69,7 +69,7 @@
                 *ngIf="(proposal.lastUpdate?.author.id !== currentUser.id && !proposal.accepted && !proposal.closed)
                       || (proposal.lastUpdate?.author.id === currentUser.id && proposal.refused)"
                 (click)="refuseProposal()">
-          <mat-icon>clear</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
+          <mat-icon>remove_circle_outline</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
         </button>
     </div>
     <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver && standalone">

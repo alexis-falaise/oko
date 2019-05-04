@@ -171,16 +171,7 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
 
   payProposal() {
     this.uiService.setLoading(true);
-    this.postService.payProposal(this.proposal.id)
-    .subscribe((response: ServerResponse) => {
-      if (response.status) {
-        this.snack.open('La proposition a été reglée, merci', 'Super', {duration: 4500});
-        this.proposal.paid = response.data.paid;
-      } else {
-        this.serverError(response);
-      }
-      this.uiService.setLoading(false);
-    }, (err) => this.serverError(err));
+    this.router.navigate(['/post', 'proposal', this.proposal.id, 'pay']);
   }
 
   refuseProposal() {

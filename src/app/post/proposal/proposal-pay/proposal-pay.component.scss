@@ -1,0 +1,99 @@
+@import "../../../../styles/classes.scss";
+@import "../../../../styles/variables.scss";
+
+.proposal-pay {
+    height: 100vh;
+    width: 100vw;
+    overflow-y: scroll;
+
+    &__hero {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+        &__title {
+            font-size: 24px;
+            color: $white-alpha-8;
+            margin-bottom: 0;
+        }
+    }
+    
+    &__summary {
+        @extend .base-oko-card;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 15px;
+
+        &__title {
+            font-size: 16px;
+            font-weight: 100;
+            color: rgb(175, 175, 175);
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        &__detail {
+            margin-top: 10px;
+        }
+    }
+
+    &__checkout {
+        @extend .base-oko-card;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+
+        &__title {
+            font-size: 16px;
+            font-weight: 100;
+            color: rgb(175, 175, 175);
+        }
+
+        &__form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        &__name {
+            width: 100%;
+        }
+
+        &__card {
+            width: 100%;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 15px 5px;
+        }
+    }
+
+    .item {
+        &-title {
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+        &-subtitle {
+            color: rgb(125, 125, 125);
+            font-size: 12px;
+        }
+        &-hint {
+            color: rgb(175, 175, 175);
+            font-size: 9px;
+            display: flex;
+            line-height: 1.75;
+        }
+    }
+
+    .price {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-size: 20px;
+    }
+}

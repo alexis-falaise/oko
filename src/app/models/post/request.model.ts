@@ -6,6 +6,10 @@ import { Item } from '@models/item.model';
 import { MeetingPoint } from '@models/meeting-point.model';
 import { Location } from '@models/location.model';
 import { Trip } from './trip.model';
+import { arraySum, round } from '@utils/math.util';
+
+const feesPercentage = 0.075;
+const staticFees = 1.5;
 
 export class Request extends Post {
     items: Array<Item>;
@@ -28,6 +32,10 @@ export class Request extends Post {
     own?: boolean;
     handlerView: boolean;
     paid?: boolean;
+
+    /** Front-end helpers */
+    itemsPrice: number;
+    price: number;
 
     constructor(request: Partial<Request> = {}) {
         super(request);
@@ -82,5 +90,14 @@ export class Request extends Post {
             this.handlerView = false;
             return false;
         }
+    }
+
+    computePrice(bonus: number = this.bonus): number {
+        const itemsPrice = this.items && this.items.length ? arraySum(this.items.map(item => item.price)) : 0;
+        this.itemsPrice = itemsPrice;
+        const preFeesPrice = itemsPrice + bonus;
+        const fees = preFeesPrice * feesPercentage + staticFees;
+        this.price = round(fees + preFeesPrice, 2);
+        return this.price;
     }
 }

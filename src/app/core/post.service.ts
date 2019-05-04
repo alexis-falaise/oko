@@ -589,6 +589,16 @@ export class PostService {
   }
 
   /**
+   * Creates a Stripe payment intent and returns a client secret key (in server responses data)
+   * @param id : Proposal id
+   * @param amount : Payment amount
+   */
+  createProposalPayment(id: string, amount: number) {
+    const stripeAmount = amount * 100;
+    return this.http.post(`${this.proposalUrl}/${id}/pay`, {amount: stripeAmount}, {withCredentials: true}) as Observable<ServerResponse>;
+  }
+
+  /**
    * Set a proposal as paid
    * @param id : Proposal id
    */

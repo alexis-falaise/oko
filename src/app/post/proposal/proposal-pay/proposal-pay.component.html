@@ -1,0 +1,47 @@
+<div class="proposal-pay">
+  <div class="proposal-pay__hero">
+      <h2 class="proposal-pay__hero__title">Paiement</h2>
+  </div>
+  <div class="proposal-pay__summary container">
+    <div class="proposal-pay__summary__title">
+        Votre demande
+    </div>
+    <mat-divider></mat-divider>
+    <div class="row proposal-pay__summary__detail" *ngFor="let item of pricingItems">
+        <div class="col-8 item">
+            <h6 class="item-title">{{ item.title }}</h6>
+            <small class="item-subtitle" *ngIf="item.subtitle">{{ item.subtitle }}</small><br *ngIf="item.subtitle">
+            <small class="item-hint text-muted" *ngIf="item.hint">{{ item.hint }}</small>
+        </div>
+        <div class="col-4 price">
+            {{ item.price }} €
+        </div>
+    </div>
+    <mat-divider class="mt-2"></mat-divider>
+    <div class="row proposal-pay__summary__detail">
+        <div class="col-8">
+            <h6 class="item-title">Prix total</h6>
+            <small class="item-subtitle">Frais de service inclus</small>
+        </div>
+        <div class="col-4 price">
+            {{ amount }} €
+        </div>
+    </div>
+  </div>
+  <div class="proposal-pay__checkout mt-3 container">
+    <h4 class="proposal-pay__checkout__title">Informations de paiement</h4>
+    <form class="proposal-pay__checkout__form" [formGroup]="checkout" (ngSubmit)="pay()" novalidate>
+        <div class="form-group proposal-pay__checkout__name">
+            <input type="text" placeholder="Nom complet" class="form-control" formControlName="name" required
+                    [class.is-invalid]="checkout.controls.name.errors?.required">
+        </div>
+        <div id="card-element" #cardInfo class="proposal-pay__checkout__card"></div>
+        <div class="invalid-feedback mb-3" [class.d-block]="error">
+            <small class="text-danger">{{ error }}</small>
+        </div>
+        <button class="btn btn-success">
+            Payer la proposition {{ amount }} €
+        </button>
+    </form>
+  </div>
+</div>
