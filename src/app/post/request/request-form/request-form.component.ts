@@ -97,9 +97,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       this.freeRequest = changes.freeRequest.currentValue;
       if (this.freeRequest) {
         this.checkDraft();
-        if (!this.draft) {
-          this.requestService.resetRequest();
-        }
+        // if (!this.draft) {
+        //   this.requestService.resetRequest();
+        // }
       }
     }
     if (changes.request) {
@@ -485,6 +485,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.saved && this.freeRequest && !this.edition) {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
+    }
+    if (this.edition) {
+      this.requestService.resetRequest();
     }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
