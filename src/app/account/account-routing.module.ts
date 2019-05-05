@@ -19,7 +19,14 @@ const routes: Routes = [
             { path: 'info', component: AccountInfoComponent },
             { path: 'request', component: AccountRequestComponent },
             { path: 'trip', component: AccountTripComponent },
-            { path: 'proposal', component: AccountProposalComponent, resolve: {data: AccountProposalResolver} },
+            { path: 'proposal', component: AccountProposalComponent, resolve: {data: AccountProposalResolver},
+                children: [
+                    { path: 'deliver', component: AccountProposalComponent },
+                    { path: 'upcoming', component: AccountProposalComponent },
+                    { path: 'received', component: AccountProposalComponent },
+                    { path: 'sent', component: AccountProposalComponent },
+                ]
+            },
             { path: 'balance', component: AccountBalanceComponent, resolve: { user: AccountBalanceResolver } }
         ]
     },

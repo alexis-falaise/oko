@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { PostService } from '@core/post.service';
 import { forkJoin, timer, Subject } from 'rxjs';
 import * as moment from 'moment';
@@ -10,7 +10,7 @@ import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 class ProposalNotification {
@@ -23,8 +23,9 @@ class ProposalNotification {
   templateUrl: './account-proposal.component.html',
   styleUrls: ['./account-proposal.component.scss']
 })
-export class AccountProposalComponent implements OnInit, OnDestroy {
+export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('deliverTabs') tabs;
+  routes = ['deliver', 'upcoming', 'received', 'sent'];
   currentUser: User;
   receivedFromTrip: Array<Proposal> = [];
   receivedFromRequest: Array<Proposal> = [];
@@ -33,6 +34,7 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
   toDeliver: Array<Proposal> = [];
   toReceive: Array<Proposal> = [];
   proposals: Array<Proposal> = [];
+  tabIndex = 0;
   fetchedProposals = new Subject();
   moment = moment;
 
@@ -42,6 +44,7 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private socket: Socket,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -63,6 +66,16 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    this.parseCurrentUrl();
+  }
+
+  tabChange(e: any) {
+    const tabIndex = e;
+    const route = this.routes[tabIndex];
+    this.router.navigate(['/account', 'proposal', route]);
+  }
+
   private initLists() {
     this.receivedFromTrip = null;
     this.receivedFromRequest = null;
@@ -72,6 +85,15 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
       this.uiService.setLoading(false);
       this.setListsEmpty();
     });
+  }
+
+  private parseCurrentUrl() {
+    const url = this.router.url;
+    const childs = url.split('/');
+    const currentChild = childs[childs.length - 1];
+    console.log(currentChild, this.routes);
+    this.tabIndex = this.routes.findIndex(route => route === currentChild);
+    console.log('Tab index', this.tabIndex);
   }
 
   private filterLists(proposals: Array<Proposal>) {
@@ -91,12 +113,18 @@ export class AccountProposalComponent implements OnInit, OnDestroy {
     this.toDeliver = paidProposals.filter(proposal => {
       return (proposal.isAuthor(user) && proposal.fromTrip) || (!proposal.isAuthor(user) && proposal.fromRequest);
     });
+    if (!this.toDeliver.length) {
+      this.routes = this.routes.splice(0, 1);
+    }
     /**
      * Proposals to receive are whether requests made by user on a trip or trips received for a request
      */
     this.toReceive = paidProposals.filter(proposal => {
       return (proposal.isAuthor(user) && proposal.fromRequest) || (!proposal.isAuthor(user) && proposal.fromTrip);
     });
+    if (!this.toReceive.length) {
+      this.routes = this.routes.splice(1, 1);
+    }
     this.uiService.setLoading(false);
   }
 

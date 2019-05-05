@@ -1,14 +1,15 @@
 <div class="account-proposal">
     <mat-tab-group
         class="account-proposal__nav"
+        [(selectedIndex)]="tabIndex"
+        (selectedIndexChange)="tabChange($event)"
         headerPosition="below"
         animationDuration="150ms"
         [color]="'primary'"
         mat-strech-tabs mat-align-tabs="center" #deliverTabs>
         <mat-tab *ngIf="toDeliver?.length">
             <ng-template mat-tab-label>
-                <mat-icon>flight_takeoff</mat-icon> 
-                
+                <mat-icon>flight_takeoff</mat-icon>  
                 <span class="d-none d-sm-inline">À livrer</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">
@@ -18,7 +19,7 @@
         </mat-tab>
         <mat-tab *ngIf="toReceive?.length">
             <ng-template mat-tab-label>
-                <mat-icon>flight_land</mat-icon>
+                <mat-icon>flight_land</mat-icon> {{ tabIndex }}
                 <span class="d-none d-sm-inline">À recevoir</span>
             </ng-template>
             <div class="account-proposal__list-wrapper">

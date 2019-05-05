@@ -125,7 +125,7 @@ const firefoxMobileSteps = [
     icon: 'done_all',
     image: '',
   },
-]
+];
 
 @Component({
   selector: 'app-install',

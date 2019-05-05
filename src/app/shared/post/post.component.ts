@@ -77,8 +77,10 @@ export class PostComponent implements OnInit, OnChanges {
     this.postPath = [`/post/${post instanceof Trip ? 'trip' : 'request'}/${post.id}`];
     if (post instanceof Trip && this.horizontal) {
       if (post.to && post.to.airport) {
-        this.pexels.getBackgroundPicture(post.to.airport.country)
-        .subscribe(picture => this.backgroundPicture = picture);
+        if (!this.backgroundPicture) {
+          this.pexels.getBackgroundPicture(post.to.airport.country)
+          .subscribe(picture => this.backgroundPicture = picture);
+        }
       }
     }
   }
