@@ -33,7 +33,8 @@
     <form class="proposal-pay__checkout__form" [formGroup]="checkout" (ngSubmit)="pay()" novalidate>
         <div class="form-group proposal-pay__checkout__name">
             <input type="text" placeholder="Nom complet" class="form-control" formControlName="name" required
-                    [class.is-invalid]="checkout.controls.name.errors?.required">
+                    [class.is-invalid]="checkout.controls.name.errors?.required
+                    && (checkout.controls.name.touched || validated)">
         </div>
         <div id="card-element" #cardInfo class="proposal-pay__checkout__card"></div>
         <div class="invalid-feedback mb-3" [class.d-block]="error">

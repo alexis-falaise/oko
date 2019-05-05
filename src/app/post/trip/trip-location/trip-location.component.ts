@@ -7,6 +7,8 @@ import * as moment from 'moment';
 import { GeoService } from '@core/geo.service';
 import { Airport } from '@models/airport.model';
 import { isString } from 'util';
+import { timer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-trip-location',
@@ -34,6 +36,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   airportLoading = false;
   cities: Array<string> = [];
   cityLoading = false;
+  nextCityQuery = new Subject();
   filteredAirports: Array<Airport>;
   today = moment();
   cityFocus = false;
@@ -147,8 +150,13 @@ export class TripLocationComponent implements OnInit, OnChanges {
   }
 
   fetchCities(city: string) {
-    this.cityLoading = true;
-    this.geoService.getCities(city);
+    this.nextCityQuery.next();
+    timer(250).pipe(takeUntil(this.nextCityQuery))
+    .subscribe(() => {
+      this.cityLoading = true;
+      this.geoService.getCities(city);
+      this.fetchMatchingAirports(city);
+    });
   }
 
   focusCity() {

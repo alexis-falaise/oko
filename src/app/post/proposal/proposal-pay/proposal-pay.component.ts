@@ -37,6 +37,7 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
   });
   intentKey: string;
   amount: number;
+  validated = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +57,10 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
       } else if (this.proposal.to instanceof Request) {
         this.request = this.proposal.to;
       }
+      if (this.proposal.paid) {
+        this.snack.open('Cette proposition a déjà été reglée', 'Ah cool', {duration: 3000});
+        this.router.navigate(['/post', 'proposal', this.proposal.id]);
+      }
       this.setAmount();
       this.createIntent(this.amount);
       this.generatePricingItems();
@@ -70,6 +75,7 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   pay() {
+    this.validated = true;
     if (this.checkout.valid) {
       this.uiService.setLoading(true);
       stripe.handleCardPayment(this.intentKey, this.card, {

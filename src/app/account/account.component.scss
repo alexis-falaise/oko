@@ -8,9 +8,9 @@
 
     &-hero {
         width: 100vw;
-        height: 15vh;
-        min-height: 150px;
-        padding-top: 25px;
+        height: 10vh;
+        min-height: 125px;
+        padding-left: 15vw; 
         background: $heroGradient;
         background-size: 100vw 100vh;
         box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
@@ -26,6 +26,7 @@
 
         &__avatar {
             align-items: flex-end;
+            z-index: 102;       
         }
 
         &__user {

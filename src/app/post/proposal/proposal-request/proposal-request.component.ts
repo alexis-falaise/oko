@@ -10,6 +10,7 @@ import { Request } from '@models/post/request.model';
 export class ProposalRequestComponent implements OnChanges {
   @Input() request: Request;
   @Input() fullDisplay: boolean;
+  @Input() own: boolean;
   @Output() open = new EventEmitter();
 
   constructor() { }

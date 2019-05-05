@@ -82,7 +82,7 @@
         La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement 
       </small>
       <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
-        Vos articles seront livrés par {{ proposal?.to?.user.firstname }} le {{ moment(proposal?.to?.date).format('DD/MM') }}
+        Vos articles seront livrés par {{ proposal?.to?.user.firstname }} au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}
       </small>
       <div class="d-flex flex-column align-items-center" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
         <button class="btn btn-warning" disabled>À livrer</button> <br>
@@ -96,7 +96,7 @@
         La proposition est en attente d'acceptation par {{ proposal?.from?.user.firstname }}
       </small>
       <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
-        Vos articles seront livrés par {{ proposal?.from?.user.firstname }} le {{ moment(proposal?.from?.date).format('DD/MM') }}
+        Vos articles seront livrés par {{ proposal?.from?.user.firstname }} au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}
       </small>
       <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
         Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
@@ -133,7 +133,7 @@
             <div *ngIf="standalone">
                 <hr class="divider">
                 Concernant votre annonce:
-                <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+                <app-proposal-request [own]="true" [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
             </div>
         </div>
     </div>
@@ -144,7 +144,7 @@
         <div *ngIf="standalone">
           <hr class="divider">
           Concernant votre annonce:
-          <app-proposal-request [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+          <app-proposal-request [own]="true" [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
         </div>
       </div>
     </ng-template>
@@ -215,8 +215,8 @@
         <mat-icon>flight</mat-icon> Remise à l'aéroport
       </div>       
     </div>
-    <div class="col-6" *ngIf="proposal.from?.urgent">
-      <mat-icon>today</mat-icon> {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
+    <div class="col-6 proposal__request__date" *ngIf="proposal.from?.urgent">
+      <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
       <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
         Raison: " {{ proposal.from.urgentDetails.explaination }} "
       </p>
