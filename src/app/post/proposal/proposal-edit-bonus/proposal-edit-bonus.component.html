@@ -5,6 +5,7 @@
   <div class="proposal-edit-bonus__content">
     <h6 class="text-muted">Bonus voyageur</h6>
     <mat-slider class="proposal-edit-bonus__content__slider"
+                #slider
                 [disabled]="proposal.accepted || proposal.closed || proposal.refused"
                 [min]="min" [max]="max" [(ngModel)]="bonus"
                 thumbLabel [displayWith]="formatLabel">

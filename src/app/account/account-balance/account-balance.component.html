@@ -1,0 +1,13 @@
+<div class="account-balance">
+  <div class="account-balance__figure">
+    {{ user.balance || 0 }} €
+  </div>
+  <div class="account-balance__actions">
+    <button class="btn btn-hero btn-icon mb-2" [disabled]="!user.balance">
+      <mat-icon>account_balance</mat-icon> Virer sur mon compte
+    </button>
+    <button class="btn btn-hero btn-icon">
+      <mat-icon>history</mat-icon> Historique
+    </button>
+  </div>
+</div>

@@ -97,9 +97,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       this.freeRequest = changes.freeRequest.currentValue;
       if (this.freeRequest) {
         this.checkDraft();
-        // if (!this.draft) {
-        //   this.requestService.resetRequest();
-        // }
+        if (!this.draft) {
+          this.requestService.resetRequest();
+        }
       }
     }
     if (changes.request) {
@@ -373,6 +373,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
         country: this.trip.to.airport.country,
       };
     }
+    if (meeting.city) {
+      meeting.meetingPoint = {
+        city: meeting.city,
+        country: meeting.country,
+      };
+    }
     delete meeting.city;
     const saveRequest = new Request({
       items: this.items,
@@ -450,11 +456,12 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private saveDraft(draft) {
+    const city = this.meeting.controls.city.value;
     if (draft
         && (objectIsComplete(draft.meetingPoint)
         || (draft.items && draft.items.length)
         || objectIsComplete(draft.urgentDetails)
-        || (draft.city && draft.city !== ''))) {
+        || objectIsComplete(city))) {
       this.postService.saveRequestDraft(draft);
     }
   }
@@ -478,9 +485,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.saved && this.freeRequest && !this.edition) {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
-    }
-    if (this.edition) {
-      this.requestService.resetRequest();
     }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

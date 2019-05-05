@@ -130,7 +130,6 @@ export class PostService {
         const requests = response.data;
         delete filter.afterDate;
         this.currentRequestFilter = filter;
-        console.log('Got requests', requests);
         this.getRequestsUserStats(requests, this.requests);
         nextQuery.next(true);
       }

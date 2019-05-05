@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Observable, timer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 
@@ -8,8 +10,6 @@ import { objectMatch } from '@utils/object.util';
 
 import { Item } from '@models/item.model';
 import { ServerResponse } from '@models/app/server-response.model';
-import { takeUntil } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'

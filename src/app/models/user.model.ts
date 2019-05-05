@@ -1,20 +1,13 @@
 import { Description } from '@models/description.model';
-import { MeetingPoint } from './meeting-point.model';
+import { MeetingPoint } from '@models/meeting-point.model';
+import { Session } from '@models/app/session.model';
+import { BankDetails } from './balance/bank-details.model';
+import { Earning } from './balance/earning.model';
+import { Withdrawal } from '@models/balance/withdrawal.model';
+
 import { Moment } from 'moment';
 import * as moment from 'moment';
-export class Session {
-    userId: string;
-    start: Moment;
-    end: Moment;
-    open: boolean;
-    constructor(session: Partial<Session>) {
-        Object.assign(this, session);
-        if (session) {
-            this.start = moment(session.start);
-            this.end = moment(session.end);
-        }
-    }
-}
+
 export class User {
     firstname: string;
     lastname: string;
@@ -27,8 +20,12 @@ export class User {
     requests?: number;
     ratings?: [number];
     address?: MeetingPoint;
-    socialToken?: string;
-    socialProvider?: string;
+
+    // Balance
+    accounts: [BankDetails];
+    balance: number;
+    withdrawals: [Withdrawal];
+    earnings: [Earning];
 
     // Landing page properties
     comment?: string;
@@ -40,6 +37,8 @@ export class User {
     sessions: Array<Session>;
     admin: boolean;
     signinDate: Moment;
+    socialToken?: string;
+    socialProvider?: string;
 
     // Front-end helpers
     lastConnection: Moment;

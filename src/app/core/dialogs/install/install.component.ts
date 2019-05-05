@@ -144,7 +144,6 @@ export class InstallComponent implements OnInit {
     const browser = this.deviceDetector.browser;
     const os = this.deviceDetector.os;
     const device = this.deviceDetector.device;
-    console.log('Device info', browser, os, device);
     this.steps = chromeMobileSteps;
     if (browser === 'Chrome' && os !== 'Android') {
       this.steps = chromeSteps;

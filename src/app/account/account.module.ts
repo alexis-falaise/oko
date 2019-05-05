@@ -27,6 +27,8 @@ import { AccountProposalComponent } from './account-proposal/account-proposal.co
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
+import { AccountBalanceComponent } from './account-balance/account-balance.component';
+import { AccountBalanceResolver } from '@resolvers/account-balance.resolver';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
     AccountItemComponent,
     AccountAvatarUploadComponent,
     AccountProposalComponent,
+    AccountBalanceComponent,
   ],
   entryComponents: [
     AccountComponent,
@@ -64,6 +67,6 @@ import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
   exports: [
     AccountComponent,
   ],
-  providers: [AccountProposalResolver],
+  providers: [AccountProposalResolver, AccountBalanceResolver],
 })
 export class AccountModule { }

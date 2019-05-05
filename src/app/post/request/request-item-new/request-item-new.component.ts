@@ -24,7 +24,7 @@ export class RequestItemNewComponent implements OnInit {
     label: ['', Validators.required],
     description: [''],
     link: [''],
-    photo: ['https://bestengine.humanoid.fr/uploads/products/xiaomi-mi-9-frandroid-officiel-2019.png'],
+    photo: [''],
     width: [null, Validators.min(0)],
     height: [null, Validators.min(0)],
     depth: [null, Validators.min(0)],

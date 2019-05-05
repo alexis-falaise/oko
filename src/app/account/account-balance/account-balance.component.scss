@@ -1,0 +1,21 @@
+@import "../../../styles/variables.scss";
+
+.account-balance {
+    height: 60vh;
+
+    &__figure {
+        height: 35vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 64px;
+        color: $white-alpha-8;
+        font-weight: 100;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

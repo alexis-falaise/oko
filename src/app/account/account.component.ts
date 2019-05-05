@@ -24,6 +24,7 @@ export class AccountComponent implements OnInit {
     { label: 'Propositions', path: '/account/proposal', icon: 'announcement', badge: 0 },
     { label: 'Trajets', path: '/account/trip', icon: 'explore' },
     { label: 'Demandes', path: '/account/request', icon: 'new_releases' },
+    { label: 'Solde', path: '/account/balance', icon: 'euro_symbol' }
     // { label: 'Articles', path: '/account/item', icon: 'shopping_cart' },
   ];
 

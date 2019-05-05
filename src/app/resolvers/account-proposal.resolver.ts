@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Resolve, Router } from '@angular/router';
+import { Resolve } from '@angular/router';
 
-import { Observable, merge, forkJoin, of } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 
 import { Proposal } from '@models/post/proposal.model';
 import { PostService } from '@core/post.service';

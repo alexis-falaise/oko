@@ -26,33 +26,6 @@
     </div>
   </div>
   <div *ngIf="meeting.controls.city.value || edition">
-      <div class="request-form__actions row">
-          <div class="col-12" *ngIf="draft">
-            <button class="btn btn-warning btn-add-item" (click)="removeDraft()">
-              <mat-icon>remove_circle</mat-icon> Supprimer ce brouillon
-            </button>
-          </div>
-          <div class="col-12 col-sm-6">
-              <button class="btn btn-info btn-add-item" (click)="newItem()">
-                <mat-icon>add</mat-icon> Ajouter un article
-              </button>
-          </div>
-          <div class="col-12 col-sm-6">
-              <button class="btn btn-light btn-add-item" (click)="openItemSelectionDialog()">
-                <mat-icon>view_carousel</mat-icon> Choisir parmi mes articles
-              </button>
-          </div>
-      </div>
-      <div class="request-form__item" *ngFor="let item of items; let i = index">
-        <app-item [item]="item"
-                  [creator]="true"
-                  (remove)="removeItem(i)"
-                  (click)="editItem(item)">
-        </app-item>
-        <small class="text-muted" *ngIf="!item.weight">
-          Cliquez sur l'article pour y ajouter un poids
-        </small>
-      </div>
       <div class="request-form__meeting">
         <form [formGroup]="meeting">
           <div class="form-group" *ngIf="freeRequest">
@@ -78,7 +51,37 @@
                 La ville dans laquelle je souhaite recevoir mon article
               </small>
           </div>
-          <div class="form-group">
+          <div class="request-form__actions row">
+              <!-- <div class="col-12" *ngIf="draft">
+                <button class="btn btn-warning btn-add-item" (click)="removeDraft()">
+                  <mat-icon>remove_circle</mat-icon> Supprimer ce brouillon
+                </button>
+              </div> -->
+              <div class="col-12 col-sm-6">
+                  <button class="btn btn-info btn-add-item" (click)="newItem()">
+                    <mat-icon>add</mat-icon> Ajouter un article
+                  </button>
+              </div>
+              <div class="col-12 col-sm-6">
+                  <button class="btn btn-light btn-add-item" (click)="openItemSelectionDialog()">
+                    <mat-icon>view_carousel</mat-icon> Choisir parmi mes articles
+                  </button>
+              </div>
+              <small class="text-muted" *ngIf="!items?.length">
+                Ajoutez des articles pour continuer
+              </small>
+          </div>
+          <div class="request-form__item" *ngFor="let item of items; let i = index">
+            <app-item [item]="item"
+                      [creator]="true"
+                      (remove)="removeItem(i)"
+                      (click)="editItem(item)">
+            </app-item>
+            <small class="text-muted" *ngIf="!item.weight">
+              Cliquez sur l'article pour y ajouter un poids
+            </small>
+          </div>
+          <div class="form-group" *ngIf="items?.length">
             <mat-slide-toggle formControlName="airportPickup">Remise à l'aéroport</mat-slide-toggle><br>
             <small class="text-muted">
               Je récupère mes articles à l'aéroport d'arrivée du voyageur
@@ -106,7 +109,7 @@
                 </div>
             </form>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="items?.length">
             <mat-slide-toggle formControlName="urgent">Demande urgente</mat-slide-toggle><br>
             <small class="text-muted">
               Précisez si votre demande est contrainte par des délais, ou motivée par des raisons importantes
@@ -136,16 +139,18 @@
                 </div>
             </form>
           </div>
-          <h5 class="form-title">Bonus voyageur</h5>
-          <small class="text-muted">
-              Proposez une rémunération au voyageur en tenant compte
-              <ul class="bonus-list">
-                  <li>Du lieu de remise (aéroport ou point de rendez-vous)</li>
-                  <li>De la taille de l'article à transporter</li>
-                  <li>De la valeur de l'article à transporter</li>
-              </ul>
-          </small>
-          <div class="form-group">
+          <div *ngIf="items?.length">
+            <h5 class="form-title">Bonus voyageur</h5>
+            <small class="text-muted">
+                Proposez une rémunération au voyageur en tenant compte
+                <ul class="bonus-list">
+                    <li>Du lieu de remise (aéroport ou point de rendez-vous)</li>
+                    <li>De la taille de l'article à transporter</li>
+                    <li>De la valeur de l'article à transporter</li>
+                </ul>
+            </small>
+          </div>
+          <div class="form-group" *ngIf="items?.length">
             <div class="input-group">
               <input type="number" min="0" class="form-control" placeholder="Bonus voyageur" formControlName="bonus" [required]="bonusAgreed">
               <div class="input-group-append">
@@ -153,13 +158,15 @@
               </div>
             </div>
           </div>
-          <h5 class="form-title" *ngIf="meeting.controls.bonus.value">Prix total: {{ totalPrice }} €</h5>
-          <small class="text-danger" *ngIf="meeting.controls.bonus.value === 0">C'est un peu faible...</small>
-          <small class="text-danger" *ngIf="meeting.controls.bonus.value && !this.itemsPrice">Vous n'avez pas saisi d'articles</small>
-          <small class="text-muted" *ngIf="meeting.controls.bonus.value && this.itemsPrice">Frais de service inclus</small>
+          <div *ngIf="items?.length">
+            <h5 class="form-title" *ngIf="meeting.controls.bonus.value">Prix total: {{ totalPrice }} €</h5>
+            <small class="text-danger" *ngIf="meeting.controls.bonus.value === 0">C'est un peu faible...</small>
+            <small class="text-danger" *ngIf="meeting.controls.bonus.value && !this.itemsPrice">Vous n'avez pas saisi d'articles</small>
+            <small class="text-muted" *ngIf="meeting.controls.bonus.value && this.itemsPrice">Frais de service inclus</small>
+          </div>
         </form>
       </div>
-      <div class="request-form__validation row">
+      <div class="request-form__validation row" *ngIf="items?.length">
         <button class="btn btn-success" [class.btn-add-item]="edition" [disabled]="
             (!items || items && !items.length)
             || !meeting.controls.bonus.valid

@@ -1,16 +1,28 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, GestureConfig } from '@angular/material';
 
 import { PostService } from '@core/post.service';
 
 import { Proposal } from '@models/post/proposal.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { User } from '@models/user.model';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
+
+declare var Hammer: any;
+export class MyHammerConfig extends GestureConfig {
+  buildHammer(element: HTMLElement) {
+    const mc = new Hammer(element, {
+      touchAction: 'auto'
+    });
+    return mc;
+  }
+}
 @Component({
   selector: 'app-proposal-edit-bonus',
   templateUrl: './proposal-edit-bonus.component.html',
-  styleUrls: ['./proposal-edit-bonus.component.scss']
+  styleUrls: ['./proposal-edit-bonus.component.scss'],
+  providers: [{ provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }]
 })
 export class ProposalEditBonusComponent implements OnInit {
   bonus: number;
