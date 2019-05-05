@@ -88,7 +88,7 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
           this.uiService.setLoading(false);
         } else {
           this.error = null;
-          this.postService.payProposal(this.proposal.id)
+          this.postService.payProposal(this.proposal.id, this.amount)
           .subscribe((response: ServerResponse) => {
             if (response.status) {
               this.snack.open('La proposition a été reglée, merci', 'Super', {duration: 4500});

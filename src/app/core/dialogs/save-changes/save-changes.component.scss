@@ -1,7 +1,7 @@
 @import "../../../../styles/classes.scss";
 @import "../../../../styles/variables.scss";
 
-.not-connected {
+.save-changes {
     height: 100%;
     
     &-title {
@@ -10,14 +10,9 @@
 
     &__actions {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-around;
         align-items: center;
-        height: 75%;
-    }
-
-    .btn-connect {
-        width: 200px;
-        margin-bottom: 10px;
+        height: 90px;
     }
 }

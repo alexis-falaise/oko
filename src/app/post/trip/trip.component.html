@@ -97,6 +97,9 @@
             </div>
           </div>
         </div>
+        <mat-slide-toggle [(ngModel)]="private">
+          <mat-icon>lock</mat-icon> Trajet privé</mat-slide-toggle> <br>
+        <small class="text-muted">Rendez ce trajet uniquement visible par {{ request?.user?.firstname || 'l\'auteur de l\'annonce' }}</small>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Validation</ng-template>

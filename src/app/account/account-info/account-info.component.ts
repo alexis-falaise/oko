@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MatSnackBar, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS, MatDialog } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
 
@@ -10,6 +10,7 @@ import { UiService } from '@core/ui.service';
 import { User } from '@models/user.model';
 import { Description } from '@models/description.model';
 import { MeetingPoint } from '@models/meeting-point.model';
+import { SaveChangesComponent } from '@core/dialogs/save-changes/save-changes.component';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { MeetingPoint } from '@models/meeting-point.model';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
 })
-export class AccountInfoComponent implements OnInit {
+export class AccountInfoComponent implements OnInit, OnDestroy {
   user: User;
   address = this.fb.group({
     address: [''],
@@ -38,6 +39,7 @@ export class AccountInfoComponent implements OnInit {
   });
   description: Description;
   edit: any = {};
+  changed = false;
   keys = Object.keys;
   french = {
     'occupation': 'Emploi',
@@ -59,6 +61,7 @@ export class AccountInfoComponent implements OnInit {
   constructor(
     private userService: UserService,
     private uiService: UiService,
+    private dialog: MatDialog,
     private snack: MatSnackBar,
     private fb: FormBuilder,
   ) { }
@@ -87,6 +90,7 @@ export class AccountInfoComponent implements OnInit {
       email: user.email
     });
     this.createEditionObject();
+    this.setChangeListeners();
   }
 
   createEditionObject() {
@@ -102,12 +106,19 @@ export class AccountInfoComponent implements OnInit {
     if (index === -1 && item && item !== '') {
       array.push(item);
     }
+    this.changed = true;
   }
 
   removeFromArray(item: string, array: Array<string>, key: string) {
     this.edit[key] = true;
     const index = array.findIndex(arrayItem => arrayItem === item);
     array.splice(index, 1);
+    this.changed = true;
+  }
+
+  editItem(item: string) {
+    this.edit[item] = true;
+    this.changed = true;
   }
 
   save() {
@@ -119,6 +130,7 @@ export class AccountInfoComponent implements OnInit {
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
       if (res.status) {
+        this.changed = false;
         this.snack.open('Profil mis à jour', 'OK', {duration: 2500});
         this.init(res.data);
       } else {
@@ -132,6 +144,25 @@ export class AccountInfoComponent implements OnInit {
     const snackRef = this.snack.open('Erreur lors de la mise à jour de votre profil', 'Réessayer', {duration: 3000});
     snackRef.onAction().subscribe(() => this.save());
     this.uiService.setLoading(false);
+  }
+
+  ngOnDestroy() {
+    if (this.changed) {
+      const dialogRef = this.dialog.open(SaveChangesComponent, {
+        height: '45vh',
+        width: '75vw',
+      });
+      dialogRef.afterClosed().subscribe((shouldSave) => {
+        if (shouldSave) {
+          this.save();
+        }
+      });
+    }
+  }
+
+  private setChangeListeners() {
+    this.address.valueChanges.subscribe(() => this.changed = true);
+    this.account.valueChanges.subscribe(() => this.changed = true);
   }
 
 }

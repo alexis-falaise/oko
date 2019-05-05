@@ -601,8 +601,9 @@ export class PostService {
    * Set a proposal as paid
    * @param id : Proposal id
    */
-  payProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/pay`, {paid: true}, {withCredentials: true}) as Observable<ServerResponse>;
+  payProposal(id: string, amount: number): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/pay`, {paid: true, amount: amount},
+           {withCredentials: true}) as Observable<ServerResponse>;
   }
 
   /**

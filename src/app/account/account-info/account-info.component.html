@@ -84,11 +84,9 @@
       </div>
     </div>
     <ng-template #simpleItem>
-      <div class="form-row" (click)="edit[item] = true">
+      <div class="form-row" (click)="editItem(item)">
         <label [for]="item">{{ frenchization(item) }}</label>
-        <input [name]="item" [(ngModel)]="description[item]"
-               [readonly]="!edit[item]" type="text"
-               class="form-control">
+        <input [name]="item" [(ngModel)]="description[item]" type="text" class="form-control">
       </div>
     </ng-template>
   </div>

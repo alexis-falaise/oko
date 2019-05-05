@@ -15,7 +15,7 @@ export class AccountBalanceComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.user = data.user;
-    })
+    });
   }
 
 }

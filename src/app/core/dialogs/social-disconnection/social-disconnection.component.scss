@@ -1,12 +1,11 @@
+@import "../../../../styles/classes.scss";
 @import "../../../../styles/variables.scss";
 
 .social-disconnection {
     height: 100%;
     
     &-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: $cyan-600;
+        @extend .base-modal-title;
     }
 
     &__actions {

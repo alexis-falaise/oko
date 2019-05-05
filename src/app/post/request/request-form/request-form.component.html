@@ -82,7 +82,9 @@
             </small>
           </div>
           <div class="form-group" *ngIf="items?.length">
-            <mat-slide-toggle formControlName="airportPickup">Remise à l'aéroport</mat-slide-toggle><br>
+            <mat-slide-toggle formControlName="airportPickup">
+             <mat-icon *ngIf="meeting.controls.airportPickup.value">flight</mat-icon> Remise à l'aéroport
+            </mat-slide-toggle><br>
             <small class="text-muted">
               Je récupère mes articles à l'aéroport d'arrivée du voyageur
               <span *ngIf="trip?.to && trip?.to.airport">: {{ trip.to.airport.name }} ( {{ trip.to.airport.code }} )</span>
@@ -90,7 +92,9 @@
           </div>
           <div *ngIf="!meeting.controls.airportPickup.value">
             <h5 class="request-form__meeting-title">Lieu de rendez-vous</h5>
-            <mat-slide-toggle formControlName="homeDelivery" (click)="homeDelivery()">Remise à domicile</mat-slide-toggle><br>
+            <mat-slide-toggle formControlName="homeDelivery" (click)="homeDelivery()">
+              <mat-icon>home</mat-icon> Remise à domicile
+            </mat-slide-toggle><br>
             <small class="text-muted">
               Cette information ne sera communiquée qu'au voyageur
             </small>
@@ -110,7 +114,9 @@
             </form>
           </div>
           <div class="form-group" *ngIf="items?.length">
-            <mat-slide-toggle formControlName="urgent">Demande urgente</mat-slide-toggle><br>
+            <mat-slide-toggle formControlName="urgent">
+             <mat-icon>watch_later</mat-icon> Demande urgente
+            </mat-slide-toggle><br>
             <small class="text-muted">
               Précisez si votre demande est contrainte par des délais, ou motivée par des raisons importantes
             </small>
@@ -138,6 +144,17 @@
                   </div>
                 </div>
             </form>
+          </div>
+          <div class="form-group" *ngIf="!freeRequest && trip && items?.length">
+            <mat-slide-toggle formControlName="private">
+             <mat-icon>lock</mat-icon> Annonce privée
+            </mat-slide-toggle> <br>
+            <small class="text-muted" *ngIf="!this.meeting.controls.private.value">
+              Rendez cette annonce uniquement visible par {{ trip?.user?.firstname || 'le voyageur' }}
+            </small>
+            <small class="text-muted" *ngIf="this.meeting.controls.private.value">
+              Cette annonce ne sera visible que par {{ trip?.user?.firstname || 'le voyageur' }}
+            </small>
           </div>
           <div *ngIf="items?.length">
             <h5 class="form-title">Bonus voyageur</h5>

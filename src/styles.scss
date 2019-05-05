@@ -235,6 +235,18 @@ html, body {
     }
 }
 
+.mat-slide-toggle-content {
+    display: flex;
+    align-items: center;
+    .mat-icon {
+        margin-right: 5px;
+    }
+    .material-icons {
+        animation: .5s appear;
+        color: rgb(125, 125, 125);
+    }
+}
+
 .text-muted.light {
     color: $white-alpha-6 !important;
 }

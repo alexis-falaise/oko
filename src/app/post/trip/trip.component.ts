@@ -43,6 +43,7 @@ export class TripComponent implements OnInit, OnDestroy {
   trip: Trip = null;
   request: Request = null;
   bonus: number;
+  private = false;
 
   constructor(
     private postService: PostService,
@@ -301,6 +302,7 @@ export class TripComponent implements OnInit, OnDestroy {
       },
       luggages: luggages,
       bonus: bonus,
+      private: this.private,
       departureDate: moment(this.departureSave.date).hours(departureTime.hours()).minutes(departureTime.minutes()),
       date: moment(this.arrivalSave.date).hours(arrivalTime.hours()).minutes(arrivalTime.minutes()),
       ...constraints

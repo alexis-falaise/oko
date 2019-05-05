@@ -66,6 +66,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       date: [null],
     }),
     bonus: ['', Validators.compose([Validators.required, Validators.min(1)])],
+    private: [false],
   });
   bonusAgreed = false;
   requestId: string;
@@ -375,8 +376,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (meeting.city) {
       meeting.meetingPoint = {
-        city: meeting.city,
-        country: meeting.country,
+        city: meeting.city.city,
+        country: meeting.city.country,
       };
     }
     delete meeting.city;
