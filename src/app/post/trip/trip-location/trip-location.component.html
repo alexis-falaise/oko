@@ -7,6 +7,7 @@
                [readonly]="cityReadonly"
                [matAutocomplete]="citiesAuto"
                (keyup)="fetchCities(location.controls.city.value)"
+               (keyup.enter)="airport.focus()"
                [class.is-invalid]="location.controls.city.errors?.required
                && location.controls.city.touched
                || (submitted && location.controls.city.invalid)" required>
@@ -40,11 +41,6 @@
                 && location.controls.airport.touched)
                 || (submitted && location.controls.airport.invalid)
         " mode="indeterminate" *ngIf="airportLoading"></mat-progress-bar>
-        <div class="invalid-feedback"
-            [class.d-block]="location.controls.airport.errors?.required
-            && location.controls.airport.touched">
-            Indiquez un aéroport
-        </div>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAirport">
             <mat-option *ngFor="let airport of filteredAirports" [value]="airport">
             {{ airport.name }} |
@@ -52,7 +48,12 @@
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
-    <div class="form-row">
+    <div class="invalid-feedback"
+        [class.d-block]="location.controls.airport.errors?.required
+        && location.controls.airport.touched">
+        Indiquez un aéroport
+    </div>
+    <div class="form-row mt-3">
         <div class="form-group col-10 col-md-6">
           <input type="text" name="date" formControlName="date"
                  autocomplete="off"

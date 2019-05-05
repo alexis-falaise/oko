@@ -20,7 +20,7 @@ export class RequestService {
   computedBonus = new BehaviorSubject<number>(null);
   computedTotalPrice = new BehaviorSubject<number>(null);
   currentItem = new BehaviorSubject<Item>(null);
-  currentCity: {city: string, country: string};
+  currentCity = new BehaviorSubject<{city: string, country: string}>(null);
   private itemUrl = `${environment.serverUrl}/item`;
   private specialChars = ['-', '/', ',', '(', ')', ':', '.', '[', ']', '{', '}', '*', '_'];
   constructor(
@@ -115,7 +115,7 @@ export class RequestService {
   }
 
   resetStoredItems() {
-    this.storedItems.next(null);
+    this.storedItems.next([]);
   }
 
   resetCurrentItem() {
@@ -127,7 +127,7 @@ export class RequestService {
     this.resetCurrentItem();
     this.computedBonus.next(null);
     this.computedTotalPrice.next(null);
-    this.currentCity = null;
+    this.currentCity.next(null);
   }
 
   setBonus(bonus: number) {
@@ -139,7 +139,7 @@ export class RequestService {
   }
 
   setCurrentCity(city: {city: string, country: string}) {
-    this.currentCity = city;
+    this.currentCity.next(city);
   }
 
   private formatItemInfo(itemData: any): Item {

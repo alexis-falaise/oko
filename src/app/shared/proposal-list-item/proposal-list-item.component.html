@@ -8,11 +8,7 @@
     <div class="row w-100 h-100 ml-0">
         <div class="col-3 d-flex flex-column align-items-center justify-content-center proposal-list-item__author">
             <app-avatar class="proposal-list-item__avatar"
-            *ngIf="(!own && proposal.author?.avatar) || (own && proposal.receiver?.avatar); else iconAvatar"
             [image]="own ? proposal.receiver.avatar : proposal.author.avatar" [size]="50"></app-avatar>
-            <ng-template #iconAvatar>
-                <mat-icon>account_circle</mat-icon>
-            </ng-template>
             <h6>{{ own ? proposal.receiver?.firstname : proposal.author?.firstname }}</h6>
         </div>
         <div class="col-4 col-sm-5 col-md-6 d-flex

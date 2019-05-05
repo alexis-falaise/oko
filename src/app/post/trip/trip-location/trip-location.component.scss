@@ -1,12 +1,9 @@
 .trip-location {
     &__airport-loading {
         height: 3px;
-        width: 104%;
+        width: 114%;
         position: relative;
         top: 10px;
-        &.invalid {
-            top: 29px;
-        }
     }
     &__city-loading {
         height: 3px;
@@ -18,5 +15,6 @@
     }
     &-hybrid-group {
         width: 100%;
+        margin-bottom: -20px;
     }
 }

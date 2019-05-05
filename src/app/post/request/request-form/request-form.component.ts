@@ -97,9 +97,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       this.freeRequest = changes.freeRequest.currentValue;
       if (this.freeRequest) {
         this.checkDraft();
-        if (!this.draft) {
-          this.requestService.resetRequest();
-        }
+        // if (!this.draft) {
+        //   this.requestService.resetRequest();
+        // }
       }
     }
     if (changes.request) {
@@ -125,7 +125,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       (error) => this.uiService.serverError(error)
     );
 
-    const savedCity = this.requestService.currentCity;
+    const savedCity = this.requestService.currentCity.getValue();
     if (savedCity) {
       this.setCity(savedCity);
     }
@@ -186,7 +186,8 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   setCity(city: {city: string, country: string}) {
     this.meeting.controls.city.patchValue(city);
     this.meeting.controls.meetingPoint.patchValue(city);
-    if (!this.requestService.currentCity) {
+    const savedCity = this.requestService.currentCity.getValue();
+    if (!savedCity) {
       this.requestService.setCurrentCity(city);
     }
   }
@@ -477,6 +478,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.saved && this.freeRequest && !this.edition) {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
+    }
+    if (this.edition) {
+      this.requestService.resetRequest();
     }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

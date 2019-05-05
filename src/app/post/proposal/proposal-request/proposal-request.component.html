@@ -1,7 +1,7 @@
 <div class="proposal-request" *ngIf="request; else empty">
     <h6 class="text-muted">Articles ({{request?.items?.length || 0}})</h6>
     <div *ngIf="fullDisplay; else restrictedDisplay">
-      <app-item class="proposal-request__item" [item]="item" [fullWidth]="true" [removable]="false"
+      <app-item class="proposal-request__item" [item]="item" [fullWidth]="true" [removable]="false" [creator]="own"
         *ngFor="let item of request?.items"></app-item>
     </div>
     <ng-template #restrictedDisplay>
