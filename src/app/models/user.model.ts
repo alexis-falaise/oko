@@ -83,9 +83,9 @@ export class User {
         return dateToFormat.isSame(moment(), 'd')
                 ? dateToFormat.fromNow()
                 : dateToFormat.isSame(moment().subtract(1, 'days'), 'd')
-                  ? dateToFormat.format('hier à HH:mm')
+                  ? dateToFormat.format('[hier] [à] HH:mm')
                   : dateToFormat.isAfter(moment().subtract(7, 'days'))
                     ? dateToFormat.format('ddd à HH:mm')
-                    : dateToFormat.format('le DD MMMM à HH:mm');
+                    : dateToFormat.format('[le] DD MMMM [à] HH:mm');
     }
 }

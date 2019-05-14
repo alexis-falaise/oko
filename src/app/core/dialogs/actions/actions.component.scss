@@ -1,0 +1,15 @@
+@import "../../../../styles/classes.scss";
+
+.actions {
+    height: 100%;
+    &__title {
+        @extend .base-modal-title;
+    }
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 90px;
+    }
+}

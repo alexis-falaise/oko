@@ -2,6 +2,31 @@
 @import "../../../styles/classes.scss";
 @import "../../../styles/variables.scss";
 
+.account-balance-entry {
+    @extend .base-oko-card;
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    margin: 5px 15px;
+
+    $iconSize: 36px;
+    .mat-icon {
+        width: $iconSize;
+        height: $iconSize;
+        margin-right: 10px;
+    }
+    .material-icons {
+        color: rgba(0, 0, 0, .4);
+        font-size: $iconSize;
+    }
+
+    &-title {
+        font-size: 16px;
+        color: rgba(0, 0, 0, .8);
+        margin-bottom: 0;
+    }
+}
+
 .account-balance {
     height: 60vh;
     overflow: hidden;
@@ -40,34 +65,61 @@
     }
 
     &__bank-detail {
-        @extend .base-oko-card;
-        display: flex;
-        align-items: center;
-        padding: 5px 15px;
-        margin: 5px 15px;
-
-        $iconSize: 36px;
-        .mat-icon {
-            width: $iconSize;
-            height: $iconSize;
-            margin-right: 10px;
-        }
-        .material-icons {
-            color: rgba(0, 0, 0, .4);
-            font-size: $iconSize;
-        }
+        @extend .account-balance-entry;
 
         &__account-info {
             &__title {
-                font-size: 16px;
-                color: rgba(0, 0, 0, .8);
+                @extend .account-balance-entry-title;
+                &.earning {
+                    color: $light-green-900 !important;
+                }
             }
         }
     }
 
     &__history {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        &-list {
+            width: 100%;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &-entry {
+            @extend .account-balance-entry;
+            width: 100%;
+
+            &__info {
+                &__title {
+                    @extend .account-balance-entry-title;
+                }
+            }
+        }
+
+        .btn-proposal {
+            opacity: .5;
+            transition: all .35s;
+            display: flex;
+            flex-direction: column;
+            font-size: 10px;
+            max-width: 33.34%;
+            $iconSize: 24px;
+            .mat-icon {
+                width: $iconSize;
+                height: $iconSize;
+            }
+            .material-icons {
+                font-size: $iconSize;
+            }
+            &:hover {
+                opacity: 1;
+            }
+        }
     }
 
     &__figure {

@@ -8,7 +8,9 @@
         <div class="account-balance__settings">
           <h4 class="account-balance__title" *ngIf="user.accounts?.length; else noAccount">Comptes bancaires</h4>
           <div class="bank-accounts-list" *ngIf="user.accounts?.length">
-            <div class="account-balance__bank-detail" *ngFor="let account of user.accounts" (click)="editAccount(account)">
+            <div class="account-balance__bank-detail"
+                 *ngFor="let account of user.accounts"
+                 (click)="editAccount(account)">
               <mat-icon>account_balance</mat-icon>
               <div class="account-balance__bank-detail__account-info">
                 <h5 class="account-balance__bank-detail__account-info__title">
@@ -51,13 +53,29 @@
 
         <!-- Account History -->
         <div class="account-balance__history">
-          <div class="account-balance__history-list">
-            
-          </div>
           <div class="account-balance__actions">
               <button class="btn btn-hero btn-icon" (click)="toScreen('balance')">
                 <mat-icon>euro_symbol</mat-icon> Solde ({{ user.balance || 0 }} €)
               </button>
+          </div>
+          <div class="account-balance__history-list">
+            <h4 class="account-balance__title" *ngIf="balanceHistory?.length; else noHistory">
+              Historique
+            </h4>
+            <div class="account-balance__history-entry" (click)="entryInfo()" *ngFor="let entry of balanceHistory">
+              <mat-icon>{{ entry.earning ? 'monetization_on' : 'money_off' }}</mat-icon>
+              <div class="account-balance__history-entry__info">
+                <h5 class="account-balance__history-entry__info__title" [class.earning]="entry.earning">
+                  {{ entry.earning 
+                    ? (entry.amount > 0 ? '+' : '')
+                    : '-'
+                  }} {{ entry.amount }} €
+                </h5>
+                <small class="account-balance__history-entry__info__date text-muted">
+                  {{ moment(entry.date).format('[Le] DD/MM/YYYY [à] HH:mm') }}
+                </small>
+              </div>
+            </div>
           </div>
         </div>
   </div>
@@ -66,3 +84,8 @@
 <ng-template #noAccount>
   <small class="text-muted light">Vous n'avez pas enregistré de compte bancaire. Ajoutez en un ici.</small>
 </ng-template>
+
+<ng-template #noHistory>
+  <small class="text-muted light">Aucune transaction enregistrée</small>
+</ng-template>
+

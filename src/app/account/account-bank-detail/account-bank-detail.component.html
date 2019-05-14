@@ -151,11 +151,11 @@
         </div>
       </div>
 
-      <button *ngIf="!edition" class="btn btn-success" [disabled]="account.invalid" (click)="saveBankDetails()">
+      <button *ngIf="!edition" class="btn btn-success mt-5" [disabled]="account.invalid" (click)="saveBankDetails()">
         Valider
       </button>
 
-      <button *ngIf="edition" class="btn btn-success mb-2" [disabled]="account.invalid" (click)="editBankDetails()">
+      <button *ngIf="edition" class="btn btn-success mb-2 mt-5" [disabled]="account.invalid" (click)="editBankDetails()">
         Modifier ce compte
       </button>
 
