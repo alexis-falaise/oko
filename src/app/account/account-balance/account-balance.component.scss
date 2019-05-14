@@ -1,19 +1,87 @@
+@import "../../../styles/animations.scss";
+@import "../../../styles/classes.scss";
 @import "../../../styles/variables.scss";
 
 .account-balance {
     height: 60vh;
+    overflow: hidden;
+    touch-action: pan-x;
+
+    &__wrapper {
+        transition: all .5s;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 100;
+        color: $white-alpha-8;
+    }
+
+    &__settings,
+    &__main,
+    &__history {
+        height: 60vh;
+        overflow: hidden;
+    }
+
+    &__settings {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .bank-accounts-list {
+        height: 35vh;
+        overflow-y: scroll;
+        width: 100%;
+        padding: 15px 0;
+    }
+
+    &__bank-detail {
+        @extend .base-oko-card;
+        display: flex;
+        align-items: center;
+        padding: 5px 15px;
+        margin: 5px 15px;
+
+        $iconSize: 36px;
+        .mat-icon {
+            width: $iconSize;
+            height: $iconSize;
+            margin-right: 10px;
+        }
+        .material-icons {
+            color: rgba(0, 0, 0, .4);
+            font-size: $iconSize;
+        }
+
+        &__account-info {
+            &__title {
+                font-size: 16px;
+                color: rgba(0, 0, 0, .8);
+            }
+        }
+    }
+
+    &__history {
+        display: flex;
+        justify-content: center;
+    }
 
     &__figure {
-        height: 35vh;
+        height: 30vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 64px;
+        font-size: 72px;
         color: $white-alpha-8;
         font-weight: 100;
     }
 
     &__actions {
+        margin: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;

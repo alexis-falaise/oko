@@ -85,7 +85,6 @@ export class UiService {
           duration = 5000;
           break;
         case 418:
-          console.log('Error', error);
           if (error instanceof ServerResponse) {
             message = `${error.code} - ${error.message}`;
           } else {

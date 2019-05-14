@@ -1,0 +1,70 @@
+@import "../../../styles/classes.scss";
+@import "../../../styles/variables.scss";
+
+.account-bank-detail {
+    &__hero {
+        @extend .base-hero;
+        min-height: 75px;
+    }
+
+    &__title {
+        @extend .base-hero-title;
+    }
+
+    &__content {
+        @extend .base-oko-card;
+        position: relative;
+        height: 85vh;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: scroll;
+        top: -15px;
+    }
+
+    &__introduction {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        $iconSize: 48px;
+        margin-bottom: 15px;
+        padding: 15px;
+        text-align: center;
+
+        .mat-icon {
+            height: $iconSize;
+            width: $iconSize;
+            margin-bottom: 5px;
+        }
+        .material-icons {
+            color: rgba(0, 0, 0, .3);
+            font-size: $iconSize;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .currency {
+        &-results {
+            height: 200px;
+            overflow-y: scroll;
+            animation: appear .5s;
+    
+            .mat-list-icon {
+                width: 50px;
+                height: 40px;
+            }
+        }
+        &-result {
+            border-radius: 3px;
+            &:hover {
+                background-color: rgba(0, 0, 0, .1);
+            }
+        }
+    
+    }
+}

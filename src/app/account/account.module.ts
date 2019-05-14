@@ -12,7 +12,8 @@ import {
   MatBottomSheetModule,
   MatListModule,
   MatDatepickerModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -29,6 +30,8 @@ import { AccountRoutingModule } from './account-routing.module';
 import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
 import { AccountBalanceComponent } from './account-balance/account-balance.component';
 import { AccountBalanceResolver } from '@resolvers/account-balance.resolver';
+import { AccountBankDetailComponent } from './account-bank-detail/account-bank-detail.component';
+import { AccountBankDetailResolver } from '@resolvers/account-bank-detail.resolver';
 
 @NgModule({
   declarations: [
@@ -40,6 +43,7 @@ import { AccountBalanceResolver } from '@resolvers/account-balance.resolver';
     AccountAvatarUploadComponent,
     AccountProposalComponent,
     AccountBalanceComponent,
+    AccountBankDetailComponent,
   ],
   entryComponents: [
     AccountComponent,
@@ -61,12 +65,13 @@ import { AccountBalanceResolver } from '@resolvers/account-balance.resolver';
     MatListModule,
     MatProgressBarModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
     MatTabsModule,
     ReactiveFormsModule,
   ],
   exports: [
     AccountComponent,
   ],
-  providers: [AccountProposalResolver, AccountBalanceResolver],
+  providers: [AccountProposalResolver, AccountBalanceResolver, AccountBankDetailResolver],
 })
 export class AccountModule { }

@@ -1,4 +1,5 @@
 export class BankDetails {
+    name: string;
     iban: string;
     bic: string;
     address: string;

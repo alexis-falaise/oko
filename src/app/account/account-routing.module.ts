@@ -9,8 +9,10 @@ import { AccountRequestComponent } from './account-request/account-request.compo
 import { AccountTripComponent } from './account-trip/account-trip.component';
 import { AccountProposalComponent } from './account-proposal/account-proposal.component';
 import { AccountBalanceComponent } from './account-balance/account-balance.component';
+import { AccountBankDetailComponent } from './account-bank-detail/account-bank-detail.component';
 import { AccountProposalResolver } from '@resolvers/account-proposal.resolver';
 import { AccountBalanceResolver } from '@resolvers/account-balance.resolver';
+import { AccountBankDetailResolver } from '@resolvers/account-bank-detail.resolver';
 
 const routes: Routes = [
     { path: '', component: AccountComponent, canActivate: [AuthGuard],
@@ -31,6 +33,8 @@ const routes: Routes = [
             { path: 'balance', component: AccountBalanceComponent, resolve: { user: AccountBalanceResolver } }
         ]
     },
+    { path: 'balance/bank-detail', component: AccountBankDetailComponent },
+    { path: 'balance/bank-detail/:iban', component: AccountBankDetailComponent, resolve: { account: AccountBankDetailResolver } },
 ];
 
 @NgModule({

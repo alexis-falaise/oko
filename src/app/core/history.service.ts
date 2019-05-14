@@ -79,6 +79,7 @@ export class HistoryService {
     } else {
       route = '/home';
     }
+    route = route || '/home';
     this.router.navigate([route]);
   }
 

@@ -1,0 +1,167 @@
+<div class="account-bank-detail">
+  <div class="account-bank-detail__hero">
+      <h2 class="account-bank-detail__title">
+        {{ edition
+          ? (account.controls.name.value ? '' : 'Modifier')
+          : 'Ajouter' 
+        }}
+        {{ edition && account.controls.name.value ? account.controls.name.value.toLowerCase() : 'un compte' }}
+      </h2>
+  </div>
+  <div class="account-bank-detail__content container">
+    <div class="account-bank-detail__introduction">
+      <mat-icon class="account-bank-detail__icon">account_balance</mat-icon>
+      <small class="text-muted">
+        Pour ajouter un compte bénéficiaire, veuillez saisir les informations suivantes.
+        Munissez vous de votre RIB.
+      </small>
+    </div>
+    <form class="account-bank-detail__form" [formGroup]="account" novalidate>
+      <div class="form-group">
+        <input type="text" placeholder="Nom du compte" formControlName="name" class="form-control">
+      </div>
+
+      <!-- SEPA TOGGLE-->
+      <div class="form-group">
+        <mat-slide-toggle formControlName="sepa">Zone SEPA</mat-slide-toggle> <br>
+        <small class="text-muted">Votre compte est domicilié dans la zone Européene SEPA (compte en euros)</small>
+      </div>
+
+      <!-- Currency INPUT-->
+      <div class="form-group" *ngIf="!account.controls.sepa.value">
+        <input type="text"
+               placeholder="Monnaie"
+               formControlName="currency"
+               #currencyInput
+               (keyup)="fetchCurrencies(currencyInput.value)"
+               (focus)="focusCurrency()"
+               (blur)="blurCurrency()"
+               class="form-control">
+      </div>
+
+      <div class="currency-results" *ngIf="currencies?.length">
+        <mat-list>
+          <mat-list-item class="currency-result" *ngFor="let currency of currencies" (click)="setCurrency(currency)">
+            <span mat-list-icon>{{ currency.symbol_native }}</span>
+            <h3 mat-line>{{ currency.code }}</h3>
+            <small class="text-muted" mat-line>{{ currency.name }} </small>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <!-- IBAN INPUT -->
+      <div class="form-group">
+        <input type="text"
+               placeholder="IBAN"
+               formControlName="iban"
+               [class.is-invalid]="account.controls.iban.touched
+               && (account.controls.iban.errors?.required
+               || account.controls.iban.errors?.minlength
+               || account.controls.iban.errors?.maxlength)"
+               class="form-control" minlength="14" maxlength="34" required>
+        <div class="invalid-feedback"
+             *ngIf="account.controls.iban.errors?.required"
+             [class.d-flex]="account.controls.iban.touched
+             && account.controls.iban.errors?.required">
+             Veuillez indiquez votre IBAN
+        </div>
+        <div class="invalid-feedback"
+             *ngIf="account.controls.iban.errors?.minlength"
+             [class.d-flex]="account.controls.iban.touched && account.controls.iban.errors?.minlength?.requiredLength > 0">
+            La longueur minimale d'un IBAN standard est {{ account.controls.iban.errors.minlength?.requiredLength }} caractères
+        </div>
+        <div class="invalid-feedback"
+            *ngIf="account.controls.iban.errors?.maxlength"
+            [class.d-flex]="account.controls.iban.touched && account.controls.iban.errors?.maxlength?.requiredLength > 0">
+          La longueur maximale d'un IBAN standard est {{ account.controls.iban.errors.maxlength?.requiredLength }} caractères
+        </div>
+      </div>
+
+      <!-- BIC INPUT-->
+      <div class="form-group">
+        <input type="text"
+               placeholder="BIC"
+               formControlName="bic"
+               [class.is-invalid]="account.controls.bic.touched
+               && (account.controls.bic.errors?.required
+               || account.controls.bic.errors?.minlength
+               || account.controls.bic.errors?.maxlength)"
+               class="form-control" minlength="8" maxlength="11">
+        <div class="invalid-feedback"
+              *ngIf="account.controls.bic.errors?.required"
+              [class.d-flex]="account.controls.bic.touched
+              && account.controls.bic.errors?.required">
+              Veuillez indiquez votre code BIC (SWIFT)
+        </div>
+        <div class="invalid-feedback"
+              *ngIf="account.controls.bic.errors?.minlength"
+              [class.d-flex]="account.controls.bic.touched && account.controls.bic.errors?.minlength?.requiredLength > 0">
+            La longueur minimale d'un BIC standard est {{ account.controls.bic.errors.minlength?.requiredLength }} caractères
+        </div>
+        <div class="invalid-feedback"
+            *ngIf="account.controls.bic.errors?.maxlength"
+            [class.d-flex]="account.controls.bic.touched && account.controls.bic.errors?.maxlength?.requiredLength > 0">
+          La longueur maximale d'un BIC standard est {{ account.controls.bic.errors.maxlength?.requiredLength }} caractères
+        </div>
+      </div>
+
+      <h4 class="form-title">Adresse de facturation</h4>
+  
+      <!-- Adress-->
+      <div class="form-group">
+        <input type="text"
+               placeholder="Adresse"
+               formControlName="address"
+               [class.is-invalid]="account.controls.address.touched
+               && account.controls.address.errors?.required"
+               class="form-control" required>
+          <div class="invalid-feedback"
+               *ngIf="account.controls.address.errors?.required"
+               [class.d-flex]="account.controls.address.touched
+               && account.controls.address.errors?.required">
+               Veuillez indiquez votre adresse
+         </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-12 col-sm-6 col-lg-4">
+          <input type="text"
+                 placeholder="Code Postal"
+                 formControlName="zip"
+                 [class.is-invalid]="account.controls.zip.touched
+                 && account.controls.zip.errors?.required"
+                 class="form-control" required>
+          <div class="invalid-feedback"
+                 *ngIf="account.controls.zip.errors?.required"
+                 [class.d-flex]="account.controls.zip.touched
+                 && account.controls.zip.errors?.required">
+                 Veuillez indiquez votre code postal
+           </div>
+        </div>
+        <div class="form-group col-12 col-sm-6 col-lg-4">
+          <input type="text"
+                 formControlName="city"
+                 placeholder="Ville"
+                 class="form-control">
+        </div>
+        <div class="form-group col-12 col-sm-6 col-lg-4">
+          <input type="text"
+                 formControlName="country"
+                 placeholder="Pays"
+                 class="form-control">
+        </div>
+      </div>
+
+      <button *ngIf="!edition" class="btn btn-success" [disabled]="account.invalid" (click)="saveBankDetails()">
+        Valider
+      </button>
+
+      <button *ngIf="edition" class="btn btn-success mb-2" [disabled]="account.invalid" (click)="editBankDetails()">
+        Modifier ce compte
+      </button>
+
+      <button *ngIf="edition" class="btn btn-danger" (click)="removeBankDetails()">
+        Supprimer ce compte
+      </button>
+    </form>
+  </div>
+</div>

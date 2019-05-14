@@ -1,13 +1,68 @@
 <div class="account-balance">
-  <div class="account-balance__figure">
-    {{ user.balance || 0 }} €
-  </div>
-  <div class="account-balance__actions">
-    <button class="btn btn-hero btn-icon mb-2" [disabled]="!user.balance">
-      <mat-icon>account_balance</mat-icon> Virer sur mon compte
-    </button>
-    <button class="btn btn-hero btn-icon">
-      <mat-icon>history</mat-icon> Historique
-    </button>
+  <div class="account-balance__wrapper"
+      [style.height]="balanceScreens.length * 100 + '%'"
+      [style.transform]="'translateY('+ -balanceScreenIndex * (100 / balanceScreens.length) +'%)'"
+       (swipeLeft)="next()" (swipeRight)="previous()">
+
+       <!-- Account Settings -->
+        <div class="account-balance__settings">
+          <h4 class="account-balance__title" *ngIf="user.accounts?.length; else noAccount">Comptes bancaires</h4>
+          <div class="bank-accounts-list" *ngIf="user.accounts?.length">
+            <div class="account-balance__bank-detail" *ngFor="let account of user.accounts" (click)="editAccount(account)">
+              <mat-icon>account_balance</mat-icon>
+              <div class="account-balance__bank-detail__account-info">
+                <h5 class="account-balance__bank-detail__account-info__title">
+                  {{ account.name || 'Compte bancaire' }}
+                </h5>
+                <small class="text-muted">{{ account.iban }}</small>
+              </div>
+            </div>
+          </div>
+          <div class="account-balance__actions">
+            <button class="btn btn-hero btn-icon mb-2" (click)="addAccount()">
+              <mat-icon>add</mat-icon> Ajouter un compte
+            </button>
+            <button class="btn btn-hero btn-icon" (click)="toScreen('balance')">
+                <mat-icon>euro_symbol</mat-icon> Solde ({{ user.balance || 0 }} €)
+              </button>
+          </div>
+        </div>
+
+        <!-- Account Balance -->
+        <div class="account-balance__main">
+          <div class="account-balance__actions">
+            <button class="btn btn-hero btn-icon" (click)="toScreen('settings')">
+              <mat-icon>settings</mat-icon> Paramètres
+            </button>
+          </div>
+          <div class="account-balance__figure">
+              {{ user.balance || 0 }} €
+          </div>
+          <div class="account-balance__actions">
+            <button class="btn btn-hero btn-icon mb-2" [disabled]="!user.balance">
+              <mat-icon>account_balance</mat-icon> Virer sur mon compte
+            </button>
+            <button class="btn btn-hero btn-icon" (click)="toScreen('history')">
+              <mat-icon>history</mat-icon> Historique
+            </button>
+          </div>
+        </div>
+
+
+        <!-- Account History -->
+        <div class="account-balance__history">
+          <div class="account-balance__history-list">
+            
+          </div>
+          <div class="account-balance__actions">
+              <button class="btn btn-hero btn-icon" (click)="toScreen('balance')">
+                <mat-icon>euro_symbol</mat-icon> Solde ({{ user.balance || 0 }} €)
+              </button>
+          </div>
+        </div>
   </div>
 </div>
+
+<ng-template #noAccount>
+  <small class="text-muted light">Vous n'avez pas enregistré de compte bancaire. Ajoutez en un ici.</small>
+</ng-template>
