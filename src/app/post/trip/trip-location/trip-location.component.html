@@ -1,30 +1,39 @@
 <form [formGroup]="location" (ngSubmit)="submit()" autocomplete="off" class="needs-validation" novalidate>
     <div class="form-group">
         <input type="text" name="city" formControlName="city" (focus)="focusCity()" (blur)="blurCity()"
+               #city
                placeholder="Ville"
                autocomplete="off"
                [ngClass]="{'form-control': !cityReadonly, 'form-control-plaintext': cityReadonly}"
                [readonly]="cityReadonly"
-               [matAutocomplete]="citiesAuto"
                (keyup)="fetchCities(location.controls.city.value)"
                (keyup.enter)="airport.focus()"
                [class.is-invalid]="location.controls.city.errors?.required
                && location.controls.city.touched
                || (submitted && location.controls.city.invalid)" required>
         <mat-progress-bar class="trip-location__city-loading" mode="indeterminate" *ngIf="cityLoading"></mat-progress-bar>
-        <mat-autocomplete #citiesAuto="matAutocomplete">
+        <!-- <mat-autocomplete #citiesAuto="matAutocomplete">
             <mat-option *ngFor="let city of cities" [value]="city.city">
                 {{ city.city }} ({{ city.country}} )
             </mat-option>
-        </mat-autocomplete>
+        </mat-autocomplete> -->
         <div class="invalid-feedback"
             [class.d-block]="location.controls.city.errors?.required
             && (location.controls.city.touched)">
             Indiquez une ville
         </div>
-        <small class="text-muted" *ngIf="cityFocus">Indiquez le nom de la ville en Anglais pour obtenir une suggestion d'aéroport</small>
+        <small class="text-muted" *ngIf="cityFocus && !cities.length && !location.controls.city.value">
+            Indiquez le nom de la ville en Anglais pour obtenir une suggestion d'aéroport
+        </small>
     </div>
-    <mat-form-field class="form-group trip-location-hybrid-group">
+    <small class="text-muted" *ngIf="cities.length">{{ cities.length }} résultats</small>
+    <mat-list class="city-results" *ngIf="cities?.length">
+        <mat-list-item class="city-result" *ngFor="let city of cities" (click)="setCity(city)">
+            <h3 matLine>{{ city.city }}</h3>
+            <small class="text-muted" matLine>{{ city.country }}</small>
+        </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="!cities?.length" class="form-group trip-location-hybrid-group">
         <input type="text" placeholder="Aéroport" #airport (click)="fetchMatchingAirports(location.controls.city.value)"
                [readonly]="airportLoading || !location.controls.city.value"
                [class.is-invalid]="location.controls.airport.errors?.invalid
@@ -48,12 +57,12 @@
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
-    <div class="invalid-feedback"
+    <div *ngIf="!cities?.length" class="invalid-feedback"
         [class.d-block]="location.controls.airport.errors?.required
         && location.controls.airport.touched">
         Indiquez un aéroport
     </div>
-    <div class="form-row mt-3">
+    <div *ngIf="!cities?.length" class="form-row mt-3">
         <div class="form-group col-10 col-md-6">
           <input type="text" name="date" formControlName="date"
                  autocomplete="off"

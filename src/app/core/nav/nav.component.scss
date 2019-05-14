@@ -74,12 +74,16 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         position: absolute;
         top: 10px;
         left: 15px;
-        transition: all 0.5s;
-        -webkit-transition: all 0.5s;
-        -moz-transition: all 0.5s;
-        -o-transition: all 0.5s;
+        $transitionDuration: .5s;
+        transition: all $transitionDuration;
+        -webkit-transition: all $transitionDuration;
+        -moz-transition: all $transitionDuration;
+        -o-transition: all $transitionDuration;
         outline: none;
         box-shadow: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         opacity: 1;
         .material-icons {
@@ -91,6 +95,9 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
             .material-icons {
                 color: white;
             }
+        }
+        &.disabled {
+            opacity: 0;
         }
     }
 

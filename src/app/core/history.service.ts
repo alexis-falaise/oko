@@ -52,6 +52,10 @@ export class HistoryService {
     return parsed.join('/');
   }
 
+  hasParent(url: string) {
+    return !!this.getParentRoute(url);
+  }
+
   parent() {
     const history = this.history.getValue();
     const lastRoute = this.getLastRoute(history);

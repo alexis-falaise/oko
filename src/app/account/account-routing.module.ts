@@ -21,6 +21,7 @@ const routes: Routes = [
             { path: 'trip', component: AccountTripComponent },
             { path: 'proposal', component: AccountProposalComponent, resolve: {data: AccountProposalResolver},
                 children: [
+                    { path: '', redirectTo: 'received', pathMatch: 'full' },
                     { path: 'deliver', component: AccountProposalComponent },
                     { path: 'upcoming', component: AccountProposalComponent },
                     { path: 'received', component: AccountProposalComponent },

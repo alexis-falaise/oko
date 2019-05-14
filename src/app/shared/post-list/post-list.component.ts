@@ -4,10 +4,8 @@ import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
 
 import { PostService } from '@core/post.service';
-import { UiService } from '@core/ui.service';
 import { Request } from '@models/post/request.model';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, timer } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
@@ -20,7 +18,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
   posts: Array<Post> = [new Trip({}), new Trip({}), new Trip({})];
   carousel: any;
   empty = false;
-  receivedPosts = new Subject();
   @Output() listRefresh = new EventEmitter();
   @Input() trip = false;
   @Input() horizontal = false;
@@ -31,10 +28,8 @@ export class PostListComponent implements OnInit, AfterViewInit {
     this.setLocalLoading(true);
     if (this.trip) {
       this.postService.onTrips()
-      .pipe(takeUntil(this.receivedPosts))
       .subscribe(trips => {
         if (trips) {
-          this.receivedPosts.next();
           this.setPosts(trips);
           this.setLocalLoading(false);
         }
@@ -44,10 +39,8 @@ export class PostListComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.postService.onRequests()
-      .pipe(takeUntil(this.receivedPosts))
       .subscribe(requests => {
         if (requests) {
-          this.receivedPosts.next();
           this.setPosts(requests);
           this.setLocalLoading(false);
         }
@@ -60,8 +53,10 @@ export class PostListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.carousel = $('#postListCarousel');
-    this.carousel.carousel('pause');
+    timer(250).subscribe(() => {
+      this.carousel = $('#postListCarousel');
+      this.carousel.carousel('pause');
+    });
   }
 
   previous() {

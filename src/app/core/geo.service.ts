@@ -6,11 +6,16 @@ import { environment } from '@env/environment';
 import { ServerResponse } from '@models/app/server-response.model';
 import { Airport } from '@models/airport.model';
 
+const placesApiUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${environment.placesApiKey}`;
+const airportApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?types=airport&key=${environment.placesApiKey}`;
+
 @Injectable({
   providedIn: 'root'
 })
 export class GeoService {
   private airportUrl = `${environment.serverUrl}/airport`;
+  private placesUrl = `${placesApiUrl}&inputtype=textquery&input=`;
+  private airportMapsUrl = `${airportApiUrl}&radius=150000&input=`;
 
   airports = new BehaviorSubject([]);
   cities = new BehaviorSubject([]);
@@ -35,8 +40,7 @@ export class GeoService {
         this.airports.next(response.data);
       }
     }, (error: HttpErrorResponse) => {
-      // #TODO Log errors
-      // console.error(error);
+      this.airports.next([]);
     });
   }
 
@@ -54,6 +58,12 @@ export class GeoService {
       }
     }, (error: HttpErrorResponse) => {
       this.cities.next([]);
+    });
+  }
+
+  searchCity(city: string) {
+    this.http.get(`${this.placesUrl}${city}`).subscribe((response) => {
+      console.log('GCP Maps res', response);
     });
   }
 

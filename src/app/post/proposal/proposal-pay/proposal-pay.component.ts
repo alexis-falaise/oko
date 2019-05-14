@@ -64,14 +64,16 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setAmount();
       this.createIntent(this.amount);
       this.generatePricingItems();
-      this.mountCard();
     });
   }
 
   ngAfterViewInit() {
-    this.card = elements.create('card');
-    this.card.mount(this.cardInfo.nativeElement);
-    this.card.addEventListener('change', this.cardHandler);
+    if (elements) {
+      this.mountCard();
+    } else {
+      this.snack.open('Une erreur est survenue, merci de réessayer ultérieurement', 'OK', {duration: 3000});
+      this.router.navigate(['/post', 'proposal', this.proposal.id]);
+    }
   }
 
   pay() {
@@ -88,7 +90,8 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
           this.uiService.setLoading(false);
         } else {
           this.error = null;
-          this.postService.payProposal(this.proposal.id, this.amount)
+          const rawPrice = this.request.computeRawPrice(this.proposal.bonus);
+          this.postService.payProposal(this.proposal.id, rawPrice)
           .subscribe((response: ServerResponse) => {
             if (response.status) {
               this.snack.open('La proposition a été reglée, merci', 'Super', {duration: 4500});
@@ -128,6 +131,9 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private mountCard() {
+    this.card = elements.create('card');
+    this.card.mount(this.cardInfo.nativeElement);
+    this.card.addEventListener('change', this.cardHandler);
   }
 
   private setAmount() {

@@ -10,6 +10,11 @@ import { isString } from 'util';
 import { timer, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+class City {
+  city: string;
+  country: string;
+}
+
 @Component({
   selector: 'app-trip-location',
   templateUrl: './trip-location.component.html',
@@ -157,6 +162,11 @@ export class TripLocationComponent implements OnInit, OnChanges {
       this.geoService.getCities(city);
       this.fetchMatchingAirports(city);
     });
+  }
+
+  setCity(city: City) {
+    this.location.controls.city.patchValue(city.city);
+    this.geoService.resetCities();
   }
 
   focusCity() {

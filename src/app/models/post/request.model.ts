@@ -92,10 +92,14 @@ export class Request extends Post {
         }
     }
 
-    computePrice(bonus: number = this.bonus): number {
+    computeRawPrice(bonus: number = this.bonus): number {
         const itemsPrice = this.items && this.items.length ? arraySum(this.items.map(item => item.price)) : 0;
         this.itemsPrice = itemsPrice;
-        const preFeesPrice = itemsPrice + bonus;
+        return itemsPrice + bonus;
+    }
+
+    computePrice(bonus: number = this.bonus): number {
+        const preFeesPrice = this.computeRawPrice(bonus);
         const fees = preFeesPrice * feesPercentage + staticFees;
         this.price = round(fees + preFeesPrice, 2);
         return this.price;

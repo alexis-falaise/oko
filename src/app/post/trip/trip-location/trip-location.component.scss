@@ -1,3 +1,5 @@
+@import "../../../../styles/variables.scss";
+
 .trip-location {
     &__airport-loading {
         height: 3px;
@@ -16,5 +18,30 @@
     &-hybrid-group {
         width: 100%;
         margin-bottom: -20px;
+    }
+}
+
+.city {
+    &-results {
+        height: 200px;
+        margin-bottom: 10px;
+        overflow-y: scroll;
+        $iconSize: 72px;
+        .mat-icon {
+            height: $iconSize;
+            width: $iconSize;
+        }
+        .material-icons {
+            font-size: $iconSize;
+            color: rgb(175, 175, 175);
+        }
+    }
+    &-result {
+        transition: all $transitionDuration;
+        border-radius: 3px;
+        &:hover {
+            transition: all $transitionDuration;
+            background-color: rgba(0, 0, 0, .05);
+        }
     }
 }

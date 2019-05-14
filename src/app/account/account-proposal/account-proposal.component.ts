@@ -89,11 +89,9 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
 
   private parseCurrentUrl() {
     const url = this.router.url;
-    const childs = url.split('/');
-    const currentChild = childs[childs.length - 1];
-    console.log(currentChild, this.routes);
+    const routeChilds = url.split('/');
+    const currentChild = routeChilds[routeChilds.length - 1];
     this.tabIndex = this.routes.findIndex(route => route === currentChild);
-    console.log('Tab index', this.tabIndex);
   }
 
   private filterLists(proposals: Array<Proposal>) {

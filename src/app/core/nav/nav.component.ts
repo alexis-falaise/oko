@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 
@@ -15,11 +15,13 @@ import { User } from '@models/user.model';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit, OnChanges {
+export class NavComponent implements OnInit, OnDestroy, OnChanges {
   @Input() drawer = false;
   @Input() light = false;
   @Output() drawerChanges = new EventEmitter();
+  ngUnsubscribe = new Subject();
   menuDisplay = false;
+  hasParent = false;
   guestAccountMenuItems: Array<MenuItem> = [
     { label: 'Aide', path: '/help', icon: 'help' },
     { label: 'Connexion', path: '/oneclick', icon: 'power_settings_new' },
@@ -73,12 +75,19 @@ export class NavComponent implements OnInit, OnChanges {
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
     });
+    this.checkParent();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.hide();
         this.authService.getLoginStatus();
+        this.checkParent();
       }
     });
+  }
+
+  checkParent() {
+    const url = this.router.url;
+    this.hasParent = this.historyService.hasParent(url);
   }
 
   toggleMenu() {
@@ -86,13 +95,18 @@ export class NavComponent implements OnInit, OnChanges {
     this.drawerChanges.emit(this.menuDisplay);
   }
 
-  back() {
+  parent() {
     this.historyService.parent();
   }
 
   hide() {
     this.menuDisplay = false;
     this.drawerChanges.emit(this.menuDisplay);
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }
