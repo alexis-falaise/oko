@@ -37,5 +37,5 @@
         <div class="item-picture col-3" *ngFor="let picture of item.photo"></div>
       </div>
     </mat-card-content>
-    <app-remove-panel (remove)="removeItem()" *ngIf="removePanel && removable"></app-remove-panel>
+    <app-remove-panel (remove)="removeItem()" [display]="removePanel" *ngIf="removable"></app-remove-panel>
 </mat-card>

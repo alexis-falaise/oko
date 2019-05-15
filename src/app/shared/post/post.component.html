@@ -93,10 +93,11 @@
                </div>
            </div>
        </div>
-       <app-remove-panel [editable]="editable"
+       <app-remove-panel *ngIf="editable"
+                         [editable]="editable"
+                         [display]="panel"
                          (edit)="editPost()"
-                         (remove)="removePost()"
-                         *ngIf="panel && editable">
+                         (remove)="removePost()">
        </app-remove-panel>
     </div>
 </div>

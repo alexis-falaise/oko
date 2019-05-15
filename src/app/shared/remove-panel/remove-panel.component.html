@@ -1,4 +1,4 @@
-<div class="remove-panel" >
+<div class="remove-panel" [class.display]="display">
     <div class="remove-panel__edit" (click)="editItem()" *ngIf="editable">
         <mat-icon>edit</mat-icon>
     </div>

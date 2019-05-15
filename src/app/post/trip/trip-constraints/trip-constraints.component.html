@@ -16,7 +16,7 @@
             </mat-icon>
             Bagage {{ i + 1 }}
           </mat-card-title>
-          <app-remove-panel *ngIf="disclose[i]" (remove)="removeLuggage(i)"></app-remove-panel>
+          <app-remove-panel [display]="disclose[i]" (remove)="removeLuggage(i)"></app-remove-panel>
           <mat-icon class="remove-luggage" (click)="removeLuggage(i)">clear</mat-icon>
           <mat-card-subtitle>
             {{ luggage.cabin ? 'Cabine' :  luggage.large ? 'Volumineux' : 'Soute' }}

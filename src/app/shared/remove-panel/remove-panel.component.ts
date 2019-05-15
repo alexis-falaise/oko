@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RemovePanelComponent implements OnInit {
   @Input() editable = false;
+  @Input() display = false;
   @Output() remove = new EventEmitter();
   @Output() edit = new EventEmitter();
 

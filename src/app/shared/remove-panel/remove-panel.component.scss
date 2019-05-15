@@ -5,14 +5,17 @@
     100% { width: 35%; opacity: 1; }
 }
 
+$transitionDuration: .35s;
+$transitionStyle: ease-out;
+
 .remove-panel {
-    transition: all $transitionDuration;
+    transition: all $transitionStyle $transitionDuration;
     cursor: pointer;
     display: flex;
     flex-direction: row;
     animation: 0.15s slideEnter;
     top: 0;
-    right: 0;
+    right: -50%;
     height: 100%;
     width: 50%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
@@ -22,8 +25,13 @@
         color: white;
     }
 
+    &.display {
+        transition: all $transitionStyle $transitionDuration;
+        right: 0;
+    }
+
     &__remove {
-        transition: all $transitionDuration;
+        transition: all $transitionStyle $transitionDuration;
         background-color: $red-800;
         width: 50%;
         display: flex;
@@ -32,13 +40,13 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
 
         &:hover {
-            transition: all $transitionDuration;
+            transition: all $transitionStyle $transitionDuration;
             background-color: $red-600;
         }
     }
 
     &__edit {
-        transition: all $transitionDuration;
+        transition: all $transitionStyle $transitionDuration;
         background-color: $amber-800;
         width: 50%;
         display: flex;
@@ -47,7 +55,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
 
         &:hover {
-            transition: all $transitionDuration;
+            transition: all $transitionStyle $transitionDuration;
             background-color: $amber-600;
         }
     }
