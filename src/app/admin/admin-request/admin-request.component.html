@@ -1,3 +1,10 @@
-<p>
-  admin-request works!
-</p>
+<div class="admin-request">
+
+  <mat-form-field class="admin-request__search container-fluid">
+    <input matInput #search type="text" (keyup)="filterRequests(search.value)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="requestsSource">
+
+  </table>
+</div>

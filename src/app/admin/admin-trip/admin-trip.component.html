@@ -1,27 +1,27 @@
 <div class="admin-trip">
   <mat-form-field class="admin-trip__search container-fluid">
-    <input matInput type="text" placeholder="Rechercher" #search (keyup)="filter(search.value)">
+    <input matInput type="text" placeholder="Rechercher" #search (keyup)="filterTrips(search.value)">
   </mat-form-field>
 
   <div class="admin-trip__table">
-    <table mat-table [dataSource]="tripsSource" multiTemplateDataRows>
+    <table mat-table matSort [dataSource]="tripsSource" multiTemplateDataRows>
 
       <ng-container matColumnDef="from">
-        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['from'] }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ displayedHeaders['from'] }}</th>
         <td mat-cell *matCellDef="let trip">
           {{ trip['from'].label }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="to">
-        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['to'] }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ displayedHeaders['to'] }}</th>
         <td mat-cell *matCellDef="let trip">
           {{ trip['to'].label }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns.slice(2, 5)">
-        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders[column] }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ displayedHeaders[column] }}</th>
         <td mat-cell *matCellDef="let trip">
           {{ trip[column] ? moment(trip[column]).format('DD/MM/YYYY HH:mm') : '' }}
         </td>
@@ -63,8 +63,11 @@
         <td mat-cell *matCellDef="let trip" [attr.colspan]="displayedColumns.length">
           <div class="admin-trip__trip-detail" [class.expanded]="trip == expandedTrip">
             <div class="admin-trip__trip-detail__info">
-              <small class="text-muted">Posté par</small>
-             <h5>{{ trip.user.firstname }} {{ trip.user.lastname }} </h5>
+            <small class="text-muted">Posté par</small>
+              <div class="admin-trip__trip-detail__user" [routerLink]="['/admin', 'user', trip.user.id]">
+                  <app-avatar [image]="trip.user.avatar" [size]="35"></app-avatar>
+                  <h5>{{ trip.user.firstname }} {{ trip.user.lastname }} </h5>
+              </div>
              <small class="text-muted">Posté le</small>
              <h5>{{ moment(trip.submitDate).format('DD/MM/YYYY') }}</h5>
              <button class="btn btn-light" [routerLink]="['/post', 'trip', trip.id]">Accéder au trajet</button>

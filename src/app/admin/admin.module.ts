@@ -11,6 +11,7 @@ import {
   MatPaginatorModule,
   MatTooltipModule,
   MatSnackBarModule,
+  MatSortModule,
 } from '@angular/material';
 
 import { AdminService } from './admin.service';
@@ -38,6 +39,7 @@ import { AdminUserViewResolver } from '@resolvers/admin-user-view.resolver';
     MatPaginatorModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatSortModule,
     SharedModule,
   ],
   providers: [AdminService, AdminUserViewResolver],

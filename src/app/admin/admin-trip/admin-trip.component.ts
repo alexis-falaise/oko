@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Trip } from '@models/post/trip.model';
-import { MatTableDataSource, MatSnackBar } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatSnackBar, MatSort } from '@angular/material';
 import * as moment from 'moment';
-import { PostService } from '@core/post.service';
+import { sortByDate } from '@utils/array.util';
+
 import { UiService } from '@core/ui.service';
 import { AdminService } from '../admin.service';
-import { sortByDate } from '@utils/array.util';
+
+import { Trip } from '@models/post/trip.model';
 
 @Component({
   selector: 'app-admin-trip',
@@ -38,6 +39,7 @@ export class AdminTripComponent implements OnInit {
     'views': 'Vues',
   };
   tripsSource = new MatTableDataSource(this.trips);
+  @ViewChild(MatSort) sort: MatSort;
   moment = moment;
 
   constructor(
@@ -57,6 +59,10 @@ export class AdminTripComponent implements OnInit {
 
   displayTrip(trip: Trip) {
     this.expandedTrip = this.expandedTrip === trip ? null : trip;
+  }
+
+  filterTrips(filter: string) {
+    this.tripsSource.filter = filter;
   }
 
   approveTrip(trip: Trip) {
@@ -99,6 +105,7 @@ export class AdminTripComponent implements OnInit {
 
   private updateDataSource(trips: Array<Trip>) {
     this.tripsSource.data = trips;
+    this.tripsSource.sort = this.sort;
   }
 
 }

@@ -36,6 +36,16 @@ $transitionStyle: ease-in-out;
                 height: 200px;
             }
 
+            &__user {
+                transition: all $transitionStyle $transitionDuration;
+                cursor: pointer;
+                border-radius: 3px;
+                &:hover {
+                    transition: all $transitionStyle $transitionDuration;
+                    background-color: rgb(235, 235, 235);
+                }
+            }
+
             &__actions {
                 height: 100%;
                 display: flex;
