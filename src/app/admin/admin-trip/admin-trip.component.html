@@ -1,3 +1,90 @@
-<p>
-  admin-trip works!
-</p>
+<div class="admin-trip">
+  <mat-form-field class="admin-trip__search container-fluid">
+    <input matInput type="text" placeholder="Rechercher" #search (keyup)="filter(search.value)">
+  </mat-form-field>
+
+  <div class="admin-trip__table">
+    <table mat-table [dataSource]="tripsSource" multiTemplateDataRows>
+
+      <ng-container matColumnDef="from">
+        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['from'] }}</th>
+        <td mat-cell *matCellDef="let trip">
+          {{ trip['from'].label }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="to">
+        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['to'] }}</th>
+        <td mat-cell *matCellDef="let trip">
+          {{ trip['to'].label }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns.slice(2, 5)">
+        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders[column] }}</th>
+        <td mat-cell *matCellDef="let trip">
+          {{ trip[column] ? moment(trip[column]).format('DD/MM/YYYY HH:mm') : '' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="private">
+        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['private'] }}</th>
+        <td mat-cell *matCellDef="let trip">
+          <mat-icon [ngClass]="{
+            'text-warning': trip.private,
+            'text-muted': !trip.private
+          }">
+            {{ trip?.private ? 'lock' : 'lock_open' }}
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['status'] }}</th>
+        <td mat-cell *matCellDef="let trip">
+          <mat-icon [ngClass]="{
+            'text-muted': !trip.dismissed && !trip.approved,
+            'text-success': trip.approved,
+            'text-danger': trip.dismissed
+          }">
+            {{ trip.approved ? 'done_all' : (trip.dismissed ? 'clear' : 'help_outline') }}
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns.slice(7)">
+        <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders[column] }}</th>
+        <td mat-cell *matCellDef="let trip">
+          {{ trip[column] || 0 }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expanded">
+        <td mat-cell *matCellDef="let trip" [attr.colspan]="displayedColumns.length">
+          <div class="admin-trip__trip-detail" [class.expanded]="trip == expandedTrip">
+            <div class="admin-trip__trip-detail__info">
+              <small class="text-muted">Posté par</small>
+             <h5>{{ trip.user.firstname }} {{ trip.user.lastname }} </h5>
+             <small class="text-muted">Posté le</small>
+             <h5>{{ moment(trip.submitDate).format('DD/MM/YYYY') }}</h5>
+             <button class="btn btn-light" [routerLink]="['/post', 'trip', trip.id]">Accéder au trajet</button>
+            </div>
+            <div class="admin-trip__trip-detail__actions">
+              <button class="btn btn-success" (click)="approveTrip(trip)" [disabled]="trip.approved && !trip.dismissed">Approuver</button>
+              <button class="btn btn-warning" (click)="revokeApproval(trip)" *ngIf="trip.approved">Annuler l'approbation</button>
+              <button class="btn btn-danger" (click)="dismissTrip(trip)" [disabled]="trip.dismissed && !trip.approved">Refuser</button>
+              <button class="btn btn-warning" (click)="revokeDismissal(trip)" *ngIf="trip.dismissed">Annuler le refus</button>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      
+          
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let trip; columns: displayedColumns;"
+          class="admin-trip__trip"
+          (click)="displayTrip(trip)"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expanded']" class="admin-trip__expandable-row"></tr>
+    </table>
+  </div>
+</div>

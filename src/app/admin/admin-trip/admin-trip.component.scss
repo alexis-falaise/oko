@@ -1,0 +1,51 @@
+$transitionDuration: .15s;
+$transitionStyle: ease-in-out;
+
+.admin-trip {
+    &__search {
+        width: 100%;
+    }
+    &__table {
+        height: 70vh;
+        overflow: scroll;
+        table {
+            width: 100%;
+        }
+    }
+    &__trip {
+        transition: all $transitionStyle $transitionDuration;
+        td {
+            border-bottom: none;
+        }
+        &:hover {
+            transition: all $transitionStyle $transitionDuration;
+            background-color: rgb(235, 235, 235);
+        }
+        &-detail {
+            transition: all $transitionStyle $transitionDuration;
+            height: 0px;
+            overflow: hidden;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            &.expanded {
+                transition: all $transitionStyle $transitionDuration;
+                opacity: 1;
+                height: 200px;
+            }
+
+            &__actions {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+        }
+    }
+    &__expandable-row {
+        height: 0;
+    }
+}

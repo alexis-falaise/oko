@@ -67,7 +67,7 @@ export class AuthService {
   * or onUser() for detailled user info
   */
   getLoginStatus() {
-    this.http.get(`${this.authUrl}/status`, { withCredentials: true })
+    this.http.get(`${this.authUrl}/status`)
     .subscribe((status: any) => {
       this.status.next(status);
       this.currentUser.next(status.user);
@@ -146,7 +146,7 @@ export class AuthService {
    * @param user: User data from signin form
    */
   signin(user: User): Observable<ServerResponse> {
-    return this.http.post(`${this.authUrl}/signin`, user, { withCredentials: true }) as Observable<ServerResponse>;
+    return this.http.post(`${this.authUrl}/signin`, user) as Observable<ServerResponse>;
   }
 
   // googleConnection() {
@@ -158,7 +158,7 @@ export class AuthService {
   }
 
   socialAuthentication(user: SocialUser) {
-    this.http.post(`${this.authUrl}/social`, user, { withCredentials: true })
+    this.http.post(`${this.authUrl}/social`, user)
     .subscribe((socialResponse: any) => {
       if (socialResponse.status) {
         this.socialProfile.next(null);
@@ -186,7 +186,7 @@ export class AuthService {
    */
   socialDisconnection(): Observable<boolean> {
     return Observable.create(observer => {
-      this.http.get(`${this.authUrl}/social/info`, { withCredentials: true })
+      this.http.get(`${this.authUrl}/social/info`)
       .subscribe((response: ServerResponse) => {
         if (response.status) {
           observer.next(true);

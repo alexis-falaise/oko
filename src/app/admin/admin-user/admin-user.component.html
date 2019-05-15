@@ -1,6 +1,6 @@
-<div class="admin-user container-fluid">
+<div class="admin-user__table">
 
-  <mat-form-field class="admin-user__search">
+  <mat-form-field class="admin-user__search container-fluid">
     <input matInput type="text" (keyup)="filter(search.value)" #search placeholder="Rechercher">
   </mat-form-field>
 
@@ -58,6 +58,11 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Inscription</th>
       <td mat-cell *matCellDef="let user">{{ user.formattedSigninDate }}</td>
     </ng-container>
+    
+    <ng-container matColumnDef="socialProvider">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Social</th>
+      <td mat-cell *matCellDef="let user">{{ user.socialProvider }}</td>
+    </ng-container>
 
     <ng-container matColumnDef="lastConnection">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Der. Connexion</th>
@@ -107,10 +112,10 @@
       </td>
     </ng-container>
       
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="displayUser(row)"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="displayUser(row)"></tr>
   
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </table>
   </div>
 

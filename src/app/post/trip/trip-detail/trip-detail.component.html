@@ -145,7 +145,8 @@
     <div *ngIf="!own">
       <div class="trip-detail__engagement__form container d-flex flex-column justify-content-center" [class.engagement]="engagement"
            *ngIf="requests && !requests.length; else pending">
-        <button class="btn btn-hero btn-engagement" (click)="makeRequest()" *ngIf="!engagement">
+        <small class="text-muted light" *ngIf="trip.private">Ce voyage est privé</small>
+        <button class="btn btn-hero btn-engagement" (click)="makeRequest()" *ngIf="!engagement && !trip.private">
           <mat-icon>shop</mat-icon> Je me fais livrer
         </button>
         <button class="btn btn-hero btn-engagement" (click)="contact()" *ngIf="!engagement">

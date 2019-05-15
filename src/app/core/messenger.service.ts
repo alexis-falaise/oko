@@ -99,7 +99,7 @@ export class MessengerService {
    * @param user : user object
    */
   getThreads(user: User = this.currentUser) {
-    this.http.get(`${this.messengerUrl}/thread/user/${user.id}`, {withCredentials: true})
+    this.http.get(`${this.messengerUrl}/thread/user/${user.id}` )
     .subscribe((threads: Array<Thread>) => {
       if (threads && threads.length) {
         const resultThreads = threads.map(thread => new Thread(thread, this.currentUser));
@@ -115,7 +115,7 @@ export class MessengerService {
    * @param thread : thread object
    */
   createThread(thread: Thread): Observable<ServerResponse> {
-    return this.http.post(`${this.messengerUrl}/thread`, thread, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(`${this.messengerUrl}/thread`, thread ) as Observable<ServerResponse>;
   }
 
   /**
@@ -137,7 +137,7 @@ export class MessengerService {
    */
   addUserToThread(thread: Thread, user: User = this.currentUser): Observable<ServerResponse> {
     return this.http.post(`${this.messengerUrl}/thread/${thread.id}/user`,
-                user, {withCredentials: true}) as Observable<ServerResponse>;
+                user ) as Observable<ServerResponse>;
   }
 
   /**
@@ -146,7 +146,7 @@ export class MessengerService {
    */
   deleteThread(thread: Thread): Observable<ServerResponse> {
     return Observable.create(observer => {
-      this.http.delete(`${this.messengerUrl}/thread/${thread.id}`, {withCredentials: true})
+      this.http.delete(`${this.messengerUrl}/thread/${thread.id}` )
       .subscribe((response: ServerResponse) => {
         if (response.status) {
           const removedThread = response.data;
@@ -169,7 +169,7 @@ export class MessengerService {
    * @param user : concerned user
    */
   getContacts(user: User = this.currentUser) {
-    this.http.get(`${this.messengerUrl}/contacts/user/${user.id}`, {withCredentials: true})
+    this.http.get(`${this.messengerUrl}/contacts/user/${user.id}` )
     .subscribe((contacts: Array<User>) => {
       if (contacts) {
         this.contacts.next(contacts.map(contact => new User(contact)));
@@ -185,7 +185,7 @@ export class MessengerService {
   getUsers(name?: string): Observable<Array<User>> {
     return Observable.create(observer => {
       const query = name ? `?name=${name}` : '';
-      this.http.get(`${this.messengerUrl}/users${query}`, {withCredentials: true})
+      this.http.get(`${this.messengerUrl}/users${query}` )
       .subscribe((users: Array<any>) => {
         if (users) {
           const curatedUsers = users.map(user => new User(user));
@@ -265,7 +265,7 @@ export class MessengerService {
    * @param creation : Create a thread if not found
    */
   private getThreadByUrl(url: string) {
-    this.http.get(url, {withCredentials: true})
+    this.http.get(url )
     .pipe(takeUntil(this.threadChange))
     .subscribe((response: any) => {
       this.disconnectCurrentThread();

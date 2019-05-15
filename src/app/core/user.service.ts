@@ -21,25 +21,25 @@ export class UserService {
   ) { }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get(`${this.userUrl}/current`, {withCredentials: true}) as Observable<User>;
+    return this.http.get(`${this.userUrl}/current` ) as Observable<User>;
   }
 
   getUserById(id: string): Observable<User> {
-    return this.http.get(`${this.userUrl}/${id}`, {withCredentials: true}) as Observable<User>;
+    return this.http.get(`${this.userUrl}/${id}` ) as Observable<User>;
   }
 
   getUserStatsById(id: string): Observable<User> {
-    return this.http.get(`${this.userUrl}/${id}/stats`, {withCredentials: true}) as Observable<User>;
+    return this.http.get(`${this.userUrl}/${id}/stats` ) as Observable<User>;
   }
 
   updateUser(user: User): Observable<Object> {
-    return this.http.put(`${this.userUrl}/${user.id}`, user, {withCredentials: true});
+    return this.http.put(`${this.userUrl}/${user.id}`, user );
   }
 
   addAccount(account: BankDetails): Observable<User> {
     return Observable.create(observer => {
       this.getCurrentUser().subscribe((user) => {
-        this.http.put(`${this.userUrl}/${user.id}/account`, account, {withCredentials: true})
+        this.http.put(`${this.userUrl}/${user.id}/account`, account )
         .subscribe((response: ServerResponse) => {
             observer.next(response.data);
             observer.complete();
@@ -57,7 +57,7 @@ export class UserService {
   editAccount(account: BankDetails): Observable<User> {
     return Observable.create(observer => {
       this.getCurrentUser().subscribe((user) => {
-        this.http.put(`${this.userUrl}/${user.id}/account/${account.iban}/edit`, account, {withCredentials: true})
+        this.http.put(`${this.userUrl}/${user.id}/account/${account.iban}/edit`, account )
         .subscribe((response: ServerResponse) => {
             observer.next(response.data);
             observer.complete();
@@ -69,7 +69,7 @@ export class UserService {
   removeAccount(account: BankDetails): Observable<User> {
     return Observable.create(observer => {
       this.getCurrentUser().subscribe((user) => {
-        this.http.delete(`${this.userUrl}/${user.id}/account/${account.iban}`, {withCredentials: true})
+        this.http.delete(`${this.userUrl}/${user.id}/account/${account.iban}` )
         .subscribe((response: ServerResponse) => {
             observer.next(response.data);
             observer.complete();
@@ -81,6 +81,6 @@ export class UserService {
   uploadUserAvatar(picture: File, user: User): Observable<ServerResponse> {
     const formData = new FormData();
     formData.append('picture', picture);
-    return this.http.post(`${this.userUrl}/${user.id}/avatar`, formData, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(`${this.userUrl}/${user.id}/avatar`, formData ) as Observable<ServerResponse>;
   }
 }

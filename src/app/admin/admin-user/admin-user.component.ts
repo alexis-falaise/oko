@@ -25,6 +25,7 @@ export class AdminUserComponent implements OnInit {
     'secure',
     'guest',
     'signin',
+    'socialProvider',
     'lastConnection',
     'connected',
     'admin'

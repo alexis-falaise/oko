@@ -72,7 +72,7 @@ export class PostService {
    */
   getPosts(filter?: Filter) {
     this.uiService.setLoading(true);
-    this.http.get(`${this.postUrl}${ filter ? '?location=' + filter.location : '' }`, {withCredentials: true})
+    this.http.get(`${this.postUrl}${ filter ? '?location=' + filter.location : '' }` )
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.uiService.setLoading(false);
@@ -95,7 +95,7 @@ export class PostService {
     if (filter) {
       queryString = this.buildQueryString(filter);
     }
-    this.http.get(`${this.tripUrl}${queryString}`, {withCredentials: true})
+    this.http.get(`${this.tripUrl}${queryString}` )
     .pipe(takeUntil(nextQuery))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
@@ -123,7 +123,7 @@ export class PostService {
     if (filter) {
       queryString = this.buildQueryString(filter);
     }
-    this.http.get(`${this.requestUrl}${queryString}`, {withCredentials: true})
+    this.http.get(`${this.requestUrl}${queryString}` )
     .pipe(takeUntil(nextQuery))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
@@ -142,7 +142,7 @@ export class PostService {
    * @param id : Post unique identifier
    */
   getPostById(id: string): Observable<Post> {
-    return this.http.get(`${this.postUrl}/${id}`, {withCredentials: true}) as Observable<Post>;
+    return this.http.get(`${this.postUrl}/${id}` ) as Observable<Post>;
   }
 
   /**
@@ -151,7 +151,7 @@ export class PostService {
    */
   getTripById(id: string): Observable<Trip> {
     return Observable.create(observer => {
-      this.http.get(`${this.tripUrl}/${id}`, {withCredentials: true})
+      this.http.get(`${this.tripUrl}/${id}` )
       .subscribe(
         (trip: Trip) => this.getTripUserStats(trip, observer),
         (error: HttpErrorResponse) => this.uiService.serverError(error));
@@ -164,7 +164,7 @@ export class PostService {
    */
   getTripByAuthor(id: string): Observable<Array<Trip>> {
     return Observable.create(observer => {
-      this.http.get(`${this.tripUrl}/author/${id}`, {withCredentials: true})
+      this.http.get(`${this.tripUrl}/author/${id}` )
       .subscribe((trips: Array<Trip>) => {
         if (trips && trips.length) {
           forkJoin(trips.map(trip => {
@@ -192,7 +192,7 @@ export class PostService {
    */
   getRequestById(id: string): Observable<Request> {
     return Observable.create(observer => {
-      this.http.get(`${this.requestUrl}/${id}`, {withCredentials: true})
+      this.http.get(`${this.requestUrl}/${id}` )
       .subscribe((request: Request) => this.getRequestUserStats(request, observer));
     });
   }
@@ -203,7 +203,7 @@ export class PostService {
    */
   getRequestByAuthor(id: string): Observable<Array<Request>> {
     return Observable.create(observer => {
-      this.http.get(`${this.requestUrl}/author/${id}`, {withCredentials: true})
+      this.http.get(`${this.requestUrl}/author/${id}` )
       .subscribe((requests: Array<Request>) => this.getRequestsUserStats(requests, observer));
     });
   }
@@ -215,7 +215,7 @@ export class PostService {
    */
   getRequestByTrip(authorId: string, tripId: string): Observable<Array<Request>> {
     return Observable.create(observer => {
-      this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}`, {withCredentials: true})
+      this.http.get(`${this.requestUrl}/author/${authorId}/trip/${tripId}` )
       .subscribe((requests: Array<Request>) => this.getRequestsUserStats(requests, observer));
     });
   }
@@ -225,7 +225,7 @@ export class PostService {
    * @param id : User that created the items unique identifier
    */
   getItemByAuthor(id: string): Observable<Array<Item>> {
-    return this.http.get(`${this.requestUrl}/author/${id}/item`, {withCredentials: true}) as Observable<Array<Item>>;
+    return this.http.get(`${this.requestUrl}/author/${id}/item` ) as Observable<Array<Item>>;
   }
 
   /**
@@ -233,7 +233,7 @@ export class PostService {
    * @param id : proposal unique identifier
    */
   getProposalById(id: string): Observable<Proposal> {
-    return this.http.get(`${this.proposalUrl}/${id}`, {withCredentials: true}) as Observable<Proposal>;
+    return this.http.get(`${this.proposalUrl}/${id}` ) as Observable<Proposal>;
   }
 
   /**
@@ -242,7 +242,7 @@ export class PostService {
    */
   getSentProposals(senderPost: Trip | Request): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/from/${senderPost.id}`, {withCredentials: true})
+      this.http.get(`${this.proposalUrl}/from/${senderPost.id}` )
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(senderPost, proposals, observer, false);
       }, (err) => {
@@ -259,7 +259,7 @@ export class PostService {
    */
   getSentProposalsByAuthor(senderPost: Trip | Request, author: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/author/${author.id}/from/${senderPost.id}`, {withCredentials: true})
+      this.http.get(`${this.proposalUrl}/author/${author.id}/from/${senderPost.id}` )
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(senderPost, proposals, observer, false);
       }, (err) => {
@@ -275,7 +275,7 @@ export class PostService {
    */
   getAllSentProposalsByAuthor(author: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/author/${author.id}`, {withCredentials: true})
+      this.http.get(`${this.proposalUrl}/author/${author.id}` )
       .subscribe((proposals: Array<any>) => {
         if (proposals && proposals.length) {
           forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
@@ -303,7 +303,7 @@ export class PostService {
    */
   getReceivedProposals(receptorPost: Trip | Request): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/to/${receptorPost.id}`, {withCredentials: true})
+      this.http.get(`${this.proposalUrl}/to/${receptorPost.id}` )
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(receptorPost, proposals, observer, true);
       }, (err) => {
@@ -320,7 +320,7 @@ export class PostService {
    */
   getReceivedProposalsByAuthor(receptorPost: Trip | Request, author: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}`, {withCredentials: true})
+      this.http.get(`${this.proposalUrl}/author/${author.id}/to/${receptorPost.id}` )
       .subscribe((proposals: Array<any>) => {
         this.getProposalsSubPosts(receptorPost, proposals, observer, true);
       }, (err) => {
@@ -336,7 +336,7 @@ export class PostService {
    */
   getReceivedProposalsByReceiver(receiver: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/receiver/${receiver.id}`, {withCredentials: true})
+      this.http.get(`${this.proposalUrl}/receiver/${receiver.id}` )
       .subscribe((proposals: Array<Proposal>) => {
         if (proposals && proposals.length) {
           forkJoin(proposals.map(proposal => {
@@ -366,7 +366,7 @@ export class PostService {
    */
   getUnseenProposalsByReceiver(receiver: User): Observable<Array<Proposal>> {
     return Observable.create(observer => {
-      this.http.get(`${this.proposalUrl}/receiver/${receiver.id}/unseen`, { withCredentials: true})
+      this.http.get(`${this.proposalUrl}/receiver/${receiver.id}/unseen`)
       .subscribe((proposals: Array<Proposal>) => {
         observer.next(proposals);
         observer.complete();
@@ -415,9 +415,9 @@ export class PostService {
   getAllProposalSubPosts(proposal: any): Observable<Proposal> {
     return Observable.create(observer => {
       forkJoin([
-        this.http.get(`${this.postUrl}/${proposal.from}`, {withCredentials: true})
+        this.http.get(`${this.postUrl}/${proposal.from}` )
         .pipe(catchError((err, caught) => of(caught))) as Observable<Post>,
-        this.http.get(`${this.postUrl}/${proposal.to}`, {withCredentials: true})
+        this.http.get(`${this.postUrl}/${proposal.to}` )
         .pipe(catchError((err, caught) => of(caught))) as Observable<Post>
       ])
       .subscribe((posts: Array<Post>) => {
@@ -442,7 +442,7 @@ export class PostService {
    ************************************************************/
 
   createPost(post: Post | Array<Post>): Observable<ServerResponse> {
-    return this.http.post(this.postUrl, post, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(this.postUrl, post) as Observable<ServerResponse>;
   }
 
   /**
@@ -451,7 +451,7 @@ export class PostService {
    */
   createTrip(trip: Trip | Array<Trip>): Observable<ServerResponse> {
     this.deleteTripDraft();
-    return this.http.post(this.tripUrl, trip, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(this.tripUrl, trip) as Observable<ServerResponse>;
   }
 
   /**
@@ -468,7 +468,7 @@ export class PostService {
         if (serverResponse.status) {
           const createdTrip = new Trip(serverResponse.data);
           proposal.from = createdTrip.id;
-          this.http.post(`${this.proposalUrl}`, proposal, {withCredentials: true})
+          this.http.post(`${this.proposalUrl}`, proposal )
           .subscribe((response: ServerResponse) => {
               observer.next(response);
               observer.complete();
@@ -487,7 +487,7 @@ export class PostService {
    */
   createRequest(request: Request | Array<Request>): Observable<ServerResponse> {
     this.deleteRequestDraft();
-    return this.http.post(this.requestUrl, request, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(this.requestUrl, request) as Observable<ServerResponse>;
   }
 
   /**
@@ -504,7 +504,7 @@ export class PostService {
         if (serverResponse.status) {
           const createdRequest = new Request(serverResponse.data);
           proposal.from = createdRequest.id;
-          this.http.post(`${this.proposalUrl}`, proposal, {withCredentials: true})
+          this.http.post(`${this.proposalUrl}`, proposal )
           .subscribe((response: ServerResponse) => {
             observer.next(response);
             observer.complete();
@@ -526,25 +526,25 @@ export class PostService {
    ************************************************************/
 
   updatePost(post: Post): Observable<ServerResponse> {
-    return this.http.put(`${this.postUrl}/${post.id}`, post, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.postUrl}/${post.id}`, post) as Observable<ServerResponse>;
   }
 
   updateTrip(trip: Trip): Observable<ServerResponse> {
     this.deleteTripDraft();
-    return this.http.put(`${this.tripUrl}/${trip.id}`, trip, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.tripUrl}/${trip.id}`, trip) as Observable<ServerResponse>;
   }
 
   updateRequest(request: Request): Observable<ServerResponse> {
     this.deleteRequestDraft();
-    return this.http.put(`${this.requestUrl}/${request.id}`, request, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.requestUrl}/${request.id}`, request) as Observable<ServerResponse>;
   }
 
   closeRequest(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.requestUrl}/${id}/close`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.requestUrl}/${id}/close`, {}) as Observable<ServerResponse>;
   }
 
   validateRequest(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.requestUrl}/${id}/validate`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.requestUrl}/${id}/validate`, {}) as Observable<ServerResponse>;
   }
 
   /************************************************************
@@ -560,7 +560,7 @@ export class PostService {
    * @param id : Proposal id
    */
   acceptProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/accept`, {accepted: true}, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/accept`, {accepted: true} ) as Observable<ServerResponse>;
   }
 
   /**
@@ -568,7 +568,7 @@ export class PostService {
    * @param id : Proposal id
    */
   refuseProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/refuse`, {refused: true}, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/refuse`, {refused: true} ) as Observable<ServerResponse>;
   }
 
   /**
@@ -576,7 +576,7 @@ export class PostService {
    * @param id : Proposal id
    */
   validateProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/validate`, {validated: true}, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/validate`, {validated: true} ) as Observable<ServerResponse>;
   }
 
   /**
@@ -584,7 +584,7 @@ export class PostService {
    * @param id : Proposal id
    */
   closeProposal(id: string): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/close`, {closed: true}, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/close`, {closed: true} ) as Observable<ServerResponse>;
   }
 
   /**
@@ -594,7 +594,7 @@ export class PostService {
    */
   createProposalPayment(id: string, amount: number) {
     const stripeAmount = amount * 100;
-    return this.http.post(`${this.proposalUrl}/${id}/pay`, {amount: stripeAmount}, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.post(`${this.proposalUrl}/${id}/pay`, {amount: stripeAmount} ) as Observable<ServerResponse>;
   }
 
   /**
@@ -612,7 +612,7 @@ export class PostService {
    * @param bonus : new bonus value
    */
   updateProposalBonus(id: string, bonus: number): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus}, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${id}/bonus`, {bonus: bonus} ) as Observable<ServerResponse>;
   }
 
   /**
@@ -620,7 +620,7 @@ export class PostService {
    * @param proposal : Proposal object
    */
   updateProposal(proposal: Proposal): Observable<ServerResponse> {
-    return this.http.put(`${this.proposalUrl}/${proposal.id}`, proposal, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.put(`${this.proposalUrl}/${proposal.id}`, proposal ) as Observable<ServerResponse>;
   }
 
   /************************************************************
@@ -636,7 +636,7 @@ export class PostService {
    * @param post : Post to be removed (full object)
    */
   removePost(post: Post): Observable<ServerResponse> {
-    return this.http.delete(`${this.postUrl}/${post.id}`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.delete(`${this.postUrl}/${post.id}` ) as Observable<ServerResponse>;
   }
 
   /**
@@ -644,7 +644,7 @@ export class PostService {
    * @param trip : Trip to be removed (full object)
    */
   removeTrip(trip: Trip): Observable<ServerResponse> {
-    return this.http.delete(`${this.tripUrl}/${trip.id}`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.delete(`${this.tripUrl}/${trip.id}` ) as Observable<ServerResponse>;
   }
 
   /**
@@ -652,7 +652,7 @@ export class PostService {
    * @param request : Request to be removed (full object)
    */
   removeRequest(request: Request): Observable<ServerResponse> {
-    return this.http.delete(`${this.requestUrl}/${request.id}`, {withCredentials: true}) as Observable<ServerResponse>;
+    return this.http.delete(`${this.requestUrl}/${request.id}` ) as Observable<ServerResponse>;
   }
 
   /************************************************************

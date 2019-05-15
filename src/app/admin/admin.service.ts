@@ -11,12 +11,14 @@ import { HistoryService } from '@core/history.service';
 
 import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
+import { Trip } from '@models/post/trip.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
   private userUrl = `${environment.serverUrl}/user`;
+  private tripUrl = `${environment.serverUrl}/trip`;
   private currentUser = new BehaviorSubject<User>(null);
 
   constructor(
@@ -27,11 +29,17 @@ export class AdminService {
   ) { }
 
   /**
+   * 
+   *  USERS
+   * 
+   */
+
+  /**
    * Get all users
    */
   getUsers(): Observable<Array<User>> {
     return Observable.create(observer => {
-      this.http.get(`${this.userUrl}/`, {withCredentials: true})
+      this.http.get(`${this.userUrl}/`)
       .subscribe((users: Array<User>) => {
         const outputUsers = users.map(user => new User(user));
         observer.next(outputUsers);
@@ -47,8 +55,7 @@ export class AdminService {
    */
   setUserAsAdmin(userId: string, admin: boolean): Observable<User> {
     return Observable.create(observer => {
-      console.log('Set user as admin', admin);
-      this.http.post(`${this.userUrl}/${userId}/admin`, {admin: admin}, {withCredentials: true})
+      this.http.post(`${this.userUrl}/${userId}/admin`, {admin: admin})
       .subscribe((user: User) => {
         const outputUser = new User(user);
         observer.next(outputUser);
@@ -58,7 +65,7 @@ export class AdminService {
   }
 
   deleteUser(user: User) {
-    this.http.delete(`${this.userUrl}/${user.id}`, {withCredentials: true})
+    this.http.delete(`${this.userUrl}/${user.id}`)
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.snack.open(`${user.firstname} a été supprimé`, 'OK', {duration: 5000});
@@ -81,5 +88,31 @@ export class AdminService {
 
   resetCurrentUser() {
     this.currentUser.next(null);
+  }
+
+  /**
+   *
+   * TRIPS
+   *
+   */
+
+  getTrips(): Observable<Array<Trip>> {
+    return this.http.get(`${this.tripUrl}`) as Observable<Array<Trip>>;
+  }
+
+  approveTrip(trip: Trip): Observable<Trip> {
+    return this.http.get(`${this.tripUrl}/${trip.id}/approve`) as Observable<Trip>;
+  }
+
+  revokeTripApproval(trip: Trip): Observable<Trip> {
+    return this.http.get(`${this.tripUrl}/${trip.id}/approval/revoke`) as Observable<Trip>;
+  }
+
+  dismissTrip(trip: Trip): Observable<Trip> {
+    return this.http.get(`${this.tripUrl}/${trip.id}/dismiss`) as Observable<Trip>;
+  }
+
+  revokeTripDismissal(trip: Trip): Observable<Trip> {
+    return this.http.get(`${this.tripUrl}/${trip.id}/dismissal/revoke`) as Observable<Trip>;
   }
 }

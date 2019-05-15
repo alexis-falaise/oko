@@ -67,7 +67,7 @@ export class RequestService {
     const timeout = timer(7500);
     const foundItem = new Subject();
     return Observable.create(observer => {
-      this.http.get(`${this.itemUrl}/scrap?url=${url}`, { withCredentials: true})
+      this.http.get(`${this.itemUrl}/scrap?url=${url}`)
       .pipe(takeUntil(timeout))
       .subscribe((response: ServerResponse) => {
         timeout.pipe(takeUntil(foundItem)).subscribe(() => {

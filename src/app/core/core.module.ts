@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule, MatRippleModule, MatDialogModule } from '@angular/material';
 
 import { NavComponent } from '@core/nav/nav.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DialogsModule } from './dialogs/dialogs.module';
 import { SharedModule } from '@shared/shared.module';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { ApiInterceptor } from './api.interceptor';
 
 @NgModule({
   declarations: [NavComponent, NotFoundComponent, ForbiddenComponent],
@@ -25,6 +26,9 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
   exports: [
     NavComponent,
   ],
-  providers: [HttpClientModule]
+  providers: [
+    HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }
+  ]
 })
 export class CoreModule { }

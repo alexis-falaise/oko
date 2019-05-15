@@ -49,7 +49,7 @@ export class GeoService {
   }
 
   getCities(city?: string) {
-    this.http.get(`${this.airportUrl}/city/${city}`, {withCredentials: true})
+    this.http.get(`${this.airportUrl}/city/${city}` )
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.cities.next(response.data);
