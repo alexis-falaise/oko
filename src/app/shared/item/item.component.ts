@@ -12,6 +12,7 @@ import { ItemDetailsComponent } from '@shared/item-details/item-details.componen
 export class ItemComponent implements OnInit, OnChanges {
   @Input() item: Item;
   @Input() openable = false;
+  @Input() picture = true;
   @Input() removable = true;
   @Input() removePanel: boolean;
   @Input() creator = false;

@@ -1,10 +1,109 @@
 <div class="admin-request">
 
   <mat-form-field class="admin-request__search container-fluid">
-    <input matInput #search type="text" (keyup)="filterRequests(search.value)">
+    <input matInput #search type="text" (keyup)="filterRequests(search.value)" placeholder="Rechercher">
   </mat-form-field>
 
-  <table mat-table [dataSource]="requestsSource">
+  <div class="admin-request__table">
+    <table mat-table matSort [dataSource]="requestsSource" multiTemplateDataRows>
 
-  </table>
+        <ng-container matColumnDef="firstname">
+          <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['firstname'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.user.firstname }}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="lastname">
+          <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['lastname'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.user.lastname }}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="submitDate">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ displayedHeaders['submitDate'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ moment(request.submitDate).format('MM/DD/YYYY HH:mm') }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstItem">
+          <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['firstItem'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.items[0].label }}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="items">
+          <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['items'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.items.length }}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="urgent">
+          <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['urgent'] }}</th>
+          <td mat-cell *matCellDef="let request">
+            <mat-icon [ngClass]="{
+              'text-warning': urgent,
+              'text-muted': !urgent
+            }">update
+            </mat-icon>
+          </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="bonus">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ displayedHeaders['bonus'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.bonus }} €</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="price">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ displayedHeaders['price'] }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.price }} €</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>{{ displayedHeaders['status'] }}</th>
+          <td mat-cell *matCellDef="let request">
+            <mat-icon [ngClass]="{
+              'text-muted': !request.approved && !request.dismissed,
+              'text-success': request.approved,
+              'text-danger': request.dismissed
+            }">
+              {{ request.approved ? 'done_all' : (request.dismissed ? 'clear' : 'help_outline')}}
+            </mat-icon>
+          </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="expanded">
+          <td mat-cell *matCellDef="let request" [attr.colspan]="displayedColumns.length">
+            <div class="admin-request__request-detail" [class.expanded]="request == expandedRequest">
+              <div class="admin-request__request-detail__info">
+              <small class="text-muted">Posté par</small>
+                <div class="admin-request__request-detail__user" [routerLink]="['/admin', 'user', request.user.id]">
+                    <app-avatar [image]="request.user.avatar" [size]="35"></app-avatar>
+                    <h5>{{ request.user.firstname }} {{ request.user.lastname }} </h5>
+                </div>
+                <small class="text-muted">Posté le</small>
+                <h5>{{ moment(request.submitDate).format('DD/MM/YYYY') }}</h5>
+                <button class="btn btn-light" [routerLink]="['/post', 'request', request.id]">Accéder à l'annonce</button>
+              </div>
+              <div class="admin-request__request-detail__items">
+                <app-item [item]="item" [picture]="false" [openable]="true" [constantHeight]="true" *ngFor="let item of request.items"></app-item>
+              </div>
+              <div class="admin-request__request-detail__actions">
+                <button class="btn btn-success" (click)="approveRequest(request)" [disabled]="request.approved && !request.dismissed">Approuver</button>
+                <button class="btn btn-warning" (click)="revokeApproval(request)" *ngIf="request.approved">Annuler l'approbation</button>
+                <button class="btn btn-danger" (click)="dismissRequest(request)"
+                        [disabled]="request.dismissed && !request.approved">
+                  Refuser
+                </button>
+                <button class="btn btn-warning" (click)="revokeDismissal(request)" *ngIf="request.dismissed">Annuler le refus</button>
+                <button class="btn btn-danger btn-icon" (click)="removeRequest(request)">
+                  <mat-icon>delete_forever</mat-icon> Supprimer
+                </button>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let request; columns: displayedColumns;"
+            class="admin-request__request"
+            (click)="displayRequest(request)"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expanded']" class="admin-request__expandable-row"></tr>
+        
+      </table>
+  </div>
 </div>

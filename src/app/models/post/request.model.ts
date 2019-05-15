@@ -33,7 +33,7 @@ export class Request extends Post {
     handlerView: boolean;
     paid?: boolean;
 
-    /** Front-end helpers */
+    /** Front-end helpers **/
     itemsPrice: number;
     price: number;
 
@@ -56,6 +56,8 @@ export class Request extends Post {
         if (request.trip) {
             this.trip = new Trip(request.trip);
         }
+        this.computeRawPrice();
+        this.computePrice();
         this.cabinOnly = this.isCabinOnly();
     }
 

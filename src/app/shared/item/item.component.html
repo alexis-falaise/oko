@@ -13,7 +13,7 @@
         <mat-icon>shopping_cart</mat-icon> Acheter en ligne
       </a>
     </mat-card-subtitle>
-    <div class="item__image-wrapper" mat-card-image *ngIf="item?.photo?.length && item.photo[0] != ''">
+    <div class="item__image-wrapper" mat-card-image *ngIf="item?.photo?.length && item.photo[0] != '' && picture">
       <img class="item__image" [src]="item.photo[0]" [alt]="item.label">
     </div>
     <mat-card-content class="item__content">

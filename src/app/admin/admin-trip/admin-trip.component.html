@@ -77,6 +77,9 @@
               <button class="btn btn-warning" (click)="revokeApproval(trip)" *ngIf="trip.approved">Annuler l'approbation</button>
               <button class="btn btn-danger" (click)="dismissTrip(trip)" [disabled]="trip.dismissed && !trip.approved">Refuser</button>
               <button class="btn btn-warning" (click)="revokeDismissal(trip)" *ngIf="trip.dismissed">Annuler le refus</button>
+              <button class="btn btn-danger btn-icon" (click)="removeTrip(trip)">
+                <mat-icon>delete_forever</mat-icon> Supprimer
+              </button>
             </div>
           </div>
         </td>

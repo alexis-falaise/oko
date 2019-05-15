@@ -11,6 +11,7 @@ import { HistoryService } from '@core/history.service';
 
 import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
+import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 
 @Injectable({
@@ -19,6 +20,7 @@ import { Trip } from '@models/post/trip.model';
 export class AdminService {
   private userUrl = `${environment.serverUrl}/user`;
   private tripUrl = `${environment.serverUrl}/trip`;
+  private requestUrl = `${environment.serverUrl}/request`;
   private currentUser = new BehaviorSubject<User>(null);
 
   constructor(
@@ -115,4 +117,32 @@ export class AdminService {
   revokeTripDismissal(trip: Trip): Observable<Trip> {
     return this.http.get(`${this.tripUrl}/${trip.id}/dismissal/revoke`) as Observable<Trip>;
   }
+
+
+  /**
+   *
+   * REQUESTS
+   *
+   */
+
+  getRequests(): Observable<Array<Request>> {
+    return this.http.get(`${this.requestUrl}`) as Observable<Array<Request>>;
+  }
+
+  approveRequest(request: Request): Observable<Request> {
+    return this.http.get(`${this.requestUrl}/${request.id}/approve`) as Observable<Request>;
+  }
+
+  revokeRequestApproval(request: Request): Observable<Request> {
+    return this.http.get(`${this.requestUrl}/${request.id}/approval/revoke`) as Observable<Request>;
+  }
+
+  dismissRequest(request: Request): Observable<Request> {
+    return this.http.get(`${this.requestUrl}/${request.id}/dismiss`) as Observable<Request>;
+  }
+
+  revokeRequestDismissal(request: Request): Observable<Request> {
+    return this.http.get(`${this.requestUrl}/${request.id}/dismissal/revoke`) as Observable<Request>;
+  }
+
 }

@@ -7,6 +7,7 @@ import { UiService } from '@core/ui.service';
 import { AdminService } from '../admin.service';
 
 import { Trip } from '@models/post/trip.model';
+import { PostService } from '@core/post.service';
 
 @Component({
   selector: 'app-admin-trip',
@@ -44,6 +45,7 @@ export class AdminTripComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
+    private postService: PostService,
     private snack: MatSnackBar,
     private uiService: UiService,
   ) { }
@@ -97,6 +99,19 @@ export class AdminTripComponent implements OnInit {
     }, (error) => this.uiService.serverError(error));
   }
 
+  removeTrip(trip: Trip) {
+    const snackRef = this.snack.open('Êtes-vous sur ?', 'Oui chef', {duration: 10000});
+    snackRef.onAction().subscribe(() => {
+      this.postService.removeTrip(trip)
+      .subscribe((response) => {
+        if (response.status) {
+          this.snack.open('Annonce supprimée', 'OK', {duration: 3000});
+          this.removeTripFromData(trip);
+        }
+      });
+    });
+  }
+
   private updateTrip(trip: Trip) {
     const tripIndex = this.trips.findIndex(tabTrip => tabTrip._id === trip._id);
     this.trips[tripIndex] = new Trip(trip);
@@ -106,6 +121,12 @@ export class AdminTripComponent implements OnInit {
   private updateDataSource(trips: Array<Trip>) {
     this.tripsSource.data = trips;
     this.tripsSource.sort = this.sort;
+  }
+
+  private removeTripFromData(trip: Trip) {
+    const tripIndex = this.trips.findIndex(tabTrip => tabTrip._id === trip._id);
+    this.trips.splice(tripIndex, 1);
+    this.updateDataSource(this.trips);
   }
 
 }
