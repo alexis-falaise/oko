@@ -8,6 +8,7 @@ import { UserService } from '@core/user.service';
 
 import { Request } from '@models/post/request.model';
 import { UiService } from '@core/ui.service';
+import { RequestService } from 'app/post/request/request.service';
 
 @Component({
   selector: 'app-account-request',

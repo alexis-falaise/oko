@@ -8,4 +8,5 @@ export class BankDetails {
     country: string;
     currency: string;
     sepa: boolean;
+    primary: boolean;
 }

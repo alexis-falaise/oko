@@ -9,7 +9,11 @@ export function validUrl(url: string): boolean {
 }
 
 export function extractHostname(url: string): string {
-    const withoutProtocol = url.split('://')[1];
-    const firstSegment = withoutProtocol.split('/')[0];
-    return firstSegment;
+    if (url) {
+        const withoutProtocol = url.split('://')[1];
+        const firstSegment = withoutProtocol.split('/')[0];
+        return firstSegment;
+    } else {
+        return '';
+    }
 }

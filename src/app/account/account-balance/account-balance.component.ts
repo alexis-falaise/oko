@@ -7,6 +7,8 @@ import { User } from '@models/user.model';
 import { BalanceVariation } from '@models/balance/balance-variation.model';
 import { sortByDate } from '@utils/array.util';
 import { Earning } from '@models/balance/earning.model';
+import { timer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 class BalanceVariationDisplay extends BalanceVariation {
   earning: boolean;
@@ -21,6 +23,7 @@ export class AccountBalanceComponent implements OnInit {
   balanceHistory: Array<BalanceVariationDisplay>;
   balanceScreens = ['settings', 'balance', 'history'];
   balanceScreenIndex = 1;
+  nextpan = new Subject();
   moment = moment;
 
   constructor(
@@ -33,10 +36,20 @@ export class AccountBalanceComponent implements OnInit {
       this.user = data.user;
       this.buildBalanceHistory();
     });
+    this.parseCurrentUrl();
   }
 
   toScreen(screen: string) {
     this.balanceScreenIndex = this.balanceScreens.findIndex(balanceScreen => balanceScreen === screen);
+    const route = ['/account', 'balance'];
+    if (screen !== 'balance') {
+      route.push(screen);
+    }
+    this.router.navigate(route);
+  }
+
+  log(e) {
+    console.log(e);
   }
 
   addAccount() {
@@ -55,15 +68,21 @@ export class AccountBalanceComponent implements OnInit {
   }
 
   next() {
-    if (this.balanceScreenIndex < this.balanceScreens.length - 1) {
-      this.balanceScreenIndex++;
-    }
+    this.nextpan.next();
+    timer(100).pipe(takeUntil(this.nextpan)).subscribe(() => {
+      if (this.balanceScreenIndex < this.balanceScreens.length - 1) {
+        this.balanceScreenIndex++;
+      }
+    });
   }
 
   previous() {
-    if (this.balanceScreenIndex > 0) {
-      this.balanceScreenIndex--;
-    }
+    this.nextpan.next();
+    timer(100).pipe(takeUntil(this.nextpan)).subscribe(() => {
+      if (this.balanceScreenIndex > 0) {
+        this.balanceScreenIndex--;
+      }
+    });
   }
 
   private buildBalanceHistory() {
@@ -72,6 +91,13 @@ export class AccountBalanceComponent implements OnInit {
     const earningsDisplay: Array<BalanceVariationDisplay> = earnings.map(earning => Object.assign({earning: true}, earning));
     const withdrawalsDisplay: Array<BalanceVariationDisplay> = withdrawals.map(withdrawal => Object.assign({earning: false}, withdrawal));
     this.balanceHistory = earningsDisplay.concat(withdrawalsDisplay).sort(sortByDate);
+  }
+
+  private parseCurrentUrl() {
+    const url = this.router.url;
+    const routeChilds = url.split('/');
+    const currentChild = routeChilds[routeChilds.length - 1];
+    this.balanceScreenIndex = this.balanceScreens.findIndex(screen => screen === currentChild);
   }
 
 }

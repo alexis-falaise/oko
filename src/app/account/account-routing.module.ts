@@ -30,7 +30,13 @@ const routes: Routes = [
                     { path: 'sent', component: AccountProposalComponent },
                 ]
             },
-            { path: 'balance', component: AccountBalanceComponent, resolve: { user: AccountBalanceResolver } }
+            { path: 'balance', component: AccountBalanceComponent, resolve: { user: AccountBalanceResolver },
+                children: [
+                    { path: '', component: AccountBalanceComponent },
+                    { path: 'settings', component: AccountBalanceComponent },
+                    { path: 'history', component: AccountBalanceComponent }
+                ]
+            }
         ]
     },
     { path: 'balance/bank-detail', component: AccountBankDetailComponent },

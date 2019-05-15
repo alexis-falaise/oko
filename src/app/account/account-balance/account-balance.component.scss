@@ -33,7 +33,7 @@
     touch-action: pan-x;
 
     &__wrapper {
-        transition: all .5s;
+        transition: all .35s;
     }
 
     &__title {
@@ -75,6 +75,10 @@
                 }
             }
         }
+
+        &:hover {
+            background-color: rgb(245, 245, 245);
+        }
     }
 
     &__history {
@@ -84,6 +88,7 @@
 
         &-list {
             width: 100%;
+            height: 35vh;
             padding: 25px;
             display: flex;
             flex-direction: column;
@@ -93,11 +98,15 @@
         &-entry {
             @extend .account-balance-entry;
             width: 100%;
+            transition: all $transitionDuration;
 
             &__info {
                 &__title {
                     @extend .account-balance-entry-title;
                 }
+            }
+            &:hover {
+                background-color: rgb(245, 245, 245);
             }
         }
 
@@ -123,7 +132,7 @@
     }
 
     &__figure {
-        height: 30vh;
+        height: 35vh;
         display: flex;
         justify-content: center;
         align-items: center;

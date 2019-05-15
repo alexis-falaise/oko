@@ -13,7 +13,8 @@ import {
   MatListModule,
   MatDatepickerModule,
   MatBadgeModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatRippleModule
 } from '@angular/material';
 
 import { SharedModule } from '@shared/shared.module';
@@ -64,6 +65,7 @@ import { AccountBankDetailResolver } from '@resolvers/account-bank-detail.resolv
     MatIconModule,
     MatListModule,
     MatProgressBarModule,
+    MatRippleModule,
     MatSnackBarModule,
     MatSlideToggleModule,
     MatTabsModule,

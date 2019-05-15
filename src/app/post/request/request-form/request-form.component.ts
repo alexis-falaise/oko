@@ -141,7 +141,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       if (items && items.length) {
         this.computeBonus();
       }
-      this.checkDraft();
+      // this.checkDraft();
     });
 
     this.requestService.getStoredItems();
@@ -196,7 +196,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   checkDraft() {
     const draft = this.postService.getRequestDraft();
     if (draft) {
-      // this.setEditableRequest(draft);
+      this.setEditableRequest(draft);
       this.draft = true;
       this.edition = false;
     }
@@ -487,7 +487,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
     }
-    if (this.edition) {
+    if (this.edition || this.draft) {
       this.requestService.resetRequest();
     }
     this.ngUnsubscribe.next();

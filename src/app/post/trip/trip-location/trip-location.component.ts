@@ -166,6 +166,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
 
   setCity(city: City) {
     this.location.controls.city.patchValue(city.city);
+    this.location.controls.airport.reset();
     this.geoService.resetCities();
   }
 

@@ -5,11 +5,11 @@
           ? (account.controls.name.value ? '' : 'Modifier')
           : 'Ajouter' 
         }}
-        {{ edition && account.controls.name.value ? account.controls.name.value.toLowerCase() : 'un compte' }}
+        {{ edition && account.controls.name.value ? account.controls.name.value : 'un compte' }}
       </h2>
   </div>
   <div class="account-bank-detail__content container">
-    <div class="account-bank-detail__introduction">
+    <div class="account-bank-detail__introduction" *ngIf="!edition">
       <mat-icon class="account-bank-detail__icon">account_balance</mat-icon>
       <small class="text-muted">
         Pour ajouter un compte bénéficiaire, veuillez saisir les informations suivantes.
@@ -105,7 +105,7 @@
         </div>
       </div>
 
-      <h4 class="form-title">Adresse de facturation</h4>
+      <h4 class="form-title">Adresse liée au compte</h4>
   
       <!-- Adress-->
       <div class="form-group">
