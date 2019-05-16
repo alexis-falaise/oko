@@ -33,7 +33,7 @@ $transitionStyle: ease-in-out;
             &.expanded {
                 transition: all $transitionStyle $transitionDuration;
                 opacity: 1;
-                height: 200px;
+                height: 350px;
             }
 
             &__user {
@@ -47,7 +47,7 @@ $transitionStyle: ease-in-out;
             }
 
             &__items {
-                height: 200px;
+                height: 100%;
                 overflow: scroll;
             }
 

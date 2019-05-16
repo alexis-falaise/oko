@@ -240,7 +240,6 @@
         }
     }
 
-    .city,
     .agreement,
     .bonus {
         display: flex;
@@ -257,30 +256,5 @@
     .bonus {
         font-size: 36px;
         color: rgb(175, 175, 175);
-    }
-
-    .city {
-        color: rgb(175, 175, 175);
-        $cityIconSize: 36px;
-        .mat-icon {
-            height: $cityIconSize;
-            width: $cityIconSize;
-            margin-right: 5px;
-        }
-        .material-icons {
-            font-size: $cityIconSize;
-        }
-        &-details {
-            &__label {
-                font-size: 20px;
-                color: rgb(175, 175, 175);
-                margin-bottom: 0;
-            }
-            &__country {
-                margin-top: 0;
-                font-size: 14px;
-                color: rgb(135, 135, 135);
-            }
-        }
     }
 }

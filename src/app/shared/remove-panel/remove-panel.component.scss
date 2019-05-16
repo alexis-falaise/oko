@@ -5,11 +5,11 @@
     100% { width: 35%; opacity: 1; }
 }
 
-$transitionDuration: .35s;
+$transitionPanelDuration: .15s;
 $transitionStyle: ease-out;
 
 .remove-panel {
-    transition: all $transitionStyle $transitionDuration;
+    transition: all $transitionStyle $transitionPanelDuration;
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -26,12 +26,12 @@ $transitionStyle: ease-out;
     }
 
     &.display {
-        transition: all $transitionStyle $transitionDuration;
+        transition: all $transitionStyle $transitionPanelDuration;
         right: 0;
     }
 
     &__remove {
-        transition: all $transitionStyle $transitionDuration;
+        transition: all $transitionStyle $transitionPanelDuration;
         background-color: $red-800;
         width: 50%;
         display: flex;
@@ -40,13 +40,13 @@ $transitionStyle: ease-out;
         box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
 
         &:hover {
-            transition: all $transitionStyle $transitionDuration;
+            transition: all $transitionStyle $transitionPanelDuration;
             background-color: $red-600;
         }
     }
 
     &__edit {
-        transition: all $transitionStyle $transitionDuration;
+        transition: all $transitionStyle $transitionPanelDuration;
         background-color: $amber-800;
         width: 50%;
         display: flex;
@@ -55,7 +55,7 @@ $transitionStyle: ease-out;
         box-shadow: 0 5px 15px rgba(0, 0, 0, .5) inset;
 
         &:hover {
-            transition: all $transitionStyle $transitionDuration;
+            transition: all $transitionStyle $transitionPanelDuration;
             background-color: $amber-600;
         }
     }

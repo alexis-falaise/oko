@@ -34,7 +34,7 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
   toDeliver: Array<Proposal> = [];
   toReceive: Array<Proposal> = [];
   proposals: Array<Proposal> = [];
-  tabIndex = 0;
+  tabIndex = 2;
   fetchedProposals = new Subject();
   moment = moment;
 
@@ -60,6 +60,7 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
         this.initLists();
         this.filterLists(data.proposals);
         this.setProposalListeners(data.user);
+        this.parseCurrentUrl();
       } else {
         this.uiService.setLoading(false);
       }
@@ -67,7 +68,6 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit() {
-    this.parseCurrentUrl();
   }
 
   tabChange(e: any) {

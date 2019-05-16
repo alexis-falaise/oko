@@ -1,0 +1,19 @@
+<div class="address-display">
+    <mat-icon class="text-muted">location_city</mat-icon> 
+    <div class="address-display__info">
+        <div class="address-display__info__address" *ngIf="meetingPoint?.address">
+          {{ meetingPoint.address }}
+        </div>
+        <div class="address-display__info__location">
+            <small class="address-display__info__city text-muted" *ngIf="meetingPoint?.city">
+              {{ meetingPoint.city }}
+            </small>
+            <small class="address-display__info__zip text-muted" *ngIf="meetingPoint?.zip">
+              {{ meetingPoint.zip }}
+            </small>
+        </div>
+        <small class="address-display__info__country" *ngIf="meetingPoint?.country">
+          {{ meetingPoint.country.toUpperCase() }}
+        </small>
+      </div>
+</div>

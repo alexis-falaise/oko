@@ -80,6 +80,9 @@
                 <button class="btn btn-light" [routerLink]="['/post', 'request', request.id]">Accéder à l'annonce</button>
               </div>
               <div class="admin-request__request-detail__items">
+                <app-city-display *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity"
+                                  [city]="request.meetingPoint.city" [country]="request.meetingPoint.country">
+                </app-city-display>
                 <app-item [item]="item" [picture]="false" [openable]="true" [constantHeight]="true" *ngFor="let item of request.items"></app-item>
               </div>
               <div class="admin-request__request-detail__actions">

@@ -74,6 +74,7 @@
           <div class="request-form__item" *ngFor="let item of items; let i = index">
             <app-item [item]="item"
                       [creator]="true"
+                      [removable]="true"
                       (remove)="removeItem(i)"
                       (click)="editItem(item)">
             </app-item>

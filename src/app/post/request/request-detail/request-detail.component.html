@@ -78,13 +78,9 @@
         <h4 class="request-detail__location-title request-detail__section-title">
           {{ request.own ? 'Ma ville' : 'Ville de remise' }}
         </h4>
-        <div class="city" *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity">
-          <mat-icon>location_city</mat-icon>
-          <div class="city-details d-flex flex-column justify-content-center">
-            <div class="city-details__label">{{ request.meetingPoint.city }}</div>
-            <small class="city-details__country">{{request.meetingPoint.country}}</small>
-          </div>
-        </div>
+        <app-city-display *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity"
+                          [city]="request.meetingPoint.city" [country]="request.meetingPoint.country">
+        </app-city-display>
         <ng-template #noCity>
           <small class="text-muted">
             Aucune ville d'arrivée définie pour cette annonce.
@@ -207,12 +203,7 @@
   <div class="agreement">
     <mat-icon>my_location</mat-icon> Réception au point de rendez-vous:
   </div>
-  <div>
-      {{ request.meetingPoint?.address }}
-      <span *ngIf="request.meetingPoint?.city">, {{ request.meetingPoint.city }} </span>
-      <span *ngIf="request.meetingPoint?.zip">({{ request.meetingPoint.zip }})</span>
-      <span *ngIf="request.meetingPoint?.country"> - {{ request.meetingPoint.country }}</span>
-  </div>
+  <app-address-display [meetingPoint]="request.meetingPoint"></app-address-display>
 </ng-template>
 
 <ng-template #pickupAgreement>

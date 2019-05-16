@@ -12,6 +12,17 @@ export function objectIsComplete(object: Object) {
     return complete;
 }
 
+export function objectIsEmpty(object: Object) {
+  let empty = true;
+  if (object) {
+    Object.keys(object).forEach(key => {
+      if (object[key]) {
+        empty = false;
+      }
+    });
+  }
+  return empty;
+}
 
 export function objectMatch(a: Object, b: Object) {
   let match = true;

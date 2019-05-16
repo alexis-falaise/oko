@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Observable, timer, Subject } from 'rxjs';
@@ -6,10 +6,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 
-import { objectMatch } from '@utils/object.util';
+import { objectMatch, objectIsComplete, objectIsEmpty } from '@utils/object.util';
 
 import { Item } from '@models/item.model';
 import { ServerResponse } from '@models/app/server-response.model';
+import { MeetingPoint } from '@models/meeting-point.model';
+import { PostService } from '@core/post.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +22,13 @@ export class RequestService {
   computedBonus = new BehaviorSubject<number>(null);
   computedTotalPrice = new BehaviorSubject<number>(null);
   currentItem = new BehaviorSubject<Item>(null);
+  currentMeetingPoint = new BehaviorSubject<MeetingPoint>(null);
   currentCity = new BehaviorSubject<{city: string, country: string}>(null);
   private itemUrl = `${environment.serverUrl}/item`;
   private specialChars = ['-', '/', ',', '(', ')', ':', '.', '[', ']', '{', '}', '*', '_'];
   constructor(
     private http: HttpClient,
+    private postService: PostService,
     private snack: MatSnackBar,
   ) { }
 
@@ -140,6 +144,13 @@ export class RequestService {
 
   setCurrentCity(city: {city: string, country: string}) {
     this.currentCity.next(city);
+  }
+
+  hasData() {
+    const city = this.currentCity.getValue();
+    const meetingPoint = this.currentMeetingPoint.getValue();
+    const items = this.storedItems.getValue();
+    return !!(!objectIsEmpty(city) || !objectIsEmpty(meetingPoint) || (items && items.length));
   }
 
   private formatItemInfo(itemData: any): Item {

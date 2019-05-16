@@ -154,7 +154,10 @@ export class AuthService {
   // }
 
   facebookConnection() {
-    this.social.signIn(FacebookLoginProvider.PROVIDER_ID);
+    this.social.signIn(FacebookLoginProvider.PROVIDER_ID)
+    .then((user: SocialUser) => {
+      this.socialAuthentication(user);
+    });
   }
 
   socialAuthentication(user: SocialUser) {

@@ -28,6 +28,8 @@ import { ProposalListComponent } from './proposal-list/proposal-list.component';
 import { SpaceIndicatorComponent } from './space-indicator/space-indicator.component';
 import { ProposalListItemComponent } from './proposal-list-item/proposal-list-item.component';
 import { ItemDetailsComponent } from './item-details/item-details.component';
+import { CityDisplayComponent } from './city-display/city-display.component';
+import { AddressDisplayComponent } from './address-display/address-display.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { ItemDetailsComponent } from './item-details/item-details.component';
     ProposalListItemComponent,
     SpaceIndicatorComponent,
     ItemDetailsComponent,
+    CityDisplayComponent,
+    AddressDisplayComponent,
   ],
   imports: [
     CommonModule,
@@ -63,7 +67,9 @@ import { ItemDetailsComponent } from './item-details/item-details.component';
     ItemDetailsComponent,
   ],
   exports: [
+    AddressDisplayComponent,
     AvatarComponent,
+    CityDisplayComponent,
     PostComponent,
     PostListComponent,
     PostFilterComponent,

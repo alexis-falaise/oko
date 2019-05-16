@@ -51,9 +51,11 @@ export class AdminRequestComponent implements OnInit {
   ngOnInit() {
     this.adminService.getRequests()
     .subscribe((requests) => {
-      const formattedRequests = requests.map(request => new Request(request)).sort(sortByDate);
-      this.requests = formattedRequests;
-      this.updateDataSource(formattedRequests);
+      if (requests && requests.length) {
+        const formattedRequests = requests.map(request => new Request(request)).sort(sortByDate);
+        this.requests = formattedRequests;
+        this.updateDataSource(formattedRequests);
+      }
     });
   }
 
@@ -65,10 +67,10 @@ export class AdminRequestComponent implements OnInit {
     this.requestsSource.filter = filter;
   }
 
-  approveTrip(request: Request) {
+  approveRequest(request: Request) {
     this.adminService.approveRequest(request)
     .subscribe((receivedRequest) => {
-      this.snack.open('Trajet approuvé', 'OK', {duration: 3000});
+      this.snack.open('Annonce approuvée', 'OK', {duration: 3000});
       this.updateRequest(receivedRequest);
     }, (error) => this.uiService.serverError(error));
   }
@@ -84,7 +86,7 @@ export class AdminRequestComponent implements OnInit {
   dismissRequest(request: Request) {
     this.adminService.dismissRequest(request)
     .subscribe((receivedRequest) => {
-      this.snack.open('Trajet refusé', 'OK', {duration: 3000});
+      this.snack.open('Annonce refusée', 'OK', {duration: 3000});
       this.updateRequest(receivedRequest);
     }, (error) => this.uiService.serverError(error));
   }

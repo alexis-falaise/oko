@@ -3,11 +3,11 @@
       <h1 class="request__hero-title">{{ edition ? 'Modifier cette' : 'Créer une'}} annonce</h1>
   </div>
   <div class="request__form container">
-    <div class="request__form-hint" *ngIf="!edition">
+    <div class="request__form-hint" *ngIf="!edition && !draft">
       <small class="text-muted">
         Créez une annonce pour un futur voyageur. Commencez par indiquer votre ville de résidence, et laissez vous guider.
       </small>
     </div>
-    <app-request-form [edition]="edition" [request]="request" [freeRequest]="true"></app-request-form>
+    <app-request-form [edition]="edition" [request]="request" [freeRequest]="!edition"></app-request-form>
   </div>
 </div>
