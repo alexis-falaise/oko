@@ -1,0 +1,9 @@
+<div class="confirm">
+    <h3 class="confirm-title">{{ title }}</h3>
+    <hr class="divider">
+    <small class="text-muted">{{ message }}</small>
+    <div class="confirm__actions">
+        <button class="btn {{ actionStyle }} btn-connect" (click)="close(true)">{{ action }}</button>
+        <button class="btn btn-light btn-connect" (click)="close(false)">Annuler</button>
+    </div>
+  </div>

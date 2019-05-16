@@ -31,7 +31,6 @@ export class RequestListComponent implements OnInit {
 
   filterRequests(filter: Filter) {
     filter.open = true;
-    console.log('Filter requests', filter);
     this.postService.getRequests(filter);
   }
 

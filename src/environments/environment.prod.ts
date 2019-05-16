@@ -13,4 +13,5 @@ export const environment = {
   stripePrivateKey: 'sk_test_0hd9O8ohLK3AOjPfBvkyCepT00MBkEoYgs',
   stripePublicKey: 'pk_test_2ar3cNjZrPWED42u1JDRUtyu005WkFBHJ7',
   placesApiKey: 'AIzaSyBOjRTLq34Bnz-tLQaXSI1g43WPnIGMMCk',
+  vapidPublicKey: 'BHEzKEtTHejaSZwlppmGScvY7tUZkMESvz-EeNu8McTMwPwk9T0AOw8jrREeu8tsu116SDYFjp-vbNprY8W69yE',
 };

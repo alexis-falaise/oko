@@ -2,8 +2,6 @@
   <div class="account-balance__wrapper"
       [style.height]="balanceScreens.length * 100 + '%'"
       [style.transform]="'translateY('+ -balanceScreenIndex * (100 / balanceScreens.length) +'%)'"
-      (panup)="log($event)" (pandown)="log($event)"
-      (swipeup)="log($event)" (swipeleft)="log($event)" (swipedown)="log($event)"
       (panup)="next()" (pandown)="previous()">
 
        <!-- Account Settings -->

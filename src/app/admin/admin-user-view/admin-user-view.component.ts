@@ -35,7 +35,8 @@ export class AdminUserViewComponent implements OnInit, OnDestroy {
   }
 
   deleteUser() {
-    this.adminService.deleteUser(this.user);
+    const snackRef = this.snack.open('Êtes-vous sur ?', 'Oui chef', {duration: 10000});
+    snackRef.onAction().subscribe(() => this.adminService.deleteUser(this.user));
   }
 
   ngOnDestroy(): void {

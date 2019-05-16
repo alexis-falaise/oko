@@ -7,21 +7,24 @@ import { SocialDisconnectionComponent } from './social-disconnection/social-disc
 import { InstallComponent } from './install/install.component';
 import { SaveChangesComponent } from './save-changes/save-changes.component';
 import { ActionsComponent } from './actions/actions.component';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 @NgModule({
   declarations: [
-    NotConnectedComponent,
-    SocialDisconnectionComponent,
-    InstallComponent,
-    SaveChangesComponent,
     ActionsComponent,
+    ConfirmComponent,
+    InstallComponent,
+    NotConnectedComponent,
+    SaveChangesComponent,
+    SocialDisconnectionComponent,
   ],
   entryComponents: [
-    NotConnectedComponent,
-    SocialDisconnectionComponent,
-    InstallComponent,
-    SaveChangesComponent,
     ActionsComponent,
+    ConfirmComponent,
+    InstallComponent,
+    NotConnectedComponent,
+    SaveChangesComponent,
+    SocialDisconnectionComponent,
   ],
   imports: [
     CommonModule,

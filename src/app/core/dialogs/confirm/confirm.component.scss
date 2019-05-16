@@ -1,0 +1,18 @@
+@import "../../../../styles/classes.scss";
+@import "../../../../styles/variables.scss";
+
+.confirm {
+    height: 100%;
+    
+    &-title {
+        @extend .base-modal-title;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 90px;
+    }
+}

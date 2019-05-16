@@ -70,6 +70,10 @@
           <td mat-cell *matCellDef="let request" [attr.colspan]="displayedColumns.length">
             <div class="admin-request__request-detail" [class.expanded]="request == expandedRequest">
               <div class="admin-request__request-detail__info">
+              <small class="text-muted">Lieu de remise</small>
+              <app-city-display *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity"
+                                [city]="request.meetingPoint.city" [country]="request.meetingPoint.country">
+              </app-city-display>
               <small class="text-muted">Posté par</small>
                 <div class="admin-request__request-detail__user" [routerLink]="['/admin', 'user', request.user.id]">
                     <app-avatar [image]="request.user.avatar" [size]="35"></app-avatar>
@@ -80,10 +84,7 @@
                 <button class="btn btn-light" [routerLink]="['/post', 'request', request.id]">Accéder à l'annonce</button>
               </div>
               <div class="admin-request__request-detail__items">
-                <app-city-display *ngIf="request?.meetingPoint?.city && request?.meetingPoint?.country; else noCity"
-                                  [city]="request.meetingPoint.city" [country]="request.meetingPoint.country">
-                </app-city-display>
-                <app-item [item]="item" [picture]="false" [openable]="true" [constantHeight]="true" *ngFor="let item of request.items"></app-item>
+                <app-item [item]="item" [picture]="false" [openable]="true" [removable]="false" *ngFor="let item of request.items"></app-item>
               </div>
               <div class="admin-request__request-detail__actions">
                 <button class="btn btn-success" (click)="approveRequest(request)" [disabled]="request.approved && !request.dismissed">Approuver</button>

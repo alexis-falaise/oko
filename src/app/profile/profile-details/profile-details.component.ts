@@ -74,7 +74,6 @@ export class ProfileDetailsComponent implements OnInit {
         forkJoin(countries.map((country, index) => {
           return this.pexelService.getBackgroundPicture(country, 'medium');
         })).subscribe(pictures => {
-          console.log('Fetch display elements pictures', pictures);
           let output;
           if (pictures) {
             output = countries.map((country, index) => {
@@ -83,7 +82,6 @@ export class ProfileDetailsComponent implements OnInit {
                 picture: pictures[index]
               };
             });
-            console.log(output);
           } else {
             output = countries.map(country => ({label: country}));
           }

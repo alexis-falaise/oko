@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
 import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { SwPush } from '@angular/service-worker';
 import { Socket } from 'ngx-socket-io';
 
 import { UserService } from './user.service';
 
 import { User } from '@models/user.model';
-import { Router } from '@angular/router';
-import { timer } from 'rxjs';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +17,13 @@ export class NotificationService {
   enabled = false;
   messagesNotifications = false;
   currentUser: User;
+  readonly VAPID_PUBLIC_KEY = environment.vapidPublicKey;
 
   constructor(
     private router: Router,
     private snack: MatSnackBar,
     private socket: Socket,
+    private swPush: SwPush,
     private userService: UserService,
   ) {
     this.userService.getCurrentUser()
@@ -36,6 +38,14 @@ export class NotificationService {
         this.setProposalListeners();
       }
     });
+    this.subscribeToPushNotifications();
+  }
+
+  subscribeToPushNotifications() {
+    this.swPush.requestSubscription({
+      serverPublicKey: this.VAPID_PUBLIC_KEY
+    }).then(sub => console.log('Notification', sub))
+    .catch(err => console.log('Subscription error', err));
   }
 
   enableMessageNotifications() {

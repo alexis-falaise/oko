@@ -48,10 +48,6 @@ export class AccountBalanceComponent implements OnInit {
     this.router.navigate(route);
   }
 
-  log(e) {
-    console.log(e);
-  }
-
   addAccount() {
     this.router.navigate(['/account', 'balance', 'bank-detail']);
   }

@@ -806,10 +806,10 @@ export class PostService {
         return Observable.create(requestObserver => {
               return this.getRequestUserStats(request, requestObserver);
         }).pipe(catchError((err, caught) => of(caught)));
-      })).subscribe((outputRequests) => {
-        const resultingRequests = outputRequests
+      })).subscribe((outputRequests: Array<Request>) => {
+        const resultingRequests: Array<Request> = outputRequests
         .filter(request => request instanceof Request)
-        .sort((first, second) => {
+        .sort((first: Request, second: Request) => {
           if (second.urgent) {
             return 1;
           }
@@ -858,8 +858,8 @@ export class PostService {
     if (proposals && proposals.length) {
       forkJoin(proposals.map(proposal => Observable.create(postObserver => {
         this.getProposalSubPost(post, proposal, postObserver, postIsReceiver);
-      }))).subscribe(outputProposals => {
-        const resultingProposals = outputProposals.sort((a, b) => {
+      }))).subscribe((outputProposals: Array<Proposal>) => {
+        const resultingProposals: Array<Proposal> = outputProposals.sort((a: Proposal, b: Proposal) => {
           return moment(a.date).isBefore(b.date) ? -1 : 1;
         });
         observer.next(resultingProposals);

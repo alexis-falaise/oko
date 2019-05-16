@@ -81,7 +81,6 @@ export class MessengerService {
     if (user) {
       if (user.id !== contact.id) {
         const url = `${this.messengerUrl}/thread/user/${user.id}/contact/${contact.id}`;
-        console.log('Getting contact thread', contact, user);
         this.getThreadByUrl(url);
       } else {
         this.snack.open('Vous êtes actuellement en relation', 'Ah oui', {duration: 3000});
