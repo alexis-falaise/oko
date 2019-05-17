@@ -1,0 +1,134 @@
+@import "../../../styles/variables.scss";
+
+$routeTripHeight: 150px;
+
+.profile-route-trip {
+    height: $routeTripHeight;
+    max-width: 90vw;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    transition: all .35s;
+    margin: 10px;
+
+    display: flex;
+    flex-direction: row;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, .3);
+        box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+        transition: all .35s;
+    }
+
+    &.focus {
+        border: 1px solid rgba(255, 255, 255, .2);
+        box-shadow: 0 0 15px rgba(255, 255, 255, .1);
+        transition: all .35s;
+    }
+
+    &.expanded {
+        height: 300px;
+        $routeTripHeight: 300px;
+        transition: all .35s;
+    }
+
+    &__timeset,
+    &__timeline,
+    &__location {
+        height: 100%;
+    }
+
+    $elementsShadow: 0 0 5px rgba(0, 0, 0, .3);
+
+    &__timeset {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-shadow: $elementsShadow;
+        &__schedule {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            &-date {
+                color: $white-alpha-6;
+                font-size: 16px;
+                font-weight: 100;
+            }
+        }
+
+        &__timezone {
+            color: $white-alpha-4;
+        }
+    }
+
+    &__timeline {
+        $lineLength: 120px;
+        $stopDiameter: 10px;
+        width: 10%;
+        min-width: 25px;
+        // padding-top: ($routeTripHeight - ($lineLength + ($stopDiameter / 2))) / 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &__stop {
+            width: $stopDiameter;
+            height: $stopDiameter;
+            border-radius: $stopDiameter / 2;
+            background-color: $white-alpha-6;
+            box-shadow: $elementsShadow;
+        }
+        &__line {
+            width: 1px;
+            height: $lineLength;
+            background-color: $white-alpha-4;
+            box-shadow: $elementsShadow;
+            transition: all ease-in-out .15s;
+            &.expanded {
+                height: 250px;
+                transition: all ease-in-out .75s;
+            }
+        }
+    }
+
+    &__location {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &__city {
+            &-label {
+                font-size: 16px;
+                color: $white-alpha-8;
+            }
+            &-airport {
+                font-size: 14px;
+                color: $white-alpha-4;
+                line-height: 0.95;
+                margin-bottom: 7.5px;
+            }
+            &-country {
+                font-size: 12px;
+                color: $white-alpha-6;
+                margin-top: -7.5px;
+                text-transform: uppercase;
+            }
+        }
+
+        &__distance {
+            display: flex;
+            align-items: center;
+            color: $white-alpha-3;
+            font-size: 24px;
+            font-weight: 100;
+            .mat-icon {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+.schh {
+    margin-top: -7.5px;
+    color: $white-alpha-4;
+    font-size: 12px;
+}

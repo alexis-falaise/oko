@@ -16,6 +16,7 @@ import { Item } from '@models/item.model';
 import { UiService } from './ui.service';
 import { User } from '@models/user.model';
 import { Proposal } from '@models/post/proposal.model';
+import { Route } from '@models/route.model';
 
 @Injectable({
   providedIn: 'root'
@@ -184,6 +185,14 @@ export class PostService {
         }
       });
     });
+  }
+
+  /**
+   * Get the route of a user focused on a given trip
+   * @param id : Trip unique identifier
+   */
+  getTripRoute(id: string): Observable<Route> {
+    return this.http.get(`${this.tripUrl}/${id}/route`) as Observable<Route>;
   }
 
   /**

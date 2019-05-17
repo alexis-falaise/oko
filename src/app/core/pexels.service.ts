@@ -14,7 +14,10 @@ export class PexelsService {
     private http: HttpClient,
   ) { }
 
-  getBackgroundPicture(country: string, size: string = 'large', pixabay: boolean = false): Observable<string> {
+  getBackgroundPicture(country: string,
+  size: 'original' | 'large' | 'large2x' | 'medium' | 'small' | 'portrait' | 'landscape' | 'tiny' = 'large',
+  pixabay: boolean = false): Observable<string> {
+
     return Observable.create(observer => {
       const headers = new HttpHeaders({
         'Authorization': this.apiKey,

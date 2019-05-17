@@ -6,12 +6,14 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { ProfileResolver } from '@resolvers/profile.resolver';
+import { ProfileRouteResolver } from '@resolvers/profile-route.resolver';
 
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 import { ProfileRouteComponent } from './profile-route/profile-route.component';
+import { ProfileRouteTripComponent } from './profile-route-trip/profile-route-trip.component';
 
 @NgModule({
-  declarations: [ProfileDetailsComponent, ProfileRouteComponent],
+  declarations: [ProfileDetailsComponent, ProfileRouteComponent, ProfileRouteTripComponent],
   imports: [
     CommonModule,
     MatIconModule,
@@ -20,6 +22,6 @@ import { ProfileRouteComponent } from './profile-route/profile-route.component';
     ProfileRoutingModule,
     SharedModule,
   ],
-  providers: [ProfileResolver]
+  providers: [ProfileResolver],
 })
 export class ProfileModule { }

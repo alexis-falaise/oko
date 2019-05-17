@@ -56,7 +56,8 @@
         </div>
       </div>
       <div class="trip-detail__info__route col-4 offset-2" *ngIf="trip && trip.user">
-        <button class="btn btn-outline-link text-muted btn-sm btn-icon btn-route" [routerLink]="['/soon']">
+        <button class="btn btn-outline-link text-muted btn-sm btn-icon btn-route"
+                [routerLink]="['/profile', trip.user.id, 'route', trip.id]">
           <mat-icon>timeline</mat-icon> Parcours de {{ trip.user.firstname }}
         </button>
       </div>

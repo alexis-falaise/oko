@@ -1,0 +1,52 @@
+<div class="profile-route-trip container" [class.focus]="focus" [class.expanded]="expanded">
+  <div class="profile-route-trip__timeset">
+    <div class="profile-route-trip__timeset__schedule">
+      <div class="profile-route-trip__timeset__schedule-date" *ngIf="trip">
+        {{ moment(trip?.departureDate).format('DD/MM') }}
+      </div>
+      <div class="schh" *ngIf="trip">
+        {{ moment(trip?.departureDate).format('HH:mm') }}
+      </div>
+    </div>
+    <div class="profile-route-trip__timeset__timezone">
+      UTC {{ tripTimezoneDiff > 0 ? '+' + tripTimezoneDiff : tripTimezoneDiff }}
+    </div>
+    <div class="profile-route-trip__timeset__schedule">
+      <div class="profile-route-trip__timeset__schedule-date" *ngIf="trip">
+        {{ moment(trip?.date).format('DD/MM') }}
+      </div>
+      <div class="schh" *ngIf="trip">
+        {{ moment(trip?.date).format('HH:mm') }}
+      </div>
+    </div>
+  </div>
+  <div class="profile-route-trip__timeline">
+    <div class="profile-route-trip__timeline__stop"></div>
+    <div class="profile-route-trip__timeline__line" [class.expanded]="expanded"></div>
+    <div class="profile-route-trip__timeline__stop"></div>
+  </div>
+  <div class="profile-route-trip__location">
+    <div class="profile-route-trip__location__city">
+      <div class="profile-route-trip__location__city-label">{{ trip?.from.label }}</div>
+      <div class="profile-route-trip__location__city-airport" *ngIf="expanded">
+        {{ trip?.from.airport.code}} - {{ trip?.from.airport.name }}
+      </div>
+      <div class="profile-route-trip__location__city-country">{{ trip?.from.airport.country }}</div>
+    </div>
+    <div class="profile-route-trip__location__distance d-flex align-items-center">
+     <mat-icon>flight</mat-icon> {{ tripDistance }} km
+    </div>
+    <div class="d-flex justify-content-center" *ngIf="expanded">
+      <button class="btn btn-hero btn-icon" [routerLink]="['/post', 'trip', trip.id]">
+        <mat-icon>flight</mat-icon> Accéder au trajet
+      </button>
+    </div>
+    <div class="profile-route-trip__location__city">
+      <div class="profile-route-trip__location__city-label">{{ trip?.to.label }}</div>
+      <div class="profile-route-trip__location__city-airport" *ngIf="expanded">
+        {{ trip?.to.airport.code}} - {{ trip?.to.airport.name }}
+      </div>
+      <div class="profile-route-trip__location__city-country">{{ trip?.to.airport.country }}</div>
+    </div>
+  </div>
+</div>

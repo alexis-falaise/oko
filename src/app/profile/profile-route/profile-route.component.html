@@ -1,3 +1,20 @@
-<p>
-  profile-route works!
-</p>
+<div class="profile-route" [style.background-image]="backgroundImage">
+  <div class="profile-route__backdrop">
+    <div class="profile-route__hero">
+      <app-avatar [image]="trip?.user.avatar" [size]="50"></app-avatar>
+      <div class="profile-route__hero__title">
+        <span class="profile-route__hero__title-route">Parcours de</span>
+        <span class="profile-route__hero__title-user">{{ trip?.user.firstname }}</span>
+      </div>
+    </div>
+    <div class="profile-route__content">
+      <app-profile-route-trip
+          *ngFor="let listTrip of routeList"
+          [trip]="listTrip"
+          (click)="expandTrip(listTrip)"
+          [expanded]="expandedTrip === listTrip"
+          [focus]="listTrip.id === trip.id">
+      </app-profile-route-trip>
+    </div>
+  </div>
+</div>
