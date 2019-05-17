@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { ServerResponse } from '@models/app/server-response.model';
 import { Airport } from '@models/airport.model';
+import { catchError } from 'rxjs/operators';
 
 const placesApiUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${environment.placesApiKey}`;
 const airportApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?types=airport&key=${environment.placesApiKey}`;
@@ -50,6 +51,7 @@ export class GeoService {
 
   getCities(city?: string) {
     this.http.get(`${this.airportUrl}/city/${city}` )
+    .pipe(catchError((err, caught) => of(caught)))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         this.cities.next(response.data);

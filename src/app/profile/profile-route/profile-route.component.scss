@@ -18,6 +18,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        border-bottom: 1px solid rgba(255, 255, 255, .1);
+        outline: none;
+        &:focus {
+            outline: none;
+        }
 
         &__title {
             display: flex;
@@ -27,6 +32,11 @@
             margin: 10px 0  0 10px;
             font-weight: 100;
             color: $white-alpha-8;
+            z-index: 110;
+            outline: none;
+            &:focus {
+                outline: none;
+            }
             &-route {
                 font-size: 16px;
             }
@@ -41,7 +51,9 @@
     &__content {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 0;
         height: 90vh;
         overflow-y: scroll;
     }

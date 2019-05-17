@@ -64,6 +64,10 @@ export class ProfileDetailsComponent implements OnInit {
     }
   }
 
+  userRoute() {
+    this.router.navigate(['/profile', this.user.id, 'route']);
+  }
+
   contact() {
     this.messengerService.getContactThread(this.user, this.currentUser);
   }

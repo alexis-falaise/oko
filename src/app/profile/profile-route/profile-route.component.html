@@ -1,8 +1,8 @@
 <div class="profile-route" [style.background-image]="backgroundImage">
   <div class="profile-route__backdrop">
     <div class="profile-route__hero">
-      <app-avatar [image]="trip?.user.avatar" [size]="50"></app-avatar>
-      <div class="profile-route__hero__title">
+      <app-avatar [image]="trip?.user.avatar" [size]="50" [routerLink]="['/profile', trip?.user.id]"></app-avatar>
+      <div class="profile-route__hero__title" *ngIf="trip" [routerLink]="['/profile', trip?.user.id]">
         <span class="profile-route__hero__title-route">Parcours de</span>
         <span class="profile-route__hero__title-user">{{ trip?.user.firstname }}</span>
       </div>
@@ -15,6 +15,19 @@
           [expanded]="expandedTrip === listTrip"
           [focus]="listTrip.id === trip.id">
       </app-profile-route-trip>
+      <div class="d-flex flex-column justify-content-center align-items-center h-100" *ngIf="!routeList">
+        <mat-progress-spinner mode="indeterminate" [color]="'#FFFFFF55'"></mat-progress-spinner>
+      </div>
+      <small class="text-muted light d-flex align-items-center" *ngIf="routeList && !routeList.length">
+        <mat-icon>timeline</mat-icon> Aucun trajet prévu
+      </small>
+      <button class="btn btn-hero btn-icon mt-3" *ngIf="routeList && !routeList.length" [routerLink]="['/profile', trip?.user.id]">
+        <mat-icon>arrow_back</mat-icon> Retour
+      </button>
+      <button class="btn btn-hero btn-icon mt-3"
+              *ngIf="routeList && !completeRoute" [routerLink]="['/profile', trip?.user.id, 'route']">
+        <mat-icon>timeline</mat-icon> Voir tous les voyages de {{ trip?.user.firstname }}
+      </button>
     </div>
   </div>
 </div>

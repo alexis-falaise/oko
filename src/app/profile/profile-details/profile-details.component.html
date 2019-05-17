@@ -77,6 +77,11 @@
     </mat-list>
   </div>
   <div class="d-flex justify-content-center mt-3 mb-3" *ngIf="!own">
+    <button class="btn btn-hero btn-icon" [disabled]="!user.trips" (click)="userRoute()">
+      <mat-icon>timeline</mat-icon> Parcours de {{ user?.firstname }}
+    </button>
+  </div>
+  <div class="d-flex justify-content-center mt-3 mb-3" *ngIf="!own">
     <button class="btn btn-hero btn-icon" (click)="contact()">
       <mat-icon>mail_outline</mat-icon> Contacter {{ user?.firstname }}
     </button>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule, MatListModule, MatSnackBarModule } from '@angular/material';
+import { MatIconModule, MatListModule, MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { SharedModule } from '@shared/shared.module';
@@ -19,6 +19,7 @@ import { ProfileRouteTripComponent } from './profile-route-trip/profile-route-tr
     MatIconModule,
     MatListModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     ProfileRoutingModule,
     SharedModule,
   ],

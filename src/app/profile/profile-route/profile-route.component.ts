@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 
 import { Trip } from '@models/post/trip.model';
@@ -18,11 +18,13 @@ export class ProfileRouteComponent implements OnInit {
   trip: Trip;
   routeList: Array<Trip>;
   expandedTrip: Trip;
+  completeRoute = false;
 
   constructor(
     private pexelsService: PexelsService,
     private postService: PostService,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   get backgroundImage() {
@@ -56,9 +58,11 @@ export class ProfileRouteComponent implements OnInit {
           this.postService.getTripByAuthor(params.id)
           .subscribe((trips: Array<Trip>) => {
             const filteredTrips = trips.map(trip => new Trip(trip))
-            .filter(trip => moment(trip.departureDate).isAfter(moment()));
+            .filter(trip => moment(trip.departureDate).isAfter(moment()))
+            .sort((trip, next) => moment(trip.date).isBefore(next.departureDate) ? - 1 : 1);
             this.trip = filteredTrips[0];
             this.routeList = filteredTrips;
+            this.completeRoute = true;
           });
         }
       }

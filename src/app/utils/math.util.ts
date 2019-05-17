@@ -1,3 +1,7 @@
+import { Airport } from '@models/airport.model';
+import { Moment } from 'moment';
+import * as moment from 'moment';
+
 export function round(number: number, decimals: number) {
     return Math.round(number * 10 ** decimals) / 10 ** decimals;
 }
@@ -29,12 +33,57 @@ export interface Coords {
 }
 
 /**
+ * Calculates flight arrival time
+ * @param departureTime : Moment object for departure time
+ * @param originAirport : Origin airport
+ * @param destinationAirport : Destination airport
+ * @param originTimezone : Option to send arrival time in origin airport timezone
+ */
+export function arrivalTime(
+    departureTime: Moment,
+    originAirport: Airport,
+    destinationAirport: Airport,
+    originTimezone = false
+    ): Moment {
+    const planeSpeed = 900;
+    if (originAirport && destinationAirport) {
+        const distance = airportsDistance(originAirport, destinationAirport);
+        const timezoneDiff = destinationAirport.timezone - originAirport.timezone;
+        const travelTime = distance / planeSpeed;
+        const originTimezoneArrivalTime = moment(departureTime).add(travelTime, 'h');
+        const destinationTimezoneArrivalTime = moment(originTimezoneArrivalTime).add(timezoneDiff, 'h');
+        return originTimezone ? originTimezoneArrivalTime : destinationTimezoneArrivalTime;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Helper to calculate distance between two airports
+ * @param airportA : Airport
+ * @param airportB : Airport
+ */
+export function airportsDistance(airportA: Airport, airportB: Airport): number {
+    const origin: Coords = {
+      latitude: airportA.latitude,
+      longitude: airportA.longitude,
+      altitude: airportA.altitude,
+    };
+    const destination: Coords = {
+      latitude: airportB.latitude,
+      longitude: airportB.longitude,
+      altitude: airportB.altitude,
+    };
+    return round(coordDistance(origin, destination), 2);
+}
+
+/**
  * Converts two sets of coordinates into a metric distance (in km)
  * @param coordA : Coordinates
  * @param coordB : Coordinates
  * @param step : Precision step (deg)
  */
-export function coordDistance(coordA: Coords, coordB: Coords, step = 0.1) {
+export function coordDistance(coordA: Coords, coordB: Coords, step = 0.1): number {
     const latitudeInKilometers = 111;
     const eqLongitudeInKilometers = 111.32;
     const latDiff = Math.abs(coordB.latitude - coordA.latitude);

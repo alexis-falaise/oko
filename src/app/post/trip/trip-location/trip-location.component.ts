@@ -9,6 +9,7 @@ import { Airport } from '@models/airport.model';
 import { isString } from 'util';
 import { timer, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { coordDistance, arrivalTime } from '@utils/math.util';
 
 class City {
   city: string;
@@ -36,10 +37,12 @@ export class TripLocationComponent implements OnInit, OnChanges {
   @Input() dateReadonly = false;
   @Input() timeReadonly = false;
   @Input() minDate = null;
+  @Input() originAirport = null;
   @Input() edition = false;
   airports = [];
   airportLoading = false;
   cities: Array<string> = [];
+  selectedCity: City;
   cityLoading = false;
   nextCityQuery = new Subject();
   filteredAirports: Array<Airport>;
@@ -52,6 +55,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
     time: ['', Validators.compose([Validators.required, Validators.maxLength(5), Validators.minLength(0)])]
   });
   submitted = false;
+  autoInput = false;
 
   constructor(
     private fb: FormBuilder,
@@ -77,9 +81,13 @@ export class TripLocationComponent implements OnInit, OnChanges {
       const airport = changes.airport.currentValue;
       this.location.controls.airport.patchValue(airport);
     }
+    if (changes.originAirport) {
+      this.originAirport = changes.originAirport.currentValue;
+    }
     if (changes.minDate) {
       const minDate = changes.minDate.currentValue;
-      this.location.controls.date.patchValue(minDate);
+      this.location.controls.time.patchValue(minDate);
+      this.calculateArrivalTime();
     }
   }
 
@@ -106,11 +114,6 @@ export class TripLocationComponent implements OnInit, OnChanges {
       }
     });
 
-    this.location.controls.time.valueChanges
-    .subscribe((value: string) => {
-      this.validateTime(value);
-    });
-
     this.location.controls.city.statusChanges
     .subscribe(status => {
       if (status === 'VALID') {
@@ -120,7 +123,10 @@ export class TripLocationComponent implements OnInit, OnChanges {
     });
 
     this.location.controls.airport.valueChanges
-    .subscribe(value => this.filteredAirports = this.filterAirports(value));
+    .subscribe(value => {
+      this.filteredAirports = this.filterAirports(value);
+      this.calculateArrivalTime();
+    });
 
     this.location.valueChanges.subscribe(() => this.submitted = false);
 
@@ -149,9 +155,9 @@ export class TripLocationComponent implements OnInit, OnChanges {
     return airport ? `${airport.name} (${airport.code}) - ${airport.country}` : null;
   }
 
-  fetchMatchingAirports(city: string) {
+  fetchMatchingAirports(city: string, country?: string) {
     this.setAirportList(null);
-    this.geoService.getAirports(undefined, undefined, city);
+    this.geoService.getAirports(undefined, undefined, city, country);
   }
 
   fetchCities(city: string) {
@@ -161,11 +167,14 @@ export class TripLocationComponent implements OnInit, OnChanges {
       this.cityLoading = true;
       this.geoService.getCities(city);
       this.fetchMatchingAirports(city);
+      this.location.controls.airport.reset();
     });
   }
 
   setCity(city: City) {
     this.location.controls.city.patchValue(city.city);
+    this.selectedCity = city;
+    this.fetchMatchingAirports(city.city, city.country);
     this.location.controls.airport.reset();
     this.geoService.resetCities();
   }
@@ -210,6 +219,16 @@ export class TripLocationComponent implements OnInit, OnChanges {
       }
     } else {
       this.location.controls.time.setErrors({invalid : true});
+    }
+  }
+
+  private calculateArrivalTime() {
+    const destinationAirport = this.airport || this.location.controls.airport.value;
+    if (this.originAirport && destinationAirport) {
+      const date = arrivalTime(this.minDate, this.originAirport, destinationAirport);
+      this.location.controls.date.patchValue(date);
+      this.location.controls.time.patchValue(date.format('HH:mm'));
+      this.autoInput = true;
     }
   }
 

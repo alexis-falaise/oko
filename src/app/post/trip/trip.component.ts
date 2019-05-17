@@ -29,6 +29,7 @@ export class TripComponent implements OnInit, OnDestroy {
   locationEven = false;
   return = false;
   departureSave = null;
+  departureSaveDatetime: moment.Moment;
   departureInfo = null;
   arrivalSave = null;
   arrivalInfo = null;
@@ -85,6 +86,7 @@ export class TripComponent implements OnInit, OnDestroy {
         info.airport = new Airport(info.airport);
       }
       this.departureSave = info;
+      this.departureSaveDatetime = this.generateDatetime(info);
       stepper.next();
     }
   }
@@ -303,14 +305,23 @@ export class TripComponent implements OnInit, OnDestroy {
       luggages: luggages,
       bonus: bonus,
       private: this.private,
-      departureDate: moment(this.departureSave.date).hours(departureTime.hours()).minutes(departureTime.minutes()),
-      date: moment(this.arrivalSave.date).hours(arrivalTime.hours()).minutes(arrivalTime.minutes()),
+      departureDate: this.generateDatetime(this.departureSave),
+      date: this.generateDatetime(this.arrivalSave),
       ...constraints
     });
     if (this.edition) {
       trip.id = this.trip.id;
     }
     return trip;
+  }
+
+  generateDatetime(location) {
+    if (location) {
+      const time = moment(location.time, 'HH:mm');
+      return moment(location.date).hours(time.hours()).minutes(time.minutes());
+    } else {
+      return null;
+    }
   }
 
   private setDataFromTrip(trip: Trip) {
