@@ -37,6 +37,18 @@
         }
     }
 
+    &__trip,
+    &__request {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 -15px 0;
+    }
+
+    &__status {
+        text-align: center;
+        margin: -15px 0 15px;
+    }
+
     .btn-new-trip {
         display: flex;
         flex-direction: row;

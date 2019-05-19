@@ -77,6 +77,10 @@ $post-height: 135px;
         &.outdated {
             opacity: .5;
         }
+        &.dismissed {
+            opacity: .5;
+            background-color: $red-800-alpha;
+        }
     }
 
     &-info {

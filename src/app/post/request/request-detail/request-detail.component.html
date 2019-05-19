@@ -12,9 +12,15 @@
   <div class="request-detail__content container">
   <div class="request-detail__status"
     [class.good]="request.accepted || request.validated"
-    [class.bad]="request.closed || request.outdated"
-    *ngIf="request.closed || request.accepted || request.validated">
+    [class.bad]="request.closed || request.outdated || request.dismissed"
+    *ngIf="request.closed || request.accepted || request.validated || request.dismissed">
       <span *ngIf="request.closed">L'annonce a été annulée</span>
+      <p *ngIf="request.dismissed">
+        Annonce modérée <br>
+        <small class="text-muted">
+          Cette annonce ou son contenu ne respectent pas les conditions d'utilisation du service
+        </small>
+      </p>
       <span *ngIf="request.outdated && !request.closed">Annonce expirée le {{ request.urgentDetails.date.format('DD/MM/YYYY') }}</span>
   </div>
   <div class="request-detail__modify mt-2" *ngIf="request.own">

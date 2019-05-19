@@ -4,6 +4,7 @@ $transitionDuration: 0.15s;
 $transitionStyle: ease-in-out;
 $animationDuration: 0.15s;
 $iconsColor: rgb(125, 125, 125);
+// $iconsColor: white;
 $menu-color: rgba(255, 255, 255, .2);
 $expanded-menu-color: rgba(255, 255, 255, .95);
 
@@ -24,16 +25,12 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         transition: $transitionDuration $transitionStyle all;
         z-index: 103;
         border-bottom: thin solid rgb(255, 255, 255);
-        background-color: rgba(255, 255, 255, .6);
+        // background-color: rgba(255, 255, 255, .6);
         .mat-icon,
         .material-icon {
             transition: $transitionDuration all;
             color: $iconsColor;
         }
-    }
-
-    &.expanded {
-        background-color: $expanded-menu-color;
     }
 
     &-brand {
@@ -121,7 +118,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         }
 
         &.expanded {
-            background-color: $expanded-menu-color;
+            // background-color: $expanded-menu-color;
             .navbar-toggler {
                 .mat-icon,
                 .material-icon {
@@ -159,19 +156,21 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     // -moz-animation: fullscreenEnter $animationDuration;
     // -o-animation: fullscreenEnter $animationDuration;
 
+    background: $heroGradient-alpha-7;
     position: fixed;
     transition: all $transitionStyle $animationDuration;
     right: -100%;
-    top: $navbarHeight;
-    padding-top: 1vh;
-    z-index: 103;
-    width: 100%;
-    height: 95vh;
-    box-shadow: -3px 0px 7px rgba(0, 0, 0, .05);
+    top: 0;
+    // padding-top: $navbarHeight;
+    z-index: 110;
+    width: 75%;
+    height: 100vh;
+    box-shadow: -3px 0px 7px rgba(0, 0, 0, .2);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: $expanded-menu-color;
+    background-color: rgb(35, 35, 35);
+    // background-color: $expanded-menu-color;
     opacity: 0.5;
 
     &.display {
@@ -217,7 +216,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         }
 
         &.active {
-            background-color: rgba(0, 0, 0, .2);
+            // background-color: rgba(0, 0, 0, .2);
+            background-color: rgba(255, 255, 255, .2)
         }
 
         a {
@@ -226,7 +226,8 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
             // justify-content: center;
             // width: 100%;
             height: 100%;
-            color: rgb(80, 80, 80);
+            color: white;
+            // color: rgb(80, 80, 80);
             text-decoration: none;
         }
     }
@@ -234,6 +235,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     &-title {
         display: block;
         margin-left: 10%;
+        color: $white-alpha-6;
     }
 
     &__account {

@@ -25,6 +25,7 @@ import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { Proposal } from '@models/post/proposal.model';
 import { MeetingPoint } from '@models/meeting-point.model';
+import { ConfirmComponent } from '@core/dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-request-form',
@@ -257,13 +258,27 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   removeRequest() {
     if (this.edition) {
-      this.postService.removeRequest(this.request)
-      .subscribe((response) => {
-        if (response.status) {
-          this.snack.open('L\'annonce a été supprimée', 'OK', {duration: 5000});
-          this.router.navigate(['/home']);
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+        data: {
+          title: 'Supprimer cette annonce',
+          message: 'Cette action est irréversible. Voulez-vous continuer ?',
+          action: 'Supprimer',
+          actionStyle: 'btn-danger',
+        },
+        height: '40vh',
+        width: '75vw',
+      });
+      dialogRef.afterClosed().subscribe((action) => {
+        if (action) {
+          this.postService.removeRequest(this.request)
+          .subscribe((response) => {
+            if (response.status) {
+              this.snack.open('L\'annonce a été supprimée', 'OK', {duration: 5000});
+              this.router.navigate(['/home']);
+            }
+          }, (error) => this.uiService.serverError(error));
         }
-      }, (error) => this.uiService.serverError(error));
+      });
     }
   }
 

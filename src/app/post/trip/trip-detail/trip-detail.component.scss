@@ -82,6 +82,7 @@
         &__date {
             top: 23vh;
             margin-bottom: 8px;
+            animation: slideInUp .75s;
         }
 
         &__views {
@@ -105,10 +106,12 @@
         &__airport-code,
         &__airport-label {
             display: block;
+            animation: slideInUp .35s;
         }
 
         &__location {
             margin-top: -5px;
+            animation: slideInUp .5s;
         }
 
         &__airport-code {
@@ -133,7 +136,9 @@
     &__info {
         transition: all .25s;
         &.faded {
-            transition: all .1s;
+            transition: all ease-out .25s;
+            transform: translateY(100px);
+            z-index: 0;
             opacity: 0;
         }
         height: 15vh;
@@ -253,6 +258,12 @@
         color: $white-alpha-8;
         position: relative;
         z-index: 9;
+        transition: all ease-in-out $transitionDuration;
+
+        &.faded {
+            transition: all ease-in-out $transitionDuration;
+            transform: translateY(-35px);
+        }
 
         &__constraints {
             margin-top: 5px;
@@ -315,6 +326,7 @@
 
         &__form {
             color: rgba(0, 0, 0, .8);
+            text-align: center;
             &.engagement {
                 transition: all $transitionDuration;
                 border-radius: $border-radius;

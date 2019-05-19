@@ -94,6 +94,7 @@ export class AccountRequestComponent implements OnInit {
 
   private loadingDisplay(state: boolean) {
     this.requests = state ? [new Request({}), new Request({}), new Request({})] : [];
+    this.loading = state;
   }
 
 }

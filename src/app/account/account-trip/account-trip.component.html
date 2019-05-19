@@ -14,7 +14,12 @@
         </ng-template>
     </div>
     <h6 class="account-trip-title" *ngIf="trips?.length">Prochains voyages</h6>
-    <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of trips; let i = index;"></app-post>
+    <div class="account-trip__trip" *ngFor="let trip of trips; let i = index">
+        <app-post [post]="trip" [editable]="true" (remove)="remove(i)"></app-post>
+        <small class="text-muted light account-trip__status" *ngIf="!loading && !trip.approved && !trip.dismissed">
+            Ce trajet est en cours de validation
+        </small>
+    </div>
     <h6 class="account-trip-title" *ngIf="expiredTrips?.length">Voyages effectués</h6>
     <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of expiredTrips; let i = index;"></app-post>
     <div class="account-trip__empty" *ngIf="(trips && !trips.length) && (expiredTrips && !expiredTrips.length)">

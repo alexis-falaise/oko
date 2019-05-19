@@ -28,6 +28,7 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
+            animation: slideInUp .5s;
         }
 
         &-avatar {
@@ -60,6 +61,7 @@
         display: inline-flex;
         margin-top: -20px;
         color: rgba(255, 255, 255, .6);
+        animation: slideInUp .5s;
     }
 
     &__status {

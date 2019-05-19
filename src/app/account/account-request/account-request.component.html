@@ -13,7 +13,15 @@
         </button>
       </ng-template>
   </div>
-  <app-post [post]="request" [editable]="true" (remove)="remove(i)" *ngFor="let request of requests; let i = index;"></app-post>
+  <div class="account-request__request" *ngFor="let request of requests; let i = index;">
+      <app-post [post]="request" [editable]="true" (remove)="remove(i)"></app-post>
+      <small class="text-muted light account-request__status" *ngIf="!loading && !request.approved && !request.dismissed">
+          Cette annonce est en cours de validation
+      </small>
+      <small class="text-muted light account-request__status" *ngIf="!loading && request.dismissed">
+          Cette annonce a été modérée
+      </small>
+  </div>
   <div class="account-request__empty" *ngIf="requests && !requests.length">
       <mat-icon>error_outline</mat-icon> Aucune annonce déposée
   </div>

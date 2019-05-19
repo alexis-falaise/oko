@@ -17,6 +17,7 @@ import { Request } from '@models/post/request.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ServerResponse } from '@models/app/server-response.model';
 import { Proposal } from '@models/post/proposal.model';
+import { ConfirmComponent } from '@core/dialogs/confirm/confirm.component';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -130,14 +131,28 @@ export class TripComponent implements OnInit, OnDestroy {
   }
 
   removeTrip() {
-    this.postService.removeTrip(this.trip)
-    .subscribe((serverResponse) => {
-      if (serverResponse.status) {
-        this.snack.open('Le trajet a bien été supprimé', 'OK', {duration: 3000});
-        this.router.navigate(['/account/trip']);
-      } else {
-        const snackRef = this.snack.open('Erreur lors de la suppression du trajet', 'Réessayer', {duration: 3000});
-        snackRef.onAction().subscribe(() => this.removeTrip());
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: {
+        title: 'Supprimer un trajet',
+        message: 'Cette action est irréversible. Voulez-vous continuer ?',
+        action: 'Supprimer',
+        actionStyle: 'btn-danger',
+      },
+      height: '40vh',
+      width: '75vw',
+    });
+    dialogRef.afterClosed().subscribe((action) => {
+      if (action) {
+        this.postService.removeTrip(this.trip)
+        .subscribe((serverResponse) => {
+          if (serverResponse.status) {
+            this.snack.open('Le trajet a bien été supprimé', 'OK', {duration: 3000});
+            this.router.navigate(['/account/trip']);
+          } else {
+            const snackRef = this.snack.open('Erreur lors de la suppression du trajet', 'Réessayer', {duration: 3000});
+            snackRef.onAction().subscribe(() => this.removeTrip());
+          }
+        });
       }
     });
   }
