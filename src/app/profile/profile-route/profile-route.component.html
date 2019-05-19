@@ -21,11 +21,11 @@
       <small class="text-muted light d-flex align-items-center" *ngIf="routeList && !routeList.length">
         <mat-icon>timeline</mat-icon> Aucun trajet prévu
       </small>
-      <button class="btn btn-hero btn-icon mt-3" *ngIf="routeList && !routeList.length" [routerLink]="['/profile', trip?.user.id]">
+      <button class="btn btn-hero btn-icon mt-3" *ngIf="routeList && !routeList.length" [routerLink]="['/profile', userId]">
         <mat-icon>arrow_back</mat-icon> Retour
       </button>
       <button class="btn btn-hero btn-icon mt-3"
-              *ngIf="routeList && !completeRoute" [routerLink]="['/profile', trip?.user.id, 'route']">
+              *ngIf="routeList && !completeRoute" [routerLink]="['/profile', userId, 'route']">
         <mat-icon>timeline</mat-icon> Voir tous les voyages de {{ trip?.user.firstname }}
       </button>
     </div>

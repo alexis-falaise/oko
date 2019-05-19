@@ -129,15 +129,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.drawerExpanded = !this.drawerExpanded;
   }
 
-  pan(e) {
-    const velocity = e.velocityX;
-    this.navPosition += velocity;
-    if (this.navPosition < -2) {
-      this.displayDrawer();
-      this.navPosition = 0;
-    }
-  }
-
   back() {
     window.history.back();
   }

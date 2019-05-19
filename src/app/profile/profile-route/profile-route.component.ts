@@ -19,6 +19,7 @@ export class ProfileRouteComponent implements OnInit {
   routeList: Array<Trip>;
   expandedTrip: Trip;
   completeRoute = false;
+  userId: string;
 
   constructor(
     private pexelsService: PexelsService,
@@ -55,6 +56,7 @@ export class ProfileRouteComponent implements OnInit {
         });
       } else {
         if (params.id) {
+          this.userId = params.id;
           this.postService.getTripByAuthor(params.id)
           .subscribe((trips: Array<Trip>) => {
             const filteredTrips = trips.map(trip => new Trip(trip))

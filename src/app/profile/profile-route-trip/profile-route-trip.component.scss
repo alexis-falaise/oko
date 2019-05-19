@@ -12,7 +12,7 @@ $routeTripHeight: 150px;
     transition: all .35s;
     margin: 10px;
     overflow: hidden;
-    animation: slideInUp $animationDuration;
+    animation: appear $animationDuration;
 
     display: flex;
     flex-direction: row;

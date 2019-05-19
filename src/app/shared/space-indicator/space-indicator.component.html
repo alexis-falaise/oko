@@ -1,7 +1,9 @@
 <div class="space-indicator" [class.light]="light" [class.absolute]="absolute" [style.width]="size + 'px'"
     (click)="descriptionDisplay = !descriptionDisplay">
   <div class="space-indicator__slot" [class.filled]="filled" [style.width]="fillingRate + '%'"></div>
-  <small class="space-indicator__description text-muted" [class.light]="light || fillingRate > 30" *ngIf="!absolute">
+  <small class="space-indicator__description text-muted"
+         [style.margin-left]=" size / 4 + 'px'"
+         [class.light]="light || fillingRate > 30" *ngIf="!absolute">
     {{ fillingDescriptions[filling - 1] }}
   </small>
 </div>
