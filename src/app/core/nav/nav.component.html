@@ -26,7 +26,9 @@
   </div> -->
 </nav>
 
-<div class="navbar__fullscreen" (click)="hide()" (swipeRight)="hide()" [class.display]="menuDisplay">
+<div class="navbar__fullscreen"
+     [style.right]="'-' + navXposition + '%'"
+     (click)="hide()" (swipeRight)="hide()" [class.display]="menuDisplay">
   <a class="navbar-brand">ọkọ</a>
   <div class="navbar__fullscreen-avatar" >
     <app-avatar [image]="currentUser.avatar" [size]="50" *ngIf="currentUser?.avatar"></app-avatar>

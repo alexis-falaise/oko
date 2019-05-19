@@ -32,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   nextStatus = new Subject();
   connection = new Subject();
   isDisconnected = false;
+  navPosition = 0;
   hideNavOn = ['/login', '/logout', '/signin', '/oneclick'];
   lightNavOn = ['/home', '/post', '/account', '/messages', '/profile', '/landing', '/admin'];
 
@@ -126,6 +127,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   toggleDrawer() {
     this.drawerExpanded = !this.drawerExpanded;
+  }
+
+  pan(e) {
+    const velocity = e.velocityX;
+    this.navPosition += velocity;
+    if (this.navPosition < -2) {
+      this.displayDrawer();
+      this.navPosition = 0;
+    }
   }
 
   back() {

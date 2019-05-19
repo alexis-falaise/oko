@@ -61,34 +61,14 @@
             </div>
             <small class="text-muted">Indiquez si vous pouvez prendre un article volumineux</small>
             <div class="luggage-space">
-              <div class="btn-group-vertical btn-group-sm">
-                <button class="btn" [disabled]="large" 
+              <div class="btn-group-vertical btn-group-sm d-flex flex-column-reverse">
+                <button class="btn" [disabled]="large"
+                        *ngFor="let filling of fillingDescriptions; let i = index"
                         [ngClass]="{
-                        'btn-light': !(freeSpace > 3),
-                        'btn-success': freeSpace > 3 }" 
-                        (click)="freeSpace = 4">
-                        Bagage Complet
-                </button>
-                <button class="btn" [disabled]="large" 
-                        [ngClass]="{
-                        'btn-light': !(freeSpace > 2),
-                        'btn-success': freeSpace > 2 }" 
-                        (click)="freeSpace = 3">
-                        Beaucoup d'espace
-                </button>
-                <button class="btn" [disabled]="large" 
-                        [ngClass]="{
-                        'btn-light': !(freeSpace > 1),
-                        'btn-success': freeSpace > 1 }" 
-                        (click)="freeSpace = 2">
-                        Pas mal d'espace
-                </button>
-                <button class="btn" [disabled]="large" 
-                        [ngClass]="{
-                        'btn-light': !(freeSpace > 0),
-                        'btn-success': freeSpace > 0 }" 
-                        (click)="freeSpace = 1">
-                        Peu d'espace
+                        'btn-light': !(freeSpace > i),
+                        'btn-success': freeSpace > i }" 
+                        (click)="freeSpace = (i + 1)">
+                        {{ filling }}
                 </button>
               </div>
             </div>

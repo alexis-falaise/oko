@@ -22,6 +22,7 @@ export class NavComponent implements OnInit, OnDestroy, OnChanges {
   ngUnsubscribe = new Subject();
   menuDisplay = false;
   hasParent = false;
+  navXposition = 100;
   guestAccountMenuItems: Array<MenuItem> = [
     { label: 'Aide', path: '/help', icon: 'help' },
     { label: 'Connexion', path: '/oneclick', icon: 'power_settings_new' },
@@ -58,6 +59,7 @@ export class NavComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.drawer) {
       this.menuDisplay = changes.drawer.currentValue;
+      this.navXposition = this.menuDisplay ? 0 : 100;
     }
     if (changes.light) {
       this.light = changes.light.currentValue;
@@ -88,6 +90,14 @@ export class NavComponent implements OnInit, OnDestroy, OnChanges {
   checkParent() {
     const url = this.router.url;
     this.hasParent = this.historyService.hasParent(url);
+  }
+
+  pan(e) {
+    const velocity = e.velocityX;
+    this.navXposition += velocity * 2;
+    if (this.navXposition > 30) {
+      this.hide();
+    }
   }
 
   toggleMenu() {

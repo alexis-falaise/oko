@@ -24,7 +24,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
     &.expanded {
         transition: $transitionDuration $transitionStyle all;
         z-index: 103;
-        border-bottom: thin solid rgb(255, 255, 255);
+        // border-bottom: thin solid rgb(255, 255, 255);
         // background-color: rgba(255, 255, 255, .6);
         .mat-icon,
         .material-icon {

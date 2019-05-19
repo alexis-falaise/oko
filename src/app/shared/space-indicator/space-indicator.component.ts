@@ -1,11 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
-
-class Slot {
-  filled: boolean;
-  constructor(filled = false) {
-    this.filled = filled;
-  }
-}
+import { timer } from 'rxjs';
+import { fillingDescriptions } from '@static/luggage-filling.static';
 
 @Component({
   selector: 'app-space-indicator',
@@ -17,38 +12,29 @@ export class SpaceIndicatorComponent implements OnInit, OnChanges {
   @Input() size: number;
   @Input() light: boolean;
   @Input() absolute: boolean;
-  slots: Array<Slot> = [];
   slotsNumber = 4;
+  filled: boolean;
+  fillingDescriptions = fillingDescriptions;
+  fillingRate = 0;
+  descriptionDisplay = false;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.filling) {
       this.filling = changes.filling.currentValue;
-      this.setSlots(this.filling);
     }
     if (changes.size) {
       this.size = changes.size.currentValue;
+      console.log(this.size);
     }
   }
 
   ngOnInit() {
-    this.initSlots();
-    if (this.filling) {
-      this.setSlots(this.filling);
-    }
-  }
-
-  initSlots() {
-    for (let i = 0; i < this.slotsNumber; i++) {
-      this.slots.push(new Slot());
-    }
-  }
-
-  setSlots(filling: number) {
-    this.slots = this.slots.map((slot, index) => {
-      return index < filling ? new Slot(true) : new Slot(false);
-    });
+      timer(250).subscribe(() => {
+        this.filled = true;
+        this.fillingRate = this.filling / this.slotsNumber * 100;
+      });
   }
 
 }

@@ -1,5 +1,6 @@
 <div class="main" (contextmenu)="nope()">
-    <div class="main__drawer-sensitive" (click)="toggleDrawer()" (swipeLeft)="displayDrawer()" (swipeRight)="hideDrawer()"></div>
+    <div class="main__drawer-sensitive"
+         (click)="toggleDrawer()" (swipeLeft)="displayDrawer()" (swipeRight)="hideDrawer()"></div>
     <!-- <div class="main__history-sensitive" (swipeRight)="back()"></div> -->
     <div class="main__history-sensitive-side" (swipeRight)="back()"></div>
     <div class="main-app-loading-wrapper" *ngIf="mainLoading">
@@ -16,6 +17,7 @@
         </div>
     </div>
     <router-outlet></router-outlet>
-    <app-nav [light]="lightNav" [drawer]="drawerExpanded" (drawerChanges)="manageDrawer($event)" *ngIf="displayNav"></app-nav>
+    <app-nav [light]="lightNav" [drawer]="drawerExpanded"
+             (drawerChanges)="manageDrawer($event)" *ngIf="displayNav"></app-nav>
     <mat-progress-bar class="loading" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 </div>

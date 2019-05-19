@@ -24,12 +24,14 @@ import { AdminUserComponent } from './admin-user/admin-user.component';
 import { SharedModule } from '@shared/shared.module';
 import { AdminUserViewComponent } from './admin-user-view/admin-user-view.component';
 import { AdminUserViewResolver } from '@resolvers/admin-user-view.resolver';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AdminComponent, AdminTripComponent, AdminRequestComponent, AdminUserComponent, AdminUserViewComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
+    FormsModule,
     MatCheckboxModule,
     MatIconModule,
     MatInputModule,

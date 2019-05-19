@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Luggage } from '@models/luggage.model';
+import { fillingDescriptions } from '@static/luggage-filling.static';
 
 @Component({
   selector: 'app-trip-luggage',
@@ -19,6 +20,7 @@ export class TripLuggageComponent implements OnInit {
   modifying: boolean;
   error: boolean;
   index: number;
+  fillingDescriptions = fillingDescriptions;
   freeSpace = 1;
 
   cabinDimensions = {
