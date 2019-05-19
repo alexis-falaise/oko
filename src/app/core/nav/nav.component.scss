@@ -29,7 +29,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
         .mat-icon,
         .material-icon {
             transition: $transitionDuration all;
-            color: $iconsColor;
+            // color: $iconsColor;
         }
     }
 
@@ -123,7 +123,7 @@ $expanded-menu-color: rgba(255, 255, 255, .95);
                 .mat-icon,
                 .material-icon {
                     transition: $transitionDuration $transitionStyle all;
-                    color: $iconsColor;
+                    // color: $iconsColor;
                 }
             }
         }

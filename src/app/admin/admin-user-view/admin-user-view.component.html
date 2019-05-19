@@ -15,7 +15,23 @@
     </button>
   </div>
   <hr class="divider">
+  <h4 class="text-muted">
+    Privilèges
+  </h4>
+  <mat-slide-toggle (change)="setAdmin($event)">Administrateur</mat-slide-toggle>
   <hr class="divider">
+  <h4 class="text-muted" (click)="sortSessions(ascending)">Sessions ( {{ user.sessions.length }} )</h4>
+  <mat-list class="admin-user-view__session-list">
+    <mat-list-item class="admin-user-view__session" *ngFor="let session of user.sessions">
+      <h3 matLine>
+        {{ moment(session.start).format('DD/MM/YYYY HH:mm') }} -
+        {{ moment(session.end).format('DD/MM/YYYY HH:mm')}}
+      </h3>
+      <small class="text-muted" matLine>
+        Durée: {{ moment.duration(moment(session.end).diff(moment(session.start))).humanize() }}
+      </small>
+    </mat-list-item>
+  </mat-list>
   <div class="d-flex justify-content-center">
     <button class="btn btn-danger btn-icon" (click)="deleteUser()">
       <mat-icon>clear</mat-icon> Supprimer cet utilisateur

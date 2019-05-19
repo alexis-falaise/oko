@@ -1,3 +1,4 @@
+$transitionDuration: .25s;
 .admin-user-view {
     &__title {
         display: flex;
@@ -5,6 +6,20 @@
         align-items: center;
         &-avatar {
             margin-right: 10px;
+        }
+    }
+    &__session {
+        transition: all $transitionDuration;
+        border-bottom: 1px solid rgb(235, 235, 235);
+        height: 25px;
+        &:hover {
+            background-color: rgb(245, 245, 245);
+            transition: all $transitionDuration;
+        }
+        &-list {
+            height: 200px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
         }
     }
 }

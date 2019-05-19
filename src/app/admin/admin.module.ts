@@ -12,6 +12,7 @@ import {
   MatTooltipModule,
   MatSnackBarModule,
   MatSortModule,
+  MatListModule,
 } from '@angular/material';
 
 import { AdminService } from './admin.service';
@@ -33,6 +34,7 @@ import { AdminUserViewResolver } from '@resolvers/admin-user-view.resolver';
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
+    MatListModule,
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,

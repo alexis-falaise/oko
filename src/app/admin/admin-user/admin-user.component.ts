@@ -57,14 +57,6 @@ export class AdminUserComponent implements OnInit {
     this.router.navigate([`/admin/user/${user.id}`]);
   }
 
-  setAdmin(user: User, change) {
-    const adminStatus = change.checked;
-    this.adminService.setUserAsAdmin(user.id, adminStatus)
-    .subscribe((receivedUser: User) => {
-      this.updateUser(receivedUser);
-    }, () => this.updateUser(user));
-  }
-
   private updateUser(user: User) {
     const userIndex = this.users.findIndex(tabUser => tabUser._id === user._id);
     this.users[userIndex] = user;

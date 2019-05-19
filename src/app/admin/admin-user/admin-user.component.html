@@ -107,8 +107,12 @@
 
     <ng-container matColumnDef="admin">
       <th mat-header-cell *matHeaderCellDef>Admin</th>
-      <td mat-cell *matCellDef="let user">
-        <mat-slide-toggle [checked]="user.admin" (change)="setAdmin(user, $event)"></mat-slide-toggle>
+      <td mat-cell *matCellDef="let user" class="admin-toggle">
+        <mat-icon
+          [class.text-success]="user.admin"
+          [class.text-muted]="!user.admin">
+          {{ user.admin ? 'done_all' : 'clear' }}
+        </mat-icon>
       </td>
     </ng-container>
       

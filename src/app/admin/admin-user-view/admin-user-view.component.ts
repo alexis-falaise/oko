@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 
 import { AdminService } from '../admin.service';
 import { MessengerService } from '@core/messenger.service';
@@ -15,23 +16,47 @@ import { MatSnackBar } from '@angular/material';
 })
 export class AdminUserViewComponent implements OnInit, OnDestroy {
   user: User;
+  sessionsSortAscending = false;
+  moment = moment;
 
   constructor(
     private adminService: AdminService,
     private snack: MatSnackBar,
     private messengerService: MessengerService,
-    private userService: UserService,
     private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.user = data.user;
+      this.sortSessions();
     });
+  }
+
+  sortSessions() {
+    this.user.sessions = this.user.sessions.sort((a, b) => {
+      const before = moment(a.start).isBefore(moment(b.start));
+      if (this.sessionsSortAscending) {
+        return before ? 1 : -1;
+      } else {
+        return before ? -1 : 1;
+      }
+    });
+    this.sessionsSortAscending = !this.sessionsSortAscending;
   }
 
   contact() {
     this.messengerService.getContactThread(this.user);
+  }
+
+  setAdmin(change) {
+    const adminStatus = change.checked;
+    this.adminService.setUserAsAdmin(this.user.id, adminStatus)
+    .subscribe((receivedUser: User) => {
+      this.updateUser(receivedUser);
+      this.snack.open(`Privilège d'administateur ${adminStatus ? 'accordé' : 'retiré'} à ${this.user.firstname}`,
+      'OK', {duration: 4500});
+    }, () => this.updateUser(this.user));
   }
 
   deleteUser() {
@@ -41,6 +66,10 @@ export class AdminUserViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.adminService.resetCurrentUser();
+  }
+
+  private updateUser(user: User) {
+    this.user = user;
   }
 
 }
