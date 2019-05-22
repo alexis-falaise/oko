@@ -1,6 +1,9 @@
 import { Airport } from '@models/airport.model';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { Trip } from '@models/post/trip.model';
+
+const planeSpeed = 900;
 
 export function round(number: number, decimals: number) {
     return Math.round(number * 10 ** decimals) / 10 ** decimals;
@@ -32,6 +35,11 @@ export interface Coords {
     altitude: number;
 }
 
+export function calculateTravelTime(originAirport: Airport, destinationAirport: Airport): number {
+    const distance = airportsDistance(originAirport, destinationAirport);
+    return distance / planeSpeed;
+}
+
 /**
  * Calculates flight arrival time
  * @param departureTime : Moment object for departure time
@@ -45,11 +53,9 @@ export function arrivalTime(
     destinationAirport: Airport,
     originTimezone = false
     ): Moment {
-    const planeSpeed = 900;
     if (originAirport && destinationAirport) {
-        const distance = airportsDistance(originAirport, destinationAirport);
         const timezoneDiff = destinationAirport.timezone - originAirport.timezone;
-        const travelTime = distance / planeSpeed;
+        const travelTime = calculateTravelTime(originAirport, destinationAirport);
         const originTimezoneArrivalTime = moment(departureTime).add(travelTime, 'h');
         const destinationTimezoneArrivalTime = moment(originTimezoneArrivalTime).add(timezoneDiff, 'h');
         return originTimezone ? originTimezoneArrivalTime : destinationTimezoneArrivalTime;

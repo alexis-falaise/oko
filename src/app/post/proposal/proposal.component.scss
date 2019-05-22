@@ -1,5 +1,6 @@
-@import "../../../styles/variables.scss";
 @import "../../../styles/animations.scss";
+@import "../../../styles/classes.scss";
+@import "../../../styles/variables.scss";
 
 .proposal {
     &.standalone {
@@ -25,24 +26,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 15vh;
-        }
-    }
-
-    &__author-details {
-        color: $white-alpha-8;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        &__avatar {
-            margin-right: 5px;
-        }
-        &__personnal {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
+            height: 10vh;
+            min-height: 60px;
+            padding-top: 15px;
+            box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         }
     }
 
@@ -64,7 +51,73 @@
     }
 
     &__actions {
+        @extend .base-oko-card;
+        position: relative;
+        top: -10px;
+        max-width: 90vw;
+        padding: 15px;
+
+        &__bonus {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &-title {
+                color: rgb(125, 125, 125);
+            }
+
+            &-figure {
+                color: rgb(175, 175, 175);
+                font-size: 48px;
+
+                &.updated {
+                    color: $light-green-600;
+                }
+            }
+        }
+    }
+
+    &__summary {
+        @extend .base-oko-card;
+        max-width: 90vw;
+        height: 45vh;
+        padding: 15px;
         margin-bottom: 10px;
+        overflow-y: scroll;
+
+        &__author {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &-avatar {
+                margin-right: 5px;
+            }
+            &-info {
+                display: flex;
+                flex-direction: column;
+                margin-right: 10px;
+            }
+            &-type {
+                font-size: 12px;
+            }
+        }
+
+        &__details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    }
+
+    &__location {
+        @extend .base-oko-card;
+        padding: 15px;
+        height: 20vh;
+        max-width: 90vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     &__loading {

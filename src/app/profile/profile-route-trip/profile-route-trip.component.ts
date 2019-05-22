@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as moment from 'moment';
-import { coordDistance, Coords, round, airportsDistance } from '@utils/math.util';
+import { coordDistance, Coords, round, airportsDistance, calculateTravelTime } from '@utils/math.util';
 
 import { Trip } from '@models/post/trip.model';
 
@@ -15,6 +15,7 @@ export class ProfileRouteTripComponent implements OnChanges {
   @Input() expanded = false;
   tripDistance: number;
   tripTimezoneDiff: number;
+  tripTravelTime: string;
   moment = moment;
 
   constructor() { }
@@ -25,6 +26,7 @@ export class ProfileRouteTripComponent implements OnChanges {
       if (this.trip) {
         this.tripDistance = this.calculateDistance(this.trip);
         this.tripTimezoneDiff = this.calculateTimezoneDiff(this.trip);
+        this.tripTravelTime = moment.duration(this.calculateTravelTime(this.trip), 'hours').humanize();
       }
     }
   }
@@ -33,8 +35,12 @@ export class ProfileRouteTripComponent implements OnChanges {
     return airportsDistance(trip.from.airport, trip.to.airport);
   }
 
-  private calculateTimezoneDiff(trip: Trip) {
+  private calculateTimezoneDiff(trip: Trip): number {
     return trip.to.airport.timezone - trip.from.airport.timezone;
+  }
+
+  private calculateTravelTime(trip: Trip): number {
+    return calculateTravelTime(trip.from.airport, trip.to.airport);
   }
 
 }

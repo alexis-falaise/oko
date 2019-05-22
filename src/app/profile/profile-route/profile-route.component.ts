@@ -42,7 +42,8 @@ export class ProfileRouteComponent implements OnInit {
     //   });
     // });
     this.route.params.subscribe((params) => {
-      if (params.trip) {
+        this.userId = params.id;
+        if (params.trip) {
         this.postService.getTripRoute(params.trip)
         .subscribe((route: Route) => {
           this.trip = new Trip(route.trip);
@@ -56,7 +57,6 @@ export class ProfileRouteComponent implements OnInit {
         });
       } else {
         if (params.id) {
-          this.userId = params.id;
           this.postService.getTripByAuthor(params.id)
           .subscribe((trips: Array<Trip>) => {
             const filteredTrips = trips.map(trip => new Trip(trip))

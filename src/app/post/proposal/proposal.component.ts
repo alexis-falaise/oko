@@ -33,6 +33,7 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
   currentUser: User;
   fromTrip: boolean;
   toTrip: boolean;
+  isLastUpdateAuthor: boolean;
   standalone: boolean;
   self: boolean;
   moment = moment;
@@ -91,6 +92,7 @@ export class ProposalComponent implements OnInit, OnChanges, OnDestroy {
       }
       if (this.currentUser) {
         this.proposal.isAuthor(this.currentUser);
+        this.isLastUpdateAuthor = this.proposal.lastUpdate.author.id === this.currentUser.id;
       }
       if (this.entry) {
         if (this.proposal.from instanceof Post) {

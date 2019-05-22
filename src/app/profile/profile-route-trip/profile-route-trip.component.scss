@@ -125,6 +125,7 @@ $routeTripHeight: 150px;
         &__distance {
             transition: all .35s;
             display: flex;
+            flex-direction: column;
             align-items: center;
             color: $white-alpha-3;
             font-size: 24px;
@@ -132,6 +133,11 @@ $routeTripHeight: 150px;
             .mat-icon {
                 transform: rotate(180deg);
             }
+        }
+
+        &__time {
+            animation: slideInDown .75s;
+            font-size: 16px;
         }
     }
 }

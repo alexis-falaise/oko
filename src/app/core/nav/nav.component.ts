@@ -74,6 +74,8 @@ export class NavComponent implements OnInit, OnDestroy, OnChanges {
         this.displayAccountMenuItems = this.accountMenuItems;
         this.randomWelcome = this.uiService.generateRandomWelcome(user.firstname);
       } else {
+        this.currentUser = null;
+        this.randomWelcome = null;
         this.displayAccountMenuItems = this.guestAccountMenuItems;
       }
     });
