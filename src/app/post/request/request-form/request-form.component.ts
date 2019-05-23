@@ -505,9 +505,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
       const draft = this.createSaveRequest();
       this.saveDraft(draft);
     }
-    if (this.edition) {
-      this.requestService.resetRequest();
-    }
+    // if (this.edition) {
+    //   this.requestService.resetRequest();
+    // }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

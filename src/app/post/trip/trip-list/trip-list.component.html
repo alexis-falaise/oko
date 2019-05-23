@@ -1,17 +1,21 @@
 <div class="trip-list container-fluid">
-  <div class="trip-list__hero row" [class.filters]="displayFilter">
-    <h2 class="trip-list__hero-title">
-      Trajets disponibles
-      <button class="btn btn-icon" (click)="toggleFilterDisplay()">
-        <mat-icon>{{ displayFilter ? 'clear' : 'search' }}</mat-icon>
-      </button>
-    </h2>
-    <div class="trip-list__filters" *ngIf="displayFilter">
-        <app-post-filter [filter]="filter"
-                         [options]="filterComponentOptions"
-                         (filterRefresh)="filterPosts($event)"
-                         (resetFilter)="resetFilters()">
-        </app-post-filter>
+  <div class="trip-list__hero row"
+       [class.background]="hasBackground"
+       [style.background-image]="'url('+background+')'" [class.filters]="displayFilter">
+    <div class="trip-list__hero__backdrop" [class.active]="hasBackground">
+      <h2 class="trip-list__hero-title">
+          Trajets disponibles
+          <button class="btn btn-icon" (click)="toggleFilterDisplay()">
+            <mat-icon>{{ displayFilter ? 'clear' : 'search' }}</mat-icon>
+          </button>
+        </h2>
+        <div class="trip-list__filters" *ngIf="displayFilter">
+            <app-post-filter [filter]="filter"
+                              [options]="filterComponentOptions"
+                              (filterRefresh)="filterPosts($event)"
+                              (resetFilter)="resetFilters()">
+            </app-post-filter>
+        </div>
     </div>
   </div>
   <div class="trip-list__list" [class.filters]="displayFilter">

@@ -48,8 +48,10 @@ export class PostFilterComponent implements OnInit, OnChanges {
   emitFilter() {
     this.nextQuery.next();
     this.checkFilter();
-    timer(250).pipe(takeUntil(this.nextQuery))
-    .subscribe(() => this.filterRefresh.emit(this.filter));
+    timer(350).pipe(takeUntil(this.nextQuery))
+    .subscribe(() => {
+      this.filterRefresh.emit(this.filter);
+    });
   }
 
   checkFilter() {

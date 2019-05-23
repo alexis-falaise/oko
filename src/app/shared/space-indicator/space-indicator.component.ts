@@ -26,7 +26,6 @@ export class SpaceIndicatorComponent implements OnInit, OnChanges {
     }
     if (changes.size) {
       this.size = changes.size.currentValue;
-      console.log(this.size);
     }
   }
 

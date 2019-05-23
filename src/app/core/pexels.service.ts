@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Observer, timer } from 'rxjs';
 
+import { environment } from '@env/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class PexelsService {
   apiKey = '563492ad6f917000010000011f73b6d4b18f4d21a990fe3bdcec16b5';
   pixabayApiKey = '554684-c31903762eb8065c0dd2ce661';
-  photosNumber = 10;
+  photosNumber = 50;
   photosCache = {};
+  serverUrl = environment.serverUrl;
   constructor(
     private http: HttpClient,
   ) { }
@@ -17,7 +20,6 @@ export class PexelsService {
   getBackgroundPicture(country: string,
   size: 'original' | 'large' | 'large2x' | 'medium' | 'small' | 'portrait' | 'landscape' | 'tiny' = 'large',
   pixabay: boolean = false): Observable<string> {
-
     return Observable.create(observer => {
       const headers = new HttpHeaders({
         'Authorization': this.apiKey,
@@ -30,6 +32,11 @@ export class PexelsService {
 
       const request = pixabay ? this.http.get(pixabayQuery) : this.http.get(query, {headers: headers});
 
+      // this.http.get(`${this.serverUrl}/app/picture?location=${country}`)
+      // .subscribe((response: any) => {
+      //   console.log('Server res for pics', response);
+      // });
+
       request.subscribe((response: any) => {
         if (pixabay) {
           if (response.hits) {
@@ -39,6 +46,7 @@ export class PexelsService {
         } else {
           if (response.photos) {
             this.photosCache[country] = response.photos;
+            this.savePictureSet(response.photos, country);
             const photo = this.getPictureFromArray(response.photos, size, false);
             this.loadImage(observer, photo);
           } else {
@@ -49,6 +57,28 @@ export class PexelsService {
         this.getCachedBackgroundPicture(observer, country, size);
       });
     });
+  }
+
+  private savePictureSet(set: Array<any>, query: string) {
+    const savedSet = set.map(photoRef => {
+      return {
+        id: photoRef.id,
+        photographer: photoRef.photographer,
+        width: photoRef.width,
+        height: photoRef.height,
+        query: query,
+        original: photoRef.src['original'],
+        large: photoRef.src['large'],
+        large2x: photoRef.src['large2x'],
+        medium: photoRef.src['medium'],
+        small: photoRef.src['small'],
+        portrait: photoRef.src['portrait'],
+        landscape: photoRef.src['landscape'],
+        tiny: photoRef.src['tiny'],
+      };
+    });
+    this.http.post(`${this.serverUrl}/app/picture`, savedSet)
+    .subscribe((response) => console.log('Saved picture set', response));
   }
 
   private getCachedBackgroundPicture(observer: Observer<string>, country: string, size: string) {

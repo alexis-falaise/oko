@@ -98,7 +98,7 @@ export class TripDetailComponent implements OnInit {
     .subscribe((proposals: Array<Proposal>) => {
       this.setProposals(proposals);
       this.requests = proposals
-      .filter(proposal => !proposal.closed && !proposal.accepted && !proposal.refused)
+      .filter(proposal => !proposal.closed && !proposal.accepted && !proposal.refused && !proposal.outdated)
       .map(proposal => proposal.from) as Array<Request>;
       this.items = this.requests.reduce((acc, request) => acc.concat(request.items), []);
       if (this.ordering) {
@@ -108,9 +108,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   setProposals(proposals: Array<Proposal>) {
-    this.proposals = this.own
-    ? proposals.filter(proposal => !proposal.closed && !proposal.refused)
-    : proposals;
+    this.proposals = proposals.filter(proposal => !proposal.closed && !proposal.refused && !proposal.outdated);
   }
 
   makeRequest() {

@@ -1,16 +1,88 @@
-<div class="proposal" *ngIf="standalone; else embedded">
+<div class="proposal"
+     [ngStyle]="{'padding-bottom': displayBottomOffset}"
+     [class.standalone]="standalone" *ngIf="standalone; else embedded">
     <div class="proposal-title-wrapper">
       <h2 class="proposal-title">Proposition</h2>
     </div>
-    <div class="proposal__loading" *ngIf="!proposal">
-      <mat-icon class="proposal__loading-icon">
-        autorenew
-      </mat-icon>
-      <h4 class="proposal__loading-title">Chargement de la proposition</h4>
+
+    <div class="proposal__summary container"
+         [class.extended]="!actionsBarExtended && !displayLocation"
+         [class.closed]="proposal.closed || proposal.outdated"
+         *ngIf="proposal">
+      <div class="proposal__summary__author" *ngIf="proposal?.author">
+          <app-avatar class="proposal__summary__author-avatar"
+                      [image]="proposal?.authorView ? proposal?.receiver?.avatar : proposal?.author?.avatar"
+                      [size]="36"></app-avatar>
+          <div class="proposal__summary__author-info">
+              {{ proposal?.authorView ? proposal?.receiver?.firstname : proposal?.author?.firstname }}
+              <app-rating [rating]="proposal?.authorView ? proposal?.receiver?.rating : proposal?.author?.rating"
+                          [size]="36">
+              </app-rating>
+          </div>
+          <div class="proposal__summary__author-type">
+            <span *ngIf="receiver && proposal.fromTrip">vous a fait une proposition de trajet</span>
+            <span *ngIf="receiver && proposal.fromRequest"> vous a fait une demande de transport</span>
+            <span *ngIf="!receiver && proposal.fromTrip">
+              Vous avez proposé un trajet à {{ proposal.to.user.firstname}} pour son annonce:
+            </span>
+            <span *ngIf="!receiver && proposal.fromRequest">
+              Vous avez fait une demande pour le trajet de {{ proposal.to.user.firstname }}
+            </span>
+          </div>
+      </div>
+      <div class="proposal__summary__details">
+        <div *ngIf="receiver; else sender">
+          <div *ngIf="fromTrip; else fromRequest">
+            <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
+            <hr class="divider">
+            Concernant votre annonce:
+            <app-proposal-request
+              [own]="true"
+              [request]="proposal?.to"
+              [fullDisplay]="standalone"
+              (open)="openRequest($event)">
+            </app-proposal-request>
+          </div>
+        </div>
+
+        <button class="mt-3 btn btn-light btn-icon" (click)="contact()">
+          <mat-icon>mail_outline</mat-icon>
+          Contacter {{ proposal.authorView ? proposal.receiver.firstname : proposal.author.firstname }}
+        </button>
+      </div>
     </div>
 
-    <div class="proposal__actions container" *ngIf="proposal">
-      <div class="row">
+    <div class="proposal__location container" *ngIf="displayLocation">
+      <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
+        <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
+          <mat-icon>flight</mat-icon> Remise à l'aéroport
+        </div>         
+      </div>
+      <div class="d-flex w-100 justify-content-center">
+        <button class="btn btn-light btn-sm btn-icon"
+                [disabled]="proposal.accepted || proposal.refused"
+                *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
+                (click)="updateProposalMeeting()">
+          <mat-icon>my_location</mat-icon> {{ proposal.meetingPoint?.city ? 'Proposer un autre lieu' : 'Proposer un lieu de rendez-vous'}}
+        </button>
+      </div>
+    </div>
+
+
+    <div class="proposal__actions-wrapper"
+        (click)="actionsBarExtended = !actionsBarExtended"
+        (swipeDown)="actionsBarExtended = false"
+        (swipeUp)="actionsBarExtended = true">
+    <div class="proposal__actions container"
+          [class.extended]="actionsBarExtended"
+          *ngIf="proposal" #actionsBar>
+      <div class="d-flex justify-content-around" *ngIf="!actionsBarExtended">
+        <small class="text-muted">
+          Bonus voyageur: {{ proposal.bonus }} €
+        </small>
+        <mat-icon>expand_less</mat-icon>
+      </div>
+      <div class="row" *ngIf="actionsBarExtended">
         <div class="col">
           <div class="proposal__actions__bonus">
             <small class="proposal__actions__bonus-title">Bonus voyageur</small>
@@ -18,8 +90,9 @@
                 [class.updated]="!isLastUpdateAuthor && proposal?.lastUpdate.type === 'bonus'">
               {{ proposal?.bonus }} €
             </h4>
-            <small class="text-muted" *ngIf="!isLastUpdateAuthor && proposal?.lastUpdate.type === 'bonus'">
-              {{ proposal.lastUpdate.author.firstname }} a fait une contre-proposition
+            <small class="proposal__actions__bonus-subtitle"
+                    *ngIf="!isLastUpdateAuthor && proposal?.lastUpdate.type === 'bonus'">
+              {{ proposal.lastUpdate.author.firstname }} a fait une contre-proposition {{ moment(proposal.lastUpdate.date).fromNow() }}
             </small>
             <button class="btn btn-light btn-sm btn-icon"
                     [disabled]="proposal.accepted || proposal.refused"
@@ -31,372 +104,144 @@
             </button>
           </div>
         </div>
-        <div class="col">
-          <button class="btn btn-danger btn-icon mb-2"
-                  [disabled]="proposal.closed"
-                  *ngIf="(proposal.authorView || proposal.closed) && !proposal.accepted && !proposal.refused"
-                  (click)="closeProposal()">
-            <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
-          </button>
+        <div class="proposal__actions__management col" *ngIf="displayContextualButtons">
           <button class="btn btn-success btn-icon mb-2"
                   [disabled]="proposal.accepted || proposal.outdated"
-                  *ngIf="proposal.lastUpdate?.author.id !== currentUser.id &&
-                        !proposal.refused && !proposal.closed && !proposal.paid"
+                  *ngIf="displayAcceptButton"
                   (click)="acceptProposal()">
             <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
           </button>
           <button class="btn btn-success btn-icon mb-2"
                   [disabled]="proposal.paid"
                   (click)="payProposal()"
-                  *ngIf="
-                  (proposal.toRequest && receiver
-                  || proposal.fromRequest && proposal.authorView)
-                  && proposal.accepted">
+                  *ngIf="displayPaymentButton">
             <mat-icon>credit_card</mat-icon> {{ proposal.paid ? 'Payée' : 'Payer' }}
           </button>
           <button class="btn btn-success btn-icon mb-2"
                   [disabled]="proposal.validated"
-                  *ngIf="
-                  (proposal.toRequest && receiver
-                  || proposal.fromRequest && proposal.authorView)
-                  && proposal.paid"
+                  *ngIf="displayConfirmButton"
                   (click)="validateProposal()">
-            <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
+            <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer' }}
           </button>
           <button class="btn btn-success btn-icon mb-2" disabled
-                  *ngIf="(proposal.toTrip && receiver
-                        || proposal.fromTrip && !receiver) && proposal.validated">
+                  *ngIf="displayDeliveryButton">
             <mat-icon>done_all</mat-icon> Livrée
           </button>
           <button class="btn btn-danger btn-icon mb-2"
                   [disabled]="proposal.refused || proposal.outdated"
-                  *ngIf="(proposal.lastUpdate?.author.id !== currentUser.id && !proposal.accepted && !proposal.closed)
-                        || (proposal.lastUpdate?.author.id === currentUser.id && proposal.refused)"
+                  *ngIf="displayRefuseButton"
                   (click)="refuseProposal()">
             <mat-icon>remove_circle_outline</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
           </button>
-          <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver && standalone">
-            <small class="text-muted"
-                    *ngIf="proposal.lastUpdate?.author.id === currentUser.id
-                          && !proposal.accepted && !proposal.refused && !proposal.closed">
-              La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
-            </small>
-            <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.accepted && !proposal.paid">
-              La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement 
-            </small>
-            <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
-              Vos articles seront livrés par {{ proposal?.to?.user.firstname }} au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}
-            </small>
-            <div class="d-flex flex-column align-items-center"
-                *ngIf="(proposal.fromRequest && !proposal.authorView
-                || proposal.fromTrip && proposal.authorView)
-                && proposal.paid && !proposal.validated">
-              <button class="btn btn-warning" disabled>À livrer</button> <br>
-              <small class="text-muted">La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer</small>
-              <div class="proposal__request__date" *ngIf="proposal.from?.urgent">
-                <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
-                <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
-                  Raison: " {{ proposal.from.urgentDetails.explaination }} "
-                </p>
-              </div>
-              <hr class="divider">
-              <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
-                <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-                  <mat-icon>flight</mat-icon> Remise à l'aéroport
-                </div>         
-              </div>
-            </div>
-          </div>
-          <div class="d-flex justify-content-center text-align-center" *ngIf="receiver && standalone">
-            <small class="text-muted"
-                    *ngIf="proposal.lastUpdate?.author.id === currentUser.id
-                          && !proposal.accepted && !proposal.refused && !proposal.closed">
-              La proposition est en attente d'acceptation par {{ proposal?.from?.user.firstname }}
-            </small>
-            <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
-              Vos articles seront livrés par {{ proposal?.from?.user.firstname }} au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}
-            </small>
-            <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
-              Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
-            </small>
-            <div class="d-flex flex-column align-items-center"
+          <button class="btn btn-warning mb-2"
                   *ngIf="(proposal.fromRequest && !proposal.authorView
-                        || proposal.fromTrip && proposal.authorView)
-                        && proposal.paid && !proposal.validated">
-              <button class="btn btn-warning" disabled>À livrer</button> <br>
-              <small class="text-muted">La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer</small>
-              <div class="proposal__request__date" *ngIf="proposal.from?.urgent">
-                <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
-                <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
-                  Raison: " {{ proposal.from.urgentDetails.explaination }} "
-                </p>
-              </div>
-              <hr class="divider">
-              <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
-                <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-                  <mat-icon>flight</mat-icon> Remise à l'aéroport
-                </div>         
-              </div>
+                          || proposal.fromTrip && proposal.authorView)
+                          && proposal.paid && !proposal.validated"
+                  disabled>
+            À livrer
+          </button>
+        </div>
+      </div>
+      <div class="proposal__actions__status" *ngIf="actionsBarExtended">
+        <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver && standalone">
+          <small class="text-muted"
+                  *ngIf="proposal.lastUpdate?.author.id === currentUser.id
+                        && !proposal.accepted && !proposal.refused && !proposal.closed">
+            La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
+          </small>
+          <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.accepted && !proposal.paid">
+            La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement 
+          </small>
+          <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
+            Vos articles seront livrés par {{ proposal?.to?.user.firstname }} au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}
+          </small>
+          <div class="d-flex flex-column align-items-center"
+              *ngIf="(proposal.fromRequest && !proposal.authorView
+              || proposal.fromTrip && proposal.authorView)
+              && proposal.paid && !proposal.validated"> <br>
+            <small class="text-muted">La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer</small>
+            <div class="proposal__request__date" [class.outdated]="proposal.outdated" *ngIf="proposal.from?.urgent">
+              <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
+              <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
+                Raison: " {{ proposal.from.urgentDetails.explaination }} "
+              </p>
+            </div>
+            <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
+              <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
+                <mat-icon>flight</mat-icon> Remise à l'aéroport
+              </div>         
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="proposal__summary container" *ngIf="proposal">
-      <div class="proposal__summary__author" *ngIf="proposal?.author">
-          <app-avatar class="proposal__summary__author-avatar"
-                      [image]="proposal?.authorView ? proposal?.receiver?.avatar : proposal?.author?.avatar"
-                      [size]="36"></app-avatar>
-          <div class="proposal__summary__author-info">
-              {{ proposal?.authorView ? proposal?.receiver?.firstname : proposal?.author?.firstname }}
-              <app-rating [rating]="proposal?.authorView ? proposal?.receiver?.rating : proposal?.author?.rating"
-                          [size]="36"></app-rating>
-          </div>
-          <div class="proposal__summary__author-type">
-            <span *ngIf="receiver && proposal.fromTrip">vous a fait une proposition de trajet</span>
-            <span *ngIf="receiver && proposal.fromRequest"> vous a fait une demande de transport</span>
-            <span *ngIf="!receiver && proposal.fromTrip">
-              Vous avez proposé un trajet à {{ proposal.to.user.firstname}}
-            </span>
-            <span *ngIf="!receiver && proposal.fromRequest">
-              Vous avez fait une demande pour le trajet de {{ proposal.to.user.firstname }}
-            </span>
-          </div>
-      </div>
-      <div class="proposal__summary__details">
-        <div *ngIf="receiver; else sender">
-            <div *ngIf="fromTrip; else fromRequest">
-              <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
-              <hr class="divider">
-              Concernant votre annonce:
-              <app-proposal-request
-                [own]="true"
-                [request]="proposal?.to"
-                [fullDisplay]="standalone"
-                (open)="openRequest($event)">
-              </app-proposal-request>
+        <div class="d-flex justify-content-center text-align-center" *ngIf="receiver && standalone">
+          <small class="text-muted"
+                  *ngIf="proposal.lastUpdate?.author.id === currentUser.id
+                        && !proposal.accepted && !proposal.refused && !proposal.closed">
+            La proposition est en attente d'acceptation par {{ proposal?.from?.user.firstname }}
+          </small>
+          <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
+            Vos articles seront livrés par {{ proposal?.from?.user.firstname }} au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}
+          </small>
+          <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
+            Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
+          </small>
+          <div class="d-flex flex-column align-items-center"
+                *ngIf="(proposal.fromRequest && !proposal.authorView
+                      || proposal.fromTrip && proposal.authorView)
+                      && proposal.paid && !proposal.validated">
+            <small class="text-muted">La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer</small>
+            <div class="proposal__request__date" [class.outdated]="proposal.outdated" *ngIf="proposal.from?.urgent">
+              <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
+              <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
+                Raison: " {{ proposal.from.urgentDetails.explaination }} "
+              </p>
             </div>
+            <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
+              <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
+                <mat-icon>flight</mat-icon> Remise à l'aéroport
+              </div>         
+            </div>
+          </div>
         </div>
-
-        <button class="mt-3 btn btn-light btn-icon" (click)="contact()">
-          <mat-icon>mail_outline</mat-icon>
-          Contacter {{ proposal.authorView ? proposal.receiver.firstname : proposal.author.firstname }}
+        <button class="btn btn-danger btn-icon mt-2 mb-2 btn-cancelled"
+                [disabled]="proposal.closed"
+                *ngIf="(proposal.authorView || proposal.closed)
+                && !proposal.accepted && !proposal.refused"
+                (click)="closeProposal()">
+          <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Proposition annulée' : 'Annuler la proposition' }}
         </button>
       </div>
     </div>
-
-    <div class="proposal__location container" *ngIf="proposal">
-      <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
-        <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-          <mat-icon>flight</mat-icon> Remise à l'aéroport
-        </div>         
-      </div>
-      <div class="d-flex w-100 justify-content-center">
-        <button class="btn btn-light btn-sm btn-icon mb-5"
-                [disabled]="proposal.accepted || proposal.refused"
-                *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
-                (click)="updateProposalMeeting()">
-          <mat-icon>my_location</mat-icon> {{ proposal.meetingPoint?.city ? 'Proposer un autre lieu' : 'Proposer un lieu de rendez-vous'}}
-        </button>
-      </div>
     </div>
 
+    <div class="proposal__loading" *ngIf="!proposal">
+      <mat-icon class="proposal__loading-icon">
+        autorenew
+      </mat-icon>
+      <h4 class="proposal__loading-title">Chargement de la proposition</h4>
+    </div>
 </div>
-
-
 
 <ng-template #embedded>
     <div *ngIf="proposal"
     [ngClass]="{
       'proposal': true,
-      'standalone container': standalone,
-      'closed': standalone && (proposal.closed || proposal.refused)
+      'closed': standalone && (proposal.closed || proposal.refused || proposa.outdated)
     }">
-   <div class="row justify-content-around proposal__actions">
-       <button class="btn btn-danger btn-icon mb-2"
-               [disabled]="proposal.closed"
-               *ngIf="(proposal.authorView || proposal.closed) && !proposal.accepted && !proposal.refused"
-               (click)="closeProposal()">
-         <mat-icon>clear</mat-icon>{{ proposal.closed ? 'Annulée' : 'Annuler' }}
-       </button>
-       <button class="btn btn-success btn-icon mb-2"
-               [disabled]="proposal.accepted || proposal.outdated"
-               *ngIf="proposal.lastUpdate?.author.id !== currentUser.id &&
-                      !proposal.refused && !proposal.closed && !proposal.paid"
-               (click)="acceptProposal()">
-         <mat-icon>done</mat-icon> {{ proposal.accepted ? 'Acceptée' : 'Accepter' }}
-       </button>
-       <button class="btn btn-success btn-icon mb-2"
-               [disabled]="proposal.paid"
-               (click)="payProposal()"
-               *ngIf="
-               (proposal.toRequest && receiver
-               || proposal.fromRequest && proposal.authorView)
-               && proposal.accepted">
-         <mat-icon>credit_card</mat-icon> {{ proposal.paid ? 'Payée' : 'Payer' }}
-       </button>
-       <button class="btn btn-success btn-icon mb-2"
-               [disabled]="proposal.validated"
-               *ngIf="
-               (proposal.toRequest && receiver
-               || proposal.fromRequest && proposal.authorView)
-               && proposal.paid"
-               (click)="validateProposal()">
-         <mat-icon>done_all</mat-icon> {{ proposal.validated ? 'Réception confirmée' : 'Confirmer la réception' }}
-       </button>
-       <button class="btn btn-success btn-icon mb-2" disabled
-               *ngIf="(proposal.toTrip && receiver
-                      || proposal.fromTrip && !receiver) && proposal.validated">
-         <mat-icon>done_all</mat-icon> Livrée
-       </button>
-       <button class="btn btn-danger btn-icon mb-2"
-               [disabled]="proposal.refused || proposal.outdated"
-               *ngIf="(proposal.lastUpdate?.author.id !== currentUser.id && !proposal.accepted && !proposal.closed)
-                     || (proposal.lastUpdate?.author.id === currentUser.id && proposal.refused)"
-               (click)="refuseProposal()">
-         <mat-icon>remove_circle_outline</mat-icon> {{ proposal.refused ? 'Refusée' : 'Refuser' }}
-       </button>
-   </div>
-   <div class="d-flex justify-content-center text-align-center" *ngIf="!receiver && standalone">
-     <small class="text-muted"
-            *ngIf="proposal.lastUpdate?.author.id === currentUser.id
-                   && !proposal.accepted && !proposal.refused && !proposal.closed">
-       La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
-     </small>
-     <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.accepted && !proposal.paid">
-       La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement 
-     </small>
-     <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
-       Vos articles seront livrés par {{ proposal?.to?.user.firstname }} au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}
-     </small>
-     <div class="d-flex flex-column align-items-center"
-         *ngIf="(proposal.fromRequest && !proposal.authorView
-         || proposal.fromTrip && proposal.authorView)
-         && proposal.paid && !proposal.validated">
-       <button class="btn btn-warning" disabled>À livrer</button> <br>
-       <small class="text-muted">La proposition a été reglée par {{ proposal?.to?.user.firstname }}. Articles à livrer</small>
-       <div class="proposal__request__date" *ngIf="proposal.from?.urgent">
-         <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
-         <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
-           Raison: " {{ proposal.from.urgentDetails.explaination }} "
-         </p>
-       </div>
-       <hr class="divider">
-       <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
-         <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-           <mat-icon>flight</mat-icon> Remise à l'aéroport
-         </div>         
-       </div>
-     </div>
-   </div>
-   <div class="d-flex justify-content-center text-align-center" *ngIf="receiver && standalone">
-     <small class="text-muted"
-             *ngIf="proposal.lastUpdate?.author.id === currentUser.id
-                   && !proposal.accepted && !proposal.refused && !proposal.closed">
-       La proposition est en attente d'acceptation par {{ proposal?.from?.user.firstname }}
-     </small>
-     <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
-       Vos articles seront livrés par {{ proposal?.from?.user.firstname }} au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}
-     </small>
-     <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
-       Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
-     </small>
-     <div class="d-flex flex-column align-items-center"
-          *ngIf="(proposal.fromRequest && !proposal.authorView
-                 || proposal.fromTrip && proposal.authorView)
-                 && proposal.paid && !proposal.validated">
-       <button class="btn btn-warning" disabled>À livrer</button> <br>
-       <small class="text-muted">La proposition a été reglée par {{ proposal?.from?.user.firstname }}. Articles à livrer</small>
-       <div class="proposal__request__date" *ngIf="proposal.from?.urgent">
-         <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
-         <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
-           Raison: " {{ proposal.from.urgentDetails.explaination }} "
-         </p>
-       </div>
-       <hr class="divider">
-       <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
-         <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-           <mat-icon>flight</mat-icon> Remise à l'aéroport
-         </div>         
-       </div>
-     </div>
-   </div>
-   <hr class="divider" *ngIf="proposal.bonus">
-   <div class="proposal__summary justify-content-center">
-       <h6 class="proposal__summary__bonus text-muted" *ngIf="proposal.bonus !== null">Bonus voyageur: {{ proposal.bonus }} €</h6>
-       <small class="proposal__summary__updates text-muted" *ngIf="proposal.lastUpdate">
-         Dernière modification {{ moment(proposal.lastUpdate.date).fromNow() }} par
-         {{ 
-           proposal?.lastUpdate?.author?.id === currentUser?.id
-           ? ' vous' : proposal.lastUpdate.author?.firstname || 'Oko user'
-         }}
-       </small>
-       <div class="d-flex w-100 justify-content-center">
-         <button class="btn btn-light btn-sm btn-icon"
-                 [disabled]="proposal.accepted || proposal.refused"
-                 *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
-                 (click)="updateProposalBonus()">
-           <mat-icon>edit</mat-icon> Contre proposition
-         </button>
-       </div>
-   </div>
-   <hr class="divider" *ngIf="proposal.from && !self">
-   <div *ngIf="receiver; else sender">
-       <div class="proposal__summary" *ngIf="fromTrip; else fromRequest">
-           <span *ngIf="standalone">{{ proposal?.from.user.firstname }} vous a fait une proposition de trajet</span>
-           <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
-           <div *ngIf="standalone">
-               <hr class="divider">
-               Concernant votre annonce:
-               <app-proposal-request [own]="true" [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
-           </div>
-       </div>
-   </div>
-   <ng-template #sender>
-     <div class="proposal__summary" *ngIf="toTrip; else toRequest">
-       <span *ngIf="standalone">Vous avez fait une demande pour le trajet de {{ proposal?.to.user.firstname }}</span>
-       <app-proposal-trip [trip]="proposal?.to" (open)="openTrip($event)"></app-proposal-trip>
-       <div *ngIf="standalone">
-         <hr class="divider">
-         Concernant votre annonce:
-         <app-proposal-request [own]="true" [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
-       </div>
-     </div>
-   </ng-template>
-   
-   <!-- Do not display if proposal is to be delivered-->
-   <div *ngIf="!((proposal.fromRequest && receiver 
-                 || proposal.fromTrip && proposal.authorView) 
-                 && proposal.paid && !proposal.validated)">
-     <hr class="divider">
-     <div class="d-flex w-100 justify-content-center" *ngIf="fromTrip; else requestLocation">
-       <div *ngIf="proposal.airportPickup; else location"  class="proposal__request__city">
-         <mat-icon>flight</mat-icon> Remise à l'aéroport
-       </div>         
-     </div>
-   </div>
-
-   <br>
-   <div class="d-flex w-100 justify-content-center">
-     <button class="btn btn-light btn-sm btn-icon mb-5"
-             [disabled]="proposal.accepted || proposal.refused"
-             *ngIf="!proposal.closed && !proposal.accepted && !proposal.refused && proposal.bonus"
-             (click)="updateProposalMeeting()">
-       <mat-icon>my_location</mat-icon> {{ proposal.meetingPoint?.city ? 'Proposer un autre lieu' : 'Proposer un lieu de rendez-vous'}}
-     </button>
-   </div>
-   <div class="d-flex justify-content-center mt-3 mb-3" *ngIf="!own">
-     <button class="btn btn-light btn-icon" (click)="contact()">
-       <mat-icon>mail_outline</mat-icon> Contacter {{ proposal.authorView ? proposal.receiver.firstname : proposal.author.firstname }}
-     </button>
-   </div>
-</div>
+      <h6 class="text-muted">Bonus voyageur: {{ proposal.bonus }} €</h6>
+      <div class="d-flex flex-column justify-content-center mt-3 mb-3" *ngIf="!own">
+        <button class="btn btn-info btn-icon mb-2" (click)="openProposal()">
+          <mat-icon>open_in_new</mat-icon> Ouvrir la proposition
+        </button>
+        <button class="btn btn-light btn-icon" (click)="contact()">
+          <mat-icon>mail_outline</mat-icon> Contacter {{ proposal.authorView ? proposal.receiver.firstname : proposal.author.firstname }}
+        </button>
+      </div>
+    </div>
 </ng-template>
 
 <ng-template #sender>
   <div *ngIf="toTrip; else toRequest">
-    <span *ngIf="standalone">Vous avez fait une demande pour le trajet de {{ proposal?.to.user.firstname }}</span>
     <app-proposal-trip [trip]="proposal?.to" (open)="openTrip($event)"></app-proposal-trip>
     <div *ngIf="standalone">
       <hr class="divider">
@@ -408,7 +253,6 @@
 
 <ng-template #fromRequest>
   <div class="proposal__request" *ngIf="!self && proposal.fromRequest; else toRequestAsSender">
-    <span *ngIf="standalone">vous a envoyé une demande de transport</span>
     <app-proposal-request [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
     <div *ngIf="standalone">
       <hr class="divider">
@@ -426,7 +270,6 @@
 
 <ng-template #toRequest>
   <div class="proposal__request" *ngIf="!self && proposal.toRequest; else fromRequestAsSender">
-    <span *ngIf="standalone">Vous avez proposé un voyage pour l'annonce de {{ proposal?.to.user.firstname }}</span>
     <app-proposal-request [request]="proposal?.to" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
     <div *ngIf="standalone">
       <hr class="divider">
@@ -449,7 +292,7 @@
         <mat-icon>flight</mat-icon> Remise à l'aéroport
       </div>       
     </div>
-    <div class="col-6 proposal__request__date" *ngIf="proposal.from?.urgent">
+    <div class="col-6 proposal__request__date" [class.outdated]="proposal.outdated" *ngIf="proposal.from?.urgent">
       <mat-icon>today</mat-icon> Avant le {{ moment(proposal.from?.urgentDetails?.date).format('DD/MM/YYYY') }}
       <p *ngIf="!proposal.authorView && proposal.from?.urgentDetails?.explaination">
         Raison: " {{ proposal.from.urgentDetails.explaination }} "
@@ -466,7 +309,7 @@
   </div>
   <ng-template #meeting>
     <div class="proposal__request__city">
-      <mat-icon>location_on</mat-icon> Remise au point de rendez-vous <br> (à définir)
+      <mat-icon>location_on</mat-icon> Remise au point de rendez-vous (à définir)
     </div>
   </ng-template>
 </ng-template>   

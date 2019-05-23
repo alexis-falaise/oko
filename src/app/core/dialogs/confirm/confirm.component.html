@@ -4,6 +4,6 @@
     <small class="text-muted">{{ message }}</small>
     <div class="confirm__actions">
         <button class="btn {{ actionStyle }} btn-connect" (click)="close(true)">{{ action }}</button>
-        <button class="btn btn-light btn-connect" (click)="close(false)">Annuler</button>
+        <button class="btn {{ cancelStyle }} btn-connect" (click)="close(false)">{{ cancel }}</button>
     </div>
   </div>

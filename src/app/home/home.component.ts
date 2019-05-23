@@ -216,7 +216,7 @@ export class HomeComponent implements OnInit {
     const tripDraft = this.postService.getTripDraft();
     const requestDraft = this.postService.getRequestDraft();
     if (tripDraft || requestDraft) {
-      const snackMessage = 'Brouillon de ' + (tripDraft ? 'trajet' : 'demande');
+      const snackMessage = `${(tripDraft ? 'Trajet' : 'Annonce')} en cours de création`;
       const snackRef = this.snack.open(snackMessage, 'Ouvrir', {duration: 5000});
       let route;
       if (tripDraft) {

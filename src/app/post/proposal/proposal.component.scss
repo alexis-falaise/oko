@@ -5,13 +5,10 @@
 .proposal {
     &.standalone {
         animation: zoomIn .15s;
-        background-color: white;
-        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
-        border-radius: 3px;
-        height: 80vh;
-        padding: 15px 15% 15px;
+        height: 100vh;
         overflow-y: scroll;
         overflow-x: hidden;
+        transition: all .5s;
     }
 
     &.closed {
@@ -26,41 +23,46 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 10vh;
-            min-height: 60px;
+            height: 60px;
             padding-top: 15px;
             box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         }
     }
 
-    &__request {
-        &__city,
-        &__date {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgb(75, 75, 75);
-            font-size: 16px;
-            .mat-icon {
-                margin-right: 5px;
-            }
-            .material-icons {
-                color: rgb(125, 125, 125);
-            }
-        }
-    }
-
     &__actions {
+        &-wrapper {
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            width: 100vw;
+            z-index: 1;
+            bottom: 0;
+        }
         @extend .base-oko-card;
-        position: relative;
-        top: -10px;
-        max-width: 90vw;
+        animation: slideInUp .35s;
+        width: 95vw;
+        max-width: 750px;
         padding: 15px;
+        height: 55px;
+        transition: height ease-in-out .25s;
+
+        &.extended {
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: height ease-in-out .25s;
+        }
 
         &__bonus {
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation: appear .15s;
+
+            button {
+                font-size: 12px;
+            }
 
             &-title {
                 color: rgb(125, 125, 125);
@@ -69,10 +71,32 @@
             &-figure {
                 color: rgb(175, 175, 175);
                 font-size: 48px;
+                margin-bottom: -5px;
+                animation: slideInUp .35s;
 
                 &.updated {
                     color: $light-green-600;
                 }
+            }
+
+            &-subtitle {
+                color: rgb(175, 175, 175);
+                font-size: 11px;
+                text-align: center;
+            }
+        }
+
+        &__management {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: appear .15s;
+
+            button {
+                font-size: 12px;
+                justify-content: center;
+                width: 100%;
             }
         }
     }
@@ -80,15 +104,37 @@
     &__summary {
         @extend .base-oko-card;
         max-width: 90vw;
-        height: 45vh;
+        position: relative;
+        top: -10px;
+        height: 55vh;
         padding: 15px;
         margin-bottom: 10px;
         overflow-y: scroll;
+        transition: all ease-in-out .15s;
+
+        &.closed {
+            border: 3px solid $red-200;
+        }
+
+        &.extended {
+            height: 80vh;
+            transition: all ease-in-out .35s;
+        }
 
         &__author {
             display: flex;
             justify-content: center;
             align-items: center;
+            position: sticky;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            top: -15px;
+            padding: 10px;
+            margin: -15px -15px 0 -15px;
+            background-color: white;
+            border-bottom: 1px solid rgb(235, 235, 235);
+            z-index: 1;
+
             &-avatar {
                 margin-right: 5px;
             }
@@ -106,18 +152,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            padding: 15px;
         }
     }
 
     &__location {
         @extend .base-oko-card;
         padding: 15px;
-        height: 20vh;
         max-width: 90vw;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
+        text-align: center;
+        margin-bottom: 10px;
+        
+        button {
+            font-size: 12px;
+        }
     }
 
     &__loading {
@@ -147,4 +199,30 @@
             text-align: center;
         }
     }
+
+    &__request {
+        &__city,
+        &__date {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(75, 75, 75);
+            font-size: 16px;
+            .mat-icon {
+                margin-right: 5px;
+            }
+            .material-icons {
+                color: rgb(125, 125, 125);
+            }
+
+            &.outdated {
+                color: $red-800;
+            }
+        }
+    }
+}
+
+.btn-cancelled {
+    width: 100%;
+    justify-content: center;
 }

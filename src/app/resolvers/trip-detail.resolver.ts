@@ -9,6 +9,7 @@ import { UserService } from '@core/user.service';
 
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
+import { cityIsFamous } from '@static/famous-cities';
 
 // Timeout for offline mode
 const timeout = 3000;
@@ -43,7 +44,9 @@ export class TripDetailResolver implements Resolve<TripDetailData> {
             .subscribe((tripDetail: TripDetailData) => {
                 // Handle offline mode with a timeout
                 timer(timeout).subscribe(() => send(observer, tripDetail));
-                this.pexels.getBackgroundPicture(tripDetail.trip.to.airport.country, 'large2x')
+                const imageSearch = cityIsFamous(tripDetail.trip.to.airport.city)
+                ? tripDetail.trip.to.airport.city : tripDetail.trip.to.airport.country;
+                this.pexels.getBackgroundPicture(imageSearch, 'large2x')
                 .pipe(takeUntil(timer(timeout)))
                 .subscribe((picture: string) => {
                     tripDetail.background = picture;

@@ -10,8 +10,10 @@ export class ConfirmComponent implements OnInit {
 
   title: string;
   message: string;
-  action: string;
-  actionStyle: string;
+  action = 'Continuer';
+  actionStyle = 'btn-danger';
+  cancel = 'Annuler';
+  cancelStyle = 'btn-light';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,

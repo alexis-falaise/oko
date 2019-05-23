@@ -35,9 +35,24 @@ export interface Coords {
     altitude: number;
 }
 
+/**
+ * Calculates flight time in hours between two airports
+ * @param originAirport : Origin airport
+ * @param destinationAirport : Destination airport
+ */
 export function calculateTravelTime(originAirport: Airport, destinationAirport: Airport): number {
     const distance = airportsDistance(originAirport, destinationAirport);
-    return distance / planeSpeed;
+    let estimatedPlaneSpeed;
+    if (distance < 3000) {
+        estimatedPlaneSpeed = 810;
+    }
+    if (distance >= 3000 && distance < 10000) {
+        estimatedPlaneSpeed = 900;
+    }
+    if (distance > 10000) {
+        estimatedPlaneSpeed = 920;
+    }
+    return distance / estimatedPlaneSpeed;
 }
 
 /**
@@ -115,6 +130,6 @@ export function coordDistance(coordA: Coords, coordB: Coords, step = 0.1): numbe
     } else {
         longKm = longDiff * latitudeInKilometers * Math.cos(degToRad(latAvg));
     }
-    const longKmAvg = longDiff * latitudeInKilometers * Math.cos(degToRad(latAvg));
+    // const longKmAvg = longDiff * latitudeInKilometers * Math.cos(degToRad(latAvg));
     return Math.sqrt(latKm ** 2 + longKm ** 2);
 }

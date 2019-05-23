@@ -88,7 +88,6 @@ export class PostService {
    * @param filter: Filter object containning location and/or item
    */
   getTrips(filter?: Filter) {
-    const nextQuery = new Subject();
     this.uiService.setLoading(true);
     let queryString = '';
     filter = filter || this.currentTripFilter;
@@ -97,7 +96,6 @@ export class PostService {
       queryString = this.buildQueryString(filter);
     }
     this.http.get(`${this.tripUrl}${queryString}` )
-    .pipe(takeUntil(nextQuery))
     .subscribe((response: ServerResponse) => {
       if (response.status) {
         const trips: Array<Trip> = response.data;
@@ -105,7 +103,6 @@ export class PostService {
         this.currentTripFilter = filter;
         this.getTripsUserStats(trips, this.trips);
       }
-      nextQuery.next(true);
       this.uiService.setLoading(false);
     });
   }
@@ -289,7 +286,8 @@ export class PostService {
         if (proposals && proposals.length) {
           forkJoin(proposals.map(proposal => this.getAllProposalSubPosts(proposal)))
           .subscribe((outputProposals: Array<Proposal>) => {
-            observer.next(outputProposals);
+            const formattedProposals = outputProposals.map(proposal => new Proposal(proposal));
+            observer.next(formattedProposals);
             observer.complete();
           }, (error) => {
             observer.next([]);
@@ -352,7 +350,8 @@ export class PostService {
             return this.getAllProposalSubPosts(proposal);
           }))
           .subscribe((outputProposals: Array<Proposal>) => {
-            observer.next(outputProposals);
+            const formattedProposals = outputProposals.map(proposal => new Proposal(proposal));
+            observer.next(formattedProposals);
             observer.complete();
           }, () => {
             observer.next([]);
@@ -868,7 +867,9 @@ export class PostService {
       forkJoin(proposals.map(proposal => Observable.create(postObserver => {
         this.getProposalSubPost(post, proposal, postObserver, postIsReceiver);
       }))).subscribe((outputProposals: Array<Proposal>) => {
-        const resultingProposals: Array<Proposal> = outputProposals.sort((a: Proposal, b: Proposal) => {
+        const resultingProposals: Array<Proposal> = outputProposals
+        .map(proposal => new Proposal(proposal))
+        .sort((a: Proposal, b: Proposal) => {
           return moment(a.date).isBefore(b.date) ? -1 : 1;
         });
         observer.next(resultingProposals);

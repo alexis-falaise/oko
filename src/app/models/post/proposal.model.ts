@@ -50,7 +50,7 @@ export class Proposal {
     outdated?: boolean;
     lastUpdate?: Update;
 
-    constructor(proposal: Partial<Proposal>) {
+    constructor(proposal: Partial<Proposal>, user?: User) {
         const now = moment();
         Object.assign(this, proposal);
         if (proposal._id) {
@@ -64,6 +64,12 @@ export class Proposal {
                 author: this.author,
                 type: 'create',
             });
+        }
+        if (proposal.from && proposal.from.user) {
+            this.author = proposal.from.user;
+        }
+        if (proposal.to && proposal.to.user) {
+            this.receiver = proposal.to.user;
         }
         if (this.isTrip(proposal.from)) {
             const from = new Trip(proposal.from);
