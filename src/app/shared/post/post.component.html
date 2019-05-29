@@ -9,8 +9,8 @@
 
     <div class="post-backdrop row" [class.horizontal]="horizontal"  [class.hasBackground]="!!backgroundPicture">
         <div class="post-info col-3 col-md-2 justify-content-center" *ngIf="!horizontal"
-            [routerLink]="['/profile', post.user?.id]">
-           <div class="post-info__user-info" *ngIf="post.user">
+            [routerLink]="['/profile', post?.user?.id]">
+           <div class="post-info__user-info" *ngIf="post?.user">
                <app-avatar [image]="post.user?.avatar" [size]="40"></app-avatar>
                <div class="post-info__user-info__firstname">
                    {{ post.user?.firstname || 'Oko user' }}

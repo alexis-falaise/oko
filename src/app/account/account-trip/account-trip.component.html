@@ -21,7 +21,7 @@
         </small>
     </div>
     <h6 class="account-trip-title" *ngIf="expiredTrips?.length">Voyages effectués</h6>
-    <app-post [post]="trip" [editable]="true" (remove)="remove(i)" *ngFor="let trip of expiredTrips; let i = index;"></app-post>
+    <app-post [post]="trip" [editable]="true" (remove)="remove(i, true)" *ngFor="let trip of expiredTrips; let i = index;"></app-post>
     <div class="account-trip__empty" *ngIf="(trips && !trips.length) && (expiredTrips && !expiredTrips.length)">
         <mat-icon>timeline</mat-icon> Aucun voyage prévu
     </div>

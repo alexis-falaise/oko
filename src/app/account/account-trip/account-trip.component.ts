@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { trigger, transition, query, stagger, animateChild, animate, style } from '@angular/animations';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 
@@ -12,7 +13,7 @@ import { User } from '@models/user.model';
 @Component({
   selector: 'app-account-trip',
   templateUrl: './account-trip.component.html',
-  styleUrls: ['../account-post.component.scss']
+  styleUrls: ['../account-post.component.scss'],
 })
 export class AccountTripComponent implements OnInit {
   trips: Array<Trip> = [];
@@ -41,8 +42,8 @@ export class AccountTripComponent implements OnInit {
     this.router.navigate(['/post/trip/new']);
   }
 
-  remove(index: number) {
-    this.trips.splice(index, 1);
+  remove(index: number, expired?: boolean) {
+    expired ? this.expiredTrips.splice(index, 1) : this.trips.splice(index, 1);
   }
 
   deleteDraft() {
