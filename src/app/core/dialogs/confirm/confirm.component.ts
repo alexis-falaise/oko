@@ -25,6 +25,12 @@ export class ConfirmComponent implements OnInit {
     this.message = this.data.message;
     this.action = this.data.action;
     this.actionStyle = this.data.actionStyle;
+    if (this.data.cancel) {
+      this.cancel = this.data.cancel;
+    }
+    if (this.data.cancelStyle) {
+      this.cancelStyle = this.data.cancelStyle;
+    }
   }
 
   close(action: boolean) {

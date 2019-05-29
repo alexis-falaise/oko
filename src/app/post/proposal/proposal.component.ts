@@ -97,9 +97,11 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
   }
 
   ngAfterViewInit() {
-    timer(1000).subscribe(() => {
-      this.displayBottomOffset = this.actionsBar.nativeElement.clientHeight;
-    });
+    if (this.standalone) {
+      timer(1000).subscribe(() => {
+        this.displayBottomOffset = this.actionsBar.nativeElement.clientHeight;
+      });
+    }
   }
 
   initProposal() {
@@ -167,20 +169,38 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
   acceptProposal() {
     if (!this.meetingPointDefined()) {
       this.snack.open('Le lieu de remise n\'a pas été défini', 'OK', {duration: 3000});
-      this.updateProposalMeeting();
+      this.updateProposalMeeting('Proposer un lieu de remise');
     } else {
       if (!this.proposal.accepted && !this.proposal.outdated) {
-        this.uiService.setLoading(true);
-        this.postService.acceptProposal(this.proposal.id)
-        .subscribe((response: ServerResponse) => {
-          if (response.status) {
-            this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
-            this.proposal.accepted = response.data.accepted;
-          } else {
-            this.serverError(response);
+        const dialogRef = this.dialog.open(ConfirmComponent, {
+          data: {
+            title: 'Accepter la proposition',
+            message: `Bonus de ${this.proposal.bonus} € -
+            Remise à ${this.proposal.airportPickup
+            ? 'l\'aéroport'
+            : this.proposal.meetingPoint.address + ', ' + this.proposal.meetingPoint.city + ' - ' + this.proposal.meetingPoint.country}.
+            Tout est ok ?`,
+            action: 'Accepter',
+            actionStyle: 'btn-success',
+          },
+          height: '40vh',
+          width: '75vw',
+        });
+        dialogRef.afterClosed().subscribe((action) => {
+          if (action) {
+            this.uiService.setLoading(true);
+            this.postService.acceptProposal(this.proposal.id)
+            .subscribe((response: ServerResponse) => {
+              if (response.status) {
+                this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
+                this.proposal.accepted = response.data.accepted;
+              } else {
+                this.serverError(response);
+              }
+            this.uiService.setLoading(false);
+            }, (err) => this.serverError(err));
           }
-        this.uiService.setLoading(false);
-        }, (err) => this.serverError(err));
+        });
       }
     }
   }
@@ -190,7 +210,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       data: {
         title: 'Annuler la proposition',
         message: 'Vous allez annuler la proposition. Voulez-vous continuer ?',
-        action: 'Annuler la proposition',
+        action: 'Annuler',
         actionStyle: 'btn-danger',
         cancel: 'Retour',
       },
@@ -221,17 +241,31 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
 
   refuseProposal() {
     if (!this.proposal.refused && !this.proposal.outdated) {
-      this.uiService.setLoading(true);
-      this.postService.refuseProposal(this.proposal.id)
-      .subscribe((response: ServerResponse) => {
-        if (response.status) {
-          this.snack.open('La proposition a été refusée', 'OK', {duration: 3000});
-          this.proposal.refused = response.data.refused;
-        } else {
-          this.serverError(response);
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+        data: {
+          title: 'Refuser la proposition',
+          message: 'Êtes-vous sur de vouloir refuser cette proposition ?',
+          action: 'Refuser',
+          actionStyle: 'btn-danger',
+        },
+        height: '40vh',
+        width: '75vw',
+      });
+      dialogRef.afterClosed().subscribe((action) => {
+        if (action) {
+          this.uiService.setLoading(true);
+          this.postService.refuseProposal(this.proposal.id)
+          .subscribe((response: ServerResponse) => {
+            if (response.status) {
+              this.snack.open('La proposition a été refusée', 'OK', {duration: 3000});
+              this.proposal.refused = response.data.refused;
+            } else {
+              this.serverError(response);
+            }
+          this.uiService.setLoading(false);
+          }, (err) => this.serverError(err));
         }
-      this.uiService.setLoading(false);
-      }, (err) => this.serverError(err));
+      });
     }
   }
 
@@ -300,11 +334,12 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
     });
   }
 
-  updateProposalMeeting() {
+  updateProposalMeeting(title?: string) {
     const dialogRef = this.dialog.open(ProposalEditMeetingComponent, {
       height: '75vh',
       width: '90vw',
       data: {
+        title: title,
         proposal: this.proposal,
         user: this.currentUser,
       }

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { Post } from '@models/post/post.model';
 import { Trip } from '@models/post/trip.model';
@@ -6,18 +6,20 @@ import { Trip } from '@models/post/trip.model';
 import { PostService } from '@core/post.service';
 import { Request } from '@models/post/request.model';
 import { Subject, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss']
 })
-export class PostListComponent implements OnInit, AfterViewInit {
+export class PostListComponent implements OnInit, OnDestroy, AfterViewInit {
   listLengthCache = 3;
   localLoading = new Subject<boolean>();
   posts: Array<Post> = [new Trip({}), new Trip({}), new Trip({})];
   carousel: any;
   empty = false;
+  ngUnsubscribe = new Subject();
   @Output() listRefresh = new EventEmitter();
   @Input() trip = false;
   @Input() horizontal = false;
@@ -28,6 +30,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
     this.setLocalLoading(true);
     if (this.trip) {
       this.postService.onTrips()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(trips => {
         if (trips) {
           this.setPosts(trips);
@@ -39,6 +42,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.postService.onRequests()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(requests => {
         if (requests) {
           this.setPosts(requests);
@@ -53,7 +57,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    timer(250).subscribe(() => {
+    timer(500).subscribe(() => {
       this.carousel = $('#postListCarousel');
       this.carousel.carousel('pause');
     });
@@ -90,6 +94,11 @@ export class PostListComponent implements OnInit, AfterViewInit {
     this.posts = posts;
     this.listLengthCache = posts.length;
     this.listRefresh.emit(posts.length);
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   private onLocalLoading() {

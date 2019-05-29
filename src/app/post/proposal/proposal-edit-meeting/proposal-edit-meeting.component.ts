@@ -14,6 +14,7 @@ export class ProposalEditMeetingComponent implements OnInit {
   proposal: Proposal;
   currentUser: User;
   airportPickup: boolean;
+  title = 'Modifier le lieu de remise';
   meeting = this.fb.group({
     address: ['', Validators.required],
     city: ['', Validators.required],
@@ -26,7 +27,7 @@ export class ProposalEditMeetingComponent implements OnInit {
     private dialogRef: MatDialogRef<ProposalEditMeetingComponent>,
     private snack: MatSnackBar,
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: {proposal: Proposal, user: User},
+    @Inject(MAT_DIALOG_DATA) public data: {proposal: Proposal, user: User, title: string},
   ) { }
 
   ngOnInit() {
@@ -34,6 +35,9 @@ export class ProposalEditMeetingComponent implements OnInit {
       this.proposal = this.data.proposal;
       this.currentUser  = this.data.user;
       this.airportPickup = this.proposal.airportPickup;
+      if (this.data.title) {
+        this.title = this.data.title;
+      }
       if (this.proposal.meetingPoint) {
         this.meeting.patchValue(this.proposal.meetingPoint);
       }
