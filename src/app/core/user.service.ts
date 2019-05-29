@@ -44,6 +44,9 @@ export class UserService {
           this.currentUser.next(serverUser);
           observer.next(serverUser);
           observer.complete();
+        }, (error) => {
+          observer.next();
+          observer.complete();
         });
       }
     });

@@ -64,11 +64,11 @@
       <div class="form-group col-12">
         <input type="phone" formControlName="phone" class="form-control"
                [class.is-invalid]="account.controls.phone.touched &&
-               account.controls.phone.errors?.validPhone"
+               account.controls.phone.errors?.pattern"
                placeholder="Téléphone (mobile)">
         <div class="invalid-feedback"
              [class.d-block]="account.controls.phone.touched &&
-              account.controls.phone.errors?.validPhone">
+              account.controls.phone.errors?.pattern">
               Ce numéro de téléphone n'est pas valide
         </div>
       </div>

@@ -11,7 +11,7 @@ import { User } from '@models/user.model';
 import { Description } from '@models/description.model';
 import { MeetingPoint } from '@models/meeting-point.model';
 import { SaveChangesComponent } from '@core/dialogs/save-changes/save-changes.component';
-import { ValidatePhone } from '@utils/valid.util';
+import { phone } from '@utils/patterns.util';
 
 
 @Component({
@@ -37,7 +37,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     lastname: [''],
     birthdate: [''],
     email: ['', Validators.email],
-    phone: ['', ValidatePhone],
+    phone: ['', Validators.pattern(phone)],
   });
   description: Description;
   edit: any = {};

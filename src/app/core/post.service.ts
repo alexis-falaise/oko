@@ -521,7 +521,7 @@ export class PostService {
           observer.next(serverResponse);
           observer.complete();
         }
-      });
+      }, (error) => this.uiService.serverError(error));
     });
   }
 
