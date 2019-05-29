@@ -11,6 +11,7 @@ import { User } from '@models/user.model';
 import { Description } from '@models/description.model';
 import { MeetingPoint } from '@models/meeting-point.model';
 import { SaveChangesComponent } from '@core/dialogs/save-changes/save-changes.component';
+import { ValidatePhone } from '@utils/valid.util';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     firstname: [''],
     lastname: [''],
     birthdate: [''],
-    email: ['', Validators.email]
+    email: ['', Validators.email],
+    phone: ['', ValidatePhone],
   });
   description: Description;
   edit: any = {};
@@ -52,7 +54,6 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   today = moment();
   startDate = moment().subtract(25, 'y');
   isArray = Array.isArray;
-  frenchization = (word) => this.french[word];
   camelToTitle = (camelCase) => camelCase
   .replace(/([A-Z])/g, (match) => ` ${match}`)
   .replace(/^./, (match) => match.toUpperCase())
@@ -87,7 +88,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       firstname: user.firstname,
       lastname: user.lastname,
       birthdate: user.birthdate,
-      email: user.email
+      email: user.email,
+      phone: user.phone,
     });
     this.createEditionObject();
     this.setChangeListeners();
@@ -123,10 +125,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 
   save() {
     this.uiService.setLoading(true);
-    this.user.description = new Description(this.description);
-    this.user.address = new MeetingPoint(this.address.value);
-    this.user.email = this.account.value.email;
-    this.user.birthdate = this.account.value.birthdate;
+    this.saveFields();
     this.userService.updateUser(this.user)
     .subscribe((res: any) => {
       if (res.status) {
@@ -163,6 +162,18 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   private setChangeListeners() {
     this.address.valueChanges.subscribe(() => this.changed = true);
     this.account.valueChanges.subscribe(() => this.changed = true);
+  }
+
+  private saveFields() {
+    this.user.description = new Description(this.description);
+    this.user.address = new MeetingPoint(this.address.value);
+    this.user.birthdate = this.account.value.birthdate;
+    if (!this.account.controls.email.errors) {
+      this.user.email = this.account.value.email;
+    }
+    if (!this.account.controls.phone.errors) {
+      this.user.phone = this.account.value.phone;
+    }
   }
 
 }

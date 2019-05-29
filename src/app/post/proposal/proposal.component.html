@@ -72,6 +72,8 @@
 
     <div class="proposal__actions-wrapper"
         (click)="actionsBarExtended = !actionsBarExtended"
+        (pandown)="actionsBarExtended = false"
+        (panup)="actionsBarExtended = true"
         (swipeDown)="actionsBarExtended = false"
         (swipeUp)="actionsBarExtended = true">
     <div class="proposal__actions container"

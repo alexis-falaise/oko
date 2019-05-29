@@ -45,7 +45,7 @@
             </mat-autocomplete>
         </div>
         <div class="home-hero__action" *ngIf="!displayContent">
-            <button class="btn" [class.btn-hero]="empty" (click)="validate(); post()">Faire une demande de livraison</button>
+            <button matRipple class="btn" [class.btn-hero]="empty" (click)="validate(); post()">Faire une demande de livraison</button>
             <!-- <button class="btn btn-danger" (click)="deleteEverything()" *ngIf="!prod">Delete everything</button> -->
         </div>
         <div class="home-hero__summary" *ngIf="displayContent">
@@ -74,7 +74,7 @@
         </div>
         <section class="home-content__onboarding-service" id="service">
             ọkọ est la plateforme web qui te met en relation avec un voyageur qui te livrera un produit de ton choix.
-            <button class="btn btn-hero btn-icon mt-2" (click)="install()" *ngIf="!standaloneMode && installable">
+            <button matRipple class="btn btn-hero btn-icon mt-2" (click)="install()" *ngIf="!standaloneMode && installable">
                 <mat-icon>save</mat-icon>
                 Installer ọkọ
             </button>

@@ -100,7 +100,25 @@ $screenHeight: 65vh;
         &-entry {
             @extend .account-balance-entry;
             width: 100%;
-            transition: all $transitionDuration;
+            transition: all $transitionStyle $transitionDuration;
+            height: 55px;
+            &.extended {
+                height: 85px;
+                transition: all $transitionStyle $transitionDuration;
+            }
+
+            &__proposal-button {
+                height: 30px;
+                width: 100%;
+                font-size: 12px;
+                color: rgb(175, 175, 175);
+                border: 1px solid rgb(215, 215, 215);
+                animation: appear ease-out .35s;
+                .material-icons {
+                    font-size: 12px;
+                    margin-right: 0;
+                }
+            }
 
             &__info {
                 &__title {

@@ -62,7 +62,9 @@
             <h4 class="account-balance__title" *ngIf="balanceHistory?.length; else noHistory">
               Historique
             </h4>
-            <div class="account-balance__history-entry" (click)="entryInfo(entry)" *ngFor="let entry of balanceHistory">
+            <div class="account-balance__history-entry"
+                 [class.extended]="extendedEntry === entry"
+                 (click)="entryInfo(entry)" *ngFor="let entry of balanceHistory">
               <mat-icon>{{ entry.earning ? 'monetization_on' : 'money_off' }}</mat-icon>
               <div class="account-balance__history-entry__info">
                 <h5 class="account-balance__history-entry__info__title" [class.earning]="entry.earning">
@@ -74,6 +76,11 @@
                 <small class="account-balance__history-entry__info__date text-muted">
                   {{ moment(entry.date).format('[Le] DD/MM/YYYY [à] HH:mm') }}
                 </small>
+                <button class="btn account-balance__history-entry__proposal-button"
+                        (click)="entryInfo(entry, false)"
+                        *ngIf="extendedEntry === entry">
+                <mat-icon>feedback</mat-icon> Accéder à la proposition
+                </button>
               </div>
             </div>
           </div>

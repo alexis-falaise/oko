@@ -79,7 +79,6 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   private subscribeProposalEvents() {
     this.socket.on(`proposal/${this.currentUser.id}`, () => {
-      console.log('Proposal event in account');
       this.fetchProposalData();
     });
   }
@@ -89,7 +88,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   private fetchProposalData() {
-    console.log('Fetch proposal');
     this.postService.getUnseenProposalsByReceiver(this.currentUser)
     .subscribe((proposals: Array<Proposal>) => {
       if (proposals) {

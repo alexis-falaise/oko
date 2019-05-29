@@ -29,6 +29,7 @@
   </div>
   <hr class="divider">
   <h4 class="account-info-title">Informations de compte</h4>
+  <small class="text-muted">Pour modifier votre photo de profil, appuyez dessus</small>
   <form [formGroup]="account" class="needs-validation">
     <div class="form-row">
       <div class="form-group col-12 col-sm-6">
@@ -41,8 +42,10 @@
         <input type="text" formControlName="birthdate"
                [matDatepicker]="picker"
                [max]="today"
-               autocomplete="off" 
-               class="form-control" placeholder="Date de naissance">
+               autocomplete="off"
+               readonly
+               class="form-control"
+               placeholder="Date de naissance">
       </div>
       <div class="form-group col-2">
           <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
@@ -51,13 +54,24 @@
       <div class="form-group col-12">
         <input type="email" formControlName="email" class="form-control" placeholder="Email">
       </div>
+      <div class="form-group col-12">
+        <input type="phone" formControlName="phone" class="form-control"
+               [class.is-invalid]="account.controls.phone.touched &&
+               account.controls.phone.errors?.validPhone"
+               placeholder="Téléphone (mobile)">
+        <div class="invalid-feedback"
+             [class.d-block]="account.controls.phone.touched &&
+              account.controls.phone.errors?.validPhone">
+              Ce numéro de téléphone n'est pas valide
+        </div>
+      </div>
     </div>
   </form>
   <hr class="divider">
   <h4 class="account-info-title">Description</h4>
   <div *ngFor="let item of keys(edit)" class="account-info__item">
     <div *ngIf="isArray(description[item]); else simpleItem">
-      <h6>{{ frenchization(item) }}</h6>
+      <h6>{{ french[item] }}</h6>
       <mat-chip-list>
         <mat-chip *ngFor="let element of description[item]" (click)="removeFromArray(element, description[item], item)">
           {{ element }} x
@@ -85,7 +99,7 @@
     </div>
     <ng-template #simpleItem>
       <div class="form-row" (click)="editItem(item)">
-        <label [for]="item">{{ frenchization(item) }}</label>
+        <label [for]="item">{{ french[item] }}</label>
         <input [name]="item" [(ngModel)]="description[item]" type="text" class="form-control">
       </div>
     </ng-template>

@@ -55,6 +55,7 @@ html, body {
     background: $heroGradient;
 
     animation: $duration enter;
+    overflow-y: hidden;
 }
 
 .div {

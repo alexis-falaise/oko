@@ -20,6 +20,7 @@ class BalanceVariationDisplay extends BalanceVariation {
 })
 export class AccountBalanceComponent implements OnInit {
   user: User;
+  extendedEntry: BalanceVariationDisplay;
   balanceHistory: Array<BalanceVariationDisplay>;
   balanceScreens = ['settings', 'balance', 'history'];
   balanceScreenIndex = 1;
@@ -56,10 +57,16 @@ export class AccountBalanceComponent implements OnInit {
     this.router.navigate(['/account', 'balance', 'bank-detail', account.iban]);
   }
 
-  entryInfo(entry: BalanceVariationDisplay) {
-    if (entry.earning) {
-      const earning = new Earning(entry);
-      this.router.navigate(['/post', 'proposal', earning.proposalId]);
+  entryInfo(entry: BalanceVariationDisplay, toggle = true) {
+    const entryIsExtended = this.extendedEntry === entry;
+    if (toggle) {
+      this.extendedEntry = entryIsExtended ? null : entry;
+    }
+    if (entryIsExtended) {
+      if (entry.earning) {
+        const earning = new Earning(entry);
+        this.router.navigate(['/post', 'proposal', earning.proposalId]);
+      }
     }
   }
 
@@ -79,6 +86,10 @@ export class AccountBalanceComponent implements OnInit {
         this.balanceScreenIndex--;
       }
     });
+  }
+
+  resetView() {
+    this.extendedEntry = null;
   }
 
   private buildBalanceHistory() {
