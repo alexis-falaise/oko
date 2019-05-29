@@ -29,8 +29,14 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
   currentUser: User;
   receivedFromTrip: Array<Proposal> = [];
   receivedFromRequest: Array<Proposal> = [];
-  sentAboutTrip: Array<Proposal> = [];
-  sentAboutRequest: Array<Proposal> = [];
+  receivedOutdated: Array<Proposal> = [];
+  receivedFromTripOutdated: Array<Proposal> = [];
+  receivedFromRequestOutdated: Array<Proposal> = [];
+  sentFromTrip: Array<Proposal> = [];
+  sentFromRequest: Array<Proposal> = [];
+  sentOutdated: Array<Proposal> = [];
+  sentFromTripOutdated: Array<Proposal> = [];
+  sentFromRequestOutdated: Array<Proposal> = [];
   toDeliver: Array<Proposal> = [];
   toReceive: Array<Proposal> = [];
   proposals: Array<Proposal> = [];
@@ -79,8 +85,8 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
   private initLists() {
     this.receivedFromTrip = null;
     this.receivedFromRequest = null;
-    this.sentAboutTrip = null;
-    this.sentAboutRequest = null;
+    this.sentFromTrip = null;
+    this.sentFromRequest = null;
     timer(2000).pipe(takeUntil(this.fetchedProposals)).subscribe(() => {
       this.uiService.setLoading(false);
       this.setListsEmpty();
@@ -98,13 +104,26 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
     const user = this.currentUser;
     this.uiService.setLoading(true);
     this.fetchedProposals.next(true);
-    const received = proposals.filter(proposal => !proposal.isAuthor(user));
-    const sent = proposals.filter(proposal => proposal.isAuthor(user));
-    this.receivedFromTrip = received.filter(this.filterFromTrip).sort(this.sortByDate) || [];
-    this.receivedFromRequest = received.filter(this.filterFromRequest).sort(this.sortByDate) || [];
-    this.sentAboutTrip = sent.filter(this.filterFromTrip).sort(this.sortByDate) || [];
-    this.sentAboutRequest = sent.filter(this.filterFromRequest).sort(this.sortByDate) || [];
+
+    const received = proposals.filter(proposal => !proposal.isAuthor(user)).sort(this.sortByDate);
+    const receivedRelevant = received.filter(proposal => !proposal.outdated && !proposal.closed && !proposal.validated);
+    this.receivedOutdated = received.filter(proposal => proposal.outdated || proposal.closed || proposal.validated);
+
+    const sent = proposals.filter(proposal => proposal.isAuthor(user)).sort(this.sortByDate);
+    const sentRelevant = sent.filter(proposal => !proposal.outdated && !proposal.closed && !proposal.validated);
+    this.sentOutdated = sent.filter(proposal => proposal.outdated || proposal.closed || proposal.validated);
+
+    this.receivedFromTrip = receivedRelevant.filter(this.filterFromTrip) || [];
+    this.receivedFromRequest = receivedRelevant.filter(this.filterFromRequest) || [];
+    this.receivedFromTripOutdated = this.receivedOutdated.filter(this.filterFromTrip) || [];
+    this.receivedFromRequestOutdated = this.receivedOutdated.filter(this.filterFromRequest) || [];
+
+    this.sentFromTrip = sentRelevant.filter(this.filterFromTrip) || [];
+    this.sentFromRequest = sentRelevant.filter(this.filterFromRequest) || [];
+    this.sentFromTripOutdated = this.sentOutdated.filter(this.filterFromTrip) || [];
+    this.sentFromRequestOutdated = this.sentOutdated.filter(this.filterFromRequest) || [];
     const paidProposals = proposals.filter(proposal => proposal.paid && !proposal.validated);
+
     /**
      * Proposals to deliver are whether trips proposed by user or requests received about a user's trip
      */
@@ -148,8 +167,8 @@ export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestro
   private setListsEmpty() {
     this.receivedFromTrip = [];
     this.receivedFromRequest = [];
-    this.sentAboutTrip = [];
-    this.sentAboutRequest = [];
+    this.sentFromTrip = [];
+    this.sentFromRequest = [];
   }
 
   private filterFromTrip(proposal: Proposal) {

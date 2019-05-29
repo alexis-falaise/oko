@@ -32,11 +32,6 @@ export class PexelsService {
 
       const request = pixabay ? this.http.get(pixabayQuery) : this.http.get(query, {headers: headers});
 
-      // this.http.get(`${this.serverUrl}/app/picture?location=${country}`)
-      // .subscribe((response: any) => {
-      //   console.log('Server res for pics', response);
-      // });
-
       request.subscribe((response: any) => {
         if (pixabay) {
           if (response.hits) {
@@ -50,7 +45,11 @@ export class PexelsService {
             const photo = this.getPictureFromArray(response.photos, size, false);
             this.loadImage(observer, photo);
           } else {
-            this.getCachedBackgroundPicture(observer, country, size);
+            this.http.get(`${this.serverUrl}/app/picture?location=${country}`)
+            .subscribe((serverResponse: Array<any>) => {
+                const photo = this.getPictureFromServerArray(serverResponse, size);
+                this.loadImage(observer, photo);
+            }, (error) => this.getCachedBackgroundPicture(observer, country, size));
           }
         }
       }, (error) => {
@@ -78,7 +77,10 @@ export class PexelsService {
       };
     });
     this.http.post(`${this.serverUrl}/app/picture`, savedSet)
-    .subscribe((response) => console.log('Saved picture set', response));
+    .subscribe(
+      (response) => console.log('Saved picture set', response),
+      (error) => console.error(error)
+    );
   }
 
   private getCachedBackgroundPicture(observer: Observer<string>, country: string, size: string) {
@@ -100,6 +102,13 @@ export class PexelsService {
     } else {
       return null;
     }
+  }
+
+  private getPictureFromServerArray(array: Array<any>, size: string) {
+    const number = array.length;
+    const random = Math.floor(Math.random() * number);
+    const picture = array[random];
+    return picture[size];
   }
 
   private loadImage(observer: Observer<string>, photo: string) {

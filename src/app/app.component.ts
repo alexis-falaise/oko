@@ -143,6 +143,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private connectServer() {
     this.socket.connect();
+    this.socket.on('connect', () => {
+      this.authService.getUserIp()
+      .subscribe((info) => {
+        this.socket.emit('userip', info);
+      });
+    });
     this.socket.on('disconnect', () => {
       timer(5000).pipe(takeUntil(this.connection))
       .subscribe(() => {

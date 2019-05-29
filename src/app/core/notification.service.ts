@@ -4,11 +4,10 @@ import { Router } from '@angular/router';
 import { SwPush } from '@angular/service-worker';
 import { Socket } from 'ngx-socket-io';
 
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 
 import { User } from '@models/user.model';
 import { environment } from '@env/environment';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -24,9 +23,9 @@ export class NotificationService {
     private snack: MatSnackBar,
     private socket: Socket,
     private swPush: SwPush,
-    private userService: UserService,
+    private authService: AuthService,
   ) {
-    this.userService.getCurrentUser()
+    this.authService.onUser()
     .subscribe(user => {
       if (this.currentUser) {
         this.removeMessageListeners();

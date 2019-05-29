@@ -38,8 +38,13 @@
                 <app-proposal-list [aboutTrip]="true" [proposalList]="receivedFromTrip" [own]="false"></app-proposal-list>
                 <h6 class="account-proposal__list-title" *ngIf="receivedFromRequest?.length">Demandes de transport</h6>
                 <app-proposal-list [aboutTrip]="false" [proposalList]="receivedFromRequest" [own]="false"></app-proposal-list>
+                <h6 class="account-proposal__list-title" *ngIf="receivedOutdated?.length">Archives</h6>
+                <app-proposal-list [aboutTrip]="true" [proposalList]="receivedFromTripOutdated" [own]="false"></app-proposal-list>
+                <app-proposal-list [aboutTrip]="false" [proposalList]="receivedFromRequestOutdated" [own]="false"></app-proposal-list>
                 <div class="empty" *ngIf="receivedFromTrip && !receivedFromTrip.length
-                                          && receivedFromRequest && !receivedFromRequest.length">
+                                          && receivedFromRequest && !receivedFromRequest.length
+                                          && receivedFromTripOutdated && !receivedFromTripOutdated.length
+                                          && receivedFromRequestOutdated && !receivedFromRequestOutdated.length">
                     <mat-icon>chat_bubble_outline</mat-icon> Aucune proposition reçue
                 </div>
             </div>
@@ -51,12 +56,17 @@
             </ng-template>
             <div class="account-proposal__list-wrapper">
                 <h4 class="account-proposal__tab-title d-sm-none">Envoyées</h4>
-                <h6 class="account-proposal__list-title" *ngIf="sentAboutRequest?.length">Demandes de transport</h6>
-                <app-proposal-list [aboutTrip]="false" [proposalList]="sentAboutRequest" [own]="true"></app-proposal-list>
-                <h6 class="account-proposal__list-title" *ngIf="sentAboutTrip?.length">Propositions de trajet</h6>
-                <app-proposal-list [aboutTrip]="true" [proposalList]="sentAboutTrip" [own]="true"></app-proposal-list>
-                <div class="empty" *ngIf="sentAboutRequest && !sentAboutRequest.length
-                                          && sentAboutTrip && !sentAboutTrip.length">
+                <h6 class="account-proposal__list-title" *ngIf="sentFromRequest?.length">Demandes de transport</h6>
+                <app-proposal-list [aboutTrip]="false" [proposalList]="sentFromRequest" [own]="true"></app-proposal-list>
+                <h6 class="account-proposal__list-title" *ngIf="sentFromTrip?.length">Propositions de trajet</h6>
+                <app-proposal-list [aboutTrip]="true" [proposalList]="sentFromTrip" [own]="true"></app-proposal-list>
+                <h6 class="account-proposal__list-title" *ngIf="sentOutdated.length">Archives</h6>
+                <app-proposal-list [aboutTrip]="false" [proposalList]="sentFromRequestOutdated" [own]="true"></app-proposal-list>
+                <app-proposal-list [aboutTrip]="true" [proposalList]="sentFromTripOutdated" [own]="true"></app-proposal-list>
+                <div class="empty" *ngIf="sentFromRequest && !sentFromRequest.length
+                                          && sentFromTrip && !sentFromTrip.length
+                                          && sentFromTripOutdated && !sentFromTripOutdated.length
+                                          && sentFromRequestOutdated && !sentFromRequestOutdated.length">
                     <mat-icon>chat_bubble_outline</mat-icon> Aucune proposition envoyée
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, zip, of, timer } from 'rxjs';
+import { Observable, zip, of, timer, Subject } from 'rxjs';
 import { map, catchError, takeUntil } from 'rxjs/operators';
 
 import { PexelsService } from '@core/pexels.service';
@@ -12,7 +12,7 @@ import { User } from '@models/user.model';
 import { cityIsFamous } from '@static/famous-cities';
 
 // Timeout for offline mode
-const timeout = 3000;
+const timeout = 2000;
 interface TripDetailData {
     trip: Trip;
     user: User;
@@ -23,8 +23,8 @@ interface TripDetailData {
 export class TripDetailResolver implements Resolve<TripDetailData> {
 
     constructor(
-        private postService: PostService,
         private pexels: PexelsService,
+        private postService: PostService,
         private userService: UserService,
     ) {}
 
@@ -34,6 +34,8 @@ export class TripDetailResolver implements Resolve<TripDetailData> {
             observer.next(data);
             observer.complete();
         };
+        const stopLoad = new Subject();
+        timer(timeout).subscribe(() => stopLoad.next());
         return Observable.create(observer => {
             zip(
                 this.postService.getTripById(tripId),
@@ -43,11 +45,13 @@ export class TripDetailResolver implements Resolve<TripDetailData> {
             .pipe(map(([trip, user]) => ({trip, user})))
             .subscribe((tripDetail: TripDetailData) => {
                 // Handle offline mode with a timeout
-                timer(timeout).subscribe(() => send(observer, tripDetail));
+                stopLoad.subscribe(() => {
+                    send(observer, tripDetail);
+                });
                 const imageSearch = cityIsFamous(tripDetail.trip.to.airport.city)
                 ? tripDetail.trip.to.airport.city : tripDetail.trip.to.airport.country;
                 this.pexels.getBackgroundPicture(imageSearch, 'large2x')
-                .pipe(takeUntil(timer(timeout)))
+                .pipe(takeUntil(stopLoad))
                 .subscribe((picture: string) => {
                     tripDetail.background = picture;
                     send(observer, tripDetail);

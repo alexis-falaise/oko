@@ -1,7 +1,8 @@
 <div class="proposal"
      [ngStyle]="{'padding-bottom': displayBottomOffset}"
-     [class.standalone]="standalone" *ngIf="standalone; else embedded">
-    <div class="proposal-title-wrapper">
+     [ngClass]="{'container-fluid standalone': standalone}"
+     *ngIf="standalone; else embedded">
+    <div class="proposal-title-wrapper row">
       <h2 class="proposal-title">Proposition</h2>
     </div>
 
@@ -80,9 +81,10 @@
         <small class="text-muted">
           Bonus voyageur: {{ proposal.bonus }} €
         </small>
-        <mat-icon>expand_less</mat-icon>
+        <mat-icon class="proposal_actions_expand">expand_less</mat-icon>
       </div>
       <div class="row" *ngIf="actionsBarExtended">
+        <mat-icon class="proposal__actions__close">expand_more</mat-icon>
         <div class="col">
           <div class="proposal__actions__bonus">
             <small class="proposal__actions__bonus-title">Bonus voyageur</small>
@@ -150,7 +152,8 @@
             La proposition est en attente d'acceptation par {{ proposal?.to?.user.firstname }}
           </small>
           <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.accepted && !proposal.paid">
-            La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement 
+           <span *ngIf="isLastUpdateAuthor">La proposition a été acceptée par {{ proposal?.to?.user.firstname }} et est en attente de paiement</span>
+           <span *ngIf="!isLastUpdateAuthor">Vous avez accepté la contre proposition. En attente de paiement par {{ proposal?.to.user.firstname }}</span>
           </small>
           <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
             Vos articles seront livrés par {{ proposal?.to?.user.firstname }} au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}
@@ -183,7 +186,8 @@
             Vos articles seront livrés par {{ proposal?.from?.user.firstname }} au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}
           </small>
           <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
-            Vous avez accepté la proposition. En attente de paiement par {{ proposal?.from?.user.firstname }}
+            {{ isLastUpdateAuthor ? proposal.from.user.firstname + 'a ' : 'Vous avez' }} accepté la proposition.
+            En attente de paiement par {{ proposal?.from?.user.firstname }}
           </small>
           <div class="d-flex flex-column align-items-center"
                 *ngIf="(proposal.fromRequest && !proposal.authorView

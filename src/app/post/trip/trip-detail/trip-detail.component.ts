@@ -5,19 +5,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, timer } from 'rxjs';
 import * as moment from 'moment';
 
+import { HistoryService } from '@core/history.service';
+import { MessengerService } from '@core/messenger.service';
 import { PostService } from '@core/post.service';
-import { UserService } from '@core/user.service';
+import { UiService } from '@core/ui.service';
 
 import { Item } from '@models/item.model';
 import { Proposal } from '@models/post/proposal.model';
 import { Request } from '@models/post/request.model';
 import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UiService } from '@core/ui.service';
-import { PexelsService } from '@core/pexels.service';
-import { MessengerService } from '@core/messenger.service';
-import { HistoryService } from '@core/history.service';
 
 @Component({
   selector: 'app-trip-detail',

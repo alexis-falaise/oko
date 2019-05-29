@@ -28,7 +28,7 @@
   <div *ngIf="meeting.controls.city.value || edition">
       <div class="request-form__meeting">
         <form [formGroup]="meeting">
-          <div class="form-group" *ngIf="freeRequest">
+          <div class="form-group">
             <input type="text" name="city" formControlName="city"
               placeholder="Ville"
               autocomplete="off"

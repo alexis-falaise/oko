@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatBottomSheet } from '@angular/material';
+import { Socket } from 'ngx-socket-io';
 
 import { UserService } from '@core/user.service';
+import { PostService } from '@core/post.service';
 
 import { AccountAvatarUploadComponent } from './account-avatar-upload/account-avatar-upload.component';
 
 import { User } from '@models/user.model';
 import { Link } from '@models/link.model';
-import { PostService } from '@core/post.service';
 import { Proposal } from '@models/post/proposal.model';
 
 @Component({
@@ -16,7 +17,7 @@ import { Proposal } from '@models/post/proposal.model';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
 
   currentUser: User = null;
   categories: Array<Link> = [
@@ -33,6 +34,7 @@ export class AccountComponent implements OnInit {
     private userService: UserService,
     private snack: MatSnackBar,
     private sheet: MatBottomSheet,
+    private socket: Socket,
     private router: Router,
   ) { }
 
@@ -41,13 +43,8 @@ export class AccountComponent implements OnInit {
     .subscribe(user => {
       if (user) {
         this.currentUser = user;
-        this.postService.getUnseenProposalsByReceiver(user)
-        .subscribe((proposals: Array<Proposal>) => {
-          if (proposals) {
-            const proposalCategoryIndex = this.categories.findIndex(category => category.label === 'Propositions');
-            this.categories[proposalCategoryIndex].badge = proposals.length;
-          }
-        });
+        this.fetchProposalData();
+        this.subscribeProposalEvents();
       } else {
         this.connexionError();
       }
@@ -71,6 +68,34 @@ export class AccountComponent implements OnInit {
     const snackRef = this.snack.open('Vous avez été déconnecté', 'Reconnexion');
     snackRef.onAction().subscribe(() => {
       this.router.navigate(['/oneclick']);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.currentUser) {
+      this.unsubscribeProposalEvents();
+    }
+  }
+
+  private subscribeProposalEvents() {
+    this.socket.on(`proposal/${this.currentUser.id}`, () => {
+      console.log('Proposal event in account');
+      this.fetchProposalData();
+    });
+  }
+
+  private unsubscribeProposalEvents() {
+    this.socket.removeListener(`proposal/${this.currentUser.id}`);
+  }
+
+  private fetchProposalData() {
+    console.log('Fetch proposal');
+    this.postService.getUnseenProposalsByReceiver(this.currentUser)
+    .subscribe((proposals: Array<Proposal>) => {
+      if (proposals) {
+        const proposalCategoryIndex = this.categories.findIndex(category => category.label === 'Propositions');
+        this.categories[proposalCategoryIndex].badge = proposals.length;
+      }
     });
   }
 

@@ -94,13 +94,13 @@ export class NavComponent implements OnInit, OnDestroy, OnChanges {
     this.hasParent = this.historyService.hasParent(url);
   }
 
-  pan(e) {
-    const velocity = e.velocityX;
-    this.navXposition += velocity * 2;
-    if (this.navXposition > 30) {
-      this.hide();
-    }
-  }
+  // pan(e) {
+  //   const velocity = e.velocityX;
+  //   this.navXposition += velocity * 2;
+  //   if (this.navXposition > 30) {
+  //     this.hide();
+  //   }
+  // }
 
   toggleMenu() {
     this.menuDisplay = !this.menuDisplay;

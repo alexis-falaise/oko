@@ -16,6 +16,7 @@ import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
 import { SocialDisconnectionComponent } from './dialogs/social-disconnection/social-disconnection.component';
 import { UiService } from './ui.service';
+import { Socket } from 'ngx-socket-io';
 
 class Status {
   status: boolean;
@@ -28,7 +29,7 @@ class Status {
 export class AuthService {
   private serverUrl = environment.serverUrl;
   private authUrl = `${this.serverUrl}/auth`;
-  private logged = new BehaviorSubject(false);
+  // private logged = new BehaviorSubject(false);
   private currentUser = new BehaviorSubject<User>(null);
   private socialCheck = new Subject();
   private status = new BehaviorSubject(null);
@@ -43,6 +44,7 @@ export class AuthService {
     private uiService: UiService,
     private social: SocialService,
     private snack: MatSnackBar,
+    private socket: Socket,
     private dialog: MatDialog,
   ) { }
 
@@ -106,6 +108,19 @@ export class AuthService {
    */
   updateSocialAuthenticationState(state: boolean) {
     return this.socialAuthenticated = state;
+  }
+
+  getUserIp(): Observable<{ip: string, userId: number}> {
+    return Observable.create(observer => {
+      const user = this.currentUser.getValue();
+      this.http.get('https://jsonip.com').subscribe((res: any) => {
+        observer.next({
+          ip: res.ip,
+          userId: user ? user.id : null,
+        });
+        observer.complete();
+      }, (error) => observer.complete());
+    });
   }
 
   /**

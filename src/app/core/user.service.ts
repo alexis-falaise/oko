@@ -6,6 +6,7 @@ import { environment } from '@env/environment';
 import { ServerResponse } from '@models/app/server-response.model';
 import { BankDetails } from '@models/balance/bank-details.model';
 import { UiService } from './ui.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,35 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
     private uiService: UiService,
-  ) { }
+  ) {
+    authService.onUser().subscribe((user) => {
+      const currentUser = this.currentUser.getValue();
+      if (user) {
+        if (!currentUser || user.id !== currentUser.id) {
+          http.get(`${this.userUrl}/current`).subscribe((serverUser) => {
+            this.currentUser.next(serverUser);
+          });
+        }
+      }
+    });
+  }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get(`${this.userUrl}/current` ) as Observable<User>;
+    return Observable.create(observer => {
+      const currentUser = this.currentUser.getValue();
+      if (currentUser) {
+        observer.next(currentUser);
+        observer.complete();
+      } else {
+        this.http.get(`${this.userUrl}/current`).subscribe((serverUser) => {
+          this.currentUser.next(serverUser);
+          observer.next(serverUser);
+          observer.complete();
+        });
+      }
+    });
   }
 
   getUserById(id: string): Observable<User> {

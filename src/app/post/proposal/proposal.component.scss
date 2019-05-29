@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 60px;
+            height: 75px;
             padding-top: 15px;
             box-shadow: 0 -5px 5px rgba(0, 0, 0, .1) inset;
         }
@@ -37,6 +37,7 @@
             width: 100vw;
             z-index: 1;
             bottom: 0;
+            left: 0;
         }
         @extend .base-oko-card;
         animation: slideInUp .35s;
@@ -52,6 +53,17 @@
             flex-direction: column;
             justify-content: center;
             transition: height ease-in-out .25s;
+        }
+
+        &__expand {
+            color: rgb(175, 175, 175);
+        }
+
+        &__close {
+            color: rgb(175, 175, 175);
+            position: relative;
+            left: 90%;
+            top: -70%;
         }
 
         &__bonus {
@@ -103,7 +115,7 @@
 
     &__summary {
         @extend .base-oko-card;
-        max-width: 90vw;
+        max-width: 900px;
         position: relative;
         top: -10px;
         height: 55vh;
@@ -159,7 +171,7 @@
     &__location {
         @extend .base-oko-card;
         padding: 15px;
-        max-width: 90vw;
+        max-width: 900px;
         display: flex;
         flex-direction: column;
         justify-content: center;
