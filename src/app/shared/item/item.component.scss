@@ -44,7 +44,7 @@
     }
 
     &__image {
-        width: 100%;
+        width: 70%;
 
         &:hover {
             transition: all $transitionDuration;
@@ -52,7 +52,7 @@
         }
 
         &-wrapper {
-            max-height: 250px;
+            max-height: 175px;
             display: flex;
             flex-direction: row;
             align-items: center;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -22,12 +22,12 @@ import { Trip } from '@models/post/trip.model';
 import { User } from '@models/user.model';
 import { Post } from '@models/post/post.model';
 import { timer } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+import { ProposalEditDateComponent } from './proposal-edit-date/proposal-edit-date.component';
 
 @Component({
   selector: 'app-proposal',
   templateUrl: './proposal.component.html',
-  styleUrls: ['./proposal.component.scss']
+  styleUrls: ['./proposal.component.scss'],
 })
 export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
   @ViewChild('actionsBar') actionsBar;
@@ -48,6 +48,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
   displayConfirmButton: boolean;
   displayDeliveryButton: boolean;
   displayContextualButtons: boolean;
+  fullSummary: boolean;
   actionsBarExtended = false;
   moment = moment;
 
@@ -311,6 +312,22 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       if (proposal) {
         this.proposal.bonus = proposal.bonus;
         this.proposal.updates = proposal.updates;
+        this.proposal = new Proposal(this.proposal);
+      }
+    });
+  }
+
+  updateProposalDate() {
+    const dialogRef = this.dialog.open(ProposalEditDateComponent, {
+      height: '50vh',
+      width: '75vw',
+      data: {
+        proposal: this.proposal,
+      }
+    });
+    dialogRef.afterClosed().subscribe(proposal => {
+      if (proposal) {
+        this.proposal.pickupDate = proposal.pickupDate;
         this.proposal = new Proposal(this.proposal);
       }
     });

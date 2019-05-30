@@ -1,10 +1,12 @@
+@import "../../../../styles/classes.scss";
 @import "../../../../styles/variables.scss";
 
 .proposal-edit-bonus {
     &-title {
-        font-weight: 700;
+        @extend .base-modal-title;
         font-size: 18px;
-        color: $cyan-600
+        display: flex;
+        align-items: center;
     }
     &__content {
         transition: all $transitionDuration;
@@ -20,6 +22,8 @@
         }
         &__slider {
             width: 100%;
+            touch-action: auto;
+            -webkit-user-drag: none;
         }
     }
 }

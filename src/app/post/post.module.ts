@@ -54,6 +54,7 @@ import { RequestDetailResolver } from '@resolvers/request-detail.resolver';
 import { RequestResolver } from '@resolvers/request.resolver';
 import { ProposalPayComponent } from './proposal/proposal-pay/proposal-pay.component';
 import { ProposalPayResolver } from '@resolvers/proposal-pay.resolver';
+import { ProposalEditDateComponent } from './proposal/proposal-edit-date/proposal-edit-date.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ProposalPayResolver } from '@resolvers/proposal-pay.resolver';
     ProposalRequestComponent,
     RequestItemNewComponent,
     ProposalPayComponent,
+    ProposalEditDateComponent,
   ],
   entryComponents: [
     TripLuggageComponent,
@@ -84,6 +86,7 @@ import { ProposalPayResolver } from '@resolvers/proposal-pay.resolver';
     ProposalEditComponent,
     ProposalEditBonusComponent,
     ProposalEditMeetingComponent,
+    ProposalEditDateComponent,
   ],
   imports: [
     CommonModule,

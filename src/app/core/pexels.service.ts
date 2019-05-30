@@ -45,17 +45,21 @@ export class PexelsService {
             const photo = this.getPictureFromArray(response.photos, size, false);
             this.loadImage(observer, photo);
           } else {
-            this.http.get(`${this.serverUrl}/app/picture?location=${country}`)
-            .subscribe((serverResponse: Array<any>) => {
-                const photo = this.getPictureFromServerArray(serverResponse, size);
-                this.loadImage(observer, photo);
-            }, (error) => this.getCachedBackgroundPicture(observer, country, size));
+            this.getPictureFromServer(observer, country, size);
           }
         }
       }, (error) => {
-        this.getCachedBackgroundPicture(observer, country, size);
+        this.getPictureFromServer(observer, country, size);
       });
     });
+  }
+
+  private getPictureFromServer(observer, country, size) {
+    this.http.get(`${this.serverUrl}/app/picture?location=${country}`)
+    .subscribe((serverResponse: Array<any>) => {
+        const photo = this.getPictureFromServerArray(serverResponse, size);
+        this.loadImage(observer, photo);
+    }, (error) => this.getCachedBackgroundPicture(observer, country, size));
   }
 
   private savePictureSet(set: Array<any>, query: string) {

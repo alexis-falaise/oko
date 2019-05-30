@@ -35,6 +35,7 @@ export class Request extends Post {
 
     /** Front-end helpers **/
     itemsPrice: number;
+    weight: number;
     price: number;
 
     constructor(request: Partial<Request> = {}) {
@@ -56,6 +57,7 @@ export class Request extends Post {
         if (request.trip) {
             this.trip = new Trip(request.trip);
         }
+        this.computeWeight();
         this.computeRawPrice();
         this.computePrice();
         this.cabinOnly = this.isCabinOnly();
@@ -92,6 +94,12 @@ export class Request extends Post {
             this.handlerView = false;
             return false;
         }
+    }
+
+    computeWeight() {
+        const weight = this.items && this.items.length ? arraySum(this.items.map(item => item.weight)) : 0;
+        this.weight = weight;
+        return weight;
     }
 
     computeRawPrice(bonus: number = this.bonus): number {

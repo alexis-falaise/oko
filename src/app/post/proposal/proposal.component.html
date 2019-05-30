@@ -10,7 +10,7 @@
          [class.extended]="!actionsBarExtended && !displayLocation"
          [class.closed]="proposal.closed || proposal.outdated"
          *ngIf="proposal">
-      <div class="proposal__summary__author" *ngIf="proposal?.author">
+      <div class="proposal__summary__author" [routerLink]="['/profile', proposal?.author.id]" *ngIf="proposal?.author">
           <app-avatar class="proposal__summary__author-avatar"
                       [image]="proposal?.authorView ? proposal?.receiver?.avatar : proposal?.author?.avatar"
                       [size]="36"></app-avatar>
@@ -31,7 +31,47 @@
             </span>
           </div>
       </div>
-      <div class="proposal__summary__details">
+      <div class="proposal__summary__partial" *ngIf="!fullSummary">
+        <div *ngIf="fromTrip; else partialFromRequest">
+          <div class="proposal__summary__arrival">
+            <h5 class="proposal__summary__arrival-title">
+              Arrivée de {{ proposal?.author.firstname }}
+            </h5>
+            <div class="d-flex align-items-center">
+              <div class="proposal__summary__arrival__location">
+                <h6 class="proposal__summary__arrival__location-city">
+                  {{ proposal?.from?.to.label }}
+                </h6>
+                <div class="proposal__summary__arrival__location-airport">
+                  {{ proposal?.from?.to.airport?.name }}
+                </div>
+              </div>
+              <div class="proposal__summary__arrival__date">
+                <h6 class="proposal__summary__arrival__date-day">
+                    {{ proposal?.from?.date.format('DD/MM') }}
+                </h6>
+                <div class="proposal__summary__arrival__date-hour">
+                    {{ proposal?.from?.date.format('HH:mm') }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-icon" (click)="fullSummary = true">
+          Détails <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-divider></mat-divider>
+        <small class="text-muted" *ngIf="proposal.pickupDate">
+          Remise prévue le {{ moment(proposal.pickupDate).format('DD/MM') }} à {{ moment(proposal.pickupDate).format('HH:mm') }}
+        </small>
+        <button class="btn btn-light btn-sm btn-icon" (click)="updateProposalDate()">
+          <mat-icon>date_range</mat-icon> {{ proposal.pickupDate ? 'Proposer une autre ' : 'Définir une '}} date de remise
+        </button>
+      </div>
+      <div class="proposal__summary__details" *ngIf="fullSummary">
+        <button class="btn btn-sm btn-icon" (click)="fullSummary = false">
+          Résumé <mat-icon>expand_less</mat-icon>
+        </button>
         <div *ngIf="receiver; else sender">
           <div *ngIf="fromTrip; else fromRequest">
             <app-proposal-trip [trip]="proposal?.from" (open)="openTrip($event)"></app-proposal-trip>
@@ -253,6 +293,22 @@
       <hr class="divider">
       Concernant votre annonce:
       <app-proposal-request [own]="true" [request]="proposal?.from" [fullDisplay]="standalone" (open)="openRequest($event)"></app-proposal-request>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #partialFromRequest>
+  <div class="proposal__summary__request">
+    <h6 class="proposal__summary__request-title">
+      Annonce de {{ proposal?.author.firstname }}
+    </h6>
+    <div class="proposal__summary__request-content">
+      <small class="text-muted">{{ proposal?.from.items.length }} article{{ proposal?.from.items.length === 1 ? '' : 's' }}</small><br>
+      <small class="text-muted">Poids total: {{ proposal?.from.weight }} kg</small><br>
+      <small class="text-muted">
+        Prix {{ proposal?.from.items.length === 1 ? 'de l\'article' : ' des articles '}}:
+        {{ proposal?.from.itemsPrice }} €
+      </small>
     </div>
   </div>
 </ng-template>

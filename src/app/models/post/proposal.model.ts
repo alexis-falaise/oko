@@ -10,7 +10,7 @@ import { Request } from './request.model';
 export class Update {
     date: Moment;
     author: User;
-    type: 'create' | 'meeting' | 'bonus' | 'accept' | 'refuse' | 'close' | 'validate' | 'pay';
+    type: 'create' | 'date' | 'meeting' | 'bonus' | 'accept' | 'refuse' | 'close' | 'validate' | 'pay';
     bonusDelta: number;
     seen: boolean;
     sightDate: Moment;
@@ -34,6 +34,7 @@ export class Proposal {
     bonus: number;
     airportPickup: boolean;
     meetingPoint: MeetingPoint;
+    pickupDate: Moment;
     updates: [Update];
     seen: boolean;
     sightDate: Moment;

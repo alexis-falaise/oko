@@ -22,7 +22,7 @@ const cities = [
     'Berlin',
     'Bern',
     'Bled',
-    'Bogota',
+    // 'Bogota',
     'Bologna',
     'Boston',
     'Bordeaux',

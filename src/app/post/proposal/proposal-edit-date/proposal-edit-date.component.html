@@ -1,0 +1,72 @@
+<div class="proposal-edit-date">
+    <h2 class="proposal-edit-date-title">
+      <mat-icon>date_range</mat-icon> Date de remise
+    </h2>
+    <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
+    <hr class="divider">
+    <div class="proposal-edit-date__content">
+        <form [formGroup]="datetime" novalidate>
+            <div class="form-row">
+                <div class="form-group col-10 col-md-6">
+                  <input type="text" name="date" formControlName="date"
+                          autocomplete="off"
+                          class="form-control"
+                          [matDatepicker]="picker"
+                          (click)="picker.open()"
+                          [class.is-invalid]="datetime.controls.date.errors?.invalid
+                          || (datetime.controls.date.errors?.required
+                          && datetime.controls.date.touched)
+                          || (submitted && datetime.controls.date.invalid)"
+                          [min]="minDate || today"
+                          [max]="maxDate"
+                          (keyup.enter)="submit()"
+                          placeholder="Date">
+                    <div class="invalid-feedback"
+                        [class.d-block]="datetime.controls.date.errors?.required
+                        && datetime.controls.date.touched">
+                        Sélectionnez une date
+                    </div>
+                </div>
+                <div class="form-group col-2">
+                    <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-10 col-md-4 clickable">
+                  <input name="time" formControlName="time"
+                        class="form-control"
+                        [class.is-invalid]="datetime.controls.time.errors?.invalid
+                        || datetime.controls.time.errors?.required
+                        && (datetime.controls.time.touched)
+                        || (submitted && datetime.controls.time.invalid)"
+                        placeholder="Heure"
+                        [format]="24"
+                        (keyup.enter)="submit()"
+                        (click)="timePicker.open();"
+                        [ngxTimepicker]="timePicker">
+                <div class="invalid-feedback"
+                    [class.d-block]="datetime.controls.time.errors?.required
+                    && (datetime.controls.time.touched)">
+                    Indiquez une heure
+                </div>
+                <ngx-material-timepicker #timePicker></ngx-material-timepicker>
+                </div>
+                <div class="form-group col-2 d-flex d-md-none align-items-center justify-content-end"
+                      (click)="timePicker.open()">
+                    <mat-icon class="muted">access_time</mat-icon>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="proposal-edit-date__validation d-flex justify-content-between">
+      <button class="btn btn-success" 
+              [disabled]="datetime.invalid || proposal.accepted || proposal.closed || proposal.refused"
+              (click)="updateDate()">
+        Modifier
+      </button>
+      <button class="btn btn-light" (click)="close()">
+        {{ proposal.accepted || proposal.closed || proposal.refused ? 'Fermer' : 'Annuler' }}
+      </button>
+    </div>
+  </div>

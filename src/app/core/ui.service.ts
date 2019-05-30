@@ -121,7 +121,7 @@ export class UiService {
       duration = 5000;
     }
     const snackRef = this.snack.open(customMessage || message, action, {duration: duration});
-    if (status === 404 || status === 403) {
+    if (status === 404 || status === 403 || status === 401) {
       this.router.navigate([`/${status}`]);
     }
     snackRef.onAction().subscribe(() => {

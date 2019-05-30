@@ -624,6 +624,15 @@ export class PostService {
   }
 
   /**
+   * Update the pickup date of a proposal
+   * @param id : Proposal id
+   * @param date : new date value
+   */
+  updateProposalDate(id: string, date: moment.Moment): Observable<ServerResponse> {
+    return this.http.put(`${this.proposalUrl}/${id}/date`, { date: date}) as Observable<ServerResponse>;
+  }
+
+  /**
    * Update a proposal
    * @param proposal : Proposal object
    */

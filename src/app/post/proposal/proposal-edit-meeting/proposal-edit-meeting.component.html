@@ -1,8 +1,10 @@
 <div class="proposal-edit-meeting">
-  <h2 class="proposal-edit-meeting-title">{{ title }}</h2>
+  <h2 class="proposal-edit-meeting-title">
+   <mat-icon>location_on</mat-icon> {{ title }}
+  </h2>
   <mat-icon class="close clickable" (click)="close()">clear</mat-icon>
   <hr class="divider">
-  <div class="proposal-edit-meeting__content">
+  <div class="proposal-edit-meeting__content" [class.extended]="!airportPickup">
       <h6 class="text-muted">Lieu de rendez-vous</h6>
       <div class="mb-2">
         <mat-slide-toggle [(ngModel)]="airportPickup"

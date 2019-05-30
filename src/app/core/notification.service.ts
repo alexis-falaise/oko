@@ -96,6 +96,9 @@ export class NotificationService {
         case 'bonus':
           proposalAction = 'modifié le bonus d\'';
           break;
+        case 'date':
+          proposalAction =  'modifié la date d\'';
+          break;
         default:
           proposalAction = 'modifié ';
           break;

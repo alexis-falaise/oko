@@ -29,6 +29,8 @@ export class UserService {
             this.currentUser.next(serverUser);
           });
         }
+      } else {
+        this.currentUser.next(null);
       }
     });
   }
@@ -45,6 +47,7 @@ export class UserService {
           observer.next(serverUser);
           observer.complete();
         }, (error) => {
+          this.uiService.serverError(error);
           observer.next();
           observer.complete();
         });
