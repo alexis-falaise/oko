@@ -1,4 +1,4 @@
-<div class="proposal-trip" (click)="openTrip()" *ngIf="trip; else empty">
+<div class="proposal-trip" (click)="openTrip()" *ngIf="trip && !partial; else partialTrip">
     <div class="proposal-trip-date">
         <div class="arrival">
             <mat-icon>today</mat-icon> Arrivée
@@ -25,6 +25,33 @@
       </div>
     </div>
 </div>
+
+<ng-template #partialTrip>
+    <div class="proposal-trip__arrival" *ngIf="trip && partial; else empty">
+      <h5 class="proposal-trip__arrival-title">
+        Arrivée de {{ trip.user.firstname }}
+      </h5>
+      <div class="d-flex align-items-center">
+        <div class="proposal-trip__arrival__location">
+          <h6 class="proposal-trip__arrival__location-city">
+            {{ trip.to.label }}
+          </h6>
+          <div class="proposal-trip__arrival__location-airport">
+            {{ trip.to.airport?.name }}
+          </div>
+        </div>
+        <div class="proposal-trip__arrival__date">
+          <h6 class="proposal-trip__arrival__date-day">
+              {{ trip.date.format('DD/MM') }}
+          </h6>
+          <div class="proposal-trip__arrival__date-hour">
+              {{ trip.date.format('HH:mm') }}
+          </div>
+        </div>
+      </div>
+    </div>
+</ng-template>
+
 
 <ng-template #empty>
   <div class="proposal-trip-date">

@@ -1,8 +1,23 @@
+@import "../../../../styles/animations.scss";
 @import "../../../../styles/variables.scss";
 
 .proposal-request {
+    &__partial {
+        animation: slideInUp ease-out .25s;
+    }
     &__item {
         margin-bottom: 5px;
+        &--partial {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            width: 100px;
+            .mat-card-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: rgb(75, 75, 75);   
+            }
+        }
     }
     &__city {
         display: flex;

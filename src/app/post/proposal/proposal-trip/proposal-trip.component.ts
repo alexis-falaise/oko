@@ -9,6 +9,7 @@ import { Trip } from '@models/post/trip.model';
 })
 export class ProposalTripComponent implements OnChanges {
   @Input() trip: Trip;
+  @Input() partial = false;
   @Output() open = new EventEmitter();
 
   constructor() { }

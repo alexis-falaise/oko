@@ -169,9 +169,13 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
 
   acceptProposal() {
     if (!this.meetingPointDefined()) {
-      this.snack.open('Le lieu de remise n\'a pas été défini', 'OK', {duration: 3000});
+      this.snack.open('Le lieu de remise n\'a pas été défini', 'C\'est vrai', {duration: 5000});
       this.updateProposalMeeting('Proposer un lieu de remise');
     } else {
+      if (!this.proposal.pickupDate) {
+        this.snack.open('Choisissez une date de remise', 'Ah oui', { duration: 5000 });
+        this.updateProposalDate();
+      }
       if (!this.proposal.accepted && !this.proposal.outdated) {
         const dialogRef = this.dialog.open(ConfirmComponent, {
           data: {

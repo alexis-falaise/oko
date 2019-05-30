@@ -1,5 +1,5 @@
 <div class="proposal-request" *ngIf="request; else empty">
-    <h6 class="text-muted">Articles ({{request?.items?.length || 0}})</h6>
+    <h6 class="text-muted" *ngIf="fullDisplay">Articles ({{request?.items?.length || 0}})</h6>
     <div *ngIf="fullDisplay; else restrictedDisplay">
       <app-item class="proposal-request__item"
         [item]="item" [fullWidth]="true"
@@ -9,13 +9,23 @@
       </app-item>
     </div>
     <ng-template #restrictedDisplay>
-      <mat-card class="proposal-request__item" matRipple *ngFor="let item of request?.items">
-        <mat-card-title>{{ item.label }}</mat-card-title>
-      </mat-card>
+      <div class="proposal-request__partial">
+        <mat-card class="proposal-request__item--partial" matRipple *ngFor="let item of request?.items">
+          <mat-card-title>{{ item.label }}</mat-card-title>
+        </mat-card>
+        <small class="text-muted">{{ request.items.length }} article{{ request.items.length === 1 ? '' : 's' }}</small> - 
+        <small class="text-muted">Poids total: {{ request.weight }} kg</small><br>
+        <small class="text-muted">
+          Prix {{ request.items.length === 1 ? 'de l\'article' : ' des articles '}}:
+          {{ request.itemsPrice }} €
+        </small>
+      </div>
     </ng-template>
-    <div class="d-flex w-100 justify-content-center mt-3">
-      <button [disabled]="!request?.id" (click)="openRequest()" class="btn btn-info">Voir l'annonce</button>
-    </div>
+    <!-- <div class="d-flex w-100 justify-content-center mt-3">
+      <button [disabled]="!request?.id" (click)="openRequest()" class="btn btn-info btn-sm btn-icon">
+        <mat-icon>open_in_new</mat-icon> Voir l'annonce
+      </button>
+    </div> -->
 </div>
 
 <ng-template #empty>

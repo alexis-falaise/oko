@@ -13,13 +13,11 @@
                           class="form-control"
                           [matDatepicker]="picker"
                           (click)="picker.open()"
-                          [class.is-invalid]="datetime.controls.date.errors?.invalid
-                          || (datetime.controls.date.errors?.required
-                          && datetime.controls.date.touched)
-                          || (submitted && datetime.controls.date.invalid)"
+                          [class.is-invalid]="datetime.controls.date.errors?.required
+                          && datetime.controls.date.touched"
+                          readonly
                           [min]="minDate || today"
                           [max]="maxDate"
-                          (keyup.enter)="submit()"
                           placeholder="Date">
                     <div class="invalid-feedback"
                         [class.d-block]="datetime.controls.date.errors?.required
@@ -36,18 +34,16 @@
               <div class="form-group col-10 col-md-4 clickable">
                   <input name="time" formControlName="time"
                         class="form-control"
-                        [class.is-invalid]="datetime.controls.time.errors?.invalid
-                        || datetime.controls.time.errors?.required
-                        && (datetime.controls.time.touched)
-                        || (submitted && datetime.controls.time.invalid)"
+                        [class.is-invalid]="datetime.controls.time.touched
+                        && datetime.controls.time.invalid"
+                        readonly
                         placeholder="Heure"
                         [format]="24"
-                        (keyup.enter)="submit()"
                         (click)="timePicker.open();"
                         [ngxTimepicker]="timePicker">
                 <div class="invalid-feedback"
-                    [class.d-block]="datetime.controls.time.errors?.required
-                    && (datetime.controls.time.touched)">
+                    [class.d-block]="datetime.controls.time.touched
+                    && datetime.controls.time.invalid">
                     Indiquez une heure
                 </div>
                 <ngx-material-timepicker #timePicker></ngx-material-timepicker>
