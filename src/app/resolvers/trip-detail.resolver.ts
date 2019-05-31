@@ -39,7 +39,7 @@ export class TripDetailResolver implements Resolve<TripDetailData> {
         return Observable.create(observer => {
             zip(
                 this.postService.getTripById(tripId),
-                this.userService.getCurrentUser()
+                this.userService.getCurrentUser(false)
                 .pipe(catchError((err, caught) => of(caught)))
             )
             .pipe(map(([trip, user]) => ({trip, user})))

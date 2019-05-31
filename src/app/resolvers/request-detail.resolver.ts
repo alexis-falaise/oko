@@ -31,7 +31,7 @@ export class RequestDetailResolver implements Resolve<RequestDetailData> {
         return Observable.create(observer => {
             zip(
                 this.postService.getRequestById(requestId),
-                this.userService.getCurrentUser()
+                this.userService.getCurrentUser(false)
                 .pipe(catchError((err, caught) => of(caught)))
             )
             .pipe(map(([request, user]) => ({request, user})))

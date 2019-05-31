@@ -1,0 +1,7 @@
+@import "../../../styles/variables.scss";
+.picture-upload {
+    &__title {
+        font-weight: 100;
+        color: $cyan-600;
+    }
+}

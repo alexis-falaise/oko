@@ -1,11 +1,21 @@
 <div class="picture-upload">
   <h4 class="picture-upload__title">Photo de l'article</h4>
-  <mat-progress-bar mode="indeterminate" *ngIf="loading | async"></mat-progress-bar>
+  <mat-progress-bar mode="determinate" [value]="progress" *ngIf="progress"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" [class.d-none]="progress" *ngIf="loading | async"></mat-progress-bar>
   <hr class="divider">
-  <div class="d-flex justify-content-center" *ngIf="!uploadedFile; else confirmUpload">
+  <div class="d-flex justify-content-center" *ngIf="!uploadedFile; else processing">
     <button class="btn btn-success btn-icon" (click)="addFile()">
       <mat-icon>cloud_upload</mat-icon> Importer
     </button>
   </div>
   <input type="file" #file accept="image/*" style="display: none" (change)="onFileAdded()" name="avatar">
 </div>
+
+<ng-template #processing>
+  <small class="text-muted">
+      Importation en cours... {{ progress }} %
+  </small> <br>
+  <small class="text-warning">
+    Ne fermez pas le panneau
+  </small>
+</ng-template>

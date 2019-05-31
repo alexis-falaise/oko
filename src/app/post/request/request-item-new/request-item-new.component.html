@@ -117,8 +117,8 @@
               <input type="text" class="form-control" formControlName="photo" #itemPicture
                       (keyup.enter)="next(!!item.controls.label.value.length)" placeholder="Photo (lien)">
             </div>
-            <button class="btn btn-info btn-icon" (click)="pictureUpload()">
-              <mat-icon>photo</mat-icon> Importer une photo
+            <button class="btn {{ item.controls.photo.value ? 'btn-light' : 'btn-info' }} btn-icon" (click)="pictureUpload()">
+              <mat-icon>photo</mat-icon> {{ item.controls.photo.value ? 'Modifier la' : 'Importer une' }} photo
             </button>
           </mat-step>
           <mat-step [stepControl]="item.controls.weight">

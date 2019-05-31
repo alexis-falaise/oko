@@ -438,7 +438,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
    * @param bonus : Existing bonus when editing a request
    */
   private computeBonus(bonus?: number) {
-    console.log('Compute bonus');
     this.itemsPrice = arraySum(this.items.map(item => item.price));
     let itemsWeight = arraySum(this.items.map(item => item.weight));
     if (Number.isNaN(itemsWeight)) {

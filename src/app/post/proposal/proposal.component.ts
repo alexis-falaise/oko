@@ -459,6 +459,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       this.proposal = new Proposal(proposal);
       this.isLastUpdateAuthor = proposal.lastUpdate.author.id === this.currentUser.id;
     }
+    this.displayManagement();
   }
 
 }
