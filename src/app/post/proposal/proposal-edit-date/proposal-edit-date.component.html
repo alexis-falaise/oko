@@ -15,7 +15,6 @@
                           (click)="picker.open()"
                           [class.is-invalid]="datetime.controls.date.errors?.required
                           && datetime.controls.date.touched"
-                          readonly
                           [min]="minDate || today"
                           [max]="maxDate"
                           placeholder="Date">
@@ -36,7 +35,6 @@
                         class="form-control"
                         [class.is-invalid]="datetime.controls.time.touched
                         && datetime.controls.time.invalid"
-                        readonly
                         placeholder="Heure"
                         [format]="24"
                         (click)="timePicker.open();"

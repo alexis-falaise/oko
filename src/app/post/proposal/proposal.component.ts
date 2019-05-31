@@ -323,7 +323,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
 
   updateProposalDate() {
     const dialogRef = this.dialog.open(ProposalEditDateComponent, {
-      height: '50vh',
+      height: '300px',
       width: '75vw',
       data: {
         proposal: this.proposal,

@@ -10,7 +10,9 @@
          [class.extended]="!actionsBarExtended && !displayLocation"
          [class.closed]="proposal.closed || proposal.outdated"
          *ngIf="proposal">
-      <div class="proposal__summary__author" [routerLink]="['/profile', proposal?.author.id]" *ngIf="proposal?.author">
+      <div class="proposal__summary__author"
+           [routerLink]="['/profile', receiver ? proposal?.author.id : proposal?.receiver.id]"
+           *ngIf="proposal?.author">
           <app-avatar class="proposal__summary__author-avatar"
                       [image]="proposal?.authorView ? proposal?.receiver?.avatar : proposal?.author?.avatar"
                       [size]="36"></app-avatar>

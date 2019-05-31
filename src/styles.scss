@@ -55,7 +55,9 @@ html, body {
     background: $heroGradient;
 
     animation: $duration enter;
-    overflow-y: hidden;
+
+    /* Prevent pull-to-refresh on Chrome */
+    // overflow-y: hidden;
 }
 
 .div {

@@ -46,6 +46,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   feesPercentage = 0.075;
   staticFees = 1.5;
   fees: number;
+  computedBonus: number;
   totalPrice: number;
   currentUser: User;
   cities: Array<string> = [];
@@ -146,7 +147,9 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.requestService.getStoredItems();
-    this.requestService.onTotalPrice().subscribe((price) => this.totalPrice = price);
+    this.requestService.onTotalPrice().subscribe((price) => {
+      this.totalPrice = price;
+    });
 
     // Fetch citites
     this.geoService.onCities()
@@ -438,6 +441,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
    * @param bonus : Existing bonus when editing a request
    */
   private computeBonus(bonus?: number) {
+    console.log('Compute bonus');
     this.itemsPrice = arraySum(this.items.map(item => item.price));
     let itemsWeight = arraySum(this.items.map(item => item.weight));
     if (Number.isNaN(itemsWeight)) {
@@ -454,9 +458,16 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.meeting.controls.airportPickup.value) {
       calculatedBonus += 10;
     }
-    this.meeting.controls.bonus.patchValue(Math.ceil(bonus || calculatedBonus));
+    const resultingBonus = Math.ceil(bonus || calculatedBonus);
+    this.meeting.controls.bonus.patchValue(resultingBonus);
+    // Update validation on bonus input
+    this.meeting.controls.bonus.setValidators([
+      Validators.required, Validators.min(resultingBonus * 0.6), Validators.max(resultingBonus * 2)
+    ]);
+    console.log('Validators', this.meeting.controls.bonus);
     this.computeTotalPrice();
-    this.requestService.setBonus(bonus);
+    this.computedBonus = resultingBonus;
+    this.requestService.setBonus(resultingBonus);
   }
 
   private computeTotalPrice() {
