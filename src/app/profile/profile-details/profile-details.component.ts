@@ -42,10 +42,14 @@ export class ProfileDetailsComponent implements OnInit {
         this.init();
       }
     });
-    this.userService.getCurrentUser()
+    this.userService.getCurrentUser(false)
     .subscribe(user => {
-      this.currentUser = user;
-      this.own = this.currentUser.id === this.user.id;
+      if (user) {
+        this.currentUser = user;
+        this.own = this.currentUser.id === this.user.id;
+      } else {
+        this.own = false;
+      }
     });
   }
 

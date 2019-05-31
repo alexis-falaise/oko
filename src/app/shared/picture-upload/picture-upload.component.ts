@@ -1,10 +1,9 @@
-import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatSnackBar } from '@angular/material';
 import { Item } from '@models/item.model';
 import { UiService } from '@core/ui.service';
 import { AppService } from '@core/app.service';
 import { environment } from '@env/environment';
-import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-picture-upload',
@@ -12,7 +11,7 @@ import { Subject, Observable } from 'rxjs';
   styleUrls: ['./picture-upload.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PictureUploadComponent implements OnInit {
+export class PictureUploadComponent implements OnInit, OnDestroy {
   @ViewChild('file') file;
   uploadedFile: File;
   uploadedFileSize: number;
@@ -51,10 +50,11 @@ export class PictureUploadComponent implements OnInit {
           }
           if (response.status === 'done') {
             const pictureUrl = `${environment.pictureLocation}/${response.data.filename}`;
+            this.snack.open('La photo a été importée', 'OK', {duration: 2500});
             this.uiService.setLoading(false);
             this.sheetRef.dismiss(pictureUrl);
           }
-        });
+        }, (error) => this.uiService.serverError(error));
       } else {
         this.snack.open(`La taille maximale autorisée est de 3 Mo (image de ${this.uploadedFileSize} Mo)`, 'OK', {duration: 4500});
         this.uploadedFile = null;
@@ -65,6 +65,10 @@ export class PictureUploadComponent implements OnInit {
       this.snack.open('Veuillez utiliser une image', 'OK', {duration: 2500});
       this.uiService.setLoading(false);
     }
+  }
+
+  ngOnDestroy() {
+    this.uiService.setLoading(false);
   }
 
 }

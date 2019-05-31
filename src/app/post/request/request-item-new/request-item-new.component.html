@@ -6,10 +6,10 @@
   </div>
   <div class="request-item-new__content container">
     <form class="request-item-new__content__form" [formGroup]="item">
-      <mat-vertical-stepper [linear]="!edition && !ecommerceFound" #stepper>
+      <mat-vertical-stepper [linear]="!edition && !ecommerceFound" (selectionChange)="selectStep($event)" #stepper>
           <mat-step [stepControl]="item.controls.price">
             <ng-template matStepLabel>
-              <div class="w-100" (click)="clickStep(0)">Références</div>
+              <div class="d-flex align-items-center w-100 h-100" (click)="clickStep(0)">Références</div>
             </ng-template>
             <h4 class="request-item-new__content__form-title">
               {{ isNotEcommerce ? 'Prix estimé' : 'Lien E-commerce' }}
@@ -57,9 +57,9 @@
               </div>
             </div>
           </mat-step>
-          <mat-step [stepControl]="item.controls.label">
+          <mat-step [stepControl]="item.controls.label" (click)="clickStep(1)">
             <ng-template matStepLabel>
-               <div class="w-100" (click)="clickStep(1)">Détails</div>
+              <div class="d-flex align-items-center w-100 h-100" (click)="clickStep(1)">Détails</div>
             </ng-template>
             <h4 class="request-item-new__content__form-title">Détails de l'article</h4>
             <small class="text-muted">Donnez des précisions sur l'article que vous recherchez</small>
@@ -67,13 +67,13 @@
                 <input type="text" class="form-control"
                        formControlName="label"
                        [class.is-invalid]="(item.controls.label.touched
-                        || clickedStep !== 1)
+                        || clickedIndex !== 1)
                         && item.controls.label.errors?.required"
                        placeholder="Nom de l'article"
                        (keyup.enter)="next(!!item.controls.label.value.length)" required>
                 <div class="invalid-feedback"
                     [class.d-block]="(item.controls.label.touched
-                    || clickedStep !== 1)
+                    || clickedIndex !== 1)
                     && item.controls.label.errors?.required">
                   Veuillez saisir le nom de l'article    
                 </div>
@@ -84,7 +84,7 @@
             <div class="form-group">
               <textarea rows="7" class="form-control" formControlName="description"
                         [class.is-invalid]="(item.controls.description.touched
-                        || clickedStep !== 1)
+                        || clickedIndex !== 1)
                         && item.controls.description.errors?.required"
                         (keyup.enter)="next(!!item.controls.label.value.length)"
                         placeholder="Description (edition d'un livre, taille d'un vêtement, couleur, fournisseur, boutique, année, modèle...)"
@@ -92,7 +92,7 @@
               </textarea>
               <div class="invalid-feedback"
                    [class.d-block]="(item.controls.description.touched
-                    || clickedStep !== 1)
+                    || clickedIndex !== 1)
                     && item.controls.description.errors?.required">
                    Veuillez saisir une description de l'article.
                    <span *ngIf="isNotEcommerce">
@@ -103,7 +103,7 @@
           </mat-step>
           <mat-step [stepControl]="item.controls.photo">
             <ng-template matStepLabel>
-              <div (click)="clickStep(2)">Photo</div>
+              <div class="d-flex align-items-center w-100 h-100" (click)="clickStep(2)">Photo</div>
             </ng-template>
             <img *ngIf="item.controls.photo.value"
                   class="request-item-new__item-image"
@@ -123,7 +123,7 @@
           </mat-step>
           <mat-step [stepControl]="item.controls.weight">
             <ng-template matStepLabel>
-              <div class="w-100" (click)="clickStep(3)">Transport</div>
+              <div class="d-flex align-items-center w-100 h-100" (click)="clickStep(3)">Transport</div>
             </ng-template>
             <h4 class="request-item-new__content__form-title">Dimensions</h4>
             <div class="request-item-new__item-size-wrapper row mt-1">
@@ -158,7 +158,7 @@
           </mat-step>
           <mat-step>
             <ng-template matStepLabel>
-              <div class="w-100" (click)="clickStep(4)">Validation</div>
+              <div class="d-flex align-items-center w-100 h-100" (click)="clickStep(4)">Validation</div>
             </ng-template>
             <mat-list class="mb-2">
               <mat-list-item *ngIf="item.controls.label.value; else labelError">

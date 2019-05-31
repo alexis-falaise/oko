@@ -35,7 +35,8 @@ export class RequestItemNewComponent implements OnInit {
   });
   itemSizes = itemSizes.filter(size => size.visible);
   selectedSize: string;
-  clickedStep: number;
+  selectedIndex: number;
+  clickedIndex: number;
   isNotEcommerce: boolean;
   ecommerceFound: boolean;
   edition: boolean;
@@ -94,8 +95,12 @@ export class RequestItemNewComponent implements OnInit {
     this.stepper.selectedIndex = index;
   }
 
+  selectStep(selection: any) {
+    this.selectedIndex = selection.selectedIndex;
+  }
+
   clickStep(index: number) {
-    this.clickedStep = index;
+    this.clickedIndex = index;
   }
 
   previous() {

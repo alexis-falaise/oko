@@ -243,6 +243,13 @@ html, body {
     }
 }
 
+.mat-step-label {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    width: 100%;
+}
+
 .mat-slide-toggle-content {
     display: flex;
     align-items: center;
