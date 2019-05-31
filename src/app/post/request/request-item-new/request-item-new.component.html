@@ -8,7 +8,9 @@
     <form class="request-item-new__content__form" [formGroup]="item">
       <mat-vertical-stepper [linear]="!edition && !ecommerceFound" #stepper>
           <mat-step [stepControl]="item.controls.price">
-            <ng-template matStepLabel>Références</ng-template>
+            <ng-template matStepLabel>
+              <div class="w-100" (click)="clickStep(0)">Références</div>
+            </ng-template>
             <h4 class="request-item-new__content__form-title">
               {{ isNotEcommerce ? 'Prix estimé' : 'Lien E-commerce' }}
             </h4>
@@ -56,27 +58,53 @@
             </div>
           </mat-step>
           <mat-step [stepControl]="item.controls.label">
-            <ng-template matStepLabel>Détails</ng-template>
+            <ng-template matStepLabel>
+               <div class="w-100" (click)="clickStep(1)">Détails</div>
+            </ng-template>
             <h4 class="request-item-new__content__form-title">Détails de l'article</h4>
             <small class="text-muted">Donnez des précisions sur l'article que vous recherchez</small>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" formControlName="label"
+                <input type="text" class="form-control"
+                       formControlName="label"
+                       [class.is-invalid]="(item.controls.label.touched
+                        || clickedStep !== 1)
+                        && item.controls.label.errors?.required"
                        placeholder="Nom de l'article"
                        (keyup.enter)="next(!!item.controls.label.value.length)" required>
+                <div class="invalid-feedback"
+                    [class.d-block]="(item.controls.label.touched
+                    || clickedStep !== 1)
+                    && item.controls.label.errors?.required">
+                  Veuillez saisir le nom de l'article    
+                </div>
             </div>
             <small class="text-muted" *ngIf="item.controls.label.value?.length > 50">
               Le nom semble peut être un peu long, pourquoi ne pas en dire plus en description ?
             </small>
             <div class="form-group">
               <textarea rows="7" class="form-control" formControlName="description"
+                        [class.is-invalid]="(item.controls.description.touched
+                        || clickedStep !== 1)
+                        && item.controls.description.errors?.required"
                         (keyup.enter)="next(!!item.controls.label.value.length)"
                         placeholder="Description (edition d'un livre, taille d'un vêtement, couleur, fournisseur, boutique, année, modèle...)"
                         required>
               </textarea>
+              <div class="invalid-feedback"
+                   [class.d-block]="(item.controls.description.touched
+                    || clickedStep !== 1)
+                    && item.controls.description.errors?.required">
+                   Veuillez saisir une description de l'article.
+                   <span *ngIf="isNotEcommerce">
+                     La précision de la description est essentielle pour que le voyageur puisse faire le bon achat
+                   </span>
+              </div>
             </div>
           </mat-step>
           <mat-step [stepControl]="item.controls.photo">
-            <ng-template matStepLabel>Photo</ng-template>
+            <ng-template matStepLabel>
+              <div (click)="clickStep(2)">Photo</div>
+            </ng-template>
             <img *ngIf="item.controls.photo.value"
                   class="request-item-new__item-image"
                   [src]="item.controls.photo.value"
@@ -89,9 +117,14 @@
               <input type="text" class="form-control" formControlName="photo" #itemPicture
                       (keyup.enter)="next(!!item.controls.label.value.length)" placeholder="Photo (lien)">
             </div>
+            <button class="btn btn-info btn-icon" (click)="pictureUpload()">
+              <mat-icon>photo</mat-icon> Importer une photo
+            </button>
           </mat-step>
           <mat-step [stepControl]="item.controls.weight">
-            <ng-template matStepLabel>Transport</ng-template>
+            <ng-template matStepLabel>
+              <div class="w-100" (click)="clickStep(3)">Transport</div>
+            </ng-template>
             <h4 class="request-item-new__content__form-title">Dimensions</h4>
             <div class="request-item-new__item-size-wrapper row mt-1">
               <div class="request-item-new__item-size col-12 col-sm-6 col-md-3"
@@ -124,7 +157,9 @@
             </div>
           </mat-step>
           <mat-step>
-            <ng-template matStepLabel>Validation</ng-template>
+            <ng-template matStepLabel>
+              <div class="w-100" (click)="clickStep(4)">Validation</div>
+            </ng-template>
             <mat-list class="mb-2">
               <mat-list-item *ngIf="item.controls.label.value; else labelError">
                 <mat-icon mat-list-icon>book</mat-icon>

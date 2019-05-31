@@ -9,7 +9,8 @@ import { Link } from '@models/link.model';
 import { itemSizes } from '@static/item-sizes.static';
 import { validUrl, extractHostname } from '@utils/index.util';
 import { UiService } from '@core/ui.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatBottomSheet } from '@angular/material';
+import { PictureUploadComponent } from '@shared/picture-upload/picture-upload.component';
 
 @Component({
   selector: 'app-request-item-new',
@@ -22,7 +23,7 @@ export class RequestItemNewComponent implements OnInit {
   @ViewChild('stepper') stepper;
   item = this.fb.group({
     label: ['', Validators.required],
-    description: [''],
+    description: ['', Validators.required],
     link: [''],
     photo: [''],
     width: [null, Validators.min(0)],
@@ -34,6 +35,7 @@ export class RequestItemNewComponent implements OnInit {
   });
   itemSizes = itemSizes.filter(size => size.visible);
   selectedSize: string;
+  clickedStep: number;
   isNotEcommerce: boolean;
   ecommerceFound: boolean;
   edition: boolean;
@@ -44,6 +46,7 @@ export class RequestItemNewComponent implements OnInit {
     private requestService: RequestService,
     private route: ActivatedRoute,
     private router: Router,
+    private sheet: MatBottomSheet,
     private snack: MatSnackBar,
   ) { }
 
@@ -91,6 +94,10 @@ export class RequestItemNewComponent implements OnInit {
     this.stepper.selectedIndex = index;
   }
 
+  clickStep(index: number) {
+    this.clickedStep = index;
+  }
+
   previous() {
     this.stepper.previous();
   }
@@ -122,6 +129,17 @@ export class RequestItemNewComponent implements OnInit {
             weight: size.weight,
           });
         }
+    });
+  }
+
+  pictureUpload() {
+    const sheetRef = this.sheet.open(PictureUploadComponent, {
+      autoFocus: true,
+      closeOnNavigation: true,
+      data: this.item.value,
+    });
+    sheetRef.afterDismissed().subscribe((picture) => {
+      this.item.controls.photo.patchValue(picture);
     });
   }
 

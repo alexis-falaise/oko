@@ -123,10 +123,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     this.adapter.setLocale('fr');
 
     // Initialisation
-    this.userService.getCurrentUser().subscribe(
-      user => this.currentUser = user,
-      (error) => this.uiService.serverError(error)
-    );
+    this.userService.getCurrentUser(false).subscribe(user => this.currentUser = user);
 
     const savedCity = this.requestService.currentCity.getValue();
     if (savedCity) {
@@ -464,7 +461,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
     this.meeting.controls.bonus.setValidators([
       Validators.required, Validators.min(resultingBonus * 0.6), Validators.max(resultingBonus * 2)
     ]);
-    console.log('Validators', this.meeting.controls.bonus);
     this.computeTotalPrice();
     this.computedBonus = resultingBonus;
     this.requestService.setBonus(resultingBonus);

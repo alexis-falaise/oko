@@ -21,6 +21,7 @@ import {
   MatRippleModule,
   MatSlideToggleModule,
   MatSliderModule,
+  MatBottomSheetModule,
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -94,6 +95,7 @@ import { ProposalEditDateComponent } from './proposal/proposal-edit-date/proposa
     FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatBottomSheetModule,
     MatCardModule,
     MatCheckboxModule,
     MatDialogModule,

@@ -175,37 +175,39 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       if (!this.proposal.pickupDate) {
         this.snack.open('Choisissez une date de remise', 'Ah oui', { duration: 5000 });
         this.updateProposalDate();
-      }
-      if (!this.proposal.accepted && !this.proposal.outdated) {
-        const dialogRef = this.dialog.open(ConfirmComponent, {
-          data: {
-            title: 'Accepter la proposition',
-            message: `Bonus de ${this.proposal.bonus} € -
-            Remise à ${this.proposal.airportPickup
-            ? 'l\'aéroport'
-            : this.proposal.meetingPoint.address + ', ' + this.proposal.meetingPoint.city + ' - ' + this.proposal.meetingPoint.country}.
-            Tout est ok ?`,
-            action: 'Accepter',
-            actionStyle: 'btn-success',
-          },
-          height: '40vh',
-          width: '75vw',
-        });
-        dialogRef.afterClosed().subscribe((action) => {
-          if (action) {
-            this.uiService.setLoading(true);
-            this.postService.acceptProposal(this.proposal.id)
-            .subscribe((response: ServerResponse) => {
-              if (response.status) {
-                this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
-                this.proposal.accepted = response.data.accepted;
-              } else {
-                this.serverError(response);
-              }
-            this.uiService.setLoading(false);
-            }, (err) => this.serverError(err));
-          }
-        });
+      } else {
+        if (!this.proposal.accepted && !this.proposal.outdated) {
+          const dialogRef = this.dialog.open(ConfirmComponent, {
+            data: {
+              title: 'Accepter la proposition',
+              message: `Bonus de ${this.proposal.bonus} € -
+              Remise à ${this.proposal.airportPickup
+              ? 'l\'aéroport'
+              : this.proposal.meetingPoint.address + ', ' + this.proposal.meetingPoint.city + ' - ' + this.proposal.meetingPoint.country}.
+              Tout est ok ?`,
+              action: 'Accepter',
+              actionStyle: 'btn-success',
+            },
+            height: '40vh',
+            width: '75vw',
+          });
+          dialogRef.afterClosed().subscribe((action) => {
+            if (action) {
+              this.uiService.setLoading(true);
+              this.postService.acceptProposal(this.proposal.id)
+              .subscribe((response: ServerResponse) => {
+                if (response.status) {
+                  this.snack.open('La proposition a été acceptée', 'Génial', {duration: 3000});
+                  this.proposal.accepted = response.data.accepted;
+                  this.setProposal(this.proposal);
+                } else {
+                  this.serverError(response);
+                }
+              this.uiService.setLoading(false);
+              }, (err) => this.serverError(err));
+            }
+          });
+        }
       }
     }
   }
@@ -230,6 +232,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
           if (response.status) {
             this.snack.open('La proposition a été annulée', 'OK', {duration: 3000});
             this.proposal.closed = response.data.closed;
+            this.setProposal(this.proposal);
           } else {
             this.serverError(response);
           }
@@ -264,6 +267,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
             if (response.status) {
               this.snack.open('La proposition a été refusée', 'OK', {duration: 3000});
               this.proposal.refused = response.data.refused;
+              this.setProposal(this.proposal);
             } else {
               this.serverError(response);
             }
@@ -294,6 +298,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
           if (response.status) {
             this.snack.open('La réception a bien été confirmée', 'Parfait', {duration: 3000});
             this.proposal.validated = response.data.validated;
+            this.setProposal(this.proposal);
           } else {
             this.serverError(response);
           }
@@ -316,7 +321,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       if (proposal) {
         this.proposal.bonus = proposal.bonus;
         this.proposal.updates = proposal.updates;
-        this.proposal = new Proposal(this.proposal);
+        this.setProposal(this.proposal);
       }
     });
   }
@@ -332,7 +337,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
     dialogRef.afterClosed().subscribe(proposal => {
       if (proposal) {
         this.proposal.pickupDate = proposal.pickupDate;
-        this.proposal = new Proposal(this.proposal);
+        this.setProposal(this.proposal);
       }
     });
   }
@@ -350,7 +355,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       if (proposal) {
         this.proposal.bonus = proposal.bonus;
         this.proposal.updates = proposal.updates;
-        this.proposal = new Proposal(this.proposal);
+        this.setProposal(this.proposal);
       }
     });
   }
@@ -370,7 +375,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
         this.proposal.meetingPoint = proposal.meetingPoint;
         this.proposal.airportPickup = proposal.airportPickup;
         this.proposal.updates = proposal.updates;
-        this.proposal = new Proposal(this.proposal);
+        this.setProposal(this.proposal);
       }
     });
   }
@@ -391,7 +396,7 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
       this.proposal.updates = proposal.updates;
       this.proposal.airportPickup = proposal.airportPickup;
       this.proposal.bonus = proposal.bonus;
-      this.proposal = new Proposal(this.proposal);
+      this.setProposal(this.proposal);
       this.initProposal();
     });
   }
@@ -447,6 +452,13 @@ export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDe
 
   ngOnDestroy() {
     this.removeProposalListeners();
+  }
+
+  private setProposal(proposal: Proposal) {
+    if (this.currentUser && proposal) {
+      this.proposal = new Proposal(proposal);
+      this.isLastUpdateAuthor = proposal.lastUpdate.author.id === this.currentUser.id;
+    }
   }
 
 }

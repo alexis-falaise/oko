@@ -1,0 +1,11 @@
+<div class="picture-upload">
+  <h4 class="picture-upload__title">Photo de l'article</h4>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading | async"></mat-progress-bar>
+  <hr class="divider">
+  <div class="d-flex justify-content-center" *ngIf="!uploadedFile; else confirmUpload">
+    <button class="btn btn-success btn-icon" (click)="addFile()">
+      <mat-icon>cloud_upload</mat-icon> Importer
+    </button>
+  </div>
+  <input type="file" #file accept="image/*" style="display: none" (change)="onFileAdded()" name="avatar">
+</div>

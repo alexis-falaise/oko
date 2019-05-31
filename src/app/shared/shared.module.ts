@@ -12,7 +12,8 @@ import {
   MatSnackBarModule,
   MatCheckboxModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatProgressBarModule
 } from '@angular/material';
 
 import { PostComponent } from './post/post.component';
@@ -30,6 +31,7 @@ import { ProposalListItemComponent } from './proposal-list-item/proposal-list-it
 import { ItemDetailsComponent } from './item-details/item-details.component';
 import { CityDisplayComponent } from './city-display/city-display.component';
 import { AddressDisplayComponent } from './address-display/address-display.component';
+import { PictureUploadComponent } from './picture-upload/picture-upload.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { AddressDisplayComponent } from './address-display/address-display.compo
     ItemDetailsComponent,
     CityDisplayComponent,
     AddressDisplayComponent,
+    PictureUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -58,6 +61,7 @@ import { AddressDisplayComponent } from './address-display/address-display.compo
     MatIconModule,
     MatListModule,
     MatMomentDateModule,
+    MatProgressBarModule,
     MatRippleModule,
     MatSnackBarModule,
     ScrollDispatchModule,
@@ -65,6 +69,7 @@ import { AddressDisplayComponent } from './address-display/address-display.compo
   ],
   entryComponents: [
     ItemDetailsComponent,
+    PictureUploadComponent,
   ],
   exports: [
     AddressDisplayComponent,

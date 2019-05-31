@@ -185,7 +185,9 @@
            <span *ngIf="!isLastUpdateAuthor">Vous avez accepté la contre proposition. En attente de paiement par {{ proposal?.to.user.firstname }}</span>
           </small>
           <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.paid && !proposal.validated">
-            Vos articles seront livrés par {{ proposal?.to?.user.firstname }} au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}
+            Vos articles seront livrés par {{ proposal?.to?.user.firstname }}
+            <span *ngIf="!proposal.pickupDate">au plus tôt le {{ moment(proposal?.to?.date).format('DD/MM') }}</span> 
+            <span *ngIf="proposal.pickupDate">le {{ moment(proposal.pickupDate).format('DD/MM') }} à {{ moment(proposal.pickupDate).format('HH:mm') }}</span>
           </small>
           <div class="d-flex flex-column align-items-center"
               *ngIf="(proposal.fromRequest && !proposal.authorView
@@ -212,10 +214,12 @@
             La proposition est en attente d'acceptation par {{ proposal?.from?.user.firstname }}
           </small>
           <small class="text-muted" *ngIf="(proposal.fromTrip || proposal.toRequest) && proposal.paid && !proposal.validated">
-            Vos articles seront livrés par {{ proposal?.from?.user.firstname }} au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}
+            Vos articles seront livrés par {{ proposal?.from?.user.firstname }}
+            <span *ngIf="!proposal.pickupDate">au plus tôt le {{ moment(proposal?.from?.date).format('DD/MM') }}</span>
+            <span *ngIf="proposal.pickupDate">le {{ moment(proposal.pickupDate).format('DD/MM') }} à {{ moment(proposal.pickupDate).format('HH:mm') }}</span>
           </small>
           <small class="text-muted" *ngIf="(proposal.fromRequest || proposal.toTrip) && proposal.accepted && !proposal.paid">
-            {{ isLastUpdateAuthor ? proposal.from.user.firstname + 'a ' : 'Vous avez' }} accepté la proposition.
+            {{ isLastUpdateAuthor ? 'Vous avez' : proposal.from.user.firstname + 'a ' }} accepté la proposition.
             En attente de paiement par {{ proposal?.from?.user.firstname }}
           </small>
           <div class="d-flex flex-column align-items-center"
