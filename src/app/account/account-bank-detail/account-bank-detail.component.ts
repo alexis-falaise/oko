@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { BankDetails } from '@models/balance/bank-details.model';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CurrencyCode, currencyCodes, getCurrency } from '@static/currency-codes';
+import { CurrencyCode, getCurrency } from '@static/currency-codes';
 import { UserService } from '@core/user.service';
 import { User } from '@models/user.model';
 import { MatSnackBar } from '@angular/material';
@@ -13,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./account-bank-detail.component.scss']
 })
 export class AccountBankDetailComponent implements OnInit {
-  @ViewChild('currencyInput') currencyInput;
+  @ViewChild('currencyInput', { static: false }) currencyInput: ElementRef;
   account = this.fb.group({
     name: [''],
     iban: ['', Validators.compose([Validators.required, Validators.minLength(14), Validators.maxLength(34)])],

@@ -1,4 +1,13 @@
-import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnDestroy,
+  ElementRef,
+} from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatSnackBar } from '@angular/material';
 import { Item } from '@models/item.model';
 import { UiService } from '@core/ui.service';
@@ -12,7 +21,7 @@ import { environment } from '@env/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PictureUploadComponent implements OnInit, OnDestroy {
-  @ViewChild('file') file;
+  @ViewChild('file', { static: false }) file: ElementRef;
   uploadedFile: File;
   uploadedFileSize: number;
   loading;

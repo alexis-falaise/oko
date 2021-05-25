@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Luggage } from '@models/luggage.model';
 import { fillingDescriptions } from '@static/luggage-filling.static';
@@ -9,7 +9,7 @@ import { fillingDescriptions } from '@static/luggage-filling.static';
   styleUrls: ['./trip-luggage.component.scss']
 })
 export class TripLuggageComponent implements OnInit {
-  @ViewChild('stepper') public stepper;
+  @ViewChild('stepper', { static: false }) public stepper: ElementRef;
   cabin: boolean;
   weight: number;
   height: number;

@@ -18,9 +18,9 @@ import { PictureUploadComponent } from '@shared/picture-upload/picture-upload.co
   styleUrls: ['./request-item-new.component.scss']
 })
 export class RequestItemNewComponent implements OnInit {
-  @ViewChild('itemPicture') itemPicture: ElementRef;
-  @ViewChild('itemLink') itemLink;
-  @ViewChild('stepper') stepper;
+  @ViewChild('itemPicture', { static: false }) itemPicture: ElementRef;
+  @ViewChild('itemLink', { static: false }) itemLink: ElementRef;
+  @ViewChild('stepper', { static: false }) stepper: ElementRef;
   item = this.fb.group({
     label: ['', Validators.required],
     description: ['', Validators.required],

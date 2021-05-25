@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AdminUserComponent implements OnInit {
   users: Array<User>;
-  usersSource = new MatTableDataSource(this.users);
+  usersSource = new MatTableDataSource();
   displayedColumns = [
     'avatar',
     'lastname',
@@ -30,8 +30,8 @@ export class AdminUserComponent implements OnInit {
     'connected',
     'admin'
   ];
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   moment = moment;
 
   constructor(

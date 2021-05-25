@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { PostService } from '@core/post.service';
 import { forkJoin, timer, Subject } from 'rxjs';
 import * as moment from 'moment';
@@ -24,7 +24,7 @@ class ProposalNotification {
   styleUrls: ['./account-proposal.component.scss']
 })
 export class AccountProposalComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('deliverTabs') tabs;
+  @ViewChild('deliverTabs', { static: false }) tabs: ElementRef;
   routes = ['deliver', 'upcoming', 'received', 'sent'];
   currentUser: User;
   receivedFromTrip: Array<Proposal> = [];

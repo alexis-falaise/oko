@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -30,7 +30,7 @@ import { ProposalEditDateComponent } from './proposal-edit-date/proposal-edit-da
   styleUrls: ['./proposal.component.scss'],
 })
 export class ProposalComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-  @ViewChild('actionsBar') actionsBar;
+  @ViewChild('actionsBar', { static: false }) actionsBar: ElementRef;
   @Input() proposal: Proposal;
   @Input() receiver: boolean;
   @Input() entry: Post;

@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./account-avatar-upload.component.scss']
 })
 export class AccountAvatarUploadComponent implements OnInit, OnDestroy {
-  @ViewChild('file') file;
+  @ViewChild('file', { static: false }) file: File;
   uploadedFile: File;
   uploadedFileSize: number;
   preview: ArrayBuffer | string = '';

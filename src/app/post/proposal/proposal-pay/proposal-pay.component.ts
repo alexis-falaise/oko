@@ -26,7 +26,7 @@ interface PricingItem {
   styleUrls: ['./proposal-pay.component.scss']
 })
 export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('cardInfo') cardInfo: ElementRef;
+  @ViewChild('cardInfo', { static: false }) cardInfo: ElementRef;
   card: any;
   cardHandler = this.onChange.bind(this);
   error: string;

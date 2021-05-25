@@ -39,8 +39,8 @@ export class AdminTripComponent implements OnInit {
     'clicks': 'Clics',
     'views': 'Vues',
   };
-  tripsSource = new MatTableDataSource(this.trips);
-  @ViewChild(MatSort) sort: MatSort;
+  tripsSource = new MatTableDataSource();
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   moment = moment;
 
   constructor(
