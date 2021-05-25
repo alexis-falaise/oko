@@ -70,7 +70,7 @@ export class UiService {
     });
   }
 
-  serverError(error: HttpErrorResponse | ServerResponse, customMessage?: string) {
+  serverError(error: HttpErrorResponse | ServerResponse, customMessage?: string, redirect = true) {
     this.setLoading(false);
     this.setMainLoading(false);
     const status = error instanceof HttpErrorResponse ? error.status : error.message;
@@ -121,7 +121,7 @@ export class UiService {
       duration = 5000;
     }
     const snackRef = this.snack.open(customMessage || message, action, {duration: duration});
-    if (status === 404 || status === 403 || status === 401) {
+    if ((status === 404 || status === 403 || status === 401) && redirect) {
       this.router.navigate([`/${status}`]);
     }
     snackRef.onAction().subscribe(() => {

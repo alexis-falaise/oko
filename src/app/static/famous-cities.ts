@@ -12,7 +12,7 @@ const cities = [
     'Atlanta',
     'Auckland',
     'Bangkok',
-    'Bamako',
+    // 'Bamako',
     'Barcelona',
     'Bali',
     'Bath',

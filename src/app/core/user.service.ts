@@ -37,9 +37,9 @@ export class UserService {
 
   /**
    * Get current user information
-   * @param redirect: Indicate if user should be redirected to error pages on error (defaults true)
+   * @param redirect: Indicate if user should be redirected to error pages on error (defaults false)
    */
-  getCurrentUser(redirect = true): Observable<User> {
+  getCurrentUser(redirect = false): Observable<User> {
     return Observable.create(observer => {
       const currentUser = this.currentUser.getValue();
       if (currentUser) {
@@ -52,7 +52,7 @@ export class UserService {
           observer.complete();
         }, (error) => {
           if (redirect) {
-            this.uiService.serverError(error);
+            this.uiService.serverError(error, null, redirect);
           }
           observer.next();
           observer.complete();
@@ -66,7 +66,7 @@ export class UserService {
   }
 
   getUserStatsById(id: string): Observable<User> {
-    return this.http.get(`${this.userUrl}/${id}/stats` ) as Observable<User>;
+    return this.http.get(`${this.userUrl}/${id}/stats`) as Observable<User>;
   }
 
   updateUser(user: User): Observable<Object> {

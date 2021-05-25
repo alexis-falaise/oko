@@ -26,6 +26,7 @@ import { Trip } from '@models/post/trip.model';
 import { Proposal } from '@models/post/proposal.model';
 import { MeetingPoint } from '@models/meeting-point.model';
 import { ConfirmComponent } from '@core/dialogs/confirm/confirm.component';
+import { feesPercentage, staticFees, bonusPercentage, staticBonus, estimateBonus, calculateTotalPrice } from '@static/fees';
 
 @Component({
   selector: 'app-request-form',
@@ -43,8 +44,6 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   itemsPrice: number;
   staticBonus = 10;
   bonusPercentage = 0.15;
-  feesPercentage = 0.075;
-  staticFees = 1.5;
   fees: number;
   computedBonus: number;
   totalPrice: number;
@@ -426,34 +425,14 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Computes a bonus for the traveler
-   * Bonus calculation takes into account:
-   * - The items price
-   *   A percentage (bonusPercentage) is applied to the global price of items, never going under 10€
-   * - The number of items
-   *   Adding 2.5€ for every item if there are more than one
-   * - The weight of items
-   *   Adding 1€ / kg if global weight exceeds 5kg
-   * - The meeting point
-   *   Adding 10€ for delivery elsewhere than the arrival airport
    * @param bonus : Existing bonus when editing a request
    */
   private computeBonus(bonus?: number) {
     this.itemsPrice = arraySum(this.items.map(item => item.price));
-    let itemsWeight = arraySum(this.items.map(item => item.weight));
-    if (Number.isNaN(itemsWeight)) {
-      itemsWeight = 0;
-    }
     if (Number.isNaN(this.itemsPrice)) {
       this.itemsPrice = 0;
     }
-    itemsWeight = itemsWeight > 5 ? itemsWeight - 5 : itemsWeight;
-    let calculatedBonus = this.itemsPrice * this.bonusPercentage
-    + (this.items.length - 1) * 2.5
-    + itemsWeight * 1;
-    calculatedBonus = calculatedBonus > this.staticBonus ? calculatedBonus : this.staticBonus;
-    if (!this.meeting.controls.airportPickup.value) {
-      calculatedBonus += 10;
-    }
+    const calculatedBonus = estimateBonus(this.items, this.meeting.controls.airportPickup.value);
     const resultingBonus = Math.ceil(bonus || calculatedBonus);
     this.meeting.controls.bonus.patchValue(resultingBonus);
     // Update validation on bonus input
@@ -468,9 +447,7 @@ export class RequestFormComponent implements OnInit, OnChanges, OnDestroy {
   private computeTotalPrice() {
     const bonus = this.meeting.controls.bonus.value;
     const itemsPrice = this.itemsPrice || 0;
-    const preFeesPrice = itemsPrice + bonus;
-    this.fees = preFeesPrice * this.feesPercentage + this.staticFees;
-    const price = round(this.fees + preFeesPrice, 2);
+    const price = calculateTotalPrice(itemsPrice, bonus);
     this.requestService.setTotalPrice(price);
   }
 

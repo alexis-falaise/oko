@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ServerResponse } from '@models/app/server-response.model';
 import { UiService } from '@core/ui.service';
+import { arraySum, round } from '@utils/math.util';
 
 declare var stripe: any;
 declare var elements: any;
@@ -31,7 +32,10 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
   error: string;
   proposal: Proposal;
   request: Request;
+  bill: Array<PricingItem>;
+  extended = false;
   pricingItems: Array<PricingItem>;
+  extendedPricingItems: Array<PricingItem>;
   checkout: FormGroup = this.fb.group({
     name: ['', Validators.required],
   });
@@ -113,6 +117,11 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeDetector.detectChanges();
   }
 
+  toggleBillDetails() {
+    this.extended = !this.extended;
+    this.bill = this.extended ? this.extendedPricingItems : this.pricingItems;
+  }
+
   ngOnDestroy() {
     this.card.removeEventListener('change', this.cardHandler);
     this.card.destroy();
@@ -154,6 +163,20 @@ export class ProposalPayComponent implements OnInit, AfterViewInit, OnDestroy {
         price: this.proposal.bonus,
       },
     ];
+    this.extendedPricingItems = this.request.items.map(item => ({
+      title: item.label,
+      hint: item.description,
+      price: item.price
+    })).concat([{
+      title: 'Bonus voyageur',
+      hint: 'Montant du bonus fixé par vous et le voyageur',
+      price: this.proposal.bonus,
+    }, {
+      title: 'Frais de service',
+      hint: 'Frais de fonctionnement de la plateforme',
+      price: round(this.amount - this.proposal.bonus - arraySum(this.request.items.map(item => item.price)), 2),
+    }]);
+    this.bill = this.pricingItems;
   }
 
 }

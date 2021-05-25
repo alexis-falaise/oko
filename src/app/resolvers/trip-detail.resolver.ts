@@ -38,7 +38,8 @@ export class TripDetailResolver implements Resolve<TripDetailData> {
         timer(timeout).subscribe(() => stopLoad.next());
         return Observable.create(observer => {
             zip(
-                this.postService.getTripById(tripId),
+                this.postService.getTripById(tripId)
+                .pipe(catchError((err, caught) => of(caught))),
                 this.userService.getCurrentUser(false)
                 .pipe(catchError((err, caught) => of(caught)))
             )

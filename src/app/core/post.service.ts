@@ -152,7 +152,7 @@ export class PostService {
       this.http.get(`${this.tripUrl}/${id}` )
       .subscribe(
         (trip: Trip) => this.getTripUserStats(trip, observer),
-        (error: HttpErrorResponse) => this.uiService.serverError(error));
+        (error: HttpErrorResponse) => this.uiService.serverError(error, null, false));
     });
   }
 

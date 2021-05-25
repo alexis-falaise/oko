@@ -244,8 +244,9 @@ html, body {
 }
 
 .mat-step-label {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
     height: 72px;
     width: 100%;
 }

@@ -2,12 +2,13 @@
   <div class="proposal-pay__hero">
       <h2 class="proposal-pay__hero__title">Paiement</h2>
   </div>
-  <div class="proposal-pay__summary container">
+  <div class="proposal-pay__summary container" (click)="toggleBillDetails()">
     <div class="proposal-pay__summary__title">
-        Votre demande
+        Votre demande <br>
+        <small class="item-hint text-muted" *ngIf="!extended">Cliquez pour voir le detail</small>
     </div>
     <mat-divider></mat-divider>
-    <div class="row proposal-pay__summary__detail" *ngFor="let item of pricingItems">
+    <div class="row proposal-pay__summary__detail" *ngFor="let item of bill">
         <div class="col-8 item">
             <h6 class="item-title">{{ item.title }}</h6>
             <small class="item-subtitle" *ngIf="item.subtitle">{{ item.subtitle }}</small><br *ngIf="item.subtitle">

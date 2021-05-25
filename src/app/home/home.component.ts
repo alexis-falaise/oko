@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
     });
     this.authService.onUser().subscribe(authUser => {
       if (authUser) {
-        this.userService.getCurrentUser().subscribe(user => {
+        this.userService.getCurrentUser(false).subscribe(user => {
           this.currentUser = user;
           if ((user.sessions && user.sessions.length === 1 || !user.sessions) && !this.profileSnack) {
             this.profileSnack = true;

@@ -7,9 +7,7 @@ import { MeetingPoint } from '@models/meeting-point.model';
 import { Location } from '@models/location.model';
 import { Trip } from './trip.model';
 import { arraySum, round } from '@utils/math.util';
-
-const feesPercentage = 0.075;
-const staticFees = 1.5;
+import { feesPercentage, staticFees } from '@static/fees';
 
 export class Request extends Post {
     items: Array<Item>;

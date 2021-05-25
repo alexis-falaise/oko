@@ -93,7 +93,7 @@
   </div>
   <div class="trip-detail__engagement" [class.faded]="fadeInfo" *ngIf="trip">
     <div class="trip-detail__engagement__constraints container">
-      <h4 class="trip-detail__engagement__constraints-title">Espace disponible</h4>
+      <h5 class="trip-detail__engagement__constraints-title">Ce que {{ trip.user.firstname }} peut emporter</h5>
       <div class="row">
           <div class="trip-detail__engagement__constraints-luggages col-12 col-md-6" *ngIf="trip.luggages && trip.luggages.length">
               <div class="row justify-content-center">
@@ -124,10 +124,10 @@
           <div class="trip-detail__engagement__constraints-info col-12 col-md-6">
             <ul class="constraints">
                 <li *ngIf="trip.airportDrop">
-                    <mat-icon>local_airport</mat-icon> Remise à l'aéroport
+                    <mat-icon>local_airport</mat-icon> {{ trip.user.firstname }} vous remettra vos articles à l'aéroport {{ trip?.to?.airport?.name }}
                 </li>
                 <li *ngIf="!trip.airportDrop">
-                    <mat-icon>my_location</mat-icon> Remise au point de rendez-vous
+                    <mat-icon>my_location</mat-icon> {{ trip.user.firstname }} vous remettra vos articles à un point de rendez-vous à définir
                 </li>
             </ul>
           </div>

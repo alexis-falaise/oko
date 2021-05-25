@@ -34,6 +34,7 @@
         }
 
         &__detail {
+            animation: slideInUp ease-out .25s;
             margin-top: 10px;
         }
     }
