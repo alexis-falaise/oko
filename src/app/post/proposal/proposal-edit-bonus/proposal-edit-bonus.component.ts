@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, GestureConfig } from '@angular/material';
+import { GestureConfig } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { PostService } from '@core/post.service';

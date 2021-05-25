@@ -9,7 +9,8 @@ import { Link } from '@models/link.model';
 import { itemSizes } from '@static/item-sizes.static';
 import { validUrl, extractHostname } from '@utils/index.util';
 import { UiService } from '@core/ui.service';
-import { MatSnackBar, MatBottomSheet } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PictureUploadComponent } from '@shared/picture-upload/picture-upload.component';
 
 @Component({

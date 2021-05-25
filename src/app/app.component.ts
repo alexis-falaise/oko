@@ -8,7 +8,8 @@ import { AuthService } from '@core/auth.service';
 import { UiService } from '@core/ui.service';
 import { NotificationService } from '@core/notification.service';
 import { Socket } from 'ngx-socket-io';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { InstallComponent } from '@core/dialogs/install/install.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 

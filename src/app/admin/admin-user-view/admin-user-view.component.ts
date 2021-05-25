@@ -7,7 +7,7 @@ import { MessengerService } from '@core/messenger.service';
 
 import { User } from '@models/user.model';
 import { UserService } from '@core/user.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-user-view',

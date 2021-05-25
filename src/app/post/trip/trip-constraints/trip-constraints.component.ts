@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Luggage } from '@models/luggage.model';
 import { TripLuggageComponent } from '../trip-luggage/trip-luggage.component';
 

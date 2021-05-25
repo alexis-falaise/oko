@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Item } from '@models/item.model';
 import { ItemSize, itemSizeFit } from '@static/item-sizes.static';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ItemDetailsComponent } from '@shared/item-details/item-details.component';
 
 @Component({

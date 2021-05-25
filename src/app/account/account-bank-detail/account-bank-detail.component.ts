@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { CurrencyCode, getCurrency } from '@static/currency-codes';
 import { UserService } from '@core/user.service';
 import { User } from '@models/user.model';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({

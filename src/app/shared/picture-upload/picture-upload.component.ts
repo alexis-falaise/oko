@@ -8,7 +8,8 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatSnackBar } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Item } from '@models/item.model';
 import { UiService } from '@core/ui.service';
 import { AppService } from '@core/app.service';

@@ -3,7 +3,9 @@ import * as moment from 'moment';
 
 import { AdminService } from '../admin.service';
 import { User } from '@models/user.model';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 
 @Component({

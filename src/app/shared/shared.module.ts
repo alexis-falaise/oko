@@ -3,18 +3,16 @@ import { CommonModule } from '@angular/common';
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {
-  MatIconModule,
-  MatExpansionModule,
-  MatDatepickerModule,
-  MatRippleModule,
-  MatCardModule,
-  MatSnackBarModule,
-  MatCheckboxModule,
-  MatListModule,
-  MatChipsModule,
-  MatProgressBarModule
-} from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { PostComponent } from './post/post.component';
 import { AvatarComponent } from './avatar/avatar.component';

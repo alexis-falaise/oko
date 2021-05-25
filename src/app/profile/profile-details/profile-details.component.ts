@@ -6,7 +6,7 @@ import { PexelsService } from '@core/pexels.service';
 import { forkJoin, Observable } from 'rxjs';
 import { UserService } from '@core/user.service';
 import { MessengerService } from '@core/messenger.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 class DisplayElement {
   label: string;

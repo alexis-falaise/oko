@@ -13,7 +13,7 @@ import { Thread } from '@models/messenger/thread.model';
 import { User } from '@models/user.model';
 import { Message } from '@models/messenger/message.model';
 import { HistoryService } from '@core/history.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-thread',

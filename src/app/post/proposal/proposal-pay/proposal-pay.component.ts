@@ -5,7 +5,7 @@ import { Proposal } from '@models/post/proposal.model';
 import { PostService } from '@core/post.service';
 import { Request } from '@models/post/request.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ServerResponse } from '@models/app/server-response.model';
 import { UiService } from '@core/ui.service';
 import { arraySum, round } from '@utils/math.util';
