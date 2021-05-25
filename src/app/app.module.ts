@@ -1,4 +1,4 @@
-import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgModule } from '@angular/core';
@@ -18,17 +18,16 @@ import {
   GestureConfig,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
-import { FacebookLoginProvider } from 'angularx-social-login';
+import { FacebookLoginProvider, SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { environment } from '@env/environment';
 
 import { AppRoutingModule } from './app-routing.module';
-import { CoreModule } from '@core/core.module';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
 
+import { CoreModule } from '@core/core.module';
 import { AuthService } from '@core/auth.service';
 import { GeoService } from '@core/geo.service';
 import { PostService } from '@core/post.service';

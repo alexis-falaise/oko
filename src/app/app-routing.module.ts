@@ -18,16 +18,16 @@ import { ForbiddenComponent } from '@core/forbidden/forbidden.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule', canActivate: [AdminGuard] },
+  { path: 'admin', loadChildren: () => import('app/admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard] },
   { path: 'home', component: HomeComponent },
   { path: 'landing', component: LandingComponent },
   { path: 'oneclick', component: OneclickComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'signin', component: SigninComponent },
-  { path: 'account', loadChildren: 'app/account/account.module#AccountModule' },
-  { path: 'post', loadChildren: 'app/post/post.module#PostModule' },
-  { path: 'profile', loadChildren: 'app/profile/profile.module#ProfileModule' },
+  { path: 'account', loadChildren: () => import('app/account/account.module').then(m => m.AccountModule) },
+  { path: 'post', loadChildren: () => import('app/post/post.module').then(m => m.PostModule) },
+  { path: 'profile', loadChildren: () => import('app/profile/profile.module').then(m => m.ProfileModule) },
   { path: 'messages', component: MessengerComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: ThreadListComponent },

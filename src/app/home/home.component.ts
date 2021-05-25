@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, Inject, AfterViewInit } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
