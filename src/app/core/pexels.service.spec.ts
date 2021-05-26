@@ -6,7 +6,7 @@ describe('PexelsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PexelsService = TestBed.get(PexelsService);
+    const service: PexelsService = TestBed.inject(PexelsService);
     expect(service).toBeTruthy();
   });
 });
