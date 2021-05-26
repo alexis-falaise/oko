@@ -79,14 +79,6 @@ import { ProposalEditDateComponent } from './proposal/proposal-edit-date/proposa
     ProposalPayComponent,
     ProposalEditDateComponent,
   ],
-  entryComponents: [
-    TripLuggageComponent,
-    RequestItemSelectionComponent,
-    ProposalEditComponent,
-    ProposalEditBonusComponent,
-    ProposalEditMeetingComponent,
-    ProposalEditDateComponent,
-  ],
   imports: [
     CommonModule,
     DialogsModule,

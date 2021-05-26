@@ -44,10 +44,6 @@ import { AccountBankDetailResolver } from '@resolvers/account-bank-detail.resolv
     AccountBalanceComponent,
     AccountBankDetailComponent,
   ],
-  entryComponents: [
-    AccountComponent,
-    AccountAvatarUploadComponent,
-  ],
   imports: [
     AccountRoutingModule,
     RouterModule,

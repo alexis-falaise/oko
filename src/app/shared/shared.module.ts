@@ -65,10 +65,6 @@ import { PictureUploadComponent } from './picture-upload/picture-upload.componen
     ScrollDispatchModule,
     RouterModule,
   ],
-  entryComponents: [
-    ItemDetailsComponent,
-    PictureUploadComponent,
-  ],
   exports: [
     AddressDisplayComponent,
     AvatarComponent,

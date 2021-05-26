@@ -41,9 +41,5 @@ import { ThreadRemoveComponent } from './thread-remove/thread-remove.component';
     MatInputModule,
     MatProgressBarModule,
   ],
-  entryComponents: [
-    ThreadNewComponent,
-    ThreadRemoveComponent
-  ],
 })
 export class MessengerModule { }

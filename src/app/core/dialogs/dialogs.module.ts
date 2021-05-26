@@ -20,14 +20,6 @@ import { ConfirmComponent } from './confirm/confirm.component';
     SaveChangesComponent,
     SocialDisconnectionComponent,
   ],
-  entryComponents: [
-    ActionsComponent,
-    ConfirmComponent,
-    InstallComponent,
-    NotConnectedComponent,
-    SaveChangesComponent,
-    SocialDisconnectionComponent,
-  ],
   imports: [
     CommonModule,
     MatDialogModule,
