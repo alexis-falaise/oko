@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SaveChangesComponent } from './save-changes.component';
 
@@ -6,7 +6,7 @@ describe('SaveChangesComponent', () => {
   let component: SaveChangesComponent;
   let fixture: ComponentFixture<SaveChangesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SaveChangesComponent ]
     })

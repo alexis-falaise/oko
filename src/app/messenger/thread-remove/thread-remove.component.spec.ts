@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThreadRemoveComponent } from './thread-remove.component';
 
@@ -6,7 +6,7 @@ describe('ThreadRemoveComponent', () => {
   let component: ThreadRemoveComponent;
   let fixture: ComponentFixture<ThreadRemoveComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ThreadRemoveComponent ]
     })

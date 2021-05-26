@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NotConnectedComponent } from './not-connected.component';
 
@@ -6,7 +6,7 @@ describe('NotConnectedComponent', () => {
   let component: NotConnectedComponent;
   let fixture: ComponentFixture<NotConnectedComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NotConnectedComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThreadHeaderComponent } from './thread-header.component';
 
@@ -6,7 +6,7 @@ describe('ThreadHeaderComponent', () => {
   let component: ThreadHeaderComponent;
   let fixture: ComponentFixture<ThreadHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ThreadHeaderComponent ]
     })

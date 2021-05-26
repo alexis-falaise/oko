@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SpaceIndicatorComponent } from './space-indicator.component';
 
@@ -6,7 +6,7 @@ describe('SpaceIndicatorComponent', () => {
   let component: SpaceIndicatorComponent;
   let fixture: ComponentFixture<SpaceIndicatorComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SpaceIndicatorComponent ]
     })
