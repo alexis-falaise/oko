@@ -12,7 +12,7 @@
       "@static/*": ["app/static/*"],
       "@shared/*": ["app/shared/*"],
       "@utils/*": ["app/utils/*"],
-      "@env/*": ["environments/*"],
+      "@env/*": ["environments/*"]
     },
     "sourceMap": true,
     "declaration": false,
