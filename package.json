@@ -27,7 +27,7 @@
     "@angular/service-worker": "~10.2.5",
     "@types/socket.io-client": "^1.4.36",
     "@types/stripe": "^6.32.13",
-    "angularx-social-login": "^2.3.1",
+    "angularx-social-login": "^3.5.4",
     "bootstrap": "^4.6.0",
     "core-js": "^2.6.12",
     "hammerjs": "^2.0.8",
