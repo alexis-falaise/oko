@@ -1,21 +1,21 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
-$general-typography: mat-typography-config(
+$general-typography: mat.define-typography-config(
   $font-family: '"Krub", "Helvetica Neue", sans-serif',
 );
 
-@include mat-core($general-typography);
+@include mat.core($general-typography);
 
-$my-app-primary: mat-palette($mat-cyan);
-$my-app-accent: mat-palette($mat-light-green);
-$my-app-warn: mat-palette($mat-deep-orange);
+$my-app-primary: mat.define-palette(mat.$cyan-palette);
+$my-app-accent: mat.define-palette(mat.$light-green-palette);
+$my-app-warn: mat.define-palette(mat.$deep-orange-palette);
 
-$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+$my-app-theme: mat.define-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 
-@include angular-material-theme($my-app-theme);
+@include mat.all-component-themes($my-app-theme);
 
 .home-hero {
-    $my-hero-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-warn);
+    $my-hero-theme: mat.define-dark-theme($my-app-primary, $my-app-accent, $my-app-warn);
 
-    @include angular-material-theme($my-hero-theme);
+    @include mat.all-component-themes($my-hero-theme);
 }
