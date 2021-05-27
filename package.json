@@ -34,7 +34,7 @@
     "moment": "^2.29.1",
     "ngx-device-detector": "^2.1.1",
     "ngx-material-timepicker": "^2.13.0",
-    "ngx-socket-io": "^3.2.0",
+    "ngx-socket-io": "^4.0.0",
     "rxjs": "~6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
