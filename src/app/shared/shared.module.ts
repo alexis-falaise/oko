@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -62,7 +62,7 @@ import { PictureUploadComponent } from './picture-upload/picture-upload.componen
     MatProgressBarModule,
     MatRippleModule,
     MatSnackBarModule,
-    ScrollDispatchModule,
+    ScrollingModule,
     RouterModule,
   ],
   exports: [

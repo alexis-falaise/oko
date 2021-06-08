@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { GestureConfig } from '@angular/material/core';
+import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { PostService } from '@core/post.service';
 
@@ -12,7 +11,7 @@ import { User } from '@models/user.model';
 
 
 declare var Hammer: any;
-export class MyHammerConfig extends GestureConfig {
+export class MyHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, {
       touchAction: 'pan-y'

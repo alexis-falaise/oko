@@ -26,7 +26,7 @@ $transitionStyle: ease-out;
         
         height: 10vh;
         min-height: 150px;
-        background-image: url('assets/hero-landing.jpg'), $heroGradient;
+        background-image: url('../../assets/hero-landing.jpg'), $heroGradient;
         background-size: cover;
         background-position: center;
         display: flex;
@@ -258,7 +258,7 @@ $transitionStyle: ease-out;
         &__trip-proposal {
             width: 100vw;
             padding: 75px 10% 75px;
-            background: url('assets/landing-trip-proposal.jpg') no-repeat 65% center fixed;
+            background: url('../../assets/landing-trip-proposal.jpg') no-repeat 65% center fixed;
             background-size: cover;
             box-shadow: 0 -2.5px 10px rgba(0, 0, 0, .5) inset;            
         }
@@ -278,7 +278,7 @@ $transitionStyle: ease-out;
             }
             &-service {
                 width: 100vw;
-                background: url('assets/landing-service-1.jpg') no-repeat center center fixed;
+                background: url('../../assets/landing-service-1.jpg') no-repeat center center fixed;
                 background-size: cover;
                 padding: 75px 10% 75px;
                 color: $white-alpha-8;

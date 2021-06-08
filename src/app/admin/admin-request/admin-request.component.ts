@@ -16,7 +16,7 @@ import { sortByDate } from '@utils/array.util';
 })
 export class AdminRequestComponent implements OnInit {
   requests: Array<Request>;
-  requestsSource = new MatTableDataSource(this.requests);
+  requestsSource = new MatTableDataSource();
   expandedRequest: Request;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   displayedColumns = [

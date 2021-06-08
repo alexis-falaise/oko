@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -107,7 +107,7 @@ import { ProposalEditDateComponent } from './proposal/proposal-edit-date/proposa
     ReactiveFormsModule,
     PostRoutingModule,
     SharedModule,
-    ScrollDispatchModule,
+    ScrollingModule,
   ],
   providers: [
     ProposalPayResolver,

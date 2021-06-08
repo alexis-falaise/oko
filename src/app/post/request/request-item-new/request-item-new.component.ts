@@ -1,17 +1,18 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatStepper } from '@angular/material/stepper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RequestService } from '../request.service';
 
+import { UiService } from '@core/ui.service';
 import { Item } from '@models/item.model';
 import { Link } from '@models/link.model';
+import { PictureUploadComponent } from '@shared/picture-upload/picture-upload.component';
 import { itemSizes } from '@static/item-sizes.static';
 import { validUrl, extractHostname } from '@utils/index.util';
-import { UiService } from '@core/ui.service';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PictureUploadComponent } from '@shared/picture-upload/picture-upload.component';
 
 @Component({
   selector: 'app-request-item-new',
@@ -21,7 +22,7 @@ import { PictureUploadComponent } from '@shared/picture-upload/picture-upload.co
 export class RequestItemNewComponent implements OnInit {
   @ViewChild('itemPicture', { static: false }) itemPicture: ElementRef;
   @ViewChild('itemLink', { static: false }) itemLink: ElementRef;
-  @ViewChild('stepper', { static: false }) stepper: ElementRef;
+  @ViewChild('stepper', { static: true }) stepper: MatStepper;
   item = this.fb.group({
     label: ['', Validators.required],
     description: ['', Validators.required],
@@ -84,7 +85,7 @@ export class RequestItemNewComponent implements OnInit {
       });
     } else {
       const snackRef = this.snack.open('Merci d\'entrer un lien valide', 'OK', {duration: 3000});
-      snackRef.onAction().subscribe(() => this.itemLink.focus());
+      snackRef.onAction().subscribe(() => this.itemLink.nativeElement.focus());
     }
   }
 

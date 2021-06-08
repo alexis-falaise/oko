@@ -138,7 +138,8 @@ export class InstallComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<InstallComponent>,
-    private deviceDetector: DeviceDetectorService) { }
+    private deviceDetector: DeviceDetectorService,
+  ) { }
 
   ngOnInit() {
     const browser = this.deviceDetector.browser;

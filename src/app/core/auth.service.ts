@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
-  AuthService as SocialService,
+  SocialAuthService as SocialService,
   GoogleLoginProvider,
   FacebookLoginProvider,
   SocialUser

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { NotConnectedComponent } from './not-connected/not-connected.component';
 import { SocialDisconnectionComponent } from './social-disconnection/social-disconnection.component';
@@ -27,5 +28,6 @@ import { ConfirmComponent } from './confirm/confirm.component';
     MatIconModule,
   ],
   exports: [NotConnectedComponent, SocialDisconnectionComponent],
+  providers: [DeviceDetectorService],
 })
 export class DialogsModule { }

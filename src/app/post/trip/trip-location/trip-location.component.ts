@@ -3,13 +3,12 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment';
+import { timer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { GeoService } from '@core/geo.service';
 import { Airport } from '@models/airport.model';
-import { isString } from 'util';
-import { timer, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { coordDistance, arrivalTime } from '@utils/math.util';
+import { arrivalTime } from '@utils/math.util';
 
 class City {
   city: string;
@@ -189,7 +188,7 @@ export class TripLocationComponent implements OnInit, OnChanges {
   }
 
   private filterAirports(value: string): Array<Airport> {
-    const filterValue = value && isString(value) ? value.toLowerCase() : '';
+    const filterValue = value && typeof value === 'string' ? value.toLowerCase() : '';
     return this.airports ? this.airports
     .filter(airport => airport.name.toLowerCase().includes(filterValue))
     : null;

@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  Inject,
+  OnDestroy,
+  ElementRef,
+} from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -15,7 +23,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./account-avatar-upload.component.scss']
 })
 export class AccountAvatarUploadComponent implements OnInit, OnDestroy {
-  @ViewChild('file', { static: false }) file: File;
+  @ViewChild('file', { static: false }) file: ElementRef;
   uploadedFile: File;
   uploadedFileSize: number;
   preview: ArrayBuffer | string = '';

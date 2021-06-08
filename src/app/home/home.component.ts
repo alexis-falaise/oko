@@ -1,26 +1,26 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef, Inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Inject } from '@angular/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DOCUMENT } from "@angular/common";
+import { DOCUMENT } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { timer } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { AuthService } from '@core/auth.service';
 import { PostService } from '@core/post.service';
 import { UiService } from '@core/ui.service';
+import { GeoService } from '@core/geo.service';
+import { UserService } from '@core/user.service';
+import { InstallComponent } from '@core/dialogs/install/install.component';
 
 import { Post } from '@models/post/post.model';
 import { Filter } from '@models/app/filter.model';
 import { Request } from '@models/post/request.model';
-import { GeoService } from '@core/geo.service';
-import { UserService } from '@core/user.service';
-import { InstallComponent } from '@core/dialogs/install/install.component';
 import { User } from '@models/user.model';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 class City {
   city: string;

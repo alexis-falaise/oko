@@ -1,4 +1,4 @@
-import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgModule } from '@angular/core';
@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatRippleModule, GestureConfig } from '@angular/material/core';
+import { MatRippleModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,9 +15,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { FacebookLoginProvider, SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
+import {
+  FacebookLoginProvider,
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleLoginProvider,
+} from 'angularx-social-login';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { DeviceDetectorModule } from 'ngx-device-detector';
 import { environment } from '@env/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,7 +41,7 @@ import { LandingModule } from './landing/landing.module';
 
 declare var Hammer: any;
 
-export class MyHammerConfig extends GestureConfig {
+export class MyHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, {
       touchAction: 'pan-y'
@@ -49,20 +53,6 @@ const config: SocketIoConfig = {url: environment.ioUrl, options: {}};
 
 const facebookAppId = environment.facebookAppId;
 const googleAppId = '70OW82UpWR1OJ0vNyl2aILsR';
-const socialConfig = new AuthServiceConfig([
-  {
-    id: FacebookLoginProvider.PROVIDER_ID,
-    provider: new FacebookLoginProvider(facebookAppId)
-  },
-  // {
-  //   id: GoogleLoginProvider.PROVIDER_ID,
-  //   provider: new GoogleLoginProvider(googleAppId)
-  // }
-]);
-
-export function provideSocialConfig() {
-  return socialConfig;
-}
 
 @NgModule({
   declarations: [
@@ -75,7 +65,6 @@ export function provideSocialConfig() {
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
-    DeviceDetectorModule.forRoot(),
     FormsModule,
     SharedModule,
     LandingModule,
@@ -106,9 +95,21 @@ export function provideSocialConfig() {
       useClass: MyHammerConfig
     },
     {
-      provide: AuthServiceConfig,
-      useFactory: provideSocialConfig,
-    },
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: true,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(googleAppId),
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider(facebookAppId),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    }
   ],
   bootstrap: [AppComponent]
 })
