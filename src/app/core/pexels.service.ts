@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Observer, timer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 
 import { environment } from '@env/environment';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -81,10 +82,11 @@ export class PexelsService {
       };
     });
     this.http.post(`${this.serverUrl}/app/picture`, savedSet)
-    .subscribe(
-      (response) => console.log('Saved picture set', response),
-      (error) => console.error(error)
-    );
+      .pipe(catchError((err, caught) => of(caught)))
+      .subscribe(
+        (response) => {},
+        (error) => console.error(error)
+      );
   }
 
   private getCachedBackgroundPicture(observer: Observer<string>, country: string, size: string) {

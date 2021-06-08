@@ -13,7 +13,7 @@
 @font-face {
     font-family: 'Quicksand';
     font-style: bold;
-    font-weght: 700;
+    // font-weight: 700;
     src: local('Quicksand'), url(/assets/fonts/quicksand-bold.ttf) format('ttf');
 }
 
@@ -73,7 +73,7 @@ html, body {
 }
 
 .main {
-    font-family: 'Krub', Helvetica, 'Roboto', sans-serif;
+    font-family: 'Hind', Helvetica, 'Roboto', sans-serif;
 }
 
 .clickable {
