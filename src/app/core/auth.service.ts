@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   SocialAuthService as SocialService,
@@ -9,15 +8,14 @@ import {
   FacebookLoginProvider,
   SocialUser
 } from 'angularx-social-login';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { User } from '@models/user.model';
 import { ServerResponse } from '@models/app/server-response.model';
-import { SocialDisconnectionComponent } from './dialogs/social-disconnection/social-disconnection.component';
+
 import { UiService } from './ui.service';
-import { Socket } from 'ngx-socket-io';
 
 class Status {
   status: boolean;
@@ -45,8 +43,6 @@ export class AuthService {
     private uiService: UiService,
     private social: SocialService,
     private snack: MatSnackBar,
-    private socket: Socket,
-    private dialog: MatDialog,
   ) { }
 
   onUser(): Observable<User> {
@@ -165,9 +161,9 @@ export class AuthService {
     return this.http.post(`${this.authUrl}/signin`, user) as Observable<ServerResponse>;
   }
 
-  // googleConnection() {
-  //   this.social.signIn(GoogleLoginProvider.PROVIDER_ID);
-  // }
+  googleConnection() {
+    this.social.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
 
   facebookConnection() {
     this.social.signIn(FacebookLoginProvider.PROVIDER_ID)
@@ -238,19 +234,21 @@ export class AuthService {
   }
 
   checkSocialAuthentication() {
-    this.uiService.setLoading(true);
     this.socialCheck.next(true);
     if (!this.socialAuthenticated && !this.socialChecked && !this.hasLoggedOut) {
       this.socialChecked = true;
       this.social.authState
-      .pipe(takeUntil(this.socialCheck))
-      .subscribe((user: SocialUser) => {
-        this.socialAuthenticated = true;
-        this.uiService.setLoading(false);
-        this.socialAuthentication(user);
-      }, (error) => {
-        this.socialAuthenticated = false;
-      });
+        .pipe(
+          tap(() =>  this.uiService.setLoading(true)),
+          takeUntil(this.socialCheck),
+        )
+        .subscribe((user: SocialUser) => {
+          this.socialAuthenticated = true;
+          this.uiService.setLoading(false);
+          this.socialAuthentication(user);
+        }, (error) => {
+          this.socialAuthenticated = false;
+        });
     } else {
       this.uiService.setLoading(false);
     }

@@ -1,4 +1,9 @@
-import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HAMMER_GESTURE_CONFIG,
+  HammerGestureConfig,
+  HammerModule,
+} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgModule } from '@angular/core';
@@ -66,7 +71,7 @@ const googleAppId = '70OW82UpWR1OJ0vNyl2aILsR';
     BrowserAnimationsModule,
     CoreModule,
     FormsModule,
-    SharedModule,
+    HammerModule,
     LandingModule,
     MatAutocompleteModule,
     MatButtonModule,
@@ -81,6 +86,7 @@ const googleAppId = '70OW82UpWR1OJ0vNyl2aILsR';
     MatRippleModule,
     MatSnackBarModule,
     MessengerModule,
+    SharedModule,
     SocialLoginModule,
     SocketIoModule.forRoot(config),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

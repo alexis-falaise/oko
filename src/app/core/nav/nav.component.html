@@ -1,12 +1,25 @@
 <nav class="navbar navbar-light" [class.expanded]="menuDisplay" [class.light]="light">
-    <button mat-button class="btn navbar-previous-wrapper" [class.disabled]="!hasParent" matRipple [matRippleColor]="'#FFFFFF55'" (click)="parent()">
+    <button
+      mat-button
+      class="btn navbar-previous-wrapper" 
+      *ngIf="hasParent; else menuToggle"
+      matRipple
+      [matRippleColor]="'#FFFFFF55'"
+      (click)="parent()">
       <span class="navbar-previous d-flex align-items-center"><mat-icon>arrow_back</mat-icon></span>
     </button>
-    <button class="navbar-toggler" type="button"
-      aria-controls="menu-collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
-      <mat-icon *ngIf="!menuDisplay">menu</mat-icon>
-      <mat-icon *ngIf="menuDisplay">clear</mat-icon>
-    </button>
+    <ng-template #menuToggle>
+      <button
+        class="navbar-toggler"
+        type="button"
+        aria-controls="menu-collapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        (click)="toggleMenu()">
+        <mat-icon *ngIf="!menuDisplay">menu</mat-icon>
+        <mat-icon *ngIf="menuDisplay">clear</mat-icon>
+      </button>
+    </ng-template>
 
   <!-- <div class="collapse navbar-collapse right" id="menu-collapse">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -27,8 +40,10 @@
 </nav>
 
 <div class="navbar__fullscreen"
-     [style.right]="'-' + navXposition + '%'"
-     (click)="hide()" (swipeRight)="hide()" [class.display]="menuDisplay">
+     [style.left]="'-' + navXposition + '%'"
+     (click)="hide()"
+     (swipeLeft)="hide()"
+     [class.display]="menuDisplay">
   <a class="navbar-brand">ọkọ</a>
   <div class="navbar__fullscreen-avatar" >
     <app-avatar [image]="currentUser.avatar" [size]="50" *ngIf="currentUser?.avatar"></app-avatar>

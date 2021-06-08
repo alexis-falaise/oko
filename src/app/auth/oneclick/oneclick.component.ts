@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { timer, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { AuthService } from '@core/auth.service';
 import { HistoryService } from '@core/history.service';
@@ -15,7 +15,6 @@ import { UiService } from '@core/ui.service';
   styleUrls: ['./oneclick.component.scss']
 })
 export class OneclickComponent implements OnInit, OnDestroy {
-
   displayTagline: string;
   taglines = [
     'Le service de livraison collaboratif',
@@ -107,9 +106,11 @@ export class OneclickComponent implements OnInit, OnDestroy {
   }
 
   private subscribeSocialProfile() {
-    this.uiService.setLoading(true);
     this.authService.onSocialProfile()
-    .pipe(takeUntil(this.ngUnsubscribe))
+    .pipe(
+      tap(() => this.uiService.setLoading(true)),
+      takeUntil(this.ngUnsubscribe),
+    )
     .subscribe((profile: User) => {
       this.uiService.setLoading(false);
       if (profile) {
